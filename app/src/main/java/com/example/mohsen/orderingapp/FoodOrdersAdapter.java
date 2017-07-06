@@ -88,9 +88,9 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
         cur.close();
         mydb.close();
         mRvv.scrollToPosition(position);
-        if(doAnimate){
+//        if(doAnimate){
             setAnimation(holder.itemView, position);
-        }
+//        }
     }
 
 
