@@ -1,0 +1,30 @@
+<resources>
+
+    <!-- Padding Size -->
+    <dimen name="padding_xbit">1dp</dimen>
+    <dimen name="padding_bit">4dp</dimen>
+    <dimen name="padding_small">6dp</dimen>
+    <dimen name="padding_medium">9dp</dimen>
+    <dimen name="padding_large">12dp</dimen>
+    <dimen name="padding_spinner">22dp</dimen>
+    <!-- Font Size -->
+    <dimen name="font_xxsmall">10sp</dimen>
+    <dimen name="font_xsmall">13sp</dimen>
+    <dimen name="font_dialog">13sp</dimen>
+    <dimen name="font_small">15sp</dimen>
+    <dimen name="font_medium">18sp</dimen>
+    <dimen name="font_large">23sp</dimen>
+    <dimen name="font_xlarge">32sp</dimen>
+    <!-- Dimen Size -->
+    <dimen name="dimen_small">15dp</dimen>
+    <dimen name="dimen_medium">25dp</dimen>
+    <dimen name="dimen_large">35dp</dimen>
+    <dimen name="dimen_xlarge">45dp</dimen>
+    <dimen name="dimen_xxlarge">55dp</dimen>
+
+    <dimen name="height_slider_main">185dp</dimen>
+    <dimen name="height_item_product">170dp</dimen>
+    <dimen name="width_item_product">140dp</dimen>
+    <dimen name="height_item_category">120dp</dimen>
+    <dimen name="width_nav">195dp</dimen>
+</resources>
