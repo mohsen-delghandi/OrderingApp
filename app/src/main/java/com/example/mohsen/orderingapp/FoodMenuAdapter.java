@@ -2,7 +2,10 @@ package com.example.mohsen.orderingapp;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -61,10 +64,26 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-                FoodOrdersFragment foodOrdersFragment = new FoodOrdersFragment(mContext,mFoodCodes.get(position));
-                fragmentTransaction.replace(R.id.food_orders_fragment,foodOrdersFragment);
-                fragmentTransaction.commit();
+//                FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+//                FoodOrdersFragment foodOrdersFragment = new FoodOrdersFragment(mContext,mFoodCodes.get(position));
+//                fragmentTransaction.replace(R.id.food_orders_fragment,foodOrdersFragment);
+//                fragmentTransaction.commit();
+
+                SQLiteDatabase mydb = new MyDatabase(mContext).getWritableDatabase();
+                Cursor cursor = mydb.query(MyDatabase.ORDERS_TABLE,new String[]{MyDatabase.NUMBER},MyDatabase.CODE + " = ?",new String[]{mFoodCodes.get(position)+""},null,null,null);
+                if (cursor.moveToFirst()){
+                    ContentValues cv = new ContentValues();
+                    cv.put(MyDatabase.NUMBER,cursor.getInt(0)+1);
+                    mydb.update(MyDatabase.ORDERS_TABLE,cv,MyDatabase.CODE + " = ?",new String[]{mFoodCodes.get(position)+""});
+                }else{
+                    ContentValues cv2 = new ContentValues();
+                    cv2.put(MyDatabase.NUMBER,1);
+                    mydb.update(MyDatabase.ORDERS_TABLE,cv2,MyDatabase.CODE + " = ?",new String[]{mFoodCodes.get(position)+""});
+                }
+                cursor.close();
+                mydb.close();
+
+
             }
         });
     }
