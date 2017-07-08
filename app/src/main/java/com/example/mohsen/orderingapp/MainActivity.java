@@ -69,10 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         FragmentManager fragmentManager = getFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        FoodOrdersFragment foodOrdersFragment = new FoodOrdersFragment();
-//        fragmentTransaction.replace(R.id.food_orders_fragment,foodOrdersFragment);
-//        fragmentTransaction.commit();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        FoodOrdersFragment foodOrdersFragment = new FoodOrdersFragment(this);
+        fragmentTransaction.add(R.id.food_orders_fragment,foodOrdersFragment);
+        fragmentTransaction.commit();
 
         //Navigation recycler
 

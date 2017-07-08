@@ -29,6 +29,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
     ArrayList<String> mFoodsNames;
     View v;
     FragmentManager mFragmentManager;
+    int mNumber;
 
     public FoodMenuAdapter(Context context, ArrayList<Integer> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, ArrayList<Integer> foodCodes) {
         mContext = context;
@@ -74,14 +75,20 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
                 if (cursor.moveToFirst()){
                     ContentValues cv = new ContentValues();
                     cv.put(MyDatabase.NUMBER,cursor.getInt(0)+1);
+                    mNumber += cursor.getInt(0);
                     mydb.update(MyDatabase.ORDERS_TABLE,cv,MyDatabase.CODE + " = ?",new String[]{mFoodCodes.get(position)+""});
                 }else{
                     ContentValues cv2 = new ContentValues();
                     cv2.put(MyDatabase.NUMBER,1);
+                    mNumber = 1;
                     mydb.update(MyDatabase.ORDERS_TABLE,cv2,MyDatabase.CODE + " = ?",new String[]{mFoodCodes.get(position)+""});
                 }
+                Cursor cursor2 = mydb.query(MyDatabase.FOOD_TABLE,new String[]{MyDatabase.NAME},MyDatabase.CODE + " = ?",new String[]{mFoodCodes.get(position)+""},null,null,null);
+                cursor2.moveToFirst();
+                FoodOrdersFragment.insert(cursor2.getString(0),mNumber);
                 cursor.close();
                 mydb.close();
+
 
 
             }

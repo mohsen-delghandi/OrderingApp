@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Mohsen on 2017-07-03.
  */
@@ -18,18 +21,19 @@ public class FoodOrdersFragment extends Fragment{
 
     RecyclerView rvv;
     RecyclerView.LayoutManager rvlm;
-    RecyclerView.Adapter rva;
     Context mContext;
+    static FoodOrdersAdapter rva;
     int mPosition;
     int mFoodCode;
+    List<OrderedItem> mList = new ArrayList<>();
 
     public FoodOrdersFragment(Context context,int foodCode) {
         mContext = context;
-        mFoodCode =foodCode;
+        mFoodCode = foodCode;
     }
 
     public FoodOrdersFragment(Context context) {
-
+        mContext = context;
     }
 
     @Override
@@ -40,15 +44,29 @@ public class FoodOrdersFragment extends Fragment{
 
         rvv.setHasFixedSize(true);
 
+
+
+
         rvlm = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
         rvv.setLayoutManager(rvlm);
 
+        rva = new FoodOrdersAdapter(mContext,mList);
 
 
-        rva = new FoodOrdersAdapter(mContext,mFoodCode,rvv);
 
         rvv.setAdapter(rva);
-        rvv.scrollToPosition(rva.getItemCount()-1);
+
+
+
         return v;
     }
+
+    public static void insert(String name,int number){
+        OrderedItem data = new OrderedItem(name,number);
+        if (number > 1){
+            rva.remove(data);
+        }
+        rva.insert(new OrderedItem(name,number));
+    }
+
 }
