@@ -16,6 +16,7 @@ public class MyDatabase extends SQLiteOpenHelper {
 
     public static final String FOOD_TABLE = "Food_TBL";
     public static final String FOOD_CATEGORY_TABLE = "Food_Category_TBL";
+    public static final String ORDERS_TABLE = "Orders_TBL";
 
     public static final String ID = "Id";
     public static final String CODE = "Code";
@@ -23,6 +24,7 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String NAME = "Name";
     public static final String IMAGE = "Image";
     public static final String PRICE = "Price";
+    public static final String NUMBER = "Number";
 
     public MyDatabase(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -47,6 +49,13 @@ public class MyDatabase extends SQLiteOpenHelper {
                         CODE + " INTEGER," +
                         NAME + " TEXT," +
                         IMAGE + " INTEGER);"
+        );
+
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS " + ORDERS_TABLE + " (" +
+                        ID + " INTEGER PRIMARY KEY," +
+                        CODE + " INTEGER," +
+                        NUMBER + " INTEGER);"
         );
 
 
