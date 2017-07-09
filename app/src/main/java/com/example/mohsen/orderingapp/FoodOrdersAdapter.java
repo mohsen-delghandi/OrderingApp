@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -36,11 +37,13 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tv,tv2;
         public CardView cv;
+        public ImageView ivRemove;
         public ViewHolder(View v) {
             super(v);
             tv = (TextView)v.findViewById(R.id.food_order_item_name);
             tv2 = (TextView) v.findViewById(R.id.food_order_item_tedad);
             cv = (CardView) v.findViewById(R.id.food_item_cardView);
+            ivRemove = (ImageView) v.findViewById(R.id.food_order_item_remove);
         }
     }
 
@@ -55,12 +58,20 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
 
 
     @Override
-    public void onBindViewHolder(FoodOrdersAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(FoodOrdersAdapter.ViewHolder holder, final int position) {
 
         holder.tv.setText(mList.get(position).mName);
         holder.tv2.setText(mList.get(position).mNumber+"");
         mRvv.smoothScrollToPosition(mRvv.getAdapter().getItemCount());
         setAnimation(holder.cv,position);
+
+        holder.ivRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mList.remove(position);
+                notifyDataSetChanged();
+            }
+        });
 //        holder.cv.setAnimation(AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left));
 //        holder.tv.getParent()..setAnimation(AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left));
 //        notifyItemInserted(position);
