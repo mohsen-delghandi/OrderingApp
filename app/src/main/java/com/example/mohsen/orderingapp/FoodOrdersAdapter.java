@@ -1,6 +1,7 @@
 package com.example.mohsen.orderingapp;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,20 +21,26 @@ import java.util.List;
 public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.ViewHolder> {
 
     Context mContext;
-    List<OrderedItem> mList = new ArrayList<>();
+    public static List<OrderedItem> mList = new ArrayList<>();
+    RecyclerView mRvv;
+    LinearLayoutManager mRvlm;
 
 
-    public FoodOrdersAdapter(Context context,List<OrderedItem> list) {
+    public FoodOrdersAdapter(Context context, List<OrderedItem> list, RecyclerView rvv, LinearLayoutManager rvlm) {
         mContext = context;
         mList = list;
+        mRvv = rvv;
+        mRvlm = rvlm;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tv,tv2;
+        public CardView cv;
         public ViewHolder(View v) {
             super(v);
             tv = (TextView)v.findViewById(R.id.food_order_item_name);
             tv2 = (TextView) v.findViewById(R.id.food_order_item_tedad);
+            cv = (CardView) v.findViewById(R.id.food_item_cardView);
         }
     }
 
@@ -52,7 +59,13 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
 
         holder.tv.setText(mList.get(position).mName);
         holder.tv2.setText(mList.get(position).mNumber+"");
-
+        mRvv.smoothScrollToPosition(mRvv.getAdapter().getItemCount());
+        setAnimation(holder.cv,position);
+//        holder.cv.setAnimation(AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left));
+//        holder.tv.getParent()..setAnimation(AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left));
+//        notifyItemInserted(position);
+//        mRvv.scrollToPosition(position);
+//        mRvlm.scrollToPosition(position);
     }
 
 
@@ -75,17 +88,17 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
 
     // Insert a new item to the RecyclerView on a predefined position
     public void insert(OrderedItem data) {
-        mList.add(data);
+//        mList.add(data);
         notifyDataSetChanged();
     }
 
 
-    // Remove a RecyclerView item containing a specified Data object
-    public void remove(OrderedItem data) {
-        int position = mList.indexOf(data);
-        mList.remove(position);
-        notifyItemRemoved(position);
-    }
+//    // Remove a RecyclerView item containing a specified Data object
+//    public void remove(OrderedItem data) {
+//        int position = mList.indexOf(data);
+//        mList.remove(position);
+//        notifyItemRemoved(position);
+//    }
 
 
 }

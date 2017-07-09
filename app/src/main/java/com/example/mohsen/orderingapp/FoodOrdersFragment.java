@@ -20,7 +20,7 @@ import java.util.List;
 public class FoodOrdersFragment extends Fragment{
 
     RecyclerView rvv;
-    RecyclerView.LayoutManager rvlm;
+    LinearLayoutManager rvlm;
     Context mContext;
     static FoodOrdersAdapter rva;
     int mPosition;
@@ -48,25 +48,22 @@ public class FoodOrdersFragment extends Fragment{
 
 
         rvlm = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
+//        rvlm.setStackFromEnd(true);
         rvv.setLayoutManager(rvlm);
 
-        rva = new FoodOrdersAdapter(mContext,mList);
+        rva = new FoodOrdersAdapter(mContext,mList,rvv,rvlm);
 
 
 
         rvv.setAdapter(rva);
-
+//        rvv.scrollToPosition(mList.size());
 
 
         return v;
     }
 
-    public static void insert(String name,int number){
-        OrderedItem data = new OrderedItem(name,number);
-        if (number > 1){
-            rva.remove(data);
-        }
-        rva.insert(new OrderedItem(name,number));
+    public static void insert(OrderedItem data,int number){
+        rva.insert(data);
     }
 
 }

@@ -69,28 +69,32 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
 //                FoodOrdersFragment foodOrdersFragment = new FoodOrdersFragment(mContext,mFoodCodes.get(position));
 //                fragmentTransaction.replace(R.id.food_orders_fragment,foodOrdersFragment);
 //                fragmentTransaction.commit();
+                OrderedItem data;
 
                 SQLiteDatabase mydb = new MyDatabase(mContext).getWritableDatabase();
                 Cursor cursor = mydb.query(MyDatabase.ORDERS_TABLE,new String[]{MyDatabase.NUMBER},MyDatabase.CODE + " = ?",new String[]{mFoodCodes.get(position)+""},null,null,null);
                 if (cursor.moveToFirst()){
                     ContentValues cv = new ContentValues();
                     cv.put(MyDatabase.NUMBER,cursor.getInt(0)+1);
-                    mNumber += cursor.getInt(0);
+                    mNumber = cursor.getInt(0)+1;
                     mydb.update(MyDatabase.ORDERS_TABLE,cv,MyDatabase.CODE + " = ?",new String[]{mFoodCodes.get(position)+""});
+                    for(int i = 0;i<FoodOrdersAdapter.mList.size();i++){
+                        if(FoodOrdersAdapter.mList.get(i).mName.equals(mFoodsNames.get(position))){
+                            FoodOrdersAdapter.mList.remove(i);
+                        }
+                    }
+                    data = new OrderedItem(mFoodsNames.get(position),mNumber);
                 }else{
+//                    mydb.query(MyDatabase.FOOD_TABLE,new String[]{MyDatabase.NAME},MyDatabase.CODE + " = ?",new String[]{})
                     ContentValues cv2 = new ContentValues();
+                    cv2.put(MyDatabase.CODE,mFoodCodes.get(position));
                     cv2.put(MyDatabase.NUMBER,1);
                     mNumber = 1;
-                    mydb.update(MyDatabase.ORDERS_TABLE,cv2,MyDatabase.CODE + " = ?",new String[]{mFoodCodes.get(position)+""});
+                    mydb.insert(MyDatabase.ORDERS_TABLE,null,cv2);
+                    data = new OrderedItem(mFoodsNames.get(position),mNumber);
                 }
-                Cursor cursor2 = mydb.query(MyDatabase.FOOD_TABLE,new String[]{MyDatabase.NAME},MyDatabase.CODE + " = ?",new String[]{mFoodCodes.get(position)+""},null,null,null);
-                cursor2.moveToFirst();
-                FoodOrdersFragment.insert(cursor2.getString(0),mNumber);
-                cursor.close();
-                mydb.close();
-
-
-
+                FoodOrdersAdapter.mList.add(data);
+                FoodOrdersFragment.insert(data,mNumber);
             }
         });
     }
