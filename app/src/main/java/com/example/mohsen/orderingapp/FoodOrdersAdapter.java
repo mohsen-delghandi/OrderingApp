@@ -87,19 +87,17 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
 //                SystemClock.sleep(duration);
 
                 mList.remove(position);
+//                notifyItemRangeChanged(position, mList.size());
 
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
-                notifyDataSetChanged();
-
-//                final Handler handler = new Handler();
-//                handler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-////                        notifyItemRemoved(position);
-//                        notifyDataSetChanged();
-//                    }
-//                }, duration);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, mList.size());
+                    }
+                }, duration);
 
 
                 animate = false;
