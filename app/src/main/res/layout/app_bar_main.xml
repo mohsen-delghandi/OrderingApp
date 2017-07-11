@@ -5,9 +5,10 @@
     android:layoutDirection="rtl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.mohsen.orderingapp.MainActivity">
+    tools:context="com.example.mohsen.orderingapp.OrdersMenuActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
@@ -25,33 +26,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
+                    android:id="@+id/titleBar_title"
                     android:textSize="@dimen/font_medium"
                     android:gravity="right"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:textColor="#fff"
-                    android:layout_height="wrap_content"
-                    android:text="ثبت سفارش"/>
+                    android:layout_height="wrap_content"/>
             <ImageView
+                android:id="@+id/titleBar_icon"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/shop_icon"/>
+                android:layout_height="wrap_content"/>
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
 
+    <LinearLayout
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/nestedscrollview"></LinearLayout>
 
+    <!--<android.support.v4.widget.NestedScrollView-->
+        <!--android:background="#fff"-->
+        <!--android:id="@+id/nestedscrollview"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
 
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="bottom|end"-->
-        <!--android:layout_margin="@dimen/fab_margin"-->
-        <!--app:srcCompat="@android:drawable/ic_dialog_email" />-->
+    <!--</android.support.v4.widget.NestedScrollView>-->
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@android:drawable/ic_menu_send" />
 
 </android.support.design.widget.CoordinatorLayout>

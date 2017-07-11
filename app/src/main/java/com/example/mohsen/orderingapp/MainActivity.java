@@ -5,25 +5,40 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.Display;
+import android.support.annotation.LayoutRes;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.widget.Toast;
+import android.view.Display;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
+/**
+ * Created by Mohsen on 2017-07-11.
+ */
+
 public class MainActivity extends AppCompatActivity {
 
-    RecyclerView mNavigationRecycler;
-    RecyclerView.LayoutManager mRecyclerManager;
-    RecyclerView.Adapter mRecyclerAdapter;
-
+    LayoutInflater inflater;
+    LinearLayout ns;
+    Toolbar toolbar;
+    DrawerLayout drawer;
+    int width;
+    FloatingActionButton fab;
+    TextView tvTitlebar;
+    ImageView ivTitlebar;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -35,19 +50,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        tvTitlebar = (TextView)findViewById(R.id.titleBar_title);
+
+        ivTitlebar = (ImageView)findViewById(R.id.titleBar_icon);
+        ivTitlebar.setVisibility(View.GONE);
+
+
+
+        ns = (LinearLayout) findViewById(R.id.nestedscrollview);
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -58,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
-        int width = size.x;
+        width = size.x;
 
         //Navigation Size
 
@@ -68,22 +86,7 @@ public class MainActivity extends AppCompatActivity {
         nv.setLayoutParams(params);
 
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        FoodOrdersFragment foodOrdersFragment = new FoodOrdersFragment(this);
-        fragmentTransaction.add(R.id.food_orders_fragment,foodOrdersFragment);
-        fragmentTransaction.commit();
 
-        //Navigation recycler
-
-        mNavigationRecycler = (RecyclerView)findViewById(R.id.nav_recyclerView);
-        mNavigationRecycler.setHasFixedSize(true);
-
-        mRecyclerManager = new LinearLayoutManager(this);
-        mNavigationRecycler.setLayoutManager(mRecyclerManager);
-
-        mRecyclerAdapter = new NavigationAdapter(this,width,Food.foodCategoryImages,Food.foodCategoryNames,fragmentManager,drawer);
-        mNavigationRecycler.setAdapter(mRecyclerAdapter);
 
 
 
@@ -91,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -100,5 +104,13 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    protected View setInflater(Context context, @LayoutRes int resource){
+
+        inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(resource,ns);
+
+        return view;
     }
 }
