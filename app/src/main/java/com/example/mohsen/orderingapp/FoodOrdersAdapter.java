@@ -112,6 +112,7 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
             public void onClick(View view) {
                 mList.get(position).mNumber += 1;
                 notifyDataSetChanged();
+                animate = false;
             }
         });
 
@@ -120,6 +121,7 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
             public void onClick(View view) {
                 mList.get(position).mNumber -= 1;
                 notifyDataSetChanged();
+                animate = false;
             }
         });
 
