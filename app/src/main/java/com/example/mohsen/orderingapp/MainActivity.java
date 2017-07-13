@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     FloatingActionButton fab;
     TextView tvTitlebar;
     ImageView ivTitlebar;
+    ActionBarDrawerToggle toggle;
+    NavigationView nv;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         ns = (LinearLayout) findViewById(R.id.nestedscrollview);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Navigation Size
 
-        NavigationView nv = (NavigationView)findViewById(R.id.nav_view);
+        nv = (NavigationView)findViewById(R.id.nav_view);
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) nv.getLayoutParams();
         params.width = width/4;
         nv.setLayoutParams(params);

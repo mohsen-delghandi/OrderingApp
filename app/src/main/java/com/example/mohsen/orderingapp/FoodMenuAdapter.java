@@ -71,6 +71,9 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
 //                fragmentTransaction.commit();
                 OrderedItem data;
 
+                OrdersMenuActivity.ll.setVisibility(View.VISIBLE);
+                OrdersMenuActivity.fabToggle.setVisibility(View.VISIBLE);
+
                 SQLiteDatabase mydb = new MyDatabase(mContext).getWritableDatabase();
                 Cursor cursor = mydb.query(MyDatabase.ORDERS_TABLE,new String[]{MyDatabase.NUMBER},MyDatabase.CODE + " = ?",new String[]{mFoodCodes.get(position)+""},null,null,null);
                 if (cursor.moveToFirst()){
