@@ -32,6 +32,19 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/textView_tayid"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="تایید سفارش"
+                    android:textSize="@dimen/font_small"
+                    android:textColor="@color/icons"
+                    android:background="#388E3C"
+                    android:padding="@dimen/padding_medium"/>
+
+
         </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton

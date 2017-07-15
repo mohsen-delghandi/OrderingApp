@@ -1,17 +1,28 @@
 package com.example.mohsen.orderingapp;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AnimationUtils;
+import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class OrdersMenuActivity extends MainActivity {
 
@@ -20,6 +31,7 @@ public class OrdersMenuActivity extends MainActivity {
     RecyclerView.Adapter mRecyclerAdapter;
     public static LinearLayout ll,ll2;
     public static FloatingActionButton fabToggle;
+    TextView tvTayid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +44,19 @@ public class OrdersMenuActivity extends MainActivity {
 
 
         ll = (LinearLayout)findViewById(R.id.food_orders_fragment);
-        ll.setVisibility(View.GONE);
+        ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,0f));
+//        ll.setVisibility(View.GONE);
         ll2 = (LinearLayout)findViewById(R.id.food_menu_fragment);
+        tvTayid = (TextView)findViewById(R.id.textView_tayid);
+        tvTayid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomDialogClass cdd=new CustomDialogClass(OrdersMenuActivity.this);
+                cdd.show();
+                Window window = cdd.getWindow();
+                window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            }
+        });
 
 
 
@@ -72,23 +95,56 @@ public class OrdersMenuActivity extends MainActivity {
         mNavigationRecycler.setAdapter(mRecyclerAdapter);
     }
 
-    final View.OnClickListener ocl2 = new View.OnClickListener() {
+    public static View.OnClickListener ocl2 = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,1f));
+//            ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,1f));
+            ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(ll);
+            ObjectAnimator anim = ObjectAnimator.ofFloat(animationWrapper,
+                    "weight",
+                    animationWrapper.getWeight(),
+                    1f);
+            anim.setDuration(300);
+            anim.setInterpolator(new FastOutLinearInInterpolator());
+            anim.start();
             fabToggle.setImageResource(R.drawable.icon_up);
-            ll2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,3f));
+//            ll2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,3f));
+//            ViewWeightAnimationWrapper animationWrapper2 = new ViewWeightAnimationWrapper(ll2);
+//            ObjectAnimator anim2 = ObjectAnimator.ofFloat(animationWrapper2,
+//                    "weight",
+//                    animationWrapper.getWeight(),
+//                    3f);
+//            anim.setDuration(2500);
+//            anim.start();
             fabToggle.setOnClickListener(ocl);
         }
     };
 
 
-    View.OnClickListener ocl = new View.OnClickListener() {
+    public static View.OnClickListener ocl = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+
+            ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(ll);
+            ObjectAnimator anim = ObjectAnimator.ofFloat(animationWrapper,
+                    "weight",
+                    animationWrapper.getWeight(),
+                    9f);
+            anim.setDuration(500);
+            anim.setInterpolator(new OvershootInterpolator());
+            anim.start();
+
 //            ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,3f));
-            ll.startAnimation(AnimationUtils.loadAnimation(OrdersMenuActivity.this,R.anim.my_animation));
             fabToggle.setImageResource(R.drawable.icon_down);
+
+//            ViewWeightAnimationWrapper animationWrapper2 = new ViewWeightAnimationWrapper(ll2);
+//            ObjectAnimator anim2 = ObjectAnimator.ofFloat(animationWrapper2,
+//                    "weight",
+//                    animationWrapper.getWeight(),
+//                    1f);
+//            anim.setDuration(2500);
+//            anim.start();
+
 //            ll2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,1f));
             fabToggle.setOnClickListener(ocl2);
         }

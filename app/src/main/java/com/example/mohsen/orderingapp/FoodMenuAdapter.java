@@ -1,11 +1,13 @@
 package com.example.mohsen.orderingapp;
 
+import android.animation.ObjectAnimator;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -71,8 +73,28 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
 //                fragmentTransaction.commit();
                 OrderedItem data;
 
-                OrdersMenuActivity.ll.setVisibility(View.VISIBLE);
+//                OrdersMenuActivity.ll.setVisibility(View.VISIBLE);
+
+
+                OrdersMenuActivity.fabToggle.setImageResource(R.drawable.icon_up);
                 OrdersMenuActivity.fabToggle.setVisibility(View.VISIBLE);
+
+                if(FoodOrdersAdapter.mList.size() == 0) {
+                    ObjectAnimator obj = ObjectAnimator.ofFloat(OrdersMenuActivity.fabToggle, "alpha", 0f, 1f);
+                    obj.setDuration(300);
+                    obj.start();
+                }
+
+                ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(OrdersMenuActivity.ll);
+                ObjectAnimator anim = ObjectAnimator.ofFloat(animationWrapper,
+                        "weight",
+                        animationWrapper.getWeight(),
+                        1f);
+                anim.setDuration(300);
+                anim.setInterpolator(new FastOutLinearInInterpolator());
+                anim.start();
+                OrdersMenuActivity.fabToggle.setOnClickListener(OrdersMenuActivity.ocl);
+
 
                 SQLiteDatabase mydb = new MyDatabase(mContext).getWritableDatabase();
                 Cursor cursor = mydb.query(MyDatabase.ORDERS_TABLE,new String[]{MyDatabase.NUMBER},MyDatabase.CODE + " = ?",new String[]{mFoodCodes.get(position)+""},null,null,null);
