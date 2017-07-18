@@ -18,12 +18,12 @@ public class CustomDialogClass extends Dialog implements
 
     public Activity c;
     public Dialog d;
-    public TextView yes;
-    public Button no;
+    public TextView yes,no;
+    long mPrice = 0;
+    String mPriceFormatted = "";
 
     public CustomDialogClass(Activity a) {
         super(a);
-        // TODO Auto-generated constructor stub
         this.c = a;
     }
 
@@ -33,9 +33,22 @@ public class CustomDialogClass extends Dialog implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.basket_dialog_layout);
         yes = (TextView) findViewById(R.id.textView_ok);
-//        no = (Button) findViewById(R.id.button_cancel);
+        no = (TextView) findViewById(R.id.textView_cancel);
         yes.setOnClickListener(this);
-//        no.setOnClickListener(this);
+        no.setOnClickListener(this);
+
+
+        for(int i = 0 ; i<FoodOrdersAdapter.mList.size() ; i++){
+            mPrice += FoodOrdersAdapter.mList.get(i).mNumber*1000;
+        }
+        TextView tv = (TextView)findViewById(R.id.textView_price);
+        int a =  (mPrice+"").length();
+        mPriceFormatted = (mPrice+"").substring(0,a%3);
+        for(int i = 0 ; i < (mPrice+"").length()/3 ; i++) {
+            if (!mPriceFormatted.equals("")) mPriceFormatted += ",";
+            mPriceFormatted += (mPrice+"").substring(a % 3 + 3 * i , a % 3 + 3 * (i+1));
+        }
+        tv.setText(mPriceFormatted+"");
 
     }
 
@@ -45,9 +58,9 @@ public class CustomDialogClass extends Dialog implements
             case R.id.textView_ok:
                 Toast.makeText(c, "SENT", Toast.LENGTH_SHORT).show();
                 break;
-//            case R.id.button_cancel:
-//                dismiss();
-//                break;
+            case R.id.textView_cancel:
+                dismiss();
+                break;
             default:
                 break;
         }

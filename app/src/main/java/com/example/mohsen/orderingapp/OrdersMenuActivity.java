@@ -5,13 +5,17 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -31,7 +35,7 @@ public class OrdersMenuActivity extends MainActivity {
     RecyclerView.Adapter mRecyclerAdapter;
     public static LinearLayout ll,ll2;
     public static FloatingActionButton fabToggle;
-    TextView tvTayid;
+    public static TextView tvTayid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,7 @@ public class OrdersMenuActivity extends MainActivity {
 //        ll.setVisibility(View.GONE);
         ll2 = (LinearLayout)findViewById(R.id.food_menu_fragment);
         tvTayid = (TextView)findViewById(R.id.textView_tayid);
+        tvTayid.setVisibility(View.GONE);
         tvTayid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,7 +69,7 @@ public class OrdersMenuActivity extends MainActivity {
 
         tvTitlebar.setText("منوی غذا");
 
-        ivTitlebar.setVisibility(View.VISIBLE);
+//        ivTitlebar.setVisibility(View.VISIBLE);
         ivTitlebar.setImageResource(R.drawable.shop_icon);
         ivTitlebar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +98,26 @@ public class OrdersMenuActivity extends MainActivity {
 
         mRecyclerAdapter = new NavigationAdapter(this,width,Food.foodCategoryImages,Food.foodCategoryNames,fragmentManager,drawer);
         mNavigationRecycler.setAdapter(mRecyclerAdapter);
+
+
+
+
+
+
+
+
+        FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
+        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(this,0,fragmentManager);
+        fragmentTransaction2.replace(R.id.food_menu_fragment,foodMenuFragment);
+        fragmentTransaction2.addToBackStack(null);
+        fragmentTransaction2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction2.commit();
+        drawer.closeDrawer(Gravity.START);
+
+
+
+
+
     }
 
     public static View.OnClickListener ocl2 = new View.OnClickListener() {

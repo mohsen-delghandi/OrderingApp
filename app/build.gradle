@@ -31,4 +31,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+    compile 'com.google.code.ksoap2-android:ksoap2-android:3.6.2'
 }

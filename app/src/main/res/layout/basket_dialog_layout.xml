@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_weight=".5"
-                android:text="ریال"
+                android:text="تومان"
                 android:gravity="center|bottom"
                 android:textSize="@dimen/font_xsmall"
                 android:textColor="@color/primary_text"/>
@@ -89,7 +89,8 @@
                 android:id="@+id/textView_ok"
                 android:layout_alignParentBottom="true"
                 android:gravity="center"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="3"
                 android:layout_height="wrap_content"
                 android:text="ارسال سفارش"
                 android:textSize="@dimen/font_small"
@@ -101,12 +102,13 @@
                 android:id="@+id/textView_cancel"
                 android:layout_alignParentBottom="true"
                 android:gravity="center"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="انصراف"
                 android:textSize="@dimen/font_small"
                 android:textColor="@color/icons"
-                android:background="#388E3C"
+                android:background="#F44336"
                 android:padding="@dimen/padding_medium"/>
 
         </TableRow>

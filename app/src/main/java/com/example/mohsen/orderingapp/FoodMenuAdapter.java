@@ -79,10 +79,16 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
                 OrdersMenuActivity.fabToggle.setImageResource(R.drawable.icon_up);
                 OrdersMenuActivity.fabToggle.setVisibility(View.VISIBLE);
 
+                OrdersMenuActivity.tvTayid.setVisibility(View.VISIBLE);
+
                 if(FoodOrdersAdapter.mList.size() == 0) {
                     ObjectAnimator obj = ObjectAnimator.ofFloat(OrdersMenuActivity.fabToggle, "alpha", 0f, 1f);
                     obj.setDuration(300);
                     obj.start();
+
+                    ObjectAnimator obj2 = ObjectAnimator.ofFloat(OrdersMenuActivity.tvTayid, "alpha", 0f, 1f);
+                    obj2.setDuration(300);
+                    obj2.start();
                 }
 
                 ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(OrdersMenuActivity.ll);

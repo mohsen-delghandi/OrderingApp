@@ -1,5 +1,7 @@
 package com.example.mohsen.orderingapp;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Color;
@@ -114,17 +116,45 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
                     anim.setInterpolator(new FastOutLinearInInterpolator());
                     anim.start();
 
-                    ObjectAnimator obj = ObjectAnimator.ofFloat(OrdersMenuActivity.fabToggle,"alpha",1f,0f);
-                    obj.setDuration(300);
-                    obj.start();
+//                    ObjectAnimator obj2 = ObjectAnimator.ofFloat(OrdersMenuActivity.tvTayid,"alpha",1f,0f);
+//                    obj2.setDuration(300);
+//                    obj2.start();
 
-                    final Handler handler2 = new Handler();
-                    handler2.postDelayed(new Runnable() {
+                    OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
                         @Override
-                        public void run() {
+                        public void onAnimationEnd(Animator animation) {
+                            OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
+                        }
+                    });
+
+//                    final Handler handler3 = new Handler();
+//                    handler3.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
+//                        }
+//                    }, 300);
+
+
+                    OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
                             OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
                         }
-                    }, 300);
+                    });
+
+
+//                    ObjectAnimator obj = ObjectAnimator.ofFloat(OrdersMenuActivity.fabToggle,"alpha",1f,0f);
+//                    obj.setDuration(300);
+//                    obj.start();
+//
+//                    final Handler handler2 = new Handler();
+//                    handler2.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
+//                        }
+//                    }, 300);
                 }
 
 
