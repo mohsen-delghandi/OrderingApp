@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHolder> {
 
     Context mContext;
-    ArrayList<Integer> mFoodsImages,mFoodCodes;
+    public static ArrayList<Integer> mFoodsImages,mFoodCodes;
     ArrayList<String> mFoodsNames;
     View v;
     FragmentManager mFragmentManager;

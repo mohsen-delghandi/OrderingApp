@@ -73,6 +73,7 @@
                 android:layout_weight=".5"
                 android:gravity="center"
                 android:textSize="@dimen/font_small"
+                android:inputType="number"
                 android:textColor="@color/primary_text"/>
 
 

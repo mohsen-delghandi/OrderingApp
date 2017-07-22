@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -91,6 +92,9 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
 //                SystemClock.sleep(duration);
 
                 mList.remove(position);
+                SQLiteDatabase db = new MyDatabase(mContext).getWritableDatabase();
+                db.delete(MyDatabase.ORDERS_TABLE,MyDatabase.CODE + " = ?",new String[]{FoodMenuAdapter.mFoodCodes.get(position)+""});
+                db.close();
 //                notifyItemRangeChanged(position, mList.size());
 
                 final Handler handler = new Handler();
