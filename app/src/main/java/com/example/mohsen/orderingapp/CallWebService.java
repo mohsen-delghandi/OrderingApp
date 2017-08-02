@@ -26,8 +26,8 @@ public class CallWebService {
         SQLiteDatabase db = new MyDatabase(context).getReadableDatabase();
         Cursor cursor = db.query(MyDatabase.FOOD_TABLE,new String[]{MyDatabase.NAME},null,null,null,null,null);
         cursor.moveToFirst();
-        SOAP_ADDRESS = "http://" + cursor.getString(0) + "/CRMWebService.asmx";
-//        SOAP_ADDRESS = "http://192.168.1.34/CRMWebService.asmx";
+//        SOAP_ADDRESS = "http://" + cursor.getString(0) + "/ParminWebService.asmx";
+        SOAP_ADDRESS = "http://192.168.1.36/ParminWebService.asmx";
         SOAP_ACTION += methodName;
         OPERATION_NAME = methodName;
         SOAP_PROPERTY_NAME = propertyName;

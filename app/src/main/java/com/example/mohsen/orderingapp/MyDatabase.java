@@ -36,19 +36,19 @@ public class MyDatabase extends SQLiteOpenHelper {
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS " + FOOD_TABLE + " (" +
                         ID + " INTEGER PRIMARY KEY," +
-                        CODE + " INTEGER," +
-                        CATEGORY_CODE + " INTEGER," +
+                        CODE + " TEXT," +
+                        CATEGORY_CODE + " TEXT," +
                         NAME + " TEXT," +
-                        IMAGE + " INTEGER," +
-                        PRICE + " INTEGER);"
+                        IMAGE + " TEXT," +
+                        PRICE + " TEXT);"
         );
 
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS " + FOOD_CATEGORY_TABLE + " (" +
                         ID + " INTEGER PRIMARY KEY," +
-                        CODE + " INTEGER," +
+                        CODE + " TEXT," +
                         NAME + " TEXT," +
-                        IMAGE + " INTEGER);"
+                        IMAGE + " TEXT);"
         );
 
         db.execSQL(
@@ -59,15 +59,15 @@ public class MyDatabase extends SQLiteOpenHelper {
         );
 
 
-        int food_category_count = 4;
-        ContentValues[] cv = new ContentValues[food_category_count];
-        for (int i = 0 ; i < food_category_count ; i++){
-            cv[i] = new ContentValues();
-            cv[i].put(CODE,"100"+(i+1));
-            cv[i].put(NAME,Food.foodCategoryNames[i]);
-            cv[i].put(IMAGE,Food.foodCategoryImages[i]);
-            db.insert(FOOD_CATEGORY_TABLE,null,cv[i]);
-        }
+//        int food_category_count = 4;
+//        ContentValues[] cv = new ContentValues[food_category_count];
+//        for (int i = 0 ; i < food_category_count ; i++){
+//            cv[i] = new ContentValues();
+//            cv[i].put(CODE,"100"+(i+1));
+//            cv[i].put(NAME,Food.foodCategoryNames[i]);
+//            cv[i].put(IMAGE,Food.foodCategoryImages[i]);
+//            db.insert(FOOD_CATEGORY_TABLE,null,cv[i]);
+//        }
 
         int food_count = 23;
         ContentValues[] cv2 = new ContentValues[food_count];

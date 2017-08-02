@@ -2,7 +2,11 @@ package com.example.mohsen.orderingapp;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -16,12 +20,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -41,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView ivTitlebar;
     ActionBarDrawerToggle toggle;
     NavigationView nv;
+    String json,json2;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -54,6 +65,54 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                CallWebService cws = new CallWebService(MainActivity.this,"GetGroupFood","test");
+                json = cws.Call("test");
+
+                CallWebService cws2 = new CallWebService(MainActivity.this,"GetFood","test");
+                json2 = cws2.Call("test");
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, json2, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                try {
+                    JSONArray jsonArray = new JSONArray(json);
+                    JSONArray jsonArray2 = new JSONArray(json2);
+
+                    SQLiteDatabase db = new MyDatabase(MainActivity.this).getWritableDatabase();
+                    db.delete(MyDatabase.FOOD_CATEGORY_TABLE,null,null);
+                    db.delete(MyDatabase.FOOD_TABLE,null,null);
+                    for(int i = 0 ; i < jsonArray.length()-1 ; i++){
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        ContentValues cv = new ContentValues();
+                        cv.put(MyDatabase.CODE,jsonObject.get("ID")+"");
+                        cv.put(MyDatabase.NAME,jsonObject.get("Name_Group")+"");
+                        cv.put(MyDatabase.IMAGE,jsonObject.get("Pic")+"");
+                        db.insert(MyDatabase.FOOD_CATEGORY_TABLE,null,cv);
+                    }
+                    for(int i = 0 ; i < jsonArray2.length()-1 ; i++){
+                        JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
+                        ContentValues cv = new ContentValues();
+                        cv.put(MyDatabase.CODE,jsonObject2.get("ID")+"");
+                        cv.put(MyDatabase.NAME,jsonObject2.get("Name_Food")+"");
+                        cv.put(MyDatabase.IMAGE,jsonObject2.get("Pic_Food")+"");
+                        cv.put(MyDatabase.CATEGORY_CODE,jsonObject2.get("ID_Group")+"");
+                        cv.put(MyDatabase.PRICE,jsonObject2.get("Price_Food")+"");
+                        db.insert(MyDatabase.FOOD_TABLE,null,cv);
+                    }
+                    db.close();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
@@ -86,15 +145,6 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) nv.getLayoutParams();
         params.width = width/4;
         nv.setLayoutParams(params);
-
-
-
-
-
-
-
-
-
     }
 
 

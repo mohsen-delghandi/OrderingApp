@@ -19,11 +19,13 @@
         android:layout_height="wrap_content"
         android:src="@drawable/kabab"
         app:civ_border_width="2dp"
-        app:civ_border_color="#fff"/>
+        app:civ_border_color="#fff"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/nav_textView"
         android:gravity="center"
+        android:textColor="@color/primary_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

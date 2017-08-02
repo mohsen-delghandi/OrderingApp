@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mohsen.orderingapp">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:name=".Font"
         android:allowBackup="true"

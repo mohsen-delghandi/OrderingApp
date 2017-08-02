@@ -1,30 +1,18 @@
 package com.example.mohsen.orderingapp;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AnimationUtils;
-import android.view.animation.AnticipateOvershootInterpolator;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -70,7 +58,7 @@ public class OrdersMenuActivity extends MainActivity {
 
         tvTitlebar.setText("منوی غذا");
 
-//        ivTitlebar.setVisibility(View.VISIBLE);
+        ivTitlebar.setVisibility(View.VISIBLE);
         ivTitlebar.setImageResource(R.drawable.shop_icon);
         ivTitlebar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,7 +85,9 @@ public class OrdersMenuActivity extends MainActivity {
         mRecyclerManager = new LinearLayoutManager(this);
         mNavigationRecycler.setLayoutManager(mRecyclerManager);
 
-        mRecyclerAdapter = new NavigationAdapter(this,width,Food.foodCategoryImages,Food.foodCategoryNames,fragmentManager,drawer);
+        Food food = new Food(this);
+
+        mRecyclerAdapter = new NavigationAdapter(this,width,food.getFoodCategoryImages(),food.getFoodCategoryNames(),fragmentManager,drawer,food.getFoodCategoryCodes());
         mNavigationRecycler.setAdapter(mRecyclerAdapter);
 
 
@@ -106,14 +96,13 @@ public class OrdersMenuActivity extends MainActivity {
 
 
 
-
-        FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
-        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(this,0,fragmentManager);
-        fragmentTransaction2.replace(R.id.food_menu_fragment,foodMenuFragment);
-        fragmentTransaction2.addToBackStack(null);
-        fragmentTransaction2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction2.commit();
-        drawer.closeDrawer(Gravity.START);
+//        FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
+//        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(this,0,fragmentManager, mFoodsCategoryCodes);
+//        fragmentTransaction2.replace(R.id.food_menu_fragment,foodMenuFragment);
+//        fragmentTransaction2.addToBackStack(null);
+//        fragmentTransaction2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//        fragmentTransaction2.commit();
+//        drawer.closeDrawer(Gravity.START);
 
 
 

@@ -3,14 +3,19 @@ package com.example.mohsen.orderingapp;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Created by Mohsen on 2017-06-29.
@@ -20,17 +25,19 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
     Context mContext;
     int mWidth;
-    int[] mFoodsImages;
-    String[] mFoodsNames;
+    ArrayList<String> mFoodsCategoryImages;
+    ArrayList<String> mFoodsCategoryNames;
+    ArrayList<String> mFoodsCategoryCodes;
     View v;
     FragmentManager mFragmentManager;
     DrawerLayout mDrawer;
 
-    public NavigationAdapter(Context context, int width, int[] foodsImages, String[] foodsNames, FragmentManager fragmentManager, DrawerLayout drawer) {
+    public NavigationAdapter(Context context, int width, ArrayList<String> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, DrawerLayout drawer, ArrayList<String> foodCategoryCodes) {
         mContext = context;
         mWidth = width;
-        mFoodsImages = foodsImages;
-        mFoodsNames = foodsNames;
+        mFoodsCategoryImages = foodsImages;
+        mFoodsCategoryNames = foodsNames;
+        mFoodsCategoryCodes = foodCategoryCodes;
         mFragmentManager = fragmentManager;
         mDrawer = drawer;
     }
@@ -54,8 +61,11 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
     @Override
     public void onBindViewHolder(NavigationAdapter.ViewHolder holder, final int position) {
-        holder.tv.setText(mFoodsNames[position]);
-        holder.iv.setImageResource(mFoodsImages[position]);
+        holder.tv.setText(mFoodsCategoryNames.get(position));
+
+        byte[] decodedString = Base64.decode(mFoodsCategoryImages.get(position), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        holder.iv.setImageBitmap(decodedByte);
         holder.iv.getLayoutParams().width = mWidth/5;
         holder.iv.getLayoutParams().height = mWidth/5;
 
@@ -63,7 +73,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
             @Override
             public void onClick(View view) {
                 FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-                FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext,position,mFragmentManager);
+                FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext,position,mFragmentManager,mFoodsCategoryCodes.get(position));
                 fragmentTransaction.replace(R.id.food_menu_fragment,foodMenuFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -75,6 +85,6 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return mFoodsImages.length;
+        return mFoodsCategoryImages.size();
     }
 }

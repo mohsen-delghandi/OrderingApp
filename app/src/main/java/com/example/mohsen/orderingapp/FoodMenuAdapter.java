@@ -7,9 +7,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,18 +30,19 @@ import java.util.ArrayList;
 public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHolder> {
 
     Context mContext;
-    public static ArrayList<Integer> mFoodsImages,mFoodCodes;
+    public static ArrayList<String> mFoodsImages,mFoodCodes;
     ArrayList<String> mFoodsNames;
     View v;
     FragmentManager mFragmentManager;
     int mNumber;
+    ArrayList<String> mFoodsCategoryCodes;
 
-    public FoodMenuAdapter(Context context, ArrayList<Integer> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, ArrayList<Integer> foodCodes) {
+    public FoodMenuAdapter(Context context, ArrayList<String> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, ArrayList<String> foodCodes) {
         mContext = context;
         mFoodsImages = foodsImages;
         mFoodsNames = foodsNames;
         mFragmentManager = fragmentManager;
-        mFoodCodes = foodCodes;
+//        mFoodsCategoryCodes = foodsCategoryCodes;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -62,7 +66,9 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
     @Override
     public void onBindViewHolder(FoodMenuAdapter.ViewHolder holder, final int position) {
         holder.tv.setText(mFoodsNames.get(position));
-        holder.iv.setImageResource(mFoodsImages.get(position));
+        byte[] decodedString = Base64.decode(mFoodsImages.get(position), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        holder.iv.setImageBitmap(decodedByte);
 
         v.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +109,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
 
 
                 SQLiteDatabase mydb = new MyDatabase(mContext).getWritableDatabase();
-                Cursor cursor = mydb.query(MyDatabase.ORDERS_TABLE,new String[]{MyDatabase.NUMBER},MyDatabase.CODE + " = ?",new String[]{mFoodCodes.get(position)+""},null,null,null);
+                Cursor cursor = mydb.query(MyDatabase.ORDERS_TABLE,new String[]{MyDatabase.NUMBER},MyDatabase.CODE + " = ?",new String[]{mFoodsCategoryCodes.get(position)+""},null,null,null);
                 if (cursor.moveToFirst()){
                     ContentValues cv = new ContentValues();
                     cv.put(MyDatabase.NUMBER,cursor.getInt(0)+1);

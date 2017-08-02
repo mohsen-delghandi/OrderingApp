@@ -26,11 +26,13 @@ public class FoodMenuFragment extends Fragment {
     Context mContext;
     int mPosition;
     FragmentManager mFragmentManager;
+    int mFoodsCategoryCode;
 
-    public FoodMenuFragment(Context context, int position, FragmentManager fragmentManager) {
+    public FoodMenuFragment(Context context, int position, FragmentManager fragmentManager, String foodsCategoryCode) {
         mContext = context;
         mPosition = position;
         mFragmentManager = fragmentManager;
+        mFoodsCategoryCode = Integer.parseInt(foodsCategoryCode);
     }
 
     @Override
@@ -46,20 +48,20 @@ public class FoodMenuFragment extends Fragment {
 
         SQLiteDatabase mydb = new MyDatabase(mContext).getReadableDatabase();
 
-        Cursor cur = mydb.query(MyDatabase.FOOD_TABLE,new String[]{MyDatabase.NAME,MyDatabase.IMAGE,MyDatabase.CODE},MyDatabase.CATEGORY_CODE + " = ?",new String[]{"100"+(mPosition+1)},null,null,null);
-        ArrayList<String> foodCategoryNames = new ArrayList<>();
-        ArrayList<Integer> foodCategoryImages = new ArrayList<>();
-        ArrayList<Integer> foodCodes = new ArrayList<>();
+        Cursor cur = mydb.query(MyDatabase.FOOD_TABLE,new String[]{MyDatabase.NAME,MyDatabase.IMAGE,MyDatabase.CODE},MyDatabase.CATEGORY_CODE + " = ?",new String[]{mFoodsCategoryCode+""},null,null,null);
+        ArrayList<String> foodsNames = new ArrayList<>();
+        ArrayList<String> foodsImages = new ArrayList<>();
+        ArrayList<String> foodsCodes = new ArrayList<>();
         if(cur.moveToFirst()) {
             do {
-                foodCategoryNames.add(cur.getString(0));
-                foodCategoryImages.add(cur.getInt(1));
-                foodCodes.add(cur.getInt(2));
+                foodsNames.add(cur.getString(0));
+                foodsImages.add(cur.getString(1));
+                foodsCodes.add(cur.getString(2));
             } while (cur.moveToNext());
         }
 
 
-        rva = new FoodMenuAdapter(mContext,foodCategoryImages,foodCategoryNames,mFragmentManager,foodCodes);
+        rva = new FoodMenuAdapter(mContext,foodsImages,foodsNames,mFragmentManager,foodsCodes);
 
         rvv.setAdapter(rva);
         return v;
