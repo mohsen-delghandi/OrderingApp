@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layoutDirection="rtl"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+
+
+
+
+    <TableLayout
+        android:elevation="@dimen/padding_bit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/padding_medium">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="UPDATE"
+            android:id="@+id/button_update"/>
+
+
+
+
+        <!--<TableRow-->
+
+            <!--android:weightSum="5">-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_margin="@dimen/padding_bit"-->
+            <!--android:elevation="@dimen/padding_bit"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:background="@drawable/border_shape_round">-->
+
+
+
+
+            <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:id="@+id/editText_title2"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_weight="2"-->
+            <!--android:padding="@dimen/padding_bit"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/editText_title"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical"-->
+                <!--android:gravity="right"-->
+                <!--android:hint="سربرگ برنامه"-->
+                <!--android:inputType="text"/>-->
+        <!--</android.support.design.widget.TextInputLayout>-->
+
+
+
+    <!--</TableRow>-->
+
+        <TableRow
+
+            android:weightSum="5">
+
+            <!--<LinearLayout-->
+                <!--android:layout_margin="@dimen/padding_bit"-->
+                <!--android:elevation="@dimen/padding_bit"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="@drawable/border_shape_round">-->
+
+
+            <!--</LinearLayout>-->
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/editText_ip2"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:padding="@dimen/padding_bit"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/editText_ip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"
+                    android:hint="آی پی سرور"
+                    android:inputType="number|text" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+        </TableRow>
+
+    </TableLayout>
+
+
+
+
+</LinearLayout>

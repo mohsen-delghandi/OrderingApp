@@ -5,8 +5,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.view.View;
 import android.view.Window;
@@ -15,6 +17,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Mohsen on 2017-07-15.
@@ -28,7 +34,9 @@ public class CustomDialogClass extends Dialog implements
     public TextView yes,no;
     public EditText etTable;
     long mPrice = 0;
-    String mPriceFormatted = "";
+    String mPriceFormatted = "",response,response2;
+    JSONArray jsonArray;
+    CallWebService cws,cws2;
 
     public CustomDialogClass(Activity a) {
         super(a);
@@ -56,10 +64,14 @@ public class CustomDialogClass extends Dialog implements
             }
         });
 
+        SQLiteDatabase db = new MyDatabase(c.getBaseContext()).getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT SUM("+ MyDatabase.PRICE +") FROM "+MyDatabase.ORDERS_TABLE,null);
+        cursor.moveToFirst();
+        mPrice = Integer.parseInt(cursor.getString(0))/10;
 
-        for(int i = 0 ; i<FoodOrdersAdapter.mList.size() ; i++){
-            mPrice += FoodOrdersAdapter.mList.get(i).mNumber*1000;
-        }
+//        for(int i = 0 ; i<FoodOrdersAdapter.mList.size() ; i++){
+//            mPrice += FoodOrdersAdapter.mList.get(i).mNumber*1000;
+//        }
         TextView tv = (TextView)findViewById(R.id.textView_price);
         int a =  (mPrice+"").length();
         mPriceFormatted = (mPrice+"").substring(0,a%3);
@@ -75,6 +87,49 @@ public class CustomDialogClass extends Dialog implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.textView_ok:
+
+
+                SQLiteDatabase db2 = new MyDatabase(c.getBaseContext()).getReadableDatabase();
+                Cursor cursor = db2.query(MyDatabase.ORDERS_TABLE,new String[]{MyDatabase.CODE,MyDatabase.NUMBER,MyDatabase.PRICE},null,null,null,null,null);
+                if(cursor.moveToFirst()){
+                    jsonArray = new JSONArray();
+                    do{
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("Food_Code",cursor.getString(0));
+                            jsonObject.put("Food_Count",Integer.parseInt(cursor.getString(1)));
+                            jsonObject.put("Food_Price",Integer.parseInt(cursor.getString(2)));
+                            jsonObject.put("Table_Number",etTable.getText()+"");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        jsonArray.put(jsonObject);
+                    }while (cursor.moveToNext());
+                }
+                cursor.close();
+                db2.close();
+
+                cws = new CallWebService(c.getBaseContext(),"SaveFactor","JsonString");
+//                cws2 = new CallWebService(c.getBaseContext(),"SaveFactor","TableNumber");
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        response = cws.Call(jsonArray.toString());
+//                        response2 = cws2.Call(jsonArray.toString());
+
+                    }
+                }).start();
+
+
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                etTable.setText(jsonArray+"");
+                Toast.makeText(c, response, Toast.LENGTH_LONG).show();
+//                Toast.makeText(c, response2, Toast.LENGTH_LONG).show();
+                Toast.makeText(c, jsonArray.toString(), Toast.LENGTH_LONG).show();
                 Toast.makeText(c, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
 
                 SQLiteDatabase db = new MyDatabase(c.getBaseContext()).getWritableDatabase();
@@ -127,7 +182,7 @@ public class CustomDialogClass extends Dialog implements
             default:
                 break;
         }
-        dismiss();
+//        dismiss();
     }
 
 }

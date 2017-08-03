@@ -30,19 +30,21 @@ import java.util.ArrayList;
 public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHolder> {
 
     Context mContext;
-    public static ArrayList<String> mFoodsImages,mFoodCodes;
+    public static ArrayList<byte[]> mFoodsImages;
     ArrayList<String> mFoodsNames;
     View v;
     FragmentManager mFragmentManager;
     int mNumber;
-    ArrayList<String> mFoodsCategoryCodes;
+    public static ArrayList<String> mFoodsCodes;
+    public static ArrayList<String> mFoodsPrices;
 
-    public FoodMenuAdapter(Context context, ArrayList<String> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, ArrayList<String> foodCodes) {
+    public FoodMenuAdapter(Context context, ArrayList<byte[]> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, ArrayList<String> foodsCodes, ArrayList<String> foodsPrices) {
         mContext = context;
         mFoodsImages = foodsImages;
         mFoodsNames = foodsNames;
         mFragmentManager = fragmentManager;
-//        mFoodsCategoryCodes = foodsCategoryCodes;
+        mFoodsCodes = foodsCodes;
+        mFoodsPrices = foodsPrices;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -66,8 +68,8 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
     @Override
     public void onBindViewHolder(FoodMenuAdapter.ViewHolder holder, final int position) {
         holder.tv.setText(mFoodsNames.get(position));
-        byte[] decodedString = Base64.decode(mFoodsImages.get(position), Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//        byte[] decodedString = Base64.decode(mFoodsImages.get(position), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsImages.get(position), 0, mFoodsImages.get(position).length);
         holder.iv.setImageBitmap(decodedByte);
 
         v.setOnClickListener(new View.OnClickListener() {
@@ -109,12 +111,13 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
 
 
                 SQLiteDatabase mydb = new MyDatabase(mContext).getWritableDatabase();
-                Cursor cursor = mydb.query(MyDatabase.ORDERS_TABLE,new String[]{MyDatabase.NUMBER},MyDatabase.CODE + " = ?",new String[]{mFoodsCategoryCodes.get(position)+""},null,null,null);
+                Cursor cursor = mydb.query(MyDatabase.ORDERS_TABLE,new String[]{MyDatabase.NUMBER},MyDatabase.CODE + " = ?",new String[]{mFoodsCodes.get(position)+""},null,null,null);
                 if (cursor.moveToFirst()){
                     ContentValues cv = new ContentValues();
                     cv.put(MyDatabase.NUMBER,cursor.getInt(0)+1);
+                    cv.put(MyDatabase.PRICE,((cursor.getInt(0)+1)*Integer.parseInt(mFoodsPrices.get(position)))+"");
                     mNumber = cursor.getInt(0)+1;
-                    mydb.update(MyDatabase.ORDERS_TABLE,cv,MyDatabase.CODE + " = ?",new String[]{mFoodCodes.get(position)+""});
+                    mydb.update(MyDatabase.ORDERS_TABLE,cv,MyDatabase.CODE + " = ?",new String[]{mFoodsCodes.get(position)+""});
                     for(int i = 0;i<FoodOrdersAdapter.mList.size();i++){
                         if(FoodOrdersAdapter.mList.get(i).mName.equals(mFoodsNames.get(position))){
                             FoodOrdersAdapter.mList.remove(i);
@@ -124,8 +127,9 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
                 }else{
 //                    mydb.query(MyDatabase.FOOD_TABLE,new String[]{MyDatabase.NAME},MyDatabase.CODE + " = ?",new String[]{})
                     ContentValues cv2 = new ContentValues();
-                    cv2.put(MyDatabase.CODE,mFoodCodes.get(position));
+                    cv2.put(MyDatabase.CODE,mFoodsCodes.get(position));
                     cv2.put(MyDatabase.NUMBER,1);
+                    cv2.put(MyDatabase.PRICE,mFoodsPrices.get(position));
                     mNumber = 1;
                     mydb.insert(MyDatabase.ORDERS_TABLE,null,cv2);
                     data = new OrderedItem(mFoodsNames.get(position),mNumber);

@@ -93,7 +93,7 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
 
                 mList.remove(position);
                 SQLiteDatabase db = new MyDatabase(mContext).getWritableDatabase();
-                db.delete(MyDatabase.ORDERS_TABLE,MyDatabase.CODE + " = ?",new String[]{FoodMenuAdapter.mFoodCodes.get(position)+""});
+                db.delete(MyDatabase.ORDERS_TABLE,MyDatabase.CODE + " = ?",new String[]{FoodMenuAdapter.mFoodsCodes.get(position)+""});
                 db.close();
 //                notifyItemRangeChanged(position, mList.size());
 

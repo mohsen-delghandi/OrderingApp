@@ -25,14 +25,14 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
     Context mContext;
     int mWidth;
-    ArrayList<String> mFoodsCategoryImages;
+    ArrayList<byte[]> mFoodsCategoryImages;
     ArrayList<String> mFoodsCategoryNames;
     ArrayList<String> mFoodsCategoryCodes;
     View v;
     FragmentManager mFragmentManager;
     DrawerLayout mDrawer;
 
-    public NavigationAdapter(Context context, int width, ArrayList<String> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, DrawerLayout drawer, ArrayList<String> foodCategoryCodes) {
+    public NavigationAdapter(Context context, int width, ArrayList<byte[]> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, DrawerLayout drawer, ArrayList<String> foodCategoryCodes) {
         mContext = context;
         mWidth = width;
         mFoodsCategoryImages = foodsImages;
@@ -63,8 +63,8 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     public void onBindViewHolder(NavigationAdapter.ViewHolder holder, final int position) {
         holder.tv.setText(mFoodsCategoryNames.get(position));
 
-        byte[] decodedString = Base64.decode(mFoodsCategoryImages.get(position), Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+//        byte[] decodedString = Base64.decode(mFoodsCategoryImages.get(position), Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsCategoryImages.get(position), 0, mFoodsCategoryImages.get(position).length);
         holder.iv.setImageBitmap(decodedByte);
         holder.iv.getLayoutParams().width = mWidth/5;
         holder.iv.getLayoutParams().height = mWidth/5;

@@ -48,20 +48,22 @@ public class FoodMenuFragment extends Fragment {
 
         SQLiteDatabase mydb = new MyDatabase(mContext).getReadableDatabase();
 
-        Cursor cur = mydb.query(MyDatabase.FOOD_TABLE,new String[]{MyDatabase.NAME,MyDatabase.IMAGE,MyDatabase.CODE},MyDatabase.CATEGORY_CODE + " = ?",new String[]{mFoodsCategoryCode+""},null,null,null);
+        Cursor cur = mydb.query(MyDatabase.FOOD_TABLE,new String[]{MyDatabase.NAME,MyDatabase.IMAGE,MyDatabase.CODE,MyDatabase.PRICE},MyDatabase.CATEGORY_CODE + " = ?",new String[]{mFoodsCategoryCode+""},null,null,null);
         ArrayList<String> foodsNames = new ArrayList<>();
-        ArrayList<String> foodsImages = new ArrayList<>();
+        ArrayList<byte[]> foodsImages = new ArrayList<>();
         ArrayList<String> foodsCodes = new ArrayList<>();
+        ArrayList<String> foodsPrices = new ArrayList<>();
         if(cur.moveToFirst()) {
             do {
                 foodsNames.add(cur.getString(0));
-                foodsImages.add(cur.getString(1));
+                foodsImages.add(cur.getBlob(1));
                 foodsCodes.add(cur.getString(2));
+                foodsPrices.add(cur.getString(3));
             } while (cur.moveToNext());
         }
 
 
-        rva = new FoodMenuAdapter(mContext,foodsImages,foodsNames,mFragmentManager,foodsCodes);
+        rva = new FoodMenuAdapter(mContext,foodsImages,foodsNames,mFragmentManager,foodsCodes,foodsPrices);
 
         rvv.setAdapter(rva);
         return v;

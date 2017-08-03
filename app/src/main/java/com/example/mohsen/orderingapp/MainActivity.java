@@ -5,8 +5,6 @@ import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -14,12 +12,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
 import android.util.Base64;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -52,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle toggle;
     NavigationView nv;
     String json,json2;
+    JSONArray jsonArray,jsonArray2;
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -65,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
 
         new Thread(new Runnable() {
             @Override
@@ -83,18 +83,26 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 try {
-                    JSONArray jsonArray = new JSONArray(json);
-                    JSONArray jsonArray2 = new JSONArray(json2);
+                    jsonArray = new JSONArray(json);
+                    jsonArray2 = new JSONArray(json2);
 
                     SQLiteDatabase db = new MyDatabase(MainActivity.this).getWritableDatabase();
                     db.delete(MyDatabase.FOOD_CATEGORY_TABLE,null,null);
                     db.delete(MyDatabase.FOOD_TABLE,null,null);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                           // Toast.makeText(MainActivity.this, jsonArray.length()+"", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, jsonArray2.length()+"", Toast.LENGTH_SHORT).show();
+
+                        }
+                    });
                     for(int i = 0 ; i < jsonArray.length()-1 ; i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         ContentValues cv = new ContentValues();
                         cv.put(MyDatabase.CODE,jsonObject.get("ID")+"");
                         cv.put(MyDatabase.NAME,jsonObject.get("Name_Group")+"");
-                        cv.put(MyDatabase.IMAGE,jsonObject.get("Pic")+"");
+                        cv.put(MyDatabase.IMAGE,Base64.decode(jsonObject.get("Pic")+"", Base64.DEFAULT));
                         db.insert(MyDatabase.FOOD_CATEGORY_TABLE,null,cv);
                     }
                     for(int i = 0 ; i < jsonArray2.length()-1 ; i++){
@@ -102,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                         ContentValues cv = new ContentValues();
                         cv.put(MyDatabase.CODE,jsonObject2.get("ID")+"");
                         cv.put(MyDatabase.NAME,jsonObject2.get("Name_Food")+"");
-                        cv.put(MyDatabase.IMAGE,jsonObject2.get("Pic_Food")+"");
+                        cv.put(MyDatabase.IMAGE,Base64.decode(jsonObject2.get("Pic_Food")+"", Base64.DEFAULT));
                         cv.put(MyDatabase.CATEGORY_CODE,jsonObject2.get("ID_Group")+"");
                         cv.put(MyDatabase.PRICE,jsonObject2.get("Price_Food")+"");
                         db.insert(MyDatabase.FOOD_TABLE,null,cv);
@@ -113,6 +121,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
+
+//        byte[] decodedString = Base64.decode(jsonObject.get("Pic"), Base64.DEFAULT);
+
+
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);

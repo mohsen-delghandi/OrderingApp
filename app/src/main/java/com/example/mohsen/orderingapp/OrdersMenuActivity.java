@@ -63,7 +63,7 @@ public class OrdersMenuActivity extends MainActivity {
         ivTitlebar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(OrdersMenuActivity.this,OrdersBasketActivity.class);
+                Intent i = new Intent(OrdersMenuActivity.this,SettingsActivity.class);
                 startActivity(i);
 
             }

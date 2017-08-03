@@ -34,6 +34,7 @@ public class OrdersBasketActivity extends MainActivity {
     ImageView iv;
     JSONObject jsonObject;
     JSONArray jsonArray;
+    String json,json2;
 
     @Override
     protected void attachBaseContext(Context newBase) {
