@@ -9,6 +9,15 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/avi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/AVLoadingIndicatorView"
+        android:visibility="visible"
+        app:indicatorName="LineScaleIndicator"
+        app:indicatorColor="@color/accent"/>
+
     <include
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"

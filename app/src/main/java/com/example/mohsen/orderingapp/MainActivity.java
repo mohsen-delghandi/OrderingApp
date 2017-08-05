@@ -1,10 +1,15 @@
 package com.example.mohsen.orderingapp;
 
+import android.animation.ValueAnimator;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -25,10 +30,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.wang.avi.AVLoadingIndicatorView;
+import com.wang.avi.Indicator;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import dmax.dialog.SpotsDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -64,11 +75,32 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final AVLoadingIndicatorView avi = (AVLoadingIndicatorView)findViewById(R.id.avi);
+        avi.smoothToShow();
+
+
+
+
+        final AlertDialog progressDialog;
+        progressDialog = new SpotsDialog(this, R.style.Custom);
+        progressDialog.show();
+
+
+
+//        final ProgressDialog progress = new ProgressDialog(MainActivity.this);
+//        progress.setTitle("Loading");
+//        progress.setMessage("Wait while loading...");
+//        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+//        progress.show();
+
 
 
         new Thread(new Runnable() {
             @Override
             public void run() {
+
+
+
                 CallWebService cws = new CallWebService(MainActivity.this,"GetGroupFood","test");
                 json = cws.Call("test");
 
@@ -119,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+//                progress.dismiss();
+                progressDialog.dismiss();
+//                avi.hide();
             }
         }).start();
 

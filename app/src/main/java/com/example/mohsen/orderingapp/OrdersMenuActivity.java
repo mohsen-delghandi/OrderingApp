@@ -17,6 +17,8 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.wang.avi.AVLoadingIndicatorView;
+
 public class OrdersMenuActivity extends MainActivity {
 
     RecyclerView mNavigationRecycler;
@@ -30,6 +32,9 @@ public class OrdersMenuActivity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setInflater(this,R.layout.orders_menu_layout);
+
+
+
 
         fabToggle = (FloatingActionButton)findViewById(R.id.fab_toggle);
         fabToggle.setVisibility(View.GONE);

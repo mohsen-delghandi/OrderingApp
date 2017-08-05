@@ -32,4 +32,6 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     compile 'com.google.code.ksoap2-android:ksoap2-android:3.6.2'
+    compile 'com.github.d-max:spots-dialog:0.4@aar'
+    compile 'com.wang.avi:library:2.1.3'
 }
