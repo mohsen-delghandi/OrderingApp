@@ -3,7 +3,10 @@ package com.example.mohsen.orderingapp;
 import android.animation.ObjectAnimator;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
@@ -27,11 +30,30 @@ public class OrdersMenuActivity extends MainActivity {
     public static LinearLayout ll,ll2;
     public static FloatingActionButton fabToggle;
     public static TextView tvTayid;
+    int firstRun;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setInflater(this,R.layout.orders_menu_layout);
+
+//        SQLiteDatabase dbb = new MyDatabase(this).getReadableDatabase();
+//        Cursor cursor = dbb.query(MyDatabase.SETTINGS_TABLE,new String[]{MyDatabase.FIRST_RUN},null,null,null,null,null,null);
+//        cursor.moveToFirst();
+//        firstRun = cursor.getInt(0);
+//        cursor.close();
+//        dbb.close();
+//
+//        if (firstRun == 1){
+//            SettingsActivity sa = new SettingsActivity();
+//            sa.updateMenu(this,ll_loading);
+//            SQLiteDatabase db2 = new MyDatabase(this).getWritableDatabase();
+//            ContentValues cv = new ContentValues();
+//            cv.put(MyDatabase.FIRST_RUN,0);
+//            db2.update(MyDatabase.SETTINGS_TABLE,cv,MyDatabase.ID + " = ?",new String[]{"1"});
+//            db2.close();
+//        }
+
 
 
 
@@ -101,13 +123,13 @@ public class OrdersMenuActivity extends MainActivity {
 
 
 
-//        FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
-//        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(this,0,fragmentManager, mFoodsCategoryCodes);
-//        fragmentTransaction2.replace(R.id.food_menu_fragment,foodMenuFragment);
-//        fragmentTransaction2.addToBackStack(null);
-//        fragmentTransaction2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//        fragmentTransaction2.commit();
-//        drawer.closeDrawer(Gravity.START);
+        FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
+        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(this,fragmentManager, food.getFoodCategoryCodes().get(1));
+        fragmentTransaction2.replace(R.id.food_menu_fragment,foodMenuFragment);
+        fragmentTransaction2.addToBackStack(null);
+        fragmentTransaction2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction2.commit();
+        drawer.closeDrawer(Gravity.START);
 
 
 

@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     NavigationView nv;
     String json,json2;
     JSONArray jsonArray,jsonArray2;
-    LinearLayout ll;
+    LinearLayout ll_loading;
     long id, id2;
 
 
@@ -77,101 +77,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        ll = (LinearLayout)findViewById(R.id.llLoading);
-        ll.setVisibility(View.VISIBLE);
-
-
-
-
-//        final AlertDialog progressDialog;
-//        progressDialog = new SpotsDialog(this, R.style.Custom);
-//        progressDialog.show();
-
-
-
-//        final ProgressDialog progress = new ProgressDialog(MainActivity.this);
-//        progress.setTitle("Loading");
-//        progress.setMessage("Wait while loading...");
-//        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
-//        progress.show();
-
-
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-
-
-                CallWebService cws = new CallWebService(MainActivity.this,"GetGroupFood","test");
-                json = cws.Call("test");
-
-                CallWebService cws2 = new CallWebService(MainActivity.this,"GetFood","test");
-                json2 = cws2.Call("test");
-
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-////                        Toast.makeText(MainActivity.this, json2, Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
-                try {
-                    jsonArray = new JSONArray(json);
-                    jsonArray2 = new JSONArray(json2);
-
-                    SQLiteDatabase db = new MyDatabase(MainActivity.this).getWritableDatabase();
-                    db.delete(MyDatabase.FOOD_CATEGORY_TABLE,null,null);
-                    db.delete(MyDatabase.FOOD_TABLE,null,null);
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                           // Toast.makeText(MainActivity.this, jsonArray.length()+"", Toast.LENGTH_SHORT).show();
-////                            Toast.makeText(MainActivity.this, jsonArray2.length()+"", Toast.LENGTH_SHORT).show();
-//
-//                        }
-//                    });
-                    for(int i = 0 ; i < jsonArray.length()-1 ; i++){
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        ContentValues cv = new ContentValues();
-                        cv.put(MyDatabase.CODE,jsonObject.get("ID")+"");
-                        cv.put(MyDatabase.NAME,jsonObject.get("Name_Group")+"");
-                        cv.put(MyDatabase.IMAGE,Base64.decode(jsonObject.get("Pic")+"", Base64.DEFAULT));
-                        id = db.insert(MyDatabase.FOOD_CATEGORY_TABLE,null,cv);
-                    }
-                    for(int i = 0 ; i < jsonArray2.length()-1 ; i++){
-                        JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
-                        ContentValues cv = new ContentValues();
-                        cv.put(MyDatabase.CODE,jsonObject2.get("ID")+"");
-                        cv.put(MyDatabase.NAME,jsonObject2.get("Name_Food")+"");
-                        cv.put(MyDatabase.IMAGE,Base64.decode(jsonObject2.get("Pic_Food")+"", Base64.DEFAULT));
-                        cv.put(MyDatabase.CATEGORY_CODE,jsonObject2.get("ID_Group")+"");
-                        cv.put(MyDatabase.PRICE,jsonObject2.get("Price_Food")+"");
-                        id2 = db.insert(MyDatabase.FOOD_TABLE,null,cv);
-                    }
-                    db.close();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if ((id!=-1) && (id2!=-1)){
-                            Toast.makeText(MainActivity.this, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(MainActivity.this, "خطا در بروزرسانی.", Toast.LENGTH_SHORT).show();
-                        }
-                        ll.setVisibility(View.GONE);
-
-                    }
-                });
-
-            }
-        }).start();
-
-//        byte[] decodedString = Base64.decode(jsonObject.get("Pic"), Base64.DEFAULT);
-
+        ll_loading = (LinearLayout)findViewById(R.id.llLoading);
 
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -181,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
 
         ivTitlebar = (ImageView)findViewById(R.id.titleBar_icon);
         ivTitlebar.setVisibility(View.GONE);
-
-
 
         ns = (LinearLayout) findViewById(R.id.nestedscrollview);
 

@@ -24,13 +24,11 @@ public class FoodMenuFragment extends Fragment {
     RecyclerView.LayoutManager rvlm;
     RecyclerView.Adapter rva;
     Context mContext;
-    int mPosition;
     FragmentManager mFragmentManager;
     int mFoodsCategoryCode;
 
-    public FoodMenuFragment(Context context, int position, FragmentManager fragmentManager, String foodsCategoryCode) {
+    public FoodMenuFragment(Context context, FragmentManager fragmentManager, String foodsCategoryCode) {
         mContext = context;
-        mPosition = position;
         mFragmentManager = fragmentManager;
         mFoodsCategoryCode = Integer.parseInt(foodsCategoryCode);
     }

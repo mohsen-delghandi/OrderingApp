@@ -73,7 +73,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
             @Override
             public void onClick(View view) {
                 FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-                FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext,position,mFragmentManager,mFoodsCategoryCodes.get(position));
+                FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext,mFragmentManager,mFoodsCategoryCodes.get(position));
                 fragmentTransaction.replace(R.id.food_menu_fragment,foodMenuFragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);

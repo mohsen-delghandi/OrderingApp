@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.view.View;
@@ -116,21 +117,36 @@ public class CustomDialogClass extends Dialog implements
                     public void run() {
                         response = cws.Call(jsonArray.toString());
 //                        response2 = cws2.Call(jsonArray.toString());
-
+                        if(response.equals("1")){
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(c, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
+                                    dismiss();
+                                }
+                            });
+                        }else{
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                public void run() {
+                                    Toast.makeText(c, "ارتباط با سرور برقرار نشد.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(c, response.toString(), Toast.LENGTH_LONG).show();
+                                    dismiss();
+                                }
+                            });
+                        }
                     }
                 }).start();
 
 
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                etTable.setText(jsonArray+"");
-                Toast.makeText(c, response, Toast.LENGTH_LONG).show();
+//                try {
+//                    Thread.sleep(2000);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                etTable.setText(jsonArray+"");
+//                Toast.makeText(c, response, Toast.LENGTH_LONG).show();
 //                Toast.makeText(c, response2, Toast.LENGTH_LONG).show();
-                Toast.makeText(c, jsonArray.toString(), Toast.LENGTH_LONG).show();
-                Toast.makeText(c, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(c, jsonArray.toString(), Toast.LENGTH_LONG).show();
+
 
                 SQLiteDatabase db = new MyDatabase(c.getBaseContext()).getWritableDatabase();
                 db.delete(MyDatabase.ORDERS_TABLE,null,null);
@@ -148,25 +164,12 @@ public class CustomDialogClass extends Dialog implements
                 anim.setInterpolator(new FastOutLinearInInterpolator());
                 anim.start();
 
-//                    ObjectAnimator obj2 = ObjectAnimator.ofFloat(OrdersMenuActivity.tvTayid,"alpha",1f,0f);
-//                    obj2.setDuration(300);
-//                    obj2.start();
-
                 OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
                     }
                 });
-
-//                    final Handler handler3 = new Handler();
-//                    handler3.postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
-//                        }
-//                    }, 300);
-
 
                 OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
                     @Override

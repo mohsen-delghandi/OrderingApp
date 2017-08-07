@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/splash_back">
 
         <TableRow
@@ -43,6 +44,38 @@
 
 
         </TableRow>
+
+        <LinearLayout
+            android:layout_marginBottom="@dimen/dimen_xxlarge"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/llLoading_splash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    style="@style/AVLoadingIndicatorView.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:indicatorColor="@color/icons"
+                    app:indicatorName="BallClipRotateMultipleIndicator"
+                    />
+
+                <TextView
+                    android:id="@+id/tvLoading_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pvLoading_view"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/padding_large"
+                    android:gravity="center"
+                    android:text="لطفا شکیبا باشید"
+                    android:textColor="@color/icons"/>
+        </LinearLayout>
+
 
 
 </RelativeLayout>
