@@ -2,46 +2,75 @@
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layoutDirection="rtl"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:layoutDirection="rtl"
     tools:openDrawer="start">
-
-    <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/avi"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        style="@style/AVLoadingIndicatorView"
-        android:visibility="visible"
-        app:indicatorName="LineScaleIndicator"
-        app:indicatorColor="@color/accent"/>
 
     <include
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
         android:background="@color/accent"
+        android:fitsSystemWindows="true"
         android:padding="@dimen/padding_small">
-        <LinearLayout
-            android:orientation="vertical"
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/dimen_xxlarge">
-            <!--<include layout="@layout/nav_header_main"/>-->
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/nav_recyclerView"
+            <!--main-->
+            <LinearLayout
+                android:id="@+id/rlMain"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scrollbars="vertical"/>
-        </LinearLayout>
+
+                android:orientation="vertical">
+                <!--<include layout="@layout/nav_header_main"/>-->
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/nav_recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical"/>
+            </LinearLayout>
+            <!--loading-->
+
+        </RelativeLayout>
     </android.support.design.widget.NavigationView>
+
+    <LinearLayout
+        android:id="@+id/llLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <com.wang.avi.AVLoadingIndicatorView
+            style="@style/AVLoadingIndicatorView.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:indicatorColor="@color/primary_dark"
+            app:indicatorName="BallClipRotateMultipleIndicator"
+            />
+
+        <TextView
+            android:id="@+id/tvLoading_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pvLoading_view"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/padding_large"
+            android:gravity="center"
+            android:text="لططفا شکیبا باشید"
+            android:textColor="@color/primary_text"/>
+    </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

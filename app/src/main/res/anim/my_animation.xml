@@ -1,8 +1,0 @@
-<set android:ordering="sequentially"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-        <objectAnimator
-            android:propertyName="weight"
-            android:duration="500"
-            android:valueTo="1"
-            android:valueType="floatType"/>
-</set>

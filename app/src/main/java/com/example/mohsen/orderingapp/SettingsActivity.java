@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,58 +49,81 @@ public class SettingsActivity extends MainActivity {
 
 
         bt_update = (Button)findViewById(R.id.button_update);
-        bt_update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//        bt_update.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                ll.setVisibility(View.VISIBLE);
 //                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        CallWebService cws = new CallWebService(SettingsActivity.this,"GetGroupFood","test");
-//                        json = cws.Call("test");
+//                @Override
+//                public void run() {
 //
-//                        CallWebService cws2 = new CallWebService(SettingsActivity.this,"GetFood","test");
-//                        json2 = cws2.Call("test");
 //
+//
+//                    CallWebService cws = new CallWebService(SettingsActivity.this,"GetGroupFood","test");
+//                    json = cws.Call("test");
+//
+//                    CallWebService cws2 = new CallWebService(SettingsActivity.this,"GetFood","test");
+//                    json2 = cws2.Call("test");
+//
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Toast.makeText(SettingsActivity.this, json2, Toast.LENGTH_SHORT).show();
+//                        }
+//                    });
+//
+//                    try {
+//                        jsonArray = new JSONArray(json);
+//                        jsonArray2 = new JSONArray(json2);
+//
+//                        SQLiteDatabase db = new MyDatabase(SettingsActivity.this).getWritableDatabase();
+//                        db.delete(MyDatabase.FOOD_CATEGORY_TABLE,null,null);
+//                        db.delete(MyDatabase.FOOD_TABLE,null,null);
 //                        runOnUiThread(new Runnable() {
 //                            @Override
 //                            public void run() {
-//                                Toast.makeText(SettingsActivity.this, json2, Toast.LENGTH_SHORT).show();
+//                                // Toast.makeText(MainActivity.this, jsonArray.length()+"", Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(SettingsActivity.this, jsonArray2.length()+"", Toast.LENGTH_SHORT).show();
+//
 //                            }
 //                        });
-//
-//                        try {
-//                            JSONArray jsonArray = new JSONArray(json);
-//                            JSONArray jsonArray2 = new JSONArray(json2);
-//
-//                            SQLiteDatabase db = new MyDatabase(SettingsActivity.this).getWritableDatabase();
-//                            db.delete(MyDatabase.FOOD_CATEGORY_TABLE,null,null);
-//                            db.delete(MyDatabase.FOOD_TABLE,null,null);
-//                            for(int i = 0 ; i < jsonArray.length()-1 ; i++){
-//                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                                ContentValues cv = new ContentValues();
-//                                cv.put(MyDatabase.CODE,jsonObject.get("ID")+"");
-//                                cv.put(MyDatabase.NAME,jsonObject.get("Name_Group")+"");
-//                                cv.put(MyDatabase.IMAGE,jsonObject.get("Pic")+"");
-//                                db.insert(MyDatabase.FOOD_CATEGORY_TABLE,null,cv);
-//                            }
-//                            for(int i = 0 ; i < jsonArray2.length()-1 ; i++){
-//                                JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
-//                                ContentValues cv = new ContentValues();
-//                                cv.put(MyDatabase.CODE,jsonObject2.get("ID")+"");
-//                                cv.put(MyDatabase.NAME,jsonObject2.get("Name_Food")+"");
-//                                cv.put(MyDatabase.IMAGE,jsonObject2.get("Pic_Food")+"");
-//                                cv.put(MyDatabase.CATEGORY_CODE,jsonObject2.get("ID_Group")+"");
-//                                cv.put(MyDatabase.PRICE,jsonObject2.get("Price_Food")+"");
-//                                db.insert(MyDatabase.FOOD_TABLE,null,cv);
-//                            }
-//                            db.close();
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
+//                        for(int i = 0 ; i < jsonArray.length()-1 ; i++){
+//                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                            ContentValues cv = new ContentValues();
+//                            cv.put(MyDatabase.CODE,jsonObject.get("ID")+"");
+//                            cv.put(MyDatabase.NAME,jsonObject.get("Name_Group")+"");
+//                            cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject.get("Pic")+"", Base64.DEFAULT));
+//                            db.insert(MyDatabase.FOOD_CATEGORY_TABLE,null,cv);
 //                        }
+//                        for(int i = 0 ; i < jsonArray2.length()-1 ; i++){
+//                            JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
+//                            ContentValues cv = new ContentValues();
+//                            cv.put(MyDatabase.CODE,jsonObject2.get("ID")+"");
+//                            cv.put(MyDatabase.NAME,jsonObject2.get("Name_Food")+"");
+//                            cv.put(MyDatabase.IMAGE,Base64.decode(jsonObject2.get("Pic_Food")+"", Base64.DEFAULT));
+//                            cv.put(MyDatabase.CATEGORY_CODE,jsonObject2.get("ID_Group")+"");
+//                            cv.put(MyDatabase.PRICE,jsonObject2.get("Price_Food")+"");
+//                            db.insert(MyDatabase.FOOD_TABLE,null,cv);
+//                        }
+//                        db.close();
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
 //                    }
-//                }).start();
-            }
-        });
+////                progress.dismiss();
+////                progressDialog.dismiss();
+////                avi.hide();
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            ll.setVisibility(View.GONE);
+//                        }
+//                    });
+//
+//                }
+//            }).start();
+//            }
+//        });
 
 
 

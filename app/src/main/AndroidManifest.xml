@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".OrdersMenuActivity"
+            android:name=".SplashActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".OrdersBasketActivity"/>
         <activity android:name=".SettingsActivity"/>
+        <activity android:name=".OrdersMenuActivity"/>
     </application>
 
 </manifest>
