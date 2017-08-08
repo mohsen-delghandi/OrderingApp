@@ -11,7 +11,13 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import java.util.regex.Pattern;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -22,7 +28,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class SplashActivity extends AppCompatActivity {
 
     int firstRun;
-    LinearLayout ll_loading_splash;
+    EditText etIPFirstRun;
+    LinearLayout linearLayout;
+    Button button;
+    String ip_regex = "((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(25[0-5]|2[0-4]"
+            + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]"
+            + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
+            + "|[1-9][0-9]|[0-9]))";
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -34,7 +46,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity);
 
-        ll_loading_splash = (LinearLayout)findViewById(R.id.llLoading_splash);
+        etIPFirstRun = (EditText)findViewById(R.id.editText_ip_firstrun);
+        linearLayout = (LinearLayout) findViewById(R.id.ll_settings_splash);
+        button = (Button) findViewById(R.id.button_save_firstRun);
 
         SQLiteDatabase dbb = new MyDatabase(this).getReadableDatabase();
         Cursor cursor = dbb.query(MyDatabase.SETTINGS_TABLE,new String[]{MyDatabase.FIRST_RUN},null,null,null,null,null,null);
@@ -44,46 +58,84 @@ public class SplashActivity extends AppCompatActivity {
         dbb.close();
 
         if (firstRun == 1){
-            SettingsActivity sa = new SettingsActivity();
-            sa.updateMenu(this,ll_loading_splash);
-            SQLiteDatabase db2 = new MyDatabase(this).getWritableDatabase();
-            ContentValues cv = new ContentValues();
-            cv.put(MyDatabase.FIRST_RUN,0);
-            db2.update(MyDatabase.SETTINGS_TABLE,cv,MyDatabase.ID + " = ?",new String[]{"1"});
-            db2.close();
-        }
 
+            linearLayout.setVisibility(View.VISIBLE);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(!Pattern.matches(ip_regex,etIPFirstRun.getText().toString().trim())){
+                        Toast.makeText(SplashActivity.this, "آی پی به صورت صحیح واد نشده است.", Toast.LENGTH_SHORT).show();
+                    }else {
+                        SQLiteDatabase db = new MyDatabase(SplashActivity.this).getWritableDatabase();
+                        ContentValues cv = new ContentValues();
+                        cv.put(MyDatabase.IP, etIPFirstRun.getText().toString());
+                        int u = db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
+                        db.close();
+                    }
 
+                    SettingsActivity sa = new SettingsActivity();
+                    sa.updateMenu(SplashActivity.this,null);
+                    SQLiteDatabase db2 = new MyDatabase(SplashActivity.this).getWritableDatabase();
+                    ContentValues cv2 = new ContentValues();
+                    cv2.put(MyDatabase.FIRST_RUN, 0);
+                    db2.update(MyDatabase.SETTINGS_TABLE, cv2, MyDatabase.ID + " = ?", new String[]{"1"});
+                    db2.close();
 
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
-
-
-//        ImageView iv = (ImageView)findViewById(R.id.imgLogo);
-//        ViewGroup.LayoutParams lp = iv.getLayoutParams();
-//        lp.width = width/5;
-//        lp.height = width/5;
-        new Handler().postDelayed(new Runnable() {
+                    new Handler().postDelayed(new Runnable() {
 
             /*
              * Showing splash screen with a timer. This will be useful when you
              * want to show case your app logo / company
              */
 
-            @Override
-            public void run() {
-                // This method will be executed once the timer is over
-                // Start your app main activity
-                Intent i = new Intent(SplashActivity.this, OrdersMenuActivity.class);
-                startActivity(i);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        @Override
+                        public void run() {
+                            Intent i = new Intent(SplashActivity.this, OrdersMenuActivity.class);
+                            startActivity(i);
+                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                            finish();
+                        }
+                    }, 2000);
+                }
+            });
 
-                // close this activity
-                finish();
-            }
-        }, 2000);
+
+        }else{
+            new Handler().postDelayed(new Runnable() {
+
+            /*
+             * Showing splash screen with a timer. This will be useful when you
+             * want to show case your app logo / company
+             */
+
+                @Override
+                public void run() {
+                    Intent i = new Intent(SplashActivity.this, OrdersMenuActivity.class);
+                    startActivity(i);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    finish();
+                }
+            }, 2000);
+        }
+
+
+
+//            new Handler().postDelayed(new Runnable() {
+//
+//            /*
+//             * Showing splash screen with a timer. This will be useful when you
+//             * want to show case your app logo / company
+//             */
+//
+//                @Override
+//                public void run() {
+//                    Intent i = new Intent(SplashActivity.this, SettingsActivity.class);
+//                    startActivity(i);
+//                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+//                    finish();
+//                }
+//            }, 2000);
+
+
     }
 }

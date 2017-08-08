@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/splash_back">
 
@@ -46,34 +48,49 @@
         </TableRow>
 
         <LinearLayout
-            android:layout_marginBottom="@dimen/dimen_xxlarge"
+            android:layout_marginBottom="@dimen/dimen_xxxlarge"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:id="@+id/llLoading_splash"
-            android:layout_width="wrap_content"
+            android:id="@+id/ll_settings_splash"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:visibility="gone"
             android:orientation="vertical">
 
-                <com.wang.avi.AVLoadingIndicatorView
-                    style="@style/AVLoadingIndicatorView.Large"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:indicatorColor="@color/icons"
-                    app:indicatorName="BallClipRotateMultipleIndicator"
-                    />
-
                 <TextView
-                    android:id="@+id/tvLoading_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/pvLoading_view"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="@dimen/padding_large"
                     android:gravity="center"
-                    android:text="لطفا شکیبا باشید"
-                    android:textColor="@color/icons"/>
+                    android:textColor="@color/icons"
+                    android:text="لطفا آی پی سرور را وارد کنید"/>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="3"
+                    android:gravity="center">
+
+                        <EditText
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:id="@+id/editText_ip_firstrun"
+                            android:layout_width="0dp"
+                            android:textColor="@color/icons"
+                            android:layout_height="wrap_content"
+                            android:inputType="number|text"
+                            />
+                </TableRow>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button_save_firstRun"
+                    android:text="ذخیره"
+                    android:gravity="center"
+                    android:textSize="@dimen/font_medium"
+                    android:textColor="@color/icons"
+                    android:background="@drawable/button_shape2"/>
+
         </LinearLayout>
 
 

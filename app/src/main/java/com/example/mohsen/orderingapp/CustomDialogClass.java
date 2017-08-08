@@ -89,52 +89,56 @@ public class CustomDialogClass extends Dialog implements
         switch (v.getId()) {
             case R.id.textView_ok:
 
+                if(etTable.getText().toString().equals("") || (Integer.parseInt(etTable.getText()+"") < 1)){
+                    Toast.makeText(c, "شماره میز صحیح نیست.", Toast.LENGTH_SHORT).show();
+                }else {
 
-                SQLiteDatabase db2 = new MyDatabase(c.getBaseContext()).getReadableDatabase();
-                Cursor cursor = db2.query(MyDatabase.ORDERS_TABLE,new String[]{MyDatabase.CODE,MyDatabase.NUMBER,MyDatabase.PRICE},null,null,null,null,null);
-                if(cursor.moveToFirst()){
-                    jsonArray = new JSONArray();
-                    do{
-                        JSONObject jsonObject = new JSONObject();
-                        try {
-                            jsonObject.put("Food_Code",cursor.getString(0));
-                            jsonObject.put("Food_Count",Integer.parseInt(cursor.getString(1)));
-                            jsonObject.put("Food_Price",Integer.parseInt(cursor.getString(2)));
-                            jsonObject.put("Table_Number",etTable.getText()+"");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        jsonArray.put(jsonObject);
-                    }while (cursor.moveToNext());
-                }
-                cursor.close();
-                db2.close();
 
-                cws = new CallWebService(c.getBaseContext(),"SaveFactor","JsonString");
-//                cws2 = new CallWebService(c.getBaseContext(),"SaveFactor","TableNumber");
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        response = cws.Call(jsonArray.toString());
-//                        response2 = cws2.Call(jsonArray.toString());
-                        if(response.equals("1")){
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                public void run() {
-                                    Toast.makeText(c, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
-                                    dismiss();
-                                }
-                            });
-                        }else{
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                public void run() {
-                                    Toast.makeText(c, "ارتباط با سرور برقرار نشد.", Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(c, response.toString(), Toast.LENGTH_LONG).show();
-                                    dismiss();
-                                }
-                            });
-                        }
+                    SQLiteDatabase db2 = new MyDatabase(c.getBaseContext()).getReadableDatabase();
+                    Cursor cursor = db2.query(MyDatabase.ORDERS_TABLE, new String[]{MyDatabase.CODE, MyDatabase.NUMBER, MyDatabase.PRICE}, null, null, null, null, null);
+                    if (cursor.moveToFirst()) {
+                        jsonArray = new JSONArray();
+                        do {
+                            JSONObject jsonObject = new JSONObject();
+                            try {
+                                jsonObject.put("Food_Code", cursor.getString(0));
+                                jsonObject.put("Food_Count", Integer.parseInt(cursor.getString(1)));
+                                jsonObject.put("Food_Price", Integer.parseInt(cursor.getString(2)));
+                                jsonObject.put("Table_Number", etTable.getText() + "");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            jsonArray.put(jsonObject);
+                        } while (cursor.moveToNext());
                     }
-                }).start();
+                    cursor.close();
+                    db2.close();
+
+                    cws = new CallWebService(c.getBaseContext(), "SaveFactor", "JsonString");
+//                cws2 = new CallWebService(c.getBaseContext(),"SaveFactor","TableNumber");
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            response = cws.Call(jsonArray.toString());
+//                        response2 = cws2.Call(jsonArray.toString());
+                            if (response.equals("1")) {
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    public void run() {
+                                        Toast.makeText(c, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
+                                        dismiss();
+                                    }
+                                });
+                            } else {
+                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                    public void run() {
+                                        Toast.makeText(c, "ارتباط با سرور برقرار نشد.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(c, response.toString(), Toast.LENGTH_LONG).show();
+                                        dismiss();
+                                    }
+                                });
+                            }
+                        }
+                    }).start();
 
 
 //                try {
@@ -148,35 +152,36 @@ public class CustomDialogClass extends Dialog implements
 //                Toast.makeText(c, jsonArray.toString(), Toast.LENGTH_LONG).show();
 
 
-                SQLiteDatabase db = new MyDatabase(c.getBaseContext()).getWritableDatabase();
-                db.delete(MyDatabase.ORDERS_TABLE,null,null);
-                db.close();
+                    SQLiteDatabase db = new MyDatabase(c.getBaseContext()).getWritableDatabase();
+                    db.delete(MyDatabase.ORDERS_TABLE, null, null);
+                    db.close();
 
-                FoodOrdersAdapter.mList.clear();
+                    FoodOrdersAdapter.mList.clear();
 
 
-                ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(OrdersMenuActivity.ll);
-                ObjectAnimator anim = ObjectAnimator.ofFloat(animationWrapper,
-                        "weight",
-                        animationWrapper.getWeight(),
-                        0f);
-                anim.setDuration(300);
-                anim.setInterpolator(new FastOutLinearInInterpolator());
-                anim.start();
+                    ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(OrdersMenuActivity.ll);
+                    ObjectAnimator anim = ObjectAnimator.ofFloat(animationWrapper,
+                            "weight",
+                            animationWrapper.getWeight(),
+                            0f);
+                    anim.setDuration(300);
+                    anim.setInterpolator(new FastOutLinearInInterpolator());
+                    anim.start();
 
-                OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
-                    }
-                });
-
-                OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
-                    }
+                    OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
+                        }
                     });
+
+                    OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
+                        }
+                    });
+                }
 
                 break;
             case R.id.textView_cancel:

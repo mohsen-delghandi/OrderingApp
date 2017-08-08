@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +30,7 @@ import java.util.regex.Pattern;
 public class SettingsActivity extends MainActivity {
 
 
-    Button bt_update;
+    Button bt_update,bt_save;
     EditText et_ip;
     String ip;
     String ip_regex = "((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(25[0-5]|2[0-4]"
@@ -37,9 +38,9 @@ public class SettingsActivity extends MainActivity {
             + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
             + "|[1-9][0-9]|[0-9]))";
 
-    public static String json,json2;
+    public static String json = null,json2 = null;
     public static JSONArray jsonArray,jsonArray2;
-    public static long id, id2;
+    public static long id,id2;
 
     public SettingsActivity() {
     }
@@ -49,12 +50,34 @@ public class SettingsActivity extends MainActivity {
         super.onCreate(savedInstanceState);
         setInflater(this, R.layout.settings_layout);
 
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+        bt_save = (Button)findViewById(R.id.button_save_settings);
 
         bt_update = (Button)findViewById(R.id.button_update);
         bt_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(!Pattern.matches(ip_regex,et_ip.getText().toString().trim())){
+                    Toast.makeText(SettingsActivity.this, "آی پی به صورت صحیح واد نشده است.", Toast.LENGTH_SHORT).show();
+                }else {
+
+                    SQLiteDatabase db = new MyDatabase(SettingsActivity.this).getWritableDatabase();
+                    ContentValues cv = new ContentValues();
+                    cv.put(MyDatabase.IP, et_ip.getText().toString());
+                    int u = db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
+                    db.close();
+                    if (u == 1) {
+                        Toast.makeText(SettingsActivity.this, "عملیات ذخیره با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
+                    } else if (u == 0) {
+                        Toast.makeText(SettingsActivity.this, "عملیات ذخیره ناموفق بود.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(SettingsActivity.this, "خطای نامشخص،با پشتیبانی تماس بگیرید.", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 updateMenu(SettingsActivity.this,ll_loading);
+//                Intent i = new Intent(SettingsActivity.this,OrdersMenuActivity.class);
+//                startActivity(i);
             }
         });
 
@@ -74,9 +97,9 @@ public class SettingsActivity extends MainActivity {
         et_ip = (EditText) findViewById(R.id.editText_ip);
         et_ip.setText(ip);
 
-        fab.setVisibility(View.VISIBLE);
+//        fab.setVisibility(View.VISIBLE);
         fab.setImageResource(R.drawable.save);
-        fab.setOnClickListener(new View.OnClickListener() {
+        bt_save.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -91,27 +114,11 @@ public class SettingsActivity extends MainActivity {
                     int u = db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
                     db.close();
                     if (u == 1) {
-                        Snackbar.make(view, "عملیات ذخیره با موفقیت انجام شد.", Snackbar.LENGTH_LONG)
-                                .setAction("صفحه اصلی", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent i = new Intent(SettingsActivity.this, MainActivity.class);
-                                        startActivity(i);
-                                    }
-                                }).show();
-
+                        Toast.makeText(SettingsActivity.this, "عملیات ذخیره با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
                     } else if (u == 0) {
-                        Snackbar.make(view, "عملیات ذخیره ناموفق بود.", Snackbar.LENGTH_LONG)
-                                .setAction("مشاهده خطا", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Snackbar.make(view, "خطای درج اطلاعات در پایگاه داده.", Snackbar.LENGTH_LONG)
-                                                .setAction("مشاهده خطا", null).show();
-                                    }
-                                }).show();
+                        Toast.makeText(SettingsActivity.this, "عملیات ذخیره ناموفق بود.", Toast.LENGTH_SHORT).show();
                     } else {
-                        Snackbar.make(view, "خطای نامشخص.", Snackbar.LENGTH_LONG)
-                                .setAction("مشاهده خطا", null).show();
+                        Toast.makeText(SettingsActivity.this, "خطای نامشخص،با پشتیبانی تماس بگیرید.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -122,7 +129,11 @@ public class SettingsActivity extends MainActivity {
 
     public void updateMenu(final Context context, final LinearLayout ll){
 
-        ll.setVisibility(View.VISIBLE);
+        if(ll!=null){
+            ll.setVisibility(View.VISIBLE);
+        }
+        id = -1;
+        id2 = -1;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -180,7 +191,9 @@ public class SettingsActivity extends MainActivity {
                         }else{
                             Toast.makeText(context, "خطا در بروزرسانی.", Toast.LENGTH_SHORT).show();
                         }
-                        ll.setVisibility(View.GONE);
+                        if(ll!=null){
+                            ll.setVisibility(View.GONE);
+                        }
 
                     }
                 });
@@ -191,4 +204,5 @@ public class SettingsActivity extends MainActivity {
         }).start();
 
     }
+
 }

@@ -24,4 +24,18 @@
         <item name="DialogSpotCount">5</item>
     </style>
 
+    <style name="myStyle1">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:padding">@dimen/padding_bit</item>
+        <item name="android:gravity">right</item>
+    </style>
+
+    <style name="myStyle2">
+        <item name="android:textSize">@dimen/font_medium</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:gravity">right</item>
+    </style>
+
 </resources>

@@ -22,6 +22,7 @@
     <dimen name="dimen_large">40dp</dimen>
     <dimen name="dimen_xlarge">50dp</dimen>
     <dimen name="dimen_xxlarge">60dp</dimen>
+    <dimen name="dimen_xxxlarge">85dp</dimen>
 
     <dimen name="height_slider_main">200dp</dimen>
     <dimen name="height_item_product">275dp</dimen>

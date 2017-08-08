@@ -28,6 +28,7 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String NUMBER = "Number";
     public static final String IP = "Ip";
     public static final String FIRST_RUN = "FirstRun";
+    public static final String SYNCED = "Synced";
 
     public MyDatabase(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -59,6 +60,7 @@ public class MyDatabase extends SQLiteOpenHelper {
                         ID + " INTEGER PRIMARY KEY," +
                         CODE + " TEXT," +
                         PRICE + " TEXT," +
+                        SYNCED + " INTEGER," +
                         NUMBER + " INTEGER);"
         );
 

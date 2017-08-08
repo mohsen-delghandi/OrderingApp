@@ -52,6 +52,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:visibility="gone"
+        android:background="#CCD1C4E9"
         android:orientation="vertical">
 
         <com.wang.avi.AVLoadingIndicatorView
@@ -70,7 +71,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="@dimen/padding_large"
             android:gravity="center"
-            android:text="لططفا شکیبا باشید"
+            android:text="لطفا شکیبا باشید"
             android:textColor="@color/primary_text"/>
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>

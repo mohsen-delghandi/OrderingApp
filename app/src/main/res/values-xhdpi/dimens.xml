@@ -21,6 +21,7 @@
     <dimen name="dimen_large">35dp</dimen>
     <dimen name="dimen_xlarge">45dp</dimen>
     <dimen name="dimen_xxlarge">55dp</dimen>
+    <dimen name="dimen_xxxlarge">80dp</dimen>
 
     <dimen name="height_slider_main">185dp</dimen>
     <dimen name="height_item_product">170dp</dimen>
