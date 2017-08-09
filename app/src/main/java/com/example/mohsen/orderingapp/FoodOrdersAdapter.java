@@ -87,6 +87,11 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
             public void onClick(View view) {
 
                 removeItem(position);
+
+//                SQLiteDatabase db = new MyDatabase(mContext).getWritableDatabase();
+//                db.delete(MyDatabase.ORDERS_TABLE,MyDatabase.CODE + "= ?",new String[]{mList.get(position).});
+//                db.close();
+
             }
 
 //                long duration = setAnimation(holder.cv,android.R.anim.slide_out_right);

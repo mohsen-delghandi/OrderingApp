@@ -75,7 +75,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
                 FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
                 FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext,mFragmentManager,mFoodsCategoryCodes.get(position));
                 fragmentTransaction.replace(R.id.food_menu_fragment,foodMenuFragment);
-                fragmentTransaction.addToBackStack(null);
+//                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 fragmentTransaction.commit();
                 mDrawer.closeDrawer(Gravity.START);

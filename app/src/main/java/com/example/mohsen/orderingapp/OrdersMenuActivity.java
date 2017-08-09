@@ -33,6 +33,11 @@ public class OrdersMenuActivity extends MainActivity {
     int firstRun;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setInflater(this,R.layout.orders_menu_layout);

@@ -46,6 +46,12 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity);
 
+        SQLiteDatabase db = new MyDatabase(this).getWritableDatabase();
+        db.delete(MyDatabase.ORDERS_TABLE, null, null);
+        db.close();
+
+        FoodOrdersAdapter.mList.clear();
+
         etIPFirstRun = (EditText)findViewById(R.id.editText_ip_firstrun);
         linearLayout = (LinearLayout) findViewById(R.id.ll_settings_splash);
         button = (Button) findViewById(R.id.button_save_firstRun);
