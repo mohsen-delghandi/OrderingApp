@@ -42,35 +42,11 @@ public class OrdersMenuActivity extends MainActivity {
         super.onCreate(savedInstanceState);
         setInflater(this,R.layout.orders_menu_layout);
 
-//        SQLiteDatabase dbb = new MyDatabase(this).getReadableDatabase();
-//        Cursor cursor = dbb.query(MyDatabase.SETTINGS_TABLE,new String[]{MyDatabase.FIRST_RUN},null,null,null,null,null,null);
-//        cursor.moveToFirst();
-//        firstRun = cursor.getInt(0);
-//        cursor.close();
-//        dbb.close();
-//
-//        if (firstRun == 1){
-//            SettingsActivity sa = new SettingsActivity();
-//            sa.updateMenu(this,ll_loading);
-//            SQLiteDatabase db2 = new MyDatabase(this).getWritableDatabase();
-//            ContentValues cv = new ContentValues();
-//            cv.put(MyDatabase.FIRST_RUN,0);
-//            db2.update(MyDatabase.SETTINGS_TABLE,cv,MyDatabase.ID + " = ?",new String[]{"1"});
-//            db2.close();
-//        }
-
-
-
-
-
         fabToggle = (FloatingActionButton)findViewById(R.id.fab_toggle);
         fabToggle.setVisibility(View.GONE);
 
-
-
         ll = (LinearLayout)findViewById(R.id.food_orders_fragment);
         ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,0f));
-//        ll.setVisibility(View.GONE);
         ll2 = (LinearLayout)findViewById(R.id.food_menu_fragment);
         tvTayid = (TextView)findViewById(R.id.textView_tayid);
         tvTayid.setVisibility(View.GONE);
@@ -83,8 +59,6 @@ public class OrdersMenuActivity extends MainActivity {
                 window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             }
         });
-
-
 
         fabToggle.setOnClickListener(ocl);
 

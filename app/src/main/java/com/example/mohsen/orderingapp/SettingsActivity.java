@@ -50,6 +50,16 @@ public class SettingsActivity extends MainActivity {
         super.onCreate(savedInstanceState);
         setInflater(this, R.layout.settings_layout);
 
+        tvTitlebar.setText("تنظیمات");
+        toggle.setDrawerIndicatorEnabled(false);
+        toggle.setHomeAsUpIndicator(R.drawable.icon_back);
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         bt_save = (Button)findViewById(R.id.button_save_settings);
