@@ -62,7 +62,7 @@ public class OrdersMenuActivity extends MainActivity {
 
         fabToggle.setOnClickListener(ocl);
 
-        tvTitlebar.setText("منوی غذا");
+        tvTitlebar.setText(title + " - " + "منو");
 
         ivTitlebar.setVisibility(View.VISIBLE);
         ivTitlebar.setImageResource(R.drawable.shop_icon);
@@ -102,13 +102,13 @@ public class OrdersMenuActivity extends MainActivity {
 
 
 
-        FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
-        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(this,fragmentManager, food.getFoodCategoryCodes().get(1));
-        fragmentTransaction2.replace(R.id.food_menu_fragment,foodMenuFragment);
-        fragmentTransaction2.addToBackStack(null);
-        fragmentTransaction2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction2.commit();
-        drawer.closeDrawer(Gravity.START);
+//        FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
+//        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(this,fragmentManager, food.getFoodCategoryCodes().get(1));
+//        fragmentTransaction2.replace(R.id.food_menu_fragment,foodMenuFragment);
+//        fragmentTransaction2.addToBackStack(null);
+//        fragmentTransaction2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//        fragmentTransaction2.commit();
+//        drawer.closeDrawer(Gravity.START);
 
 
 

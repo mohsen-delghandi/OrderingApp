@@ -29,6 +29,7 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String IP = "Ip";
     public static final String FIRST_RUN = "FirstRun";
     public static final String SYNCED = "Synced";
+    public static final String TITLE = "Title";
 
     public MyDatabase(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -68,9 +69,10 @@ public class MyDatabase extends SQLiteOpenHelper {
                 "CREATE TABLE IF NOT EXISTS " + SETTINGS_TABLE + " (" +
                         ID + " INTEGER PRIMARY KEY, " +
                         FIRST_RUN + " INTEGER," +
+                        TITLE + " TEXT, " +
                         IP + " TEXT);"
         );
-        db.execSQL("INSERT INTO " + SETTINGS_TABLE + " VALUES ( 1 , 1 , '192.168.1.1' );");
+        db.execSQL("INSERT INTO " + SETTINGS_TABLE + " VALUES ( 1 , 1 , 'عنوان' , '192.168.1.1' );");
     }
 
     @Override

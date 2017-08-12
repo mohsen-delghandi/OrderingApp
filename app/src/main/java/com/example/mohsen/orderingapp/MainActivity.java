@@ -7,6 +7,7 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     JSONArray jsonArray,jsonArray2;
     LinearLayout ll_loading;
     long id, id2;
+    String title;
 
 
     @Override
@@ -76,6 +78,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        SQLiteDatabase db2 = new MyDatabase(this).getWritableDatabase();
+        Cursor cursor = db2.query(MyDatabase.SETTINGS_TABLE,new String[]{MyDatabase.TITLE},null,null,null,null,null);
+        cursor.moveToFirst();
+        title = cursor.getString(0);
+        cursor.close();
+        db2.close();
 
         ll_loading = (LinearLayout)findViewById(R.id.llLoading);
 

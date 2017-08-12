@@ -29,7 +29,7 @@ public class SplashActivity extends AppCompatActivity {
 
     int firstRun;
     EditText etIPFirstRun;
-    LinearLayout linearLayout;
+    LinearLayout linearLayout,llLoadingSplash;
     Button button;
     String ip_regex = "((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(25[0-5]|2[0-4]"
             + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]"
@@ -54,6 +54,7 @@ public class SplashActivity extends AppCompatActivity {
 
         etIPFirstRun = (EditText)findViewById(R.id.editText_ip_firstrun);
         linearLayout = (LinearLayout) findViewById(R.id.ll_settings_splash);
+        llLoadingSplash = (LinearLayout) findViewById(R.id.llLoading_splash);
         button = (Button) findViewById(R.id.button_save_firstRun);
 
         SQLiteDatabase dbb = new MyDatabase(this).getReadableDatabase();
@@ -77,10 +78,11 @@ public class SplashActivity extends AppCompatActivity {
                         cv.put(MyDatabase.IP, etIPFirstRun.getText().toString());
                         int u = db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
                         db.close();
+                        linearLayout.setVisibility(View.GONE);
                     }
 
                     SettingsActivity sa = new SettingsActivity();
-                    sa.updateMenu(SplashActivity.this,null);
+                    sa.updateMenu(SplashActivity.this,llLoadingSplash);
                     SQLiteDatabase db2 = new MyDatabase(SplashActivity.this).getWritableDatabase();
                     ContentValues cv2 = new ContentValues();
                     cv2.put(MyDatabase.FIRST_RUN, 0);

@@ -51,6 +51,37 @@
             android:layout_marginBottom="@dimen/dimen_xxxlarge"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:id="@+id/llLoading_splash">
+
+                <com.wang.avi.AVLoadingIndicatorView
+                    style="@style/AVLoadingIndicatorView.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:indicatorColor="@color/icons"
+                    app:indicatorName="BallClipRotateMultipleIndicator"
+                    />
+
+                <TextView
+                    android:id="@+id/tvLoading_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/pvLoading_view"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/padding_large"
+                    android:gravity="center"
+                    android:text="لطفا شکیبا باشید"
+                    android:textColor="@color/icons"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginBottom="@dimen/dimen_xxxlarge"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
             android:id="@+id/ll_settings_splash"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

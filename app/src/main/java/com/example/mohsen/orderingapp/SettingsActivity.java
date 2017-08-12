@@ -50,7 +50,7 @@ public class SettingsActivity extends MainActivity {
         super.onCreate(savedInstanceState);
         setInflater(this, R.layout.settings_layout);
 
-        tvTitlebar.setText("تنظیمات");
+        tvTitlebar.setText(title + " - " + "تنظیمات");
         toggle.setDrawerIndicatorEnabled(false);
         toggle.setHomeAsUpIndicator(R.drawable.icon_back);
         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
