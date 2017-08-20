@@ -5,10 +5,10 @@
         android:width="@dimen/padding_xbit"
         android:color="@color/icons"
         />
-    <corners android:radius="@dimen/padding_bit" />
-    <padding android:bottom="@dimen/padding_bit"
-        android:left="@dimen/padding_bit"
-        android:right="@dimen/padding_bit"
-        android:top="@dimen/padding_bit"
+    <corners android:radius="@dimen/padding_xbit" />
+    <padding android:bottom="@dimen/padding_xbit"
+        android:left="@dimen/padding_xbit"
+        android:right="@dimen/padding_xbit"
+        android:top="@dimen/padding_xbit"
         />
 </shape>

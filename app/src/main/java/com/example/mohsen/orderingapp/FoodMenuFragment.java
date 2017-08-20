@@ -41,7 +41,7 @@ public class FoodMenuFragment extends Fragment {
 
         rvv.setHasFixedSize(true);
 
-        rvlm = new GridLayoutManager(mContext,2);
+        rvlm = new GridLayoutManager(mContext,3);
         rvv.setLayoutManager(rvlm);
 
         SQLiteDatabase mydb = new MyDatabase(mContext).getReadableDatabase();

@@ -7,6 +7,7 @@
     <dimen name="padding_medium">16dp</dimen>
     <dimen name="padding_large">20dp</dimen>
     <dimen name="padding_spinner">30dp</dimen>
+    <dimen name="padding_box">55dp</dimen>
     <!-- Font Size -->
     <dimen name="font_xxsmall">13sp</dimen>
     <dimen name="font_xsmall">16sp</dimen>
@@ -23,6 +24,7 @@
     <dimen name="dimen_xlarge">50dp</dimen>
     <dimen name="dimen_xxlarge">60dp</dimen>
     <dimen name="dimen_xxxlarge">85dp</dimen>
+    <dimen name="dimen_icon">48dp</dimen>
 
     <dimen name="height_slider_main">200dp</dimen>
     <dimen name="height_item_product">275dp</dimen>

@@ -62,7 +62,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     @Override
     public void onBindViewHolder(NavigationAdapter.ViewHolder holder, final int position) {
         holder.tv.setText(mFoodsCategoryNames.get(position));
-
+        holder.setIsRecyclable(false);
 //        byte[] decodedString = Base64.decode(mFoodsCategoryImages.get(position), Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsCategoryImages.get(position), 0, mFoodsCategoryImages.get(position).length);
         holder.iv.setImageBitmap(decodedByte);

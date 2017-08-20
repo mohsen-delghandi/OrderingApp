@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -65,14 +66,13 @@ public class CustomDialogClass extends Dialog implements
             }
         });
 
-        SQLiteDatabase db = new MyDatabase(c.getBaseContext()).getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT SUM("+ MyDatabase.PRICE +") FROM "+MyDatabase.ORDERS_TABLE,null);
-        cursor.moveToFirst();
-        mPrice = Integer.parseInt(cursor.getString(0))/10;
 
-//        for(int i = 0 ; i<FoodOrdersAdapter.mList.size() ; i++){
-//            mPrice += FoodOrdersAdapter.mList.get(i).mNumber*1000;
-//        }
+        for(int i = 0 ; i < FoodOrdersAdapter.mList.size() ; i++){
+            mPrice += Integer.parseInt(FoodOrdersAdapter.mList.get(i).getmPrice())*FoodOrdersAdapter.mList.get(i).getmNumber();
+        }
+
+        mPrice /= 10;
+
         TextView tv = (TextView)findViewById(R.id.textView_price);
         int a =  (mPrice+"").length();
         mPriceFormatted = (mPrice+"").substring(0,a%3);
@@ -92,35 +92,25 @@ public class CustomDialogClass extends Dialog implements
                 if(etTable.getText().toString().equals("") || (Integer.parseInt(etTable.getText()+"") < 1)){
                     Toast.makeText(c, "شماره میز صحیح نیست.", Toast.LENGTH_SHORT).show();
                 }else {
-
-
-                    SQLiteDatabase db2 = new MyDatabase(c.getBaseContext()).getReadableDatabase();
-                    Cursor cursor = db2.query(MyDatabase.ORDERS_TABLE, new String[]{MyDatabase.CODE, MyDatabase.NUMBER, MyDatabase.PRICE}, null, null, null, null, null);
-                    if (cursor.moveToFirst()) {
-                        jsonArray = new JSONArray();
-                        do {
-                            JSONObject jsonObject = new JSONObject();
-                            try {
-                                jsonObject.put("Food_Code", cursor.getString(0));
-                                jsonObject.put("Food_Count", Integer.parseInt(cursor.getString(1)));
-                                jsonObject.put("Food_Price", Integer.parseInt(cursor.getString(2)));
-                                jsonObject.put("Table_Number", etTable.getText() + "");
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            jsonArray.put(jsonObject);
-                        } while (cursor.moveToNext());
+                    jsonArray = new JSONArray();
+                    for (int i = 0 ; i < FoodOrdersAdapter.mList.size() ; i++){
+                        JSONObject jsonObject = new JSONObject();
+                        try {
+                            jsonObject.put("Food_Code", FoodOrdersAdapter.mList.get(i).getCode());
+                            jsonObject.put("Food_Count",FoodOrdersAdapter.mList.get(i).getmNumber());
+                            jsonObject.put("Food_Price",Integer.parseInt(FoodOrdersAdapter.mList.get(i).getmPrice())*FoodOrdersAdapter.mList.get(i).getmNumber());
+                            jsonObject.put("Table_Number", etTable.getText() + "");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        jsonArray.put(jsonObject);
                     }
-                    cursor.close();
-                    db2.close();
 
                     cws = new CallWebService(c.getBaseContext(), "SaveFactor", "JsonString");
-//                cws2 = new CallWebService(c.getBaseContext(),"SaveFactor","TableNumber");
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
                             response = cws.Call(jsonArray.toString());
-//                        response2 = cws2.Call(jsonArray.toString());
                             if (response.equals("1")) {
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                     public void run() {
@@ -132,25 +122,12 @@ public class CustomDialogClass extends Dialog implements
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                     public void run() {
                                         Toast.makeText(c, "ارتباط با سرور برقرار نشد.", Toast.LENGTH_SHORT).show();
-                                        Toast.makeText(c, response.toString(), Toast.LENGTH_LONG).show();
                                         dismiss();
                                     }
                                 });
                             }
                         }
                     }).start();
-
-
-//                try {
-//                    Thread.sleep(2000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//                etTable.setText(jsonArray+"");
-//                Toast.makeText(c, response, Toast.LENGTH_LONG).show();
-//                Toast.makeText(c, response2, Toast.LENGTH_LONG).show();
-//                Toast.makeText(c, jsonArray.toString(), Toast.LENGTH_LONG).show();
-
 
                     SQLiteDatabase db = new MyDatabase(c.getBaseContext()).getWritableDatabase();
                     db.delete(MyDatabase.ORDERS_TABLE, null, null);

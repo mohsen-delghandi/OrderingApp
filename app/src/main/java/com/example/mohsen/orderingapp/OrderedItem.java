@@ -7,12 +7,27 @@ package com.example.mohsen.orderingapp;
 public class OrderedItem {
     public String mName;
     public int mNumber;
+    public String  mPrice;
+    public String mCode;
 //    public int mCode;
 
-    OrderedItem(String name,int number/*,int code*/) {
+    OrderedItem(String name,int number,String code,String price/*,int code*/) {
         mNumber = number;
         mName = name;
+        mPrice = price;
+        mCode = code;
 //        mCode = code;
     }
 
+    public String  getCode() {
+        return mCode;
+    }
+
+    public int getmNumber() {
+        return mNumber;
+    }
+
+    public String getmPrice() {
+        return mPrice;
+    }
 }

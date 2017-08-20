@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:layoutDirection="rtl"
+    android:background="@color/primary_light"
+    android:padding="@dimen/padding_large">
+
+
+
+
+
+    <TableRow
+        android:id="@+id/tr_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="4"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:layout_weight="3"
+            android:paddingBottom="@dimen/padding_box"
+            android:paddingTop="@dimen/padding_box"
+            android:paddingRight="@dimen/padding_spinner"
+            android:paddingLeft="@dimen/padding_spinner"
+            android:id="@+id/ll_settings_splash"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:background="@drawable/gradient_back">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textSize="@dimen/font_xsmall"
+                android:textColor="@color/icons"
+                android:text="آی پی سرور"/>
+
+            <LinearLayout
+                android:layoutDirection="ltr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!--<EditText-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="0"-->
+                <!--android:textSize="@dimen/font_xsmall"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingBottom="@dimen/padding_bit"/>-->
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_weight="0"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:visibility="invisible"
+                    android:textSize="@dimen/font_xsmall"
+                    android:textColor="@color/icons"
+                    android:inputType="number"
+                    android:background="@drawable/shape_underline"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:textSize="@dimen/font_medium"
+                    android:visibility="invisible"
+                    android:textColor="@color/icons"
+                    android:text="." />
+
+                <EditText
+                    android:id="@+id/editText_ip_1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:nextFocusDown="@+id/editText_ip_2"
+                    android:textSize="@dimen/font_xsmall"
+                    android:textColor="@color/icons"
+                    android:inputType="number"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:background="@drawable/shape_underline"/>
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:textSize="@dimen/font_medium"
+                    android:textColor="@color/icons"
+                    android:text="." />
+
+                <EditText
+                    android:id="@+id/editText_ip_2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:nextFocusDown="@+id/editText_ip_3"
+                    android:textSize="@dimen/font_xsmall"
+                    android:textColor="@color/icons"
+                    android:background="@drawable/shape_underline"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:inputType="number"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:textSize="@dimen/font_medium"
+                    android:textColor="@color/icons"
+                    android:text="."
+                    />
+                <EditText
+                    android:id="@+id/editText_ip_3"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="@dimen/font_xsmall"
+                    android:nextFocusDown="@+id/editText_ip_4"
+                    android:textColor="@color/icons"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:background="@drawable/shape_underline"
+                    android:inputType="number"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:textSize="@dimen/font_medium"
+                    android:textColor="@color/icons"
+                    android:text="."/>
+                <EditText
+                    android:id="@+id/editText_ip_4"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="@dimen/font_xsmall"
+                    android:nextFocusDown="@+id/editText_title"
+                    android:textColor="@color/icons"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:background="@drawable/shape_underline"
+                    android:inputType="number"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_weight="0"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:visibility="invisible"
+                    android:textSize="@dimen/font_xsmall"
+                    android:textColor="@color/icons"
+                    android:inputType="number"
+                    android:background="@drawable/shape_underline"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:visibility="invisible"
+                    android:textSize="@dimen/font_medium"
+                    android:textColor="@color/icons"
+                    android:text="." />
+
+
+
+            </LinearLayout>
+
+
+
+            <TextView
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textSize="@dimen/font_xsmall"
+                android:textColor="@color/icons"
+                android:text="نام رستوران"/>
+
+            <EditText
+                android:id="@+id/editText_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textSize="@dimen/font_xsmall"
+                android:background="@drawable/shape_underline"
+                android:textColor="@color/icons"
+                android:inputType="text"/>
+
+            <TextView
+                android:id="@+id/button_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:background="@drawable/button_shape2"
+                android:gravity="center"
+                android:paddingBottom="@dimen/padding_bit"
+                android:paddingLeft="@dimen/padding_large"
+                android:paddingRight="@dimen/padding_large"
+                android:paddingTop="@dimen/padding_bit"
+                android:text="ذخیره و به روز رسانی"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xsmall" />
+
+
+        </LinearLayout>
+
+    </TableRow>
+
+
+
+
+
+</RelativeLayout>

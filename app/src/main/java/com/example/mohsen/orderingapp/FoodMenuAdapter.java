@@ -11,12 +11,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,9 +32,11 @@ import java.util.ArrayList;
 public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHolder> {
 
     Context mContext;
+    OrderedItem data ;
     public static ArrayList<byte[]> mFoodsImages;
     ArrayList<String> mFoodsNames;
     View v;
+
     FragmentManager mFragmentManager;
     int mNumber;
     public static ArrayList<String> mFoodsCodes;
@@ -50,10 +54,12 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tv;
         public ImageView iv;
+        LinearLayout ll;
         public ViewHolder(View v) {
             super(v);
             tv = (TextView)v.findViewById(R.id.food_item_textView);
             iv = (ImageView)v.findViewById(R.id.food_item_imageView);
+            ll = (LinearLayout)v.findViewById(R.id.linearLayout_cardView);
         }
     }
 
@@ -67,6 +73,8 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(FoodMenuAdapter.ViewHolder holder, final int position) {
+        holder.setIsRecyclable(false);
+        holder.ll.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,holder.tv.getLayoutParams().width));
         holder.tv.setText(mFoodsNames.get(position));
 //        byte[] decodedString = Base64.decode(mFoodsImages.get(position), Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsImages.get(position), 0, mFoodsImages.get(position).length);
@@ -79,7 +87,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
 //                FoodOrdersFragment foodOrdersFragment = new FoodOrdersFragment(mContext,mFoodCodes.get(position));
 //                fragmentTransaction.replace(R.id.food_orders_fragment,foodOrdersFragment);
 //                fragmentTransaction.commit();
-                OrderedItem data;
+
 
 //                OrdersMenuActivity.ll.setVisibility(View.VISIBLE);
 
@@ -109,31 +117,22 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
                 anim.start();
                 OrdersMenuActivity.fabToggle.setOnClickListener(OrdersMenuActivity.ocl);
 
-
-                SQLiteDatabase mydb = new MyDatabase(mContext).getWritableDatabase();
-                Cursor cursor = mydb.query(MyDatabase.ORDERS_TABLE,new String[]{MyDatabase.NUMBER},MyDatabase.CODE + " = ?",new String[]{mFoodsCodes.get(position)+""},null,null,null);
-                if (cursor.moveToFirst()){
-                    ContentValues cv = new ContentValues();
-                    cv.put(MyDatabase.NUMBER,cursor.getInt(0)+1);
-                    cv.put(MyDatabase.PRICE,((cursor.getInt(0)+1)*Integer.parseInt(mFoodsPrices.get(position)))+"");
-                    mNumber = cursor.getInt(0)+1;
-                    mydb.update(MyDatabase.ORDERS_TABLE,cv,MyDatabase.CODE + " = ?",new String[]{mFoodsCodes.get(position)+""});
-                    for(int i = 0;i<FoodOrdersAdapter.mList.size();i++){
-                        if(FoodOrdersAdapter.mList.get(i).mName.equals(mFoodsNames.get(position))){
-                            FoodOrdersAdapter.mList.remove(i);
-                        }
-                    }
-                    data = new OrderedItem(mFoodsNames.get(position),mNumber);
-                }else{
-//                    mydb.query(MyDatabase.FOOD_TABLE,new String[]{MyDatabase.NAME},MyDatabase.CODE + " = ?",new String[]{})
-                    ContentValues cv2 = new ContentValues();
-                    cv2.put(MyDatabase.CODE,mFoodsCodes.get(position));
-                    cv2.put(MyDatabase.NUMBER,1);
-                    cv2.put(MyDatabase.PRICE,mFoodsPrices.get(position));
-                    mNumber = 1;
-                    mydb.insert(MyDatabase.ORDERS_TABLE,null,cv2);
-                    data = new OrderedItem(mFoodsNames.get(position),mNumber);
+                if(FoodOrdersAdapter.mList.size() == 0){
+                    data = new OrderedItem(mFoodsNames.get(position),1,mFoodsCodes.get(position),mFoodsPrices.get(position));
                 }
+
+                for(int i = 0 ; i < FoodOrdersAdapter.mList.size() ; i++){
+                    if(FoodOrdersAdapter.mList.get(i).getCode().equals(mFoodsCodes.get(position))){
+                        data = new OrderedItem(mFoodsNames.get(position),FoodOrdersAdapter.mList.get(i).getmNumber()+1,mFoodsCodes.get(position),mFoodsPrices.get(position));
+                        FoodOrdersAdapter.mList.remove(i);
+                        i = FoodOrdersAdapter.mList.size();
+                    }else{
+                        data = new OrderedItem(mFoodsNames.get(position),1,mFoodsCodes.get(position),mFoodsPrices.get(position));
+                    }
+                }
+
+
+
                 FoodOrdersAdapter.mList.add(data);
                 FoodOrdersFragment.insert(data,mNumber);
             }

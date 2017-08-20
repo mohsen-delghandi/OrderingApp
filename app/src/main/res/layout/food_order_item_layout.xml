@@ -4,16 +4,16 @@
     android:layoutDirection="rtl"
     android:id="@+id/food_item_cardView"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_large"
+    android:layout_height="wrap_content"
     android:layout_margin="@dimen/padding_bit">
 
     <LinearLayout
+        android:layout_gravity="center_vertical"
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingRight="@dimen/padding_bit"
-        android:paddingLeft="@dimen/padding_bit">
+        android:padding="@dimen/padding_bit">
 
         <ImageView
             android:id="@+id/food_order_item_remove"

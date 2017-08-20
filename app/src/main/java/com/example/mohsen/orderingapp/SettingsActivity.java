@@ -30,8 +30,9 @@ import java.util.regex.Pattern;
 public class SettingsActivity extends MainActivity {
 
 
-    Button bt_update,bt_save;
-    EditText et_ip;
+    Button bt_save;
+    LinearLayout bt_update;
+    EditText et_ip,et_title;
     String ip;
     String ip_regex = "((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(25[0-5]|2[0-4]"
             + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]"
@@ -41,6 +42,7 @@ public class SettingsActivity extends MainActivity {
     public static String json = null,json2 = null;
     public static JSONArray jsonArray,jsonArray2;
     public static long id,id2;
+    public static boolean isUpdated;
 
     public SettingsActivity() {
     }
@@ -64,7 +66,7 @@ public class SettingsActivity extends MainActivity {
 
         bt_save = (Button)findViewById(R.id.button_save_settings);
 
-        bt_update = (Button)findViewById(R.id.button_update);
+        bt_update = (LinearLayout) findViewById(R.id.button_update);
         bt_update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,17 +79,8 @@ public class SettingsActivity extends MainActivity {
                     cv.put(MyDatabase.IP, et_ip.getText().toString());
                     int u = db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
                     db.close();
-                    if (u == 1) {
-                        Toast.makeText(SettingsActivity.this, "عملیات ذخیره با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
-                    } else if (u == 0) {
-                        Toast.makeText(SettingsActivity.this, "عملیات ذخیره ناموفق بود.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(SettingsActivity.this, "خطای نامشخص،با پشتیبانی تماس بگیرید.", Toast.LENGTH_SHORT).show();
-                    }
                 }
                 updateMenu(SettingsActivity.this,ll_loading);
-//                Intent i = new Intent(SettingsActivity.this,OrdersMenuActivity.class);
-//                startActivity(i);
             }
         });
 
@@ -105,7 +98,9 @@ public class SettingsActivity extends MainActivity {
 
 
         et_ip = (EditText) findViewById(R.id.editText_ip);
+        et_title = (EditText) findViewById(R.id.editText_title);
         et_ip.setText(ip);
+        et_title.setText(title);
 
 //        fab.setVisibility(View.VISIBLE);
         fab.setImageResource(R.drawable.save);
@@ -121,10 +116,13 @@ public class SettingsActivity extends MainActivity {
                     SQLiteDatabase db = new MyDatabase(SettingsActivity.this).getWritableDatabase();
                     ContentValues cv = new ContentValues();
                     cv.put(MyDatabase.IP, et_ip.getText().toString());
+                    cv.put(MyDatabase.TITLE, et_title.getText().toString());
                     int u = db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
                     db.close();
                     if (u == 1) {
                         Toast.makeText(SettingsActivity.this, "عملیات ذخیره با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(SettingsActivity.this,OrdersMenuActivity.class);
+                        startActivity(i);
                     } else if (u == 0) {
                         Toast.makeText(SettingsActivity.this, "عملیات ذخیره ناموفق بود.", Toast.LENGTH_SHORT).show();
                     } else {
@@ -198,8 +196,10 @@ public class SettingsActivity extends MainActivity {
                     public void run() {
                         if ((id!=-1) && (id2!=-1)){
                             Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
+                            isUpdated = true;
                         }else{
                             Toast.makeText(context, "خطا در بروزرسانی.", Toast.LENGTH_SHORT).show();
+                            isUpdated = false;
                         }
                         if(ll!=null){
                             ll.setVisibility(View.GONE);

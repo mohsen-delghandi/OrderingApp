@@ -44,6 +44,7 @@ public class BasketRecyclerAdapter extends RecyclerView.Adapter<BasketRecyclerAd
 
     @Override
     public void onBindViewHolder(BasketRecyclerAdapter.ViewHolder holder, final int position) {
+        holder.setIsRecyclable(false);
         holder.tv.setText(FoodOrdersAdapter.mList.get(position).mName);
         holder.tv2.setText(FoodOrdersAdapter.mList.get(position).mNumber+"");
 //        mPrice = (FoodOrdersAdapter.mList.get(position).mNumber*1000)+"";

@@ -8,6 +8,7 @@
     android:background="@drawable/splash_back">
 
         <TableRow
+            android:id="@+id/logo_splash"
             android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,51 +79,222 @@
                     android:textColor="@color/icons"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_marginBottom="@dimen/dimen_xxxlarge"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/ll_settings_splash"
+        <TableRow
+            android:id="@+id/tr_main"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:weightSum="4"
             android:gravity="center"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+            <LinearLayout
+                android:id="@+id/ll_settings_splash"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:background="@drawable/splash_back2"
+                android:gravity="center"
+                android:visibility="gone"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/padding_box"
+                android:paddingLeft="@dimen/padding_spinner"
+                android:paddingRight="@dimen/padding_spinner"
+                android:paddingTop="@dimen/padding_box">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/padding_box"
+                        android:gravity="right"
+                        android:text="جهت ورود به برنامه و اتصال به سرور، اطلاعات زیر را وارد نمایید."
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/font_xsmall" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="آی پی سرور"
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/font_xsmall" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <!--<EditText-->
+                        <!--android:layout_width="0dp"-->
+                        <!--android:layout_weight="0"-->
+                        <!--android:textSize="@dimen/font_xsmall"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:paddingBottom="@dimen/padding_bit"/>-->
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:background="@drawable/shape_underline"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/font_xsmall"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:text="."
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/font_medium"
+                        android:visibility="invisible" />
+
+                    <EditText
+                        android:id="@+id/editText_ip_firstrun1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_underline"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:nextFocusDown="@+id/editText_ip_firstrun2"
+                        android:paddingBottom="@dimen/padding_bit"
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/font_xsmall" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:text="."
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/font_medium" />
+
+                    <EditText
+                        android:id="@+id/editText_ip_firstrun2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_underline"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:nextFocusDown="@+id/editText_ip_firstrun3"
+                        android:paddingBottom="@dimen/padding_bit"
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/font_xsmall" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:text="."
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/font_medium" />
+
+                    <EditText
+                        android:id="@+id/editText_ip_firstrun3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_underline"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:nextFocusDown="@+id/editText_ip_firstrun4"
+                        android:paddingBottom="@dimen/padding_bit"
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/font_xsmall" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:text="."
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/font_medium" />
+
+                    <EditText
+                        android:id="@+id/editText_ip_firstrun4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_underline"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:nextFocusDown="@+id/editText_title_firstrun"
+                        android:paddingBottom="@dimen/padding_bit"
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/font_xsmall" />
+
+                    <EditText
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0"
+                        android:background="@drawable/shape_underline"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/font_xsmall"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:text="."
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/font_medium"
+                        android:visibility="invisible" />
+
+
+                </LinearLayout>
+
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:layout_marginTop="@dimen/padding_spinner"
+                    android:gravity="right"
+                    android:text="عنوان مجموعه"
                     android:textColor="@color/icons"
-                    android:text="لطفا آی پی سرور را وارد کنید"/>
+                    android:textSize="@dimen/font_xsmall" />
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:weightSum="3"
-                    android:gravity="center">
+                    <EditText
+                        android:id="@+id/editText_title_firstrun"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/shape_underline"
+                        android:gravity="center"
+                        android:inputType="text"
+                        android:textColor="@color/icons"
+                        android:textSize="@dimen/font_xsmall" />
 
-                        <EditText
-                            android:gravity="center"
-                            android:layout_weight="1"
-                            android:id="@+id/editText_ip_firstrun"
-                            android:layout_width="0dp"
-                            android:textColor="@color/icons"
-                            android:layout_height="wrap_content"
-                            android:inputType="number|text"
-                            />
-                </TableRow>
-                <Button
+                <TextView
+                    android:id="@+id/button_save_firstRun"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/button_save_firstRun"
-                    android:text="ذخیره"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="@dimen/padding_spinner"
+                    android:background="@drawable/button_shape2"
                     android:gravity="center"
-                    android:textSize="@dimen/font_medium"
+                    android:paddingBottom="@dimen/padding_medium"
+                    android:paddingLeft="@dimen/padding_large"
+                    android:paddingRight="@dimen/padding_large"
+                    android:paddingTop="@dimen/padding_medium"
+                    android:text="اتصال به سرور"
                     android:textColor="@color/icons"
-                    android:background="@drawable/button_shape2"/>
+                    android:textSize="@dimen/font_xsmall" />
 
-        </LinearLayout>
+
+            </LinearLayout>
+
+        </TableRow>
+
+
 
 
 

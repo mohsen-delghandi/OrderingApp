@@ -3,10 +3,7 @@ package com.example.mohsen.orderingapp;
 import android.animation.ObjectAnimator;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
@@ -19,8 +16,6 @@ import android.view.Window;
 import android.view.animation.OvershootInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.wang.avi.AVLoadingIndicatorView;
 
 public class OrdersMenuActivity extends MainActivity {
 
@@ -45,6 +40,8 @@ public class OrdersMenuActivity extends MainActivity {
         fabToggle = (FloatingActionButton)findViewById(R.id.fab_toggle);
         fabToggle.setVisibility(View.GONE);
 
+        drawer.openDrawer(Gravity.START);
+
         ll = (LinearLayout)findViewById(R.id.food_orders_fragment);
         ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,0f));
         ll2 = (LinearLayout)findViewById(R.id.food_menu_fragment);
@@ -65,11 +62,11 @@ public class OrdersMenuActivity extends MainActivity {
         tvTitlebar.setText(title + " - " + "منو");
 
         ivTitlebar.setVisibility(View.VISIBLE);
-        ivTitlebar.setImageResource(R.drawable.shop_icon);
+        ivTitlebar.setImageResource(R.drawable.settings_icon);
         ivTitlebar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(OrdersMenuActivity.this,SettingsActivity.class);
+                Intent i = new Intent(OrdersMenuActivity.this,SettingsActivity2.class);
                 startActivity(i);
 
             }
@@ -101,14 +98,15 @@ public class OrdersMenuActivity extends MainActivity {
 
 
 
-
-//        FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
-//        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(this,fragmentManager, food.getFoodCategoryCodes().get(1));
-//        fragmentTransaction2.replace(R.id.food_menu_fragment,foodMenuFragment);
-//        fragmentTransaction2.addToBackStack(null);
-//        fragmentTransaction2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//        fragmentTransaction2.commit();
-//        drawer.closeDrawer(Gravity.START);
+//        if(SettingsActivity.isUpdated) {
+//            FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
+//            FoodMenuFragment foodMenuFragment = new FoodMenuFragment(this, fragmentManager, food.getFoodCategoryCodes().get(1));
+//            fragmentTransaction2.replace(R.id.food_menu_fragment, foodMenuFragment);
+//            fragmentTransaction2.addToBackStack(null);
+//            fragmentTransaction2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//            fragmentTransaction2.commit();
+//            drawer.closeDrawer(Gravity.START);
+//        }
 
 
 
@@ -119,7 +117,6 @@ public class OrdersMenuActivity extends MainActivity {
     public static View.OnClickListener ocl2 = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-//            ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,1f));
             ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(ll);
             ObjectAnimator anim = ObjectAnimator.ofFloat(animationWrapper,
                     "weight",
@@ -129,14 +126,6 @@ public class OrdersMenuActivity extends MainActivity {
             anim.setInterpolator(new FastOutLinearInInterpolator());
             anim.start();
             fabToggle.setImageResource(R.drawable.icon_up);
-//            ll2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,3f));
-//            ViewWeightAnimationWrapper animationWrapper2 = new ViewWeightAnimationWrapper(ll2);
-//            ObjectAnimator anim2 = ObjectAnimator.ofFloat(animationWrapper2,
-//                    "weight",
-//                    animationWrapper.getWeight(),
-//                    3f);
-//            anim.setDuration(2500);
-//            anim.start();
             fabToggle.setOnClickListener(ocl);
         }
     };
@@ -154,19 +143,7 @@ public class OrdersMenuActivity extends MainActivity {
             anim.setDuration(500);
             anim.setInterpolator(new OvershootInterpolator());
             anim.start();
-
-//            ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,3f));
             fabToggle.setImageResource(R.drawable.icon_down);
-
-//            ViewWeightAnimationWrapper animationWrapper2 = new ViewWeightAnimationWrapper(ll2);
-//            ObjectAnimator anim2 = ObjectAnimator.ofFloat(animationWrapper2,
-//                    "weight",
-//                    animationWrapper.getWeight(),
-//                    1f);
-//            anim.setDuration(2500);
-//            anim.start();
-
-//            ll2.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,1f));
             fabToggle.setOnClickListener(ocl2);
         }
     };

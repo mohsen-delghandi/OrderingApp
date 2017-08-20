@@ -37,6 +37,7 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
     LinearLayoutManager mRvlm;
     ViewHolder mHolder;
     int mPosition;
+
 //    boolean animate;
 
 
@@ -76,7 +77,7 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
     public void onBindViewHolder(final FoodOrdersAdapter.ViewHolder holder, final int position) {
         mHolder = holder;
         mPosition = position;
-
+//        holder.setIsRecyclable(false);
         holder.tv.setText(mList.get(position).mName);
         holder.tv2.setText(mList.get(position).mNumber + "");
         mRvv.smoothScrollToPosition(mRvv.getAdapter().getItemCount());
@@ -212,10 +213,6 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
 
     public void removeItem(int position) {
         mList.remove(position);
-        SQLiteDatabase db = new MyDatabase(mContext).getWritableDatabase();
-        db.delete(MyDatabase.ORDERS_TABLE, MyDatabase.CODE + " = ?", new String[]{FoodMenuAdapter.mFoodsCodes.get(position) + ""});
-        db.close();
-
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mList.size());
 

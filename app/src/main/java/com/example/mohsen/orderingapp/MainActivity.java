@@ -126,9 +126,7 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-            Toast.makeText(this, "1", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(this, "2", Toast.LENGTH_SHORT).show();
             super.onBackPressed();
         }
     }
