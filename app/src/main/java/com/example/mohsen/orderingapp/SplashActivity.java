@@ -215,25 +215,5 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }, 2000);
         }
-
-
-
-//            new Handler().postDelayed(new Runnable() {
-//
-//            /*
-//             * Showing splash screen with a timer. This will be useful when you
-//             * want to show case your app logo / company
-//             */
-//
-//                @Override
-//                public void run() {
-//                    Intent i = new Intent(SplashActivity.this, SettingsActivity.class);
-//                    startActivity(i);
-//                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//                    finish();
-//                }
-//            }, 2000);
-
-
     }
 }

@@ -15,16 +15,14 @@
             <ImageView
                 android:id="@+id/food_item_imageView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="3"
+                android:layout_height="@dimen/dimen_item_height"
                 android:layout_alignParentTop="true"
                 android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/food_item_textView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/food_item_imageView"
                 android:maxLines="1"
                 android:paddingBottom="@dimen/padding_bit"

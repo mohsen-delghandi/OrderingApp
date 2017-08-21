@@ -74,7 +74,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
     @Override
     public void onBindViewHolder(FoodMenuAdapter.ViewHolder holder, final int position) {
         holder.setIsRecyclable(false);
-        holder.ll.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,holder.tv.getLayoutParams().width));
+//        holder.ll.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,holder.tv.getLayoutParams().width));
         holder.tv.setText(mFoodsNames.get(position));
 //        byte[] decodedString = Base64.decode(mFoodsImages.get(position), Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsImages.get(position), 0, mFoodsImages.get(position).length);

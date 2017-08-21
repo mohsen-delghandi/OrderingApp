@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,6 +18,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,9 +39,11 @@ public class CustomDialogClass extends Dialog implements
     public TextView yes,no;
     public EditText etTable;
     long mPrice = 0;
-    String mPriceFormatted = "",response,response2;
+    String mPriceFormatted = "",response;
     JSONArray jsonArray;
     CallWebService cws,cws2;
+    LinearLayout llLoadingDialog;
+    TableLayout tlMain;
 
     public CustomDialogClass(Activity a) {
         super(a);
@@ -51,6 +56,8 @@ public class CustomDialogClass extends Dialog implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.basket_dialog_layout);
         etTable = (EditText)findViewById(R.id.editText_tableNumber);
+        llLoadingDialog = (LinearLayout)findViewById(R.id.llLoading_dialog);
+        tlMain = (TableLayout)findViewById(R.id.tableLayout_main);
         yes = (TextView) findViewById(R.id.textView_ok);
         no = (TextView) findViewById(R.id.textView_cancel);
         yes.setOnClickListener(this);
@@ -110,54 +117,64 @@ public class CustomDialogClass extends Dialog implements
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
+                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                                public void run() {
+                                    llLoadingDialog.setVisibility(View.VISIBLE);
+//                                    tlMain.setVisibility(View.GONE);
+                                    tlMain.setAlpha(0.1f);
+                                }
+                            });
+
                             response = cws.Call(jsonArray.toString());
                             if (response.equals("1")) {
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                     public void run() {
                                         Toast.makeText(c, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
+                                        FoodOrdersAdapter.mList.clear();
+                                        ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(OrdersMenuActivity.ll);
+                                        ObjectAnimator anim = ObjectAnimator.ofFloat(animationWrapper,
+                                                "weight",
+                                                animationWrapper.getWeight(),
+                                                0f);
+                                        anim.setDuration(300);
+                                        anim.setInterpolator(new FastOutLinearInInterpolator());
+                                        anim.start();
+
+                                        OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
+                                            }
+                                        });
+
+                                        OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                                            @Override
+                                            public void onAnimationEnd(Animator animation) {
+                                                OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
+                                            }
+                                        });
                                         dismiss();
                                     }
                                 });
                             } else {
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                     public void run() {
-                                        Toast.makeText(c, "ارتباط با سرور برقرار نشد.", Toast.LENGTH_SHORT).show();
-                                        dismiss();
+                                        SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
+                                        ContentValues cv2 = new ContentValues();
+                                        cv2.put(MyDatabase.RESPONCE,response);
+                                        db2.insert(MyDatabase.RESPONCES_TABLE,null,cv2);
+                                        db2.close();
+                                        llLoadingDialog.setVisibility(View.GONE);
+                                        tlMain.setAlpha(1f);
+                                        Toast.makeText(c, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+//                                        dismiss();
                                     }
                                 });
                             }
                         }
                     }).start();
 
-                    SQLiteDatabase db = new MyDatabase(c.getBaseContext()).getWritableDatabase();
-                    db.delete(MyDatabase.ORDERS_TABLE, null, null);
-                    db.close();
 
-                    FoodOrdersAdapter.mList.clear();
-
-
-                    ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(OrdersMenuActivity.ll);
-                    ObjectAnimator anim = ObjectAnimator.ofFloat(animationWrapper,
-                            "weight",
-                            animationWrapper.getWeight(),
-                            0f);
-                    anim.setDuration(300);
-                    anim.setInterpolator(new FastOutLinearInInterpolator());
-                    anim.start();
-
-                    OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
-                        }
-                    });
-
-                    OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
-                        }
-                    });
                 }
 
                 break;

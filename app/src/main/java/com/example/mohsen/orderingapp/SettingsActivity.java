@@ -161,14 +161,7 @@ public class SettingsActivity extends MainActivity {
                     SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
                     db.delete(MyDatabase.FOOD_CATEGORY_TABLE,null,null);
                     db.delete(MyDatabase.FOOD_TABLE,null,null);
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                           // Toast.makeText(MainActivity.this, jsonArray.length()+"", Toast.LENGTH_SHORT).show();
-////                            Toast.makeText(MainActivity.this, jsonArray2.length()+"", Toast.LENGTH_SHORT).show();
-//
-//                        }
-//                    });
+
                     for(int i = 0 ; i < jsonArray.length()-1 ; i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         ContentValues cv = new ContentValues();

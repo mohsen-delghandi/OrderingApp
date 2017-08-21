@@ -18,6 +18,7 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String FOOD_CATEGORY_TABLE = "Food_Category_TBL";
     public static final String ORDERS_TABLE = "Orders_TBL";
     public static final String SETTINGS_TABLE = "Settings_TBL";
+    public static final String RESPONCES_TABLE = "Responces_TBL";
 
     public static final String ID = "Id";
     public static final String CODE = "Code";
@@ -30,6 +31,7 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String FIRST_RUN = "FirstRun";
     public static final String SYNCED = "Synced";
     public static final String TITLE = "Title";
+    public static final String RESPONCE = "Responce";
 
     public MyDatabase(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -73,6 +75,12 @@ public class MyDatabase extends SQLiteOpenHelper {
                         IP + " TEXT);"
         );
         db.execSQL("INSERT INTO " + SETTINGS_TABLE + " VALUES ( 1 , 1 , 'عنوان' , '192.168.1.1' );");
+
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS " + RESPONCES_TABLE + " (" +
+                        ID + " INTEGER PRIMARY KEY, " +
+                        RESPONCE + " TEXT);"
+        );
     }
 
     @Override

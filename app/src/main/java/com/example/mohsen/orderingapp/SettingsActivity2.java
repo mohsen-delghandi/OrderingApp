@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +26,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -211,36 +217,42 @@ public class SettingsActivity2 extends MainActivity {
                         }
                     }
                 }.execute();
-
-
-//                updateMenu(SettingsActivity2.this,ll_loading);
-//
-//                    SQLiteDatabase db = new MyDatabase(SettingsActivity2.this).getWritableDatabase();
-//                    ContentValues cv = new ContentValues();
-//                String ip = etIP1.getText().toString().trim()+"."+
-//                        etIP2.getText().toString().trim()+"."+
-//                        etIP3.getText().toString().trim()+"."+
-//                        etIP4.getText().toString().trim();
-//                    cv.put(MyDatabase.IP,ip);
-//                    cv.put(MyDatabase.TITLE, et_title.getText().toString());
-//                    int u = db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
-//                    db.close();
-//                    if (u == 1) {
-//                        Toast.makeText(SettingsActivity2.this, "عملیات ذخیره با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
-//                        Intent i = new Intent(SettingsActivity2.this,OrdersMenuActivity.class);
-//                        startActivity(i);
-//                    } else if (u == 0) {
-//                        Toast.makeText(SettingsActivity2.this, "عملیات ذخیره ناموفق بود.", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(SettingsActivity2.this, "خطای نامشخص،با پشتیبانی تماس بگیرید.", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//        });
-//
-
             }
         });
+
+        TextView tvResponces = (TextView)findViewById(R.id.textView_responces);
+        tvResponces.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TableRow trMain = (TableRow)findViewById(R.id.tr_main);
+                trMain.setVisibility(View.GONE);
+                SQLiteDatabase db3 = new MyDatabase(SettingsActivity2.this).getReadableDatabase();
+                Cursor ccc = db3.query(MyDatabase.RESPONCES_TABLE,new String[]{MyDatabase.RESPONCE},null,null,null,null,null,null);
+                ArrayList<String> responces = new ArrayList<>();
+                if (ccc.moveToFirst()){
+                    do{
+                        responces.add(ccc.getString(0));
+                    }while (ccc.moveToNext());
+                }else{
+                    responces = null;
+                }
+
+                if(responces!=null) {
+                    RecyclerView rvResponces = (RecyclerView) findViewById(R.id.responces_recyclerView);
+                    rvResponces.setVisibility(View.VISIBLE);
+                    rvResponces.setHasFixedSize(true);
+                    RecyclerView.LayoutManager rvlm = new LinearLayoutManager(SettingsActivity2.this);
+                    rvResponces.setLayoutManager(rvlm);
+                    RecyclerView.Adapter rvAdapter = new ResponcesListAdapter(SettingsActivity2.this, responces);
+                    rvResponces.setAdapter(rvAdapter);
+                }else
+                {
+                    Toast.makeText(SettingsActivity2.this, "تاریخچه ای موجود نیست.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
     }
 
     public void updateMenu(final Context context, final LinearLayout ll) {
