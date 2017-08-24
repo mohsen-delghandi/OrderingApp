@@ -75,7 +75,7 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(Integer.parseInt(charSequence.toString())>255){
+                if(!charSequence.toString().equals("") && Integer.parseInt(charSequence.toString())>255){
                     etIPFirstRun1.setText(255+"");
                     etIPFirstRun1.selectAll();
                 }
@@ -95,7 +95,7 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(Integer.parseInt(charSequence.toString())>255){
+                if(!charSequence.toString().equals("") && Integer.parseInt(charSequence.toString())>255){
                     etIPFirstRun2.setText(255+"");
                     etIPFirstRun2.selectAll();
                 }
@@ -115,7 +115,7 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(Integer.parseInt(charSequence.toString())>255){
+                if(!charSequence.toString().equals("") && Integer.parseInt(charSequence.toString())>255){
                     etIPFirstRun3.setText(255+"");
                     etIPFirstRun3.selectAll();
                 }
@@ -135,7 +135,7 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if(Integer.parseInt(charSequence.toString())>255){
+                if(!charSequence.toString().equals("") && Integer.parseInt(charSequence.toString())>255){
                     etIPFirstRun4.setText(255+"");
                     etIPFirstRun4.selectAll();
                 }

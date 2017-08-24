@@ -6,16 +6,21 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -26,6 +31,9 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Mohsen on 2017-07-15.
@@ -70,6 +78,26 @@ public class CustomDialogClass extends Dialog implements
                 if (hasFocus) {
                     CustomDialogClass.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 }
+            }
+        });
+
+        etTable.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if (!charSequence.toString().equals("") && Integer.parseInt(charSequence.toString()) > 999) {
+                    etTable.setText(999 + "");
+                    etTable.selectAll();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
 
@@ -119,8 +147,9 @@ public class CustomDialogClass extends Dialog implements
                         public void run() {
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 public void run() {
+                                    InputMethodManager imm = (InputMethodManager)c.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow(etTable.getWindowToken(), 0);
                                     llLoadingDialog.setVisibility(View.VISIBLE);
-//                                    tlMain.setVisibility(View.GONE);
                                     tlMain.setAlpha(0.1f);
                                 }
                             });
@@ -161,7 +190,9 @@ public class CustomDialogClass extends Dialog implements
                                     public void run() {
                                         SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
                                         ContentValues cv2 = new ContentValues();
-                                        cv2.put(MyDatabase.RESPONCE,response);
+                                        SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                                        String myDate = format.format(new Date());
+                                        cv2.put(MyDatabase.RESPONCE,myDate + " --> " +response);
                                         db2.insert(MyDatabase.RESPONCES_TABLE,null,cv2);
                                         db2.close();
                                         llLoadingDialog.setVisibility(View.GONE);

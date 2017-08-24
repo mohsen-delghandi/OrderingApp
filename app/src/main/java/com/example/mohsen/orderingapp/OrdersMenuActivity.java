@@ -108,6 +108,8 @@ public class OrdersMenuActivity extends MainActivity {
 //            drawer.closeDrawer(Gravity.START);
 //        }
 
+        NavigationAdapter.refreshFavorites();
+
 
 
 

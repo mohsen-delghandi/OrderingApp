@@ -30,7 +30,12 @@
                 android:gravity="center"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/font_xsmall" />
+            <TextView
+                android:id="@+id/textView_favorite"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/padding_bit"
+                android:background="#d50000"
+                android:visibility="invisible"/>
+        </LinearLayout>]
 
-
-        </LinearLayout>
     </android.support.v7.widget.CardView>

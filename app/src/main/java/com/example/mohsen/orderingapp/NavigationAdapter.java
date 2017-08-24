@@ -23,14 +23,15 @@ import java.util.ArrayList;
 
 public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.ViewHolder> {
 
-    Context mContext;
+    static Context mContext;
     int mWidth;
     ArrayList<byte[]> mFoodsCategoryImages;
     ArrayList<String> mFoodsCategoryNames;
     ArrayList<String> mFoodsCategoryCodes;
     View v;
-    FragmentManager mFragmentManager;
-    DrawerLayout mDrawer;
+    static FragmentManager mFragmentManager;
+    static DrawerLayout mDrawer;
+    public static boolean isFavorite;
 
     public NavigationAdapter(Context context, int width, ArrayList<byte[]> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, DrawerLayout drawer, ArrayList<String> foodCategoryCodes) {
         mContext = context;
@@ -60,27 +61,56 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(NavigationAdapter.ViewHolder holder, final int position) {
-        holder.tv.setText(mFoodsCategoryNames.get(position));
-        holder.setIsRecyclable(false);
-//        byte[] decodedString = Base64.decode(mFoodsCategoryImages.get(position), Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsCategoryImages.get(position), 0, mFoodsCategoryImages.get(position).length);
-        holder.iv.setImageBitmap(decodedByte);
-        holder.iv.getLayoutParams().width = mWidth/5;
-        holder.iv.getLayoutParams().height = mWidth/5;
+    public void onBindViewHolder(NavigationAdapter.ViewHolder holder, int position) {
+        if (position == 0){
+            holder.tv.setText("خواستنی ها");
+            holder.setIsRecyclable(false);
+            holder.iv.setImageResource(R.drawable.shape_heart);
+            holder.iv.getLayoutParams().width = mWidth / 5;
+            holder.iv.getLayoutParams().height = mWidth / 5;
 
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-                FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext,mFragmentManager,mFoodsCategoryCodes.get(position));
-                fragmentTransaction.replace(R.id.food_menu_fragment,foodMenuFragment);
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    refreshFavorites();
+                }
+            });
+        }else{
+            position --;
+            holder.tv.setText(mFoodsCategoryNames.get(position));
+            holder.setIsRecyclable(false);
+//        byte[] decodedString = Base64.decode(mFoodsCategoryImages.get(position), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsCategoryImages.get(position), 0, mFoodsCategoryImages.get(position).length);
+            holder.iv.setImageBitmap(decodedByte);
+            holder.iv.getLayoutParams().width = mWidth / 5;
+            holder.iv.getLayoutParams().height = mWidth / 5;
+
+            final int finalPosition = position;
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+                    FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager, mFoodsCategoryCodes.get(finalPosition));
+                    fragmentTransaction.replace(R.id.food_menu_fragment, foodMenuFragment);
 //                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                fragmentTransaction.commit();
-                mDrawer.closeDrawer(Gravity.START);
-            }
-        });
+                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                    fragmentTransaction.commit();
+                    mDrawer.closeDrawer(Gravity.START);
+                    isFavorite = false;
+                }
+            });
+        }
+    }
+
+    public static void refreshFavorites(){
+        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager,"favorites");
+        fragmentTransaction.replace(R.id.food_menu_fragment, foodMenuFragment);
+//                fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
+        mDrawer.closeDrawer(Gravity.START);
+        isFavorite = true;
     }
 
     @Override

@@ -30,7 +30,11 @@ public class FoodMenuFragment extends Fragment {
     public FoodMenuFragment(Context context, FragmentManager fragmentManager, String foodsCategoryCode) {
         mContext = context;
         mFragmentManager = fragmentManager;
-        mFoodsCategoryCode = Integer.parseInt(foodsCategoryCode);
+        if(foodsCategoryCode.toString().trim().equals("favorites")){
+            mFoodsCategoryCode = -1;
+        }else{
+            mFoodsCategoryCode = Integer.parseInt(foodsCategoryCode);
+        }
     }
 
     @Override
@@ -44,14 +48,20 @@ public class FoodMenuFragment extends Fragment {
         rvlm = new GridLayoutManager(mContext,3);
         rvv.setLayoutManager(rvlm);
 
-        SQLiteDatabase mydb = new MyDatabase(mContext).getReadableDatabase();
-
-        Cursor cur = mydb.query(MyDatabase.FOOD_TABLE,new String[]{MyDatabase.NAME,MyDatabase.IMAGE,MyDatabase.CODE,MyDatabase.PRICE},MyDatabase.CATEGORY_CODE + " = ?",new String[]{mFoodsCategoryCode+""},null,null,null);
         ArrayList<String> foodsNames = new ArrayList<>();
         ArrayList<byte[]> foodsImages = new ArrayList<>();
         ArrayList<String> foodsCodes = new ArrayList<>();
         ArrayList<String> foodsPrices = new ArrayList<>();
-        if(cur.moveToFirst()) {
+        SQLiteDatabase mydb = new MyDatabase(mContext).getReadableDatabase();
+        Cursor cur;
+
+        if(mFoodsCategoryCode == -1){
+            cur = mydb.query(MyDatabase.FOOD_TABLE, new String[]{MyDatabase.NAME, MyDatabase.IMAGE, MyDatabase.CODE, MyDatabase.PRICE}, MyDatabase.FAVORITE + " = ?", new String[]{"1"}, null, null, null);
+
+        }else {
+            cur = mydb.query(MyDatabase.FOOD_TABLE, new String[]{MyDatabase.NAME, MyDatabase.IMAGE, MyDatabase.CODE, MyDatabase.PRICE}, MyDatabase.CATEGORY_CODE + " = ?", new String[]{mFoodsCategoryCode + ""}, null, null, null);
+        }
+        if (cur.moveToFirst()) {
             do {
                 foodsNames.add(cur.getString(0));
                 foodsImages.add(cur.getBlob(1));
@@ -59,7 +69,6 @@ public class FoodMenuFragment extends Fragment {
                 foodsPrices.add(cur.getString(3));
             } while (cur.moveToNext());
         }
-
 
         rva = new FoodMenuAdapter(mContext,foodsImages,foodsNames,mFragmentManager,foodsCodes,foodsPrices);
 

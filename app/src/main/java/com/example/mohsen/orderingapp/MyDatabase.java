@@ -32,6 +32,7 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String SYNCED = "Synced";
     public static final String TITLE = "Title";
     public static final String RESPONCE = "Responce";
+    public static final String FAVORITE = "Favorite";
 
     public MyDatabase(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -46,6 +47,7 @@ public class MyDatabase extends SQLiteOpenHelper {
                         CODE + " TEXT," +
                         CATEGORY_CODE + " TEXT," +
                         NAME + " TEXT," +
+                        FAVORITE + " INT," +
                         IMAGE + " BLOB," +
                         PRICE + " TEXT);"
         );

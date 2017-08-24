@@ -51,6 +51,7 @@ public class SettingsActivity2 extends MainActivity {
     public static JSONArray jsonArray, jsonArray2;
     public static long id, id2;
     public static boolean isUpdated;
+    public boolean isSettingsUpdate = false;
 
     public SettingsActivity2() {
     }
@@ -67,6 +68,7 @@ public class SettingsActivity2 extends MainActivity {
             @Override
             public void onClick(View view) {
                 onBackPressed();
+                SettingsActivity2.this.finish();
             }
         });
 
@@ -86,7 +88,7 @@ public class SettingsActivity2 extends MainActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (Integer.parseInt(charSequence.toString()) > 255) {
+                if (!charSequence.toString().equals("") && Integer.parseInt(charSequence.toString()) > 255) {
                     etIP1.setText(255 + "");
                     etIP1.selectAll();
                 }
@@ -106,7 +108,7 @@ public class SettingsActivity2 extends MainActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (Integer.parseInt(charSequence.toString()) > 255) {
+                if (!charSequence.toString().equals("") && Integer.parseInt(charSequence.toString()) > 255) {
                     etIP2.setText(255 + "");
                     etIP2.selectAll();
                 }
@@ -126,7 +128,7 @@ public class SettingsActivity2 extends MainActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (Integer.parseInt(charSequence.toString()) > 255) {
+                if (!charSequence.toString().equals("") && Integer.parseInt(charSequence.toString()) > 255) {
                     etIP3.setText(255 + "");
                     etIP3.selectAll();
                 }
@@ -146,7 +148,7 @@ public class SettingsActivity2 extends MainActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (Integer.parseInt(charSequence.toString()) > 255) {
+                if (!charSequence.toString().equals("") && Integer.parseInt(charSequence.toString()) > 255) {
                     etIP4.setText(255 + "");
                     etIP4.selectAll();
                 }
@@ -200,53 +202,67 @@ public class SettingsActivity2 extends MainActivity {
 
                     @Override
                     protected Object doInBackground(Object[] objects) {
+                        isSettingsUpdate = true;
                         updateMenu(SettingsActivity2.this, ll_loading);
                         return null;
                     }
 
                     @Override
                     protected void onPostExecute(Object o) {
-                        if (u[0] == 1) {
-                            Toast.makeText(SettingsActivity2.this, "عملیات ذخیره با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(SettingsActivity2.this, OrdersMenuActivity.class);
-                            startActivity(i);
-                        } else if (u[0] == 0) {
-                            Toast.makeText(SettingsActivity2.this, "عملیات ذخیره ناموفق بود.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(SettingsActivity2.this, "خطای نامشخص،با پشتیبانی تماس بگیرید.", Toast.LENGTH_SHORT).show();
-                        }
+//                        if (u[0] == 1) {
+//                            Toast.makeText(SettingsActivity2.this, "عملیات ذخیره با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
+//                            Intent i = new Intent(SettingsActivity2.this, OrdersMenuActivity.class);
+//                            startActivity(i);
+//                        } else if (u[0] == 0) {
+//                            Toast.makeText(SettingsActivity2.this, "عملیات ذخیره ناموفق بود.", Toast.LENGTH_SHORT).show();
+//                        } else {
+//                            Toast.makeText(SettingsActivity2.this, "خطای نامشخص،با پشتیبانی تماس بگیرید.", Toast.LENGTH_SHORT).show();
+//                        }
                     }
                 }.execute();
             }
         });
 
+        final TableRow trMain = (TableRow)findViewById(R.id.tr_main);
         TextView tvResponces = (TextView)findViewById(R.id.textView_responces);
         tvResponces.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TableRow trMain = (TableRow)findViewById(R.id.tr_main);
-                trMain.setVisibility(View.GONE);
                 SQLiteDatabase db3 = new MyDatabase(SettingsActivity2.this).getReadableDatabase();
-                Cursor ccc = db3.query(MyDatabase.RESPONCES_TABLE,new String[]{MyDatabase.RESPONCE},null,null,null,null,null,null);
+                Cursor ccc = db3.query(MyDatabase.RESPONCES_TABLE,new String[]{MyDatabase.ID,MyDatabase.RESPONCE},null,null,null,null,null,null);
                 ArrayList<String> responces = new ArrayList<>();
                 if (ccc.moveToFirst()){
                     do{
-                        responces.add(ccc.getString(0));
+                        responces.add(ccc.getInt(0) + " --- " + ccc.getString(1));
                     }while (ccc.moveToNext());
                 }else{
                     responces = null;
                 }
 
                 if(responces!=null) {
-                    RecyclerView rvResponces = (RecyclerView) findViewById(R.id.responces_recyclerView);
+                    final RecyclerView rvResponces = (RecyclerView) findViewById(R.id.responces_recyclerView);
+                    trMain.setVisibility(View.GONE);
+                    ivTitlebar.setVisibility(View.VISIBLE);
+                    ivTitlebar.setImageResource(R.drawable.delete_icon);
+                    ivTitlebar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            SQLiteDatabase dbbb = new MyDatabase(SettingsActivity2.this).getWritableDatabase();
+                            dbbb.delete(MyDatabase.RESPONCES_TABLE,null,null);
+                            dbbb.close();
+                            ivTitlebar.setVisibility(View.GONE);
+                            rvResponces.setVisibility(View.GONE);
+                            trMain.setVisibility(View.VISIBLE);
+                        }
+                    });
                     rvResponces.setVisibility(View.VISIBLE);
                     rvResponces.setHasFixedSize(true);
                     RecyclerView.LayoutManager rvlm = new LinearLayoutManager(SettingsActivity2.this);
                     rvResponces.setLayoutManager(rvlm);
                     RecyclerView.Adapter rvAdapter = new ResponcesListAdapter(SettingsActivity2.this, responces);
                     rvResponces.setAdapter(rvAdapter);
-                }else
-                {
+                    rvResponces.scrollToPosition(rvResponces.getAdapter().getItemCount()-1);
+                }else{
                     Toast.makeText(SettingsActivity2.this, "تاریخچه ای موجود نیست.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -321,6 +337,11 @@ public class SettingsActivity2 extends MainActivity {
                         if ((id != -1) && (id2 != -1)) {
                             Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
                             isUpdated = true;
+                            if(isSettingsUpdate){
+                                Intent i = new Intent(SettingsActivity2.this, OrdersMenuActivity.class);
+                                startActivity(i);
+                                SettingsActivity2.this.finish();
+                            }
                         } else {
                             Toast.makeText(context, "خطا در بروزرسانی.", Toast.LENGTH_SHORT).show();
                             isUpdated = false;
