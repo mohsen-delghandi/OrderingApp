@@ -49,7 +49,7 @@ public class CustomDialogClass extends Dialog implements
     long mPrice = 0;
     String mPriceFormatted = "",response;
     JSONArray jsonArray;
-    CallWebService cws,cws2;
+    CallWebService cws;
     LinearLayout llLoadingDialog;
     TableLayout tlMain;
 

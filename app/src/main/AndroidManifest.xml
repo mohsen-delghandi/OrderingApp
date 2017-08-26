@@ -27,7 +27,9 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".SettingsActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".SettingsActivity2"
+        <activity
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:name=".SettingsActivity2"
             android:screenOrientation="portrait"/>
         <activity android:name=".OrdersMenuActivity"
             android:screenOrientation="portrait"/>

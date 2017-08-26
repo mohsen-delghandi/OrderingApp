@@ -84,6 +84,7 @@ public class OrdersMenuActivity extends MainActivity {
 
         mNavigationRecycler = (RecyclerView)findViewById(R.id.nav_recyclerView);
         mNavigationRecycler.setHasFixedSize(true);
+        mNavigationRecycler.setNestedScrollingEnabled(false);
 
         mRecyclerManager = new LinearLayoutManager(this);
         mNavigationRecycler.setLayoutManager(mRecyclerManager);

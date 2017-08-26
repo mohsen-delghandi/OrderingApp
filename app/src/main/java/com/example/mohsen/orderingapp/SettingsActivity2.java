@@ -301,15 +301,8 @@ public class SettingsActivity2 extends MainActivity {
                     SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
                     db.delete(MyDatabase.FOOD_CATEGORY_TABLE, null, null);
                     db.delete(MyDatabase.FOOD_TABLE, null, null);
-//                    runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                           // Toast.makeText(MainActivity.this, jsonArray.length()+"", Toast.LENGTH_SHORT).show();
-////                            Toast.makeText(MainActivity.this, jsonArray2.length()+"", Toast.LENGTH_SHORT).show();
-//
-//                        }
-//                    });
-                    for (int i = 0; i < jsonArray.length() - 1; i++) {
+
+                    for (int i = 0 ; i < jsonArray.length() ; i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         ContentValues cv = new ContentValues();
                         cv.put(MyDatabase.CODE, jsonObject.get("ID") + "");
@@ -317,7 +310,7 @@ public class SettingsActivity2 extends MainActivity {
                         cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject.get("Pic") + "", Base64.DEFAULT));
                         id = db.insert(MyDatabase.FOOD_CATEGORY_TABLE, null, cv);
                     }
-                    for (int i = 0; i < jsonArray2.length() - 1; i++) {
+                    for (int i = 0 ; i < jsonArray2.length() ; i++) {
                         JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
                         ContentValues cv = new ContentValues();
                         cv.put(MyDatabase.CODE, jsonObject2.get("ID") + "");

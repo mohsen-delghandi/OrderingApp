@@ -43,6 +43,7 @@ public class FoodOrdersFragment extends Fragment{
         rvv = v.findViewById(R.id.food_orders_recyclerView);
 
         rvv.setHasFixedSize(true);
+        rvv.setNestedScrollingEnabled(false);
 
 
 

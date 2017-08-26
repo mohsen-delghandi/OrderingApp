@@ -44,6 +44,7 @@ public class FoodMenuFragment extends Fragment {
         rvv = v.findViewById(R.id.food_menu_recyclerView);
 
         rvv.setHasFixedSize(true);
+        rvv.setNestedScrollingEnabled(false);
 
         rvlm = new GridLayoutManager(mContext,3);
         rvv.setLayoutManager(rvlm);
