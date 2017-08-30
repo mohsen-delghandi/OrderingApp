@@ -26,6 +26,7 @@ public class FoodMenuFragment extends Fragment {
     Context mContext;
     FragmentManager mFragmentManager;
     int mFoodsCategoryCode;
+    public static boolean isFavoriteEmpty = true;
 
     public FoodMenuFragment(Context context, FragmentManager fragmentManager, String foodsCategoryCode) {
         mContext = context;
@@ -63,12 +64,21 @@ public class FoodMenuFragment extends Fragment {
             cur = mydb.query(MyDatabase.FOOD_TABLE, new String[]{MyDatabase.NAME, MyDatabase.IMAGE, MyDatabase.CODE, MyDatabase.PRICE}, MyDatabase.CATEGORY_CODE + " = ?", new String[]{mFoodsCategoryCode + ""}, null, null, null);
         }
         if (cur.moveToFirst()) {
+            if(mFoodsCategoryCode == -1){
+                isFavoriteEmpty = false;
+                OrdersMenuActivity.linearLayout.setVisibility(View.GONE);
+            }
             do {
                 foodsNames.add(cur.getString(0));
                 foodsImages.add(cur.getBlob(1));
                 foodsCodes.add(cur.getString(2));
                 foodsPrices.add(cur.getString(3));
             } while (cur.moveToNext());
+        }else{
+            if(mFoodsCategoryCode == -1){
+                isFavoriteEmpty = true;
+                OrdersMenuActivity.linearLayout.setVisibility(View.VISIBLE);
+            }
         }
 
         rva = new FoodMenuAdapter(mContext,foodsImages,foodsNames,mFragmentManager,foodsCodes,foodsPrices);
@@ -76,6 +86,4 @@ public class FoodMenuFragment extends Fragment {
         rvv.setAdapter(rva);
         return v;
     }
-
-
 }

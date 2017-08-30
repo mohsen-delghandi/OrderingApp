@@ -26,6 +26,7 @@ public class OrdersMenuActivity extends MainActivity {
     public static FloatingActionButton fabToggle;
     public static TextView tvTayid;
     int firstRun;
+    public static LinearLayout linearLayout;
 
     @Override
     public void onBackPressed() {
@@ -41,6 +42,9 @@ public class OrdersMenuActivity extends MainActivity {
         fabToggle.setVisibility(View.GONE);
 
         drawer.openDrawer(Gravity.START);
+
+        linearLayout = (LinearLayout) findViewById(R.id.linearLayout_happy);
+//        linearLayout.setVisibility(View.GONE);
 
         ll = (LinearLayout)findViewById(R.id.food_orders_fragment);
         ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,0f));
@@ -110,11 +114,6 @@ public class OrdersMenuActivity extends MainActivity {
 //        }
 
         NavigationAdapter.refreshFavorites();
-
-
-
-
-
     }
 
     public static View.OnClickListener ocl2 = new View.OnClickListener() {

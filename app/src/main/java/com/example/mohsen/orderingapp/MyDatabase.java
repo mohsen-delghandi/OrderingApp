@@ -33,6 +33,7 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String TITLE = "Title";
     public static final String RESPONCE = "Responce";
     public static final String FAVORITE = "Favorite";
+    public static final String SENT_TO_SERVER = "SentToServer";
 
     public MyDatabase(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -73,10 +74,11 @@ public class MyDatabase extends SQLiteOpenHelper {
                 "CREATE TABLE IF NOT EXISTS " + SETTINGS_TABLE + " (" +
                         ID + " INTEGER PRIMARY KEY, " +
                         FIRST_RUN + " INTEGER," +
+                        SENT_TO_SERVER + " INTEGER," +
                         TITLE + " TEXT, " +
                         IP + " TEXT);"
         );
-        db.execSQL("INSERT INTO " + SETTINGS_TABLE + " VALUES ( 1 , 1 , 'عنوان' , '192.168.1.1' );");
+        db.execSQL("INSERT INTO " + SETTINGS_TABLE + " VALUES ( 1 , 1 , 0 , 'عنوان' , '192.168.1.1' );");
 
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS " + RESPONCES_TABLE + " (" +

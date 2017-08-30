@@ -97,6 +97,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
                     fragmentTransaction.commit();
                     mDrawer.closeDrawer(Gravity.START);
                     isFavorite = false;
+                    OrdersMenuActivity.linearLayout.setVisibility(View.GONE);
                 }
             });
         }
@@ -105,16 +106,22 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     public static void refreshFavorites(){
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
         FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager,"favorites");
+//        if(FoodMenuFragment.isFavoriteEmpty){
+//            OrdersMenuActivity.linearLayout.setVisibility(View.VISIBLE);
+//        }else{
+//            OrdersMenuActivity.linearLayout.setVisibility(View.GONE);
+//        }
         fragmentTransaction.replace(R.id.food_menu_fragment, foodMenuFragment);
 //                fragmentTransaction.addToBackStack(null);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
         mDrawer.closeDrawer(Gravity.START);
         isFavorite = true;
+
     }
 
     @Override
     public int getItemCount() {
-        return mFoodsCategoryImages.size();
+        return mFoodsCategoryImages.size()+1;
     }
 }

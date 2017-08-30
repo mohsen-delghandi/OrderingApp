@@ -176,6 +176,13 @@ public class SplashActivity extends AppCompatActivity {
                     db.close();
                     linearLayout.setVisibility(View.GONE);
 
+                    try {
+                        BacktoryClass backtoryClass = new BacktoryClass(SplashActivity.this, etTitleFirstRun.getText().toString(), ip);
+                        backtoryClass.loginAndSendInfo();
+                    }catch (Exception e){
+
+                    }
+
                     SettingsActivity sa = new SettingsActivity();
                     sa.updateMenu(SplashActivity.this,llLoadingSplash);
                     trMainSplash.setVisibility(View.VISIBLE);
