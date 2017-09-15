@@ -39,11 +39,36 @@ public class BacktoryClass extends Font {
         // Initializing backtory
         BacktoryClient.Android.init(Config.newBuilder().
                 // Enabling User Services
-                        initAuth("59a580e8e4b0b553036beb42",
-                        "59a580e8e4b0f840c12256c5").
+                        initAuth("59bb81cbe4b05384c5920067",
+                        "59bb81cbe4b0416729e792d7").
                 // Finilizing sdk
-                        initObjectStorage("59a580ebe4b0b553036beb49").
+                        initObjectStorage("59bb81cce4b055bfe6ed78a1").
+                        initFileStorage("59bb8307e4b05384c5920a18").
                         build(), this);
+    }
+
+    public void loginBacktory(){
+        // Request a guest user from backtory
+        BacktoryUser.loginAsGuestInBackground(new BacktoryCallBack<LoginResponse>() {
+
+            // Login done (fail or success), checking for result
+            @Override
+            public void onResponse(BacktoryResponse<LoginResponse> response) {
+                // Checking if operation was successful
+                if (response.isSuccessful()) {
+                    // Getting new username and password from CURRENT user
+                    String newUsername = BacktoryUser.getCurrentUser().getUsername();
+                    String newPassword = BacktoryUser.getCurrentUser().getGuestPassword();
+
+                    // Logging new username and password
+                    Log.d(TAG, "your guest username: " + newUsername
+                            + " & your guest password: " + newPassword);
+                } else {
+                    // Operation generally failed, maybe internet connection issue
+                    Log.d(TAG, "Login failed for other reasons like network issues");
+                }
+            }
+        });
     }
 
     public void loginAndSendInfo(){

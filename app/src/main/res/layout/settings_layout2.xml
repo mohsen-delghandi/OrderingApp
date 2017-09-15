@@ -229,4 +229,33 @@
         </LinearLayout>
 
     </TableRow>
+
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/frameLayout_screenSaver"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <!--<VideoView-->
+            <!--android:id="@+id/videoView_screenSaver"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"/>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/button_screenSaver"-->
+            <!--android:elevation="@dimen/padding_bit"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="جهت ثبت سفارش کلیک کنید"-->
+            <!--android:layout_gravity="bottom|center_horizontal"-->
+            <!--android:textColor="@color/primary_dark"-->
+            <!--android:paddingRight="@dimen/padding_medium"-->
+            <!--android:paddingLeft="@dimen/padding_medium"-->
+            <!--android:textSize="@dimen/font_large"-->
+            <!--android:background="@drawable/button_shape"-->
+            <!--/>-->
+
+    <!--</FrameLayout>-->
+
+
 </RelativeLayout>

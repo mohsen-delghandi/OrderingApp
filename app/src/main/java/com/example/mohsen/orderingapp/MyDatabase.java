@@ -19,6 +19,7 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String ORDERS_TABLE = "Orders_TBL";
     public static final String SETTINGS_TABLE = "Settings_TBL";
     public static final String RESPONCES_TABLE = "Responces_TBL";
+    public static final String VIDEOS_TABLE = "Videos_TBL";
 
     public static final String ID = "Id";
     public static final String CODE = "Code";
@@ -84,6 +85,12 @@ public class MyDatabase extends SQLiteOpenHelper {
                 "CREATE TABLE IF NOT EXISTS " + RESPONCES_TABLE + " (" +
                         ID + " INTEGER PRIMARY KEY, " +
                         RESPONCE + " TEXT);"
+        );
+
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS " + VIDEOS_TABLE + " (" +
+                        ID + " INTEGER PRIMARY KEY, " +
+                        NAME + " TEXT);"
         );
     }
 

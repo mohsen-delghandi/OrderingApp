@@ -12,7 +12,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.FloatingActionButton;
@@ -24,6 +28,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import android.util.Base64;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +39,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
+import com.backtory.java.internal.BacktoryCallBack;
+import com.backtory.java.internal.BacktoryObject;
+import com.backtory.java.internal.BacktoryQuery;
+import com.backtory.java.internal.BacktoryResponse;
+import com.backtory.java.internal.BacktoryUser;
+import com.backtory.java.internal.LoginResponse;
 import com.bumptech.glide.Glide;
 import com.wang.avi.AVLoadingIndicatorView;
 import com.wang.avi.Indicator;
@@ -43,10 +55,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import dmax.dialog.SpotsDialog;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by Mohsen on 2017-07-11.
@@ -71,12 +91,13 @@ public class MainActivity extends AppCompatActivity {
     String title;
     Handler handler;
     Runnable r;
+    List<String> videoAddressList = new ArrayList<String >();
 
     public void stopHandler() {
         handler.removeCallbacks(r);
     }
     public void startHandler() {
-        handler.postDelayed(r, 90000);
+        handler.postDelayed(r, 3000);
     }
 
 
@@ -93,6 +114,28 @@ public class MainActivity extends AppCompatActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
+    public void startVideo(final VideoView videoView, final List<String> videoAddressList, final int i){
+        Uri video = Uri.parse(videoAddressList.get(i));
+        videoView.setVideoURI(video);
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                videoView.start();
+            }
+        });
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                mediaPlayer.stop();
+                if(i == videoAddressList.size()-1){
+                    startVideo(videoView,videoAddressList,0);
+                }else {
+                    startVideo(videoView, videoAddressList, i + 1);
+                }
+            }
+        });
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,15 +144,98 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        final List<String> backtoryVideoNames = new ArrayList<String>();
+
+        BacktoryUser.loginAsGuestInBackground(new BacktoryCallBack<LoginResponse>() {
+
+            // Login done (fail or success), checking for result
+            @Override
+            public void onResponse(BacktoryResponse<LoginResponse> response) {
+                // Checking if operation was successful
+                if (response.isSuccessful()) {
+                    // Getting new username and password from CURRENT user
+                    String newUsername = BacktoryUser.getCurrentUser().getUsername();
+                    String newPassword = BacktoryUser.getCurrentUser().getGuestPassword();
+
+                    Toast.makeText(MainActivity.this, "login ok", Toast.LENGTH_SHORT).show();
+
+                    BacktoryQuery nameQuery = new BacktoryQuery("videos");
+                    nameQuery.whereExists("name");
+                    nameQuery.findInBackground(new BacktoryCallBack<List<BacktoryObject>>() {
+                        @Override
+                        public void onResponse(BacktoryResponse<List<BacktoryObject>> backtoryResponse) {
+                            if(backtoryResponse.isSuccessful()){
+                                List<BacktoryObject> videoNames = backtoryResponse.body();
+                                for(BacktoryObject names : videoNames){
+                                    backtoryVideoNames.add(names.getString("name"));
+                                }
+                            }else{
+                                Toast.makeText(MainActivity.this, "database not successful", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+                    // Logging new username and password
+                    Log.d(TAG, "your guest username: " + newUsername
+                            + " & your guest password: " + newPassword);
+                } else {
+                    // Operation generally failed, maybe internet connection issue
+                    Log.d(TAG, "Login failed for other reasons like network issues");
+                    Toast.makeText(MainActivity.this, "login failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        List<String> localVideoNames = new ArrayList<String>();
+
+        SQLiteDatabase dbVideos = new MyDatabase(this).getWritableDatabase();
+        Cursor cursorVideos = dbVideos.query(MyDatabase.VIDEOS_TABLE,new String[]{MyDatabase.NAME},null,null,null,null,null,null);
+        if(cursorVideos.moveToFirst()){
+            do{
+                localVideoNames.add(cursorVideos.getString(0));
+            }while (cursorVideos.moveToNext());
+        }else{
+            if(backtoryVideoNames.size()>0){
+                ContentValues cvVideos = new ContentValues();
+                for(int i = 0 ; i < backtoryVideoNames.size() ; i++){
+                    new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/" + backtoryVideoNames.get(i));
+                    cvVideos.put(MyDatabase.NAME,backtoryVideoNames.get(i));
+                }
+                dbVideos.insert(MyDatabase.VIDEOS_TABLE,null,cvVideos);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+//        new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/video1.mp4");
+//        new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/video2.mp4");
+//        new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/video3.mp4");
+
+        videoAddressList.add(Environment.getExternalStorageDirectory() + "/orderingappvideos/video1.mp4");
+        videoAddressList.add(Environment.getExternalStorageDirectory() + "/orderingappvideos/video2.mp4");
+        videoAddressList.add(Environment.getExternalStorageDirectory() + "/orderingappvideos/video3.mp4");
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        final ImageView ivScreenSaver = (ImageView) findViewById(R.id.imageView_screenSaver);
+//        final ImageView ivScreenSaver = (ImageView) findViewById(R.id.imageView_screenSaver);
+        final VideoView vvScreenSaver = (VideoView) findViewById(R.id.videoView);
         final View include = findViewById(R.id.include);
         final FrameLayout frameLayout = (FrameLayout)findViewById(R.id.frameLayout_screenSaver);
         final NavigationView navigationView = (NavigationView)findViewById(R.id.nav_view);
         Button btScreenSaver = (Button)findViewById(R.id.button_screenSaver);
 
-        Glide.with(this).load(R.drawable.ads).into(ivScreenSaver);
+
+
+//        Glide.with(this).load(R.drawable.ads).into(ivScreenSaver);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -134,10 +260,37 @@ public class MainActivity extends AppCompatActivity {
                 navigationView.setVisibility(View.GONE);
                 frameLayout.setVisibility(View.VISIBLE);
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//                Uri video = Uri.parse(Environment.getExternalStorageDirectory() + "/orderingappvideos/video1.mp4");
+//                vvScreenSaver.setVideoURI(video);
+//                vvScreenSaver.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//                    @Override
+//                    public void onPrepared(MediaPlayer mp) {
+////                        mp.setLooping(true);
+//                        vvScreenSaver.start();
+//                    }
+//                });
+
+
+                startVideo(vvScreenSaver,videoAddressList,0);
+
+
+
+//                vvScreenSaver.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                    @Override
+//                    public void onCompletion(MediaPlayer mediaPlayer) {
+//                        startVideo(vvScreenSaver,"https://storage.backtory.com/ordering-app-video/video2.mp4");
+//                    }
+//                });
+//                vvScreenSaver.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                    @Override
+//                    public void onCompletion(MediaPlayer mediaPlayer) {
+//                        startVideo(vvScreenSaver,"https://storage.backtory.com/ordering-app-video/video3.mp4");
+//                    }
+//                });
                 stopHandler();
             }
         };
-        startHandler();
+//        startHandler();
 
         SQLiteDatabase db2 = new MyDatabase(this).getWritableDatabase();
         Cursor cursor = db2.query(MyDatabase.SETTINGS_TABLE,new String[]{MyDatabase.TITLE},null,null,null,null,null);
