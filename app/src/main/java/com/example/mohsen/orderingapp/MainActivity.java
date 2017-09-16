@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         handler.removeCallbacks(r);
     }
     public void startHandler() {
-        handler.postDelayed(r, 3000);
+        handler.postDelayed(r, 15000);
     }
 
 
@@ -144,66 +144,83 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final List<String> backtoryVideoNames = new ArrayList<String>();
+//        final List<String> backtoryVideoNames = new ArrayList<String>();
+//
+//        BacktoryUser.loginAsGuestInBackground(new BacktoryCallBack<LoginResponse>() {
+//
+//            // Login done (fail or success), checking for result
+//            @Override
+//            public void onResponse(BacktoryResponse<LoginResponse> response) {
+//                // Checking if operation was successful
+//                if (response.isSuccessful()) {
+//                    // Getting new username and password from CURRENT user
+//                    String newUsername = BacktoryUser.getCurrentUser().getUsername();
+//                    String newPassword = BacktoryUser.getCurrentUser().getGuestPassword();
+//
+//                    Toast.makeText(MainActivity.this, "login ok", Toast.LENGTH_SHORT).show();
+//
+//                    BacktoryQuery nameQuery = new BacktoryQuery("videos");
+//                    nameQuery.whereExists("name");
+//                    nameQuery.findInBackground(new BacktoryCallBack<List<BacktoryObject>>() {
+//                        @Override
+//                        public void onResponse(BacktoryResponse<List<BacktoryObject>> backtoryResponse) {
+//                            if(backtoryResponse.isSuccessful()){
+//                                List<BacktoryObject> videoNames = backtoryResponse.body();
+//                                SQLiteDatabase dbVideos = new MyDatabase(MainActivity.this).getWritableDatabase();
+//                                Cursor cursorVideos = dbVideos.query(MyDatabase.VIDEOS_TABLE,new String[]{MyDatabase.NAME},null,null,null,null,null,null);
+//                                for(BacktoryObject names : videoNames){
+////                                    backtoryVideoNames.add(names.getString("name"));
+//                                    boolean existed = false;
+//                                    if(cursorVideos.moveToFirst()){
+//                                        do{
+//                                            if(names.getString("name").trim().equals(cursorVideos.getString(0).trim())){
+//                                                existed = true;
+//                                            }
+//                                        }while (cursorVideos.moveToNext());
+//                                    }
+//                                    if(!existed){
+//                                        new DownloadTask(MainActivity.this,"https://storage.backtory.com/ordering-app-video/" + names.getString("name"));
+//                                        ContentValues cv = new ContentValues();
+//                                        cv.put(MyDatabase.NAME,names.getString("name"));
+//                                        dbVideos.insert(MyDatabase.VIDEOS_TABLE,null,cv);
+//                                    }
+//                                }
+//                                Toast.makeText(MainActivity.this, "database successful", Toast.LENGTH_SHORT).show();
+//                            }else{
+//                                Toast.makeText(MainActivity.this, "database not successful", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }
+//                    });
+//
+//                    // Logging new username and password
+//                    Log.d(TAG, "your guest username: " + newUsername
+//                            + " & your guest password: " + newPassword);
+//                } else {
+//                    // Operation generally failed, maybe internet connection issue
+//                    Log.d(TAG, "Login failed for other reasons like network issues");
+//                    Toast.makeText(MainActivity.this, "login failed", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
-        BacktoryUser.loginAsGuestInBackground(new BacktoryCallBack<LoginResponse>() {
-
-            // Login done (fail or success), checking for result
-            @Override
-            public void onResponse(BacktoryResponse<LoginResponse> response) {
-                // Checking if operation was successful
-                if (response.isSuccessful()) {
-                    // Getting new username and password from CURRENT user
-                    String newUsername = BacktoryUser.getCurrentUser().getUsername();
-                    String newPassword = BacktoryUser.getCurrentUser().getGuestPassword();
-
-                    Toast.makeText(MainActivity.this, "login ok", Toast.LENGTH_SHORT).show();
-
-                    BacktoryQuery nameQuery = new BacktoryQuery("videos");
-                    nameQuery.whereExists("name");
-                    nameQuery.findInBackground(new BacktoryCallBack<List<BacktoryObject>>() {
-                        @Override
-                        public void onResponse(BacktoryResponse<List<BacktoryObject>> backtoryResponse) {
-                            if(backtoryResponse.isSuccessful()){
-                                List<BacktoryObject> videoNames = backtoryResponse.body();
-                                for(BacktoryObject names : videoNames){
-                                    backtoryVideoNames.add(names.getString("name"));
-                                }
-                            }else{
-                                Toast.makeText(MainActivity.this, "database not successful", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-
-                    // Logging new username and password
-                    Log.d(TAG, "your guest username: " + newUsername
-                            + " & your guest password: " + newPassword);
-                } else {
-                    // Operation generally failed, maybe internet connection issue
-                    Log.d(TAG, "Login failed for other reasons like network issues");
-                    Toast.makeText(MainActivity.this, "login failed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        List<String> localVideoNames = new ArrayList<String>();
-
-        SQLiteDatabase dbVideos = new MyDatabase(this).getWritableDatabase();
-        Cursor cursorVideos = dbVideos.query(MyDatabase.VIDEOS_TABLE,new String[]{MyDatabase.NAME},null,null,null,null,null,null);
-        if(cursorVideos.moveToFirst()){
-            do{
-                localVideoNames.add(cursorVideos.getString(0));
-            }while (cursorVideos.moveToNext());
-        }else{
-            if(backtoryVideoNames.size()>0){
-                ContentValues cvVideos = new ContentValues();
-                for(int i = 0 ; i < backtoryVideoNames.size() ; i++){
-                    new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/" + backtoryVideoNames.get(i));
-                    cvVideos.put(MyDatabase.NAME,backtoryVideoNames.get(i));
-                }
-                dbVideos.insert(MyDatabase.VIDEOS_TABLE,null,cvVideos);
-            }
-        }
+//        List<String> localVideoNames = new ArrayList<String>();
+//
+//        SQLiteDatabase dbVideos = new MyDatabase(this).getWritableDatabase();
+//        Cursor cursorVideos = dbVideos.query(MyDatabase.VIDEOS_TABLE,new String[]{MyDatabase.NAME},null,null,null,null,null,null);
+//        if(cursorVideos.moveToFirst()){
+//            do{
+//                localVideoNames.add(cursorVideos.getString(0));
+//            }while (cursorVideos.moveToNext());
+//        }else{
+//            if(backtoryVideoNames.size()>0){
+//                ContentValues cvVideos = new ContentValues();
+//                for(int i = 0 ; i < backtoryVideoNames.size() ; i++){
+//                    new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/" + backtoryVideoNames.get(i));
+//                    cvVideos.put(MyDatabase.NAME,backtoryVideoNames.get(i));
+//                }
+//                dbVideos.insert(MyDatabase.VIDEOS_TABLE,null,cvVideos);
+//            }
+//        }
 
 
 
@@ -223,6 +240,8 @@ public class MainActivity extends AppCompatActivity {
         videoAddressList.add(Environment.getExternalStorageDirectory() + "/orderingappvideos/video1.mp4");
         videoAddressList.add(Environment.getExternalStorageDirectory() + "/orderingappvideos/video2.mp4");
         videoAddressList.add(Environment.getExternalStorageDirectory() + "/orderingappvideos/video3.mp4");
+        videoAddressList.add(Environment.getExternalStorageDirectory() + "/orderingappvideos/video4.mp4");
+        videoAddressList.add(Environment.getExternalStorageDirectory() + "/orderingappvideos/video5.mp4");
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -247,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
                 navigationView.setVisibility(View.VISIBLE);
                 frameLayout.setVisibility(View.GONE);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                vvScreenSaver.stopPlayback();
                 startHandler();
             }
         });
@@ -290,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
                 stopHandler();
             }
         };
-//        startHandler();
+        startHandler();
 
         SQLiteDatabase db2 = new MyDatabase(this).getWritableDatabase();
         Cursor cursor = db2.query(MyDatabase.SETTINGS_TABLE,new String[]{MyDatabase.TITLE},null,null,null,null,null);
