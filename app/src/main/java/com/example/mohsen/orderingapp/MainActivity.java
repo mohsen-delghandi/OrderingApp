@@ -97,17 +97,17 @@ public class MainActivity extends AppCompatActivity {
         handler.removeCallbacks(r);
     }
     public void startHandler() {
-        handler.postDelayed(r, 15000);
+        handler.postDelayed(r, 3000);
     }
 
 
-    @Override
-    public void onUserInteraction() {
-        // TODO Auto-generated method stub
-        super.onUserInteraction();
-        stopHandler();//stop first and then start
-        startHandler();
-    }
+//    @Override
+//    public void onUserInteraction() {
+//        // TODO Auto-generated method stub
+//        super.onUserInteraction();
+//        stopHandler();//stop first and then start
+//        startHandler();
+//    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -259,17 +259,17 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        btScreenSaver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                include.setVisibility(View.VISIBLE);
-                navigationView.setVisibility(View.VISIBLE);
-                frameLayout.setVisibility(View.GONE);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                vvScreenSaver.stopPlayback();
-                startHandler();
-            }
-        });
+//        btScreenSaver.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                include.setVisibility(View.VISIBLE);
+//                navigationView.setVisibility(View.VISIBLE);
+//                frameLayout.setVisibility(View.GONE);
+//                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//                vvScreenSaver.stopPlayback();
+//                startHandler();
+//            }
+//        });
 
         handler = new Handler();
         r = new Runnable() {
@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
 //                });
 
 
-                startVideo(vvScreenSaver,videoAddressList,0);
+//                startVideo(vvScreenSaver,videoAddressList,0);
 
 
 
@@ -307,10 +307,10 @@ public class MainActivity extends AppCompatActivity {
 //                        startVideo(vvScreenSaver,"https://storage.backtory.com/ordering-app-video/video3.mp4");
 //                    }
 //                });
-                stopHandler();
+//                stopHandler();
             }
         };
-        startHandler();
+//        startHandler();
 
         SQLiteDatabase db2 = new MyDatabase(this).getWritableDatabase();
         Cursor cursor = db2.query(MyDatabase.SETTINGS_TABLE,new String[]{MyDatabase.TITLE},null,null,null,null,null);
