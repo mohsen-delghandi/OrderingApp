@@ -1,5 +1,7 @@
 package com.example.mohsen.orderingapp;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
@@ -26,7 +28,7 @@ public class DownloadTask {
     private Context context;
     private String downloadUrl = "", downloadFileName = "";
 
-    public DownloadTask(Context context, String downloadUrl) {
+    public DownloadTask(final Context context, String downloadUrl) {
         this.context = context;
         this.downloadUrl = downloadUrl;
 
@@ -34,7 +36,19 @@ public class DownloadTask {
         Log.e(TAG, downloadFileName);
 
         //Start Downloading Task
-        new DownloadingTask().execute();
+
+        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        new PermissionHandler().checkPermission((Activity) context, permissions, new PermissionHandler.OnPermissionResponse() {
+            @Override
+            public void onPermissionGranted() {
+                new DownloadingTask().execute();                
+            }
+
+            @Override
+            public void onPermissionDenied() {
+                Toast.makeText(context, "No Permission.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private class DownloadingTask extends AsyncTask<Void, Void, Void> {
