@@ -41,17 +41,18 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
     View v;
     ViewHolder mHolder;
     FragmentManager mFragmentManager;
-    int mNumber;
+    int mNumber,mHeight;
     public static ArrayList<String> mFoodsCodes;
     public static ArrayList<String> mFoodsPrices;
 
-    public FoodMenuAdapter(Context context, ArrayList<byte[]> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, ArrayList<String> foodsCodes, ArrayList<String> foodsPrices) {
+    public FoodMenuAdapter(Context context, ArrayList<byte[]> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, ArrayList<String> foodsCodes, ArrayList<String> foodsPrices, int height) {
         mContext = context;
         mFoodsImages = foodsImages;
         mFoodsNames = foodsNames;
         mFragmentManager = fragmentManager;
         mFoodsCodes = foodsCodes;
         mFoodsPrices = foodsPrices;
+        mHeight = height;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -121,7 +122,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
                 ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
                         "height",
                         animationWrapper.getHeight(),
-                        height/3);
+                        mHeight/3);
                 anim.setDuration(300);
                 anim.setInterpolator(new FastOutLinearInInterpolator());
                 anim.start();

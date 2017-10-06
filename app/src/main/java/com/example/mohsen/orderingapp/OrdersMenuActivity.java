@@ -100,7 +100,7 @@ public class OrdersMenuActivity extends MainActivity {
 
         Food food = new Food(this);
 
-        mRecyclerAdapter = new NavigationAdapter(this,width,food.getFoodCategoryImages(),food.getFoodCategoryNames(),fragmentManager,drawer,food.getFoodCategoryCodes());
+        mRecyclerAdapter = new NavigationAdapter(this,width,food.getFoodCategoryImages(),food.getFoodCategoryNames(),fragmentManager,drawer,food.getFoodCategoryCodes(),height);
         mNavigationRecycler.setAdapter(mRecyclerAdapter);
 
 

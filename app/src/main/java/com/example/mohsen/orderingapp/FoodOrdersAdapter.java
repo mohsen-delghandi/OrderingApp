@@ -217,11 +217,11 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
         notifyItemRangeChanged(position, mList.size());
 
         if (mList.size() == 0) {
-            ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(OrdersMenuActivity.ll);
-            ObjectAnimator anim = ObjectAnimator.ofFloat(animationWrapper,
-                    "weight",
-                    animationWrapper.getWeight(),
-                    0f);
+            ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
+            ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
+                    "height",
+                    animationWrapper.getHeight(),
+                    0);
             anim.setDuration(300);
             anim.setInterpolator(new FastOutLinearInInterpolator());
             anim.start();

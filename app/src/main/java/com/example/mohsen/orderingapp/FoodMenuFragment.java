@@ -4,10 +4,12 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +27,13 @@ public class FoodMenuFragment extends Fragment {
     RecyclerView.Adapter rva;
     Context mContext;
     FragmentManager mFragmentManager;
-    int mFoodsCategoryCode;
+    int mFoodsCategoryCode,mHeight;
     public static boolean isFavoriteEmpty = true;
 
-    public FoodMenuFragment(Context context, FragmentManager fragmentManager, String foodsCategoryCode) {
+    public FoodMenuFragment(Context context, FragmentManager fragmentManager, String foodsCategoryCode,int height) {
         mContext = context;
         mFragmentManager = fragmentManager;
+        mHeight = height;
         if(foodsCategoryCode.toString().trim().equals("favorites")){
             mFoodsCategoryCode = -1;
         }else{
@@ -81,7 +84,7 @@ public class FoodMenuFragment extends Fragment {
             }
         }
 
-        rva = new FoodMenuAdapter(mContext,foodsImages,foodsNames,mFragmentManager,foodsCodes,foodsPrices,height);
+        rva = new FoodMenuAdapter(mContext,foodsImages,foodsNames,mFragmentManager,foodsCodes,foodsPrices,mHeight);
 
         rvv.setAdapter(rva);
         return v;

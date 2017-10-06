@@ -25,6 +25,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
     static Context mContext;
     int mWidth;
+    static int mHeight;
     ArrayList<byte[]> mFoodsCategoryImages;
     ArrayList<String> mFoodsCategoryNames;
     ArrayList<String> mFoodsCategoryCodes;
@@ -33,7 +34,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     static DrawerLayout mDrawer;
     public static boolean isFavorite;
 
-    public NavigationAdapter(Context context, int width, ArrayList<byte[]> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, DrawerLayout drawer, ArrayList<String> foodCategoryCodes) {
+    public NavigationAdapter(Context context, int width, ArrayList<byte[]> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, DrawerLayout drawer, ArrayList<String> foodCategoryCodes,int height) {
         mContext = context;
         mWidth = width;
         mFoodsCategoryImages = foodsImages;
@@ -41,6 +42,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         mFoodsCategoryCodes = foodCategoryCodes;
         mFragmentManager = fragmentManager;
         mDrawer = drawer;
+        mHeight = height;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -90,7 +92,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
                 @Override
                 public void onClick(View view) {
                     FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-                    FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager, mFoodsCategoryCodes.get(finalPosition));
+                    FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager, mFoodsCategoryCodes.get(finalPosition),mHeight);
                     fragmentTransaction.replace(R.id.food_menu_fragment, foodMenuFragment);
 //                fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
@@ -105,7 +107,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
     public static void refreshFavorites(){
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager,"favorites");
+        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager,"favorites",mHeight);
 //        if(FoodMenuFragment.isFavoriteEmpty){
 //            OrdersMenuActivity.linearLayout.setVisibility(View.VISIBLE);
 //        }else{
