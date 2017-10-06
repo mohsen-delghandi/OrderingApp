@@ -65,7 +65,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         if (position == 0){
             holder.tv.setText("خواستنی ها");
             holder.setIsRecyclable(false);
-            holder.iv.setImageResource(R.drawable.shape_heart);
+            holder.iv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.heart));
             holder.iv.getLayoutParams().width = mWidth / 5;
             holder.iv.getLayoutParams().height = mWidth / 5;
 

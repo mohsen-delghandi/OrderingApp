@@ -17,7 +17,7 @@
             android:layout_margin="@dimen/dimen_xxxlarge"
             android:clickable="true"
             android:scaleType="center"
-            android:src="@drawable/icon_up"
+            app:srcCompat="@drawable/icon_up"
             app:layout_anchorGravity="top|right"
             app:layout_anchor="@+id/food_orders_fragment"/>
 
@@ -78,7 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:background="#388E3C"
+                    android:background="@color/green"
                     android:gravity="center"
                     android:padding="@dimen/padding_medium"
                     android:text="تایید سفارش"

@@ -81,7 +81,7 @@ public class FoodMenuFragment extends Fragment {
             }
         }
 
-        rva = new FoodMenuAdapter(mContext,foodsImages,foodsNames,mFragmentManager,foodsCodes,foodsPrices);
+        rva = new FoodMenuAdapter(mContext,foodsImages,foodsNames,mFragmentManager,foodsCodes,foodsPrices,height);
 
         rvv.setAdapter(rva);
         return v;

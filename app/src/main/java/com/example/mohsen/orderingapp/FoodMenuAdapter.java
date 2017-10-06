@@ -117,11 +117,11 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
                     obj2.start();
                 }
 
-                ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(OrdersMenuActivity.ll);
-                ObjectAnimator anim = ObjectAnimator.ofFloat(animationWrapper,
-                        "weight",
-                        animationWrapper.getWeight(),
-                        1f);
+                ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
+                ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
+                        "height",
+                        animationWrapper.getHeight(),
+                        height/3);
                 anim.setDuration(300);
                 anim.setInterpolator(new FastOutLinearInInterpolator());
                 anim.start();

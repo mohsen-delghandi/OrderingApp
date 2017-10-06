@@ -14,7 +14,7 @@ public class Font extends Application {
     public void onCreate() {
         super.onCreate();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/vazir.ttf")
+                .setDefaultFontPath("fonts/IRANSansWeb_Light.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );

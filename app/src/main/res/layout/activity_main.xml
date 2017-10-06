@@ -22,17 +22,34 @@
             android:layout_height="match_parent" />
 
         <Button
-            android:id="@+id/button_screenSaver"
-            android:elevation="@dimen/padding_bit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="جهت ثبت سفارش کلیک کنید"
-            android:layout_gravity="bottom|center_horizontal"
+            android:elevation="@dimen/padding_large"
+            android:layout_width="@dimen/dimen_item_height3"
+            android:layout_height="@dimen/dimen_item_height3"
+            android:text="ثبت سفارش"
+            android:layout_gravity="bottom|right"
             android:textColor="@color/primary_dark"
             android:paddingRight="@dimen/padding_medium"
             android:paddingLeft="@dimen/padding_medium"
             android:textSize="@dimen/font_large"
-            android:background="@drawable/button_shape"
+            app:fontPath="fonts/IRANSansWeb_Bold.ttf"
+            android:layout_margin="@dimen/padding_medium"
+            android:background="@drawable/shape_circle_shadow"
+            />
+
+        <Button
+            android:id="@+id/button_screenSaver"
+            android:elevation="@dimen/padding_large"
+            android:layout_width="@dimen/dimen_item_height2"
+            android:layout_height="@dimen/dimen_item_height2"
+            android:text="ثبت سفارش"
+            android:layout_gravity="bottom|right"
+            android:textColor="#fff"
+            android:paddingRight="@dimen/padding_medium"
+            android:paddingLeft="@dimen/padding_medium"
+            android:textSize="@dimen/font_large"
+            android:layout_margin="@dimen/padding_large"
+            android:background="@drawable/shape_circle"
+            android:backgroundTint="#39b54a"
             />
 
     </FrameLayout>

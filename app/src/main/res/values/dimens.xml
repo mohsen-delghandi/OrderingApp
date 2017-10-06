@@ -26,6 +26,8 @@
     <dimen name="dimen_icon">24dp</dimen>
     <dimen name="dimen_icon_box">48dp</dimen>
     <dimen name="dimen_item_height">99dp</dimen>
+    <dimen name="dimen_item_height2">75dp</dimen>
+    <dimen name="dimen_item_height3">81dp</dimen>
 
 
     <dimen name="height_slider_main">170dp</dimen>

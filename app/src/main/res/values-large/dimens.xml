@@ -4,7 +4,7 @@
     <dimen name="padding_bit">4dp</dimen>
     <dimen name="padding_small">10dp</dimen>
     <dimen name="padding_inner">12dp</dimen>
-    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_medium">17dp</dimen>
     <dimen name="padding_large">20dp</dimen>
     <dimen name="padding_spinner">30dp</dimen>
     <dimen name="padding_box">55dp</dimen>
@@ -25,8 +25,10 @@
     <dimen name="dimen_xxlarge">60dp</dimen>
     <dimen name="dimen_xxxlarge">85dp</dimen>
     <dimen name="dimen_icon">48dp</dimen>
-    <dimen name="dimen_icon_box">96dp</dimen>
+    <dimen name="dimen_icon_box">60dp</dimen>
     <dimen name="dimen_item_height">199dp</dimen>
+    <dimen name="dimen_item_height2">125dp</dimen>
+    <dimen name="dimen_item_height3">131dp</dimen>
 
     <dimen name="height_slider_main">200dp</dimen>
     <dimen name="height_item_product">275dp</dimen>

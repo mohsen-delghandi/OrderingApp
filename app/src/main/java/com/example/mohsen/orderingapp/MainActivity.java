@@ -78,7 +78,8 @@ public class MainActivity extends BaseActivity {
     LinearLayout ns;
     Toolbar toolbar;
     DrawerLayout drawer;
-    int width;
+    static int height;
+    int width,stopPosition,currentVideo = 0;
     FloatingActionButton fab;
     TextView tvTitlebar;
     ImageView ivTitlebar;
@@ -92,22 +93,23 @@ public class MainActivity extends BaseActivity {
     Handler handler;
     Runnable r;
     List<String> videoAddressList = new ArrayList<String >();
+    boolean isStarted = false;
 
     public void stopHandler() {
         handler.removeCallbacks(r);
     }
     public void startHandler() {
-        handler.postDelayed(r, 3000);
+        handler.postDelayed(r, 30000);
     }
 
 
-//    @Override
-//    public void onUserInteraction() {
-//        // TODO Auto-generated method stub
-//        super.onUserInteraction();
-//        stopHandler();//stop first and then start
-//        startHandler();
-//    }
+    @Override
+    public void onUserInteraction() {
+        // TODO Auto-generated method stub
+        super.onUserInteraction();
+        stopHandler();//stop first and then start
+        startHandler();
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -115,21 +117,29 @@ public class MainActivity extends BaseActivity {
     }
 
     public void startVideo(final VideoView videoView, final List<String> videoAddressList, final int i){
-        Uri video = Uri.parse(videoAddressList.get(i));
+        currentVideo = i;
+        final Uri video = Uri.parse(videoAddressList.get(i));
         videoView.setVideoURI(video);
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-                videoView.start();
+                if(isStarted){
+                    videoView.seekTo(stopPosition);
+                    videoView.start();
+                }else{
+                    videoView.start();
+                    isStarted = true;
+                }
             }
         });
         videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 mediaPlayer.stop();
+                stopPosition = 0;
                 if(i == videoAddressList.size()-1){
                     startVideo(videoView,videoAddressList,0);
-                }else {
+                }else{
                     startVideo(videoView, videoAddressList, i + 1);
                 }
             }
@@ -233,11 +243,11 @@ public class MainActivity extends BaseActivity {
 
 
 
-        new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/video1.mp4");
-        new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/video2.mp4");
-        new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/video3.mp4");
-        new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/video4.mp4");
-        new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/video5.mp4");
+//        new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/video1.mp4");
+//        new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/video2.mp4");
+//        new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/video3.mp4");
+//        new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/video4.mp4");
+//        new DownloadTask(this,"https://storage.backtory.com/ordering-app-video/video5.mp4");
 
         videoAddressList.add(Environment.getExternalStorageDirectory() + "/orderingappvideos/video1.mp4");
         videoAddressList.add(Environment.getExternalStorageDirectory() + "/orderingappvideos/video2.mp4");
@@ -267,7 +277,10 @@ public class MainActivity extends BaseActivity {
                 include.setVisibility(View.VISIBLE);
                 navigationView.setVisibility(View.VISIBLE);
                 frameLayout.setVisibility(View.GONE);
+                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//                vvScreenSaver.stopPlayback();
+                stopPosition = vvScreenSaver.getCurrentPosition();
                 vvScreenSaver.stopPlayback();
                 startHandler();
             }
@@ -281,6 +294,7 @@ public class MainActivity extends BaseActivity {
                 include.setVisibility(View.GONE);
                 navigationView.setVisibility(View.GONE);
                 frameLayout.setVisibility(View.VISIBLE);
+                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 //                Uri video = Uri.parse(Environment.getExternalStorageDirectory() + "/orderingappvideos/video1.mp4");
 //                vvScreenSaver.setVideoURI(video);
@@ -293,7 +307,7 @@ public class MainActivity extends BaseActivity {
 //                });
 
 
-                startVideo(vvScreenSaver,videoAddressList,0);
+                startVideo(vvScreenSaver,videoAddressList,currentVideo);
 
 
 
@@ -346,6 +360,7 @@ public class MainActivity extends BaseActivity {
         Point size = new Point();
         display.getSize(size);
         width = size.x;
+        height = size.y;
 
         //Navigation Size
 

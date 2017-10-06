@@ -7,10 +7,12 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.Nullable;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,6 +33,8 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 /**
  * Created by Mohsen on 2017-07-15.
@@ -54,6 +58,8 @@ public class CustomDialogClass extends Dialog implements
         super(a);
         this.c = a;
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +123,15 @@ public class CustomDialogClass extends Dialog implements
     }
 
     @Override
+    public void dismiss() {
+        InputMethodManager inputMethodManager = (InputMethodManager) c.getSystemService(INPUT_METHOD_SERVICE);
+//        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+//        inputMethodManager.hideSoftInputFromWindow(c.getCurrentFocus().getWindowToken(), 0);
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        super.dismiss();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.textView_ok:
@@ -144,7 +159,7 @@ public class CustomDialogClass extends Dialog implements
                         public void run() {
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 public void run() {
-                                    InputMethodManager imm = (InputMethodManager)c.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                    InputMethodManager imm = (InputMethodManager)c.getSystemService(INPUT_METHOD_SERVICE);
                                     imm.hideSoftInputFromWindow(etTable.getWindowToken(), 0);
                                     llLoadingDialog.setVisibility(View.VISIBLE);
                                     tlMain.setAlpha(0.1f);
@@ -157,11 +172,11 @@ public class CustomDialogClass extends Dialog implements
                                     public void run() {
                                         Toast.makeText(c, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
                                         FoodOrdersAdapter.mList.clear();
-                                        ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(OrdersMenuActivity.ll);
-                                        ObjectAnimator anim = ObjectAnimator.ofFloat(animationWrapper,
-                                                "weight",
-                                                animationWrapper.getWeight(),
-                                                0f);
+                                        ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
+                                        ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
+                                                "height",
+                                                animationWrapper.getHeight(),
+                                                0);
                                         anim.setDuration(300);
                                         anim.setInterpolator(new FastOutLinearInInterpolator());
                                         anim.start();
@@ -180,6 +195,8 @@ public class CustomDialogClass extends Dialog implements
                                             }
                                         });
                                         dismiss();
+//                                        InputMethodManager inputMethodManager = (InputMethodManager) c.getSystemService(INPUT_METHOD_SERVICE);
+//                                        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                                     }
                                 });
                             } else {

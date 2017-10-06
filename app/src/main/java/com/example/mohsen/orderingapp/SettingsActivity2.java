@@ -57,6 +57,14 @@ public class SettingsActivity2 extends MainActivity {
     }
 
     @Override
+    public void onUserInteraction() {
+        // TODO Auto-generated method stub
+        super.onUserInteraction();
+        stopHandler();//stop first and then start
+        startHandler();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setInflater(this, R.layout.settings_layout2);

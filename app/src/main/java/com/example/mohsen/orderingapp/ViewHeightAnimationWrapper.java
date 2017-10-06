@@ -7,11 +7,11 @@ import android.widget.LinearLayout;
  * Created by Mohsen on 2017-07-15.
  */
 
-public class ViewWeightAnimationWrapper {
+public class ViewHeightAnimationWrapper {
 
     private View view;
 
-    public ViewWeightAnimationWrapper(View view) {
+    public ViewHeightAnimationWrapper(View view) {
         if (view.getLayoutParams() instanceof LinearLayout.LayoutParams) {
             this.view = view;
         } else {
@@ -19,13 +19,13 @@ public class ViewWeightAnimationWrapper {
         }
     }
 
-    public void setWeight(float weight) {
+    public void setHeight(int height) {
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
-        params.weight = weight;
+        params.height = height;
         view.getParent().requestLayout();
     }
 
-    public float getWeight() {
-        return ((LinearLayout.LayoutParams) view.getLayoutParams()).weight;
+    public int getHeight() {
+        return ((LinearLayout.LayoutParams) view.getLayoutParams()).height;
     }
 }

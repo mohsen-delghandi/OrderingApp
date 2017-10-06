@@ -14,8 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.OvershootInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
+
+import java.util.List;
 
 public class OrdersMenuActivity extends MainActivity {
 
@@ -27,6 +31,7 @@ public class OrdersMenuActivity extends MainActivity {
     public static TextView tvTayid;
     int firstRun;
     public static LinearLayout linearLayout;
+    CustomDialogClass cdd;
 
     @Override
     public void onBackPressed() {
@@ -54,7 +59,7 @@ public class OrdersMenuActivity extends MainActivity {
         tvTayid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CustomDialogClass cdd=new CustomDialogClass(OrdersMenuActivity.this);
+                cdd=new CustomDialogClass(OrdersMenuActivity.this);
                 cdd.show();
                 Window window = cdd.getWindow();
                 window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -116,16 +121,19 @@ public class OrdersMenuActivity extends MainActivity {
         NavigationAdapter.refreshFavorites();
     }
 
+    @Override
+    public void startVideo(VideoView videoView, List<String> videoAddressList, int i) {
+        if(cdd!=null && cdd.isShowing())  cdd.dismiss();
+        super.startVideo(videoView, videoAddressList, i);
+    }
+
     public static View.OnClickListener ocl2 = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(ll);
-            ObjectAnimator anim = ObjectAnimator.ofFloat(animationWrapper,
-                    "weight",
-                    animationWrapper.getWeight(),
-                    1f);
+            ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(ll);
+            ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,"height",animationWrapper.getHeight(),height/3);
             anim.setDuration(300);
-            anim.setInterpolator(new FastOutLinearInInterpolator());
+//            anim.setInterpolator(new FastOutLinearInInterpolator());
             anim.start();
             fabToggle.setImageResource(R.drawable.icon_up);
             fabToggle.setOnClickListener(ocl);
@@ -137,13 +145,10 @@ public class OrdersMenuActivity extends MainActivity {
         @Override
         public void onClick(View view) {
 
-            ViewWeightAnimationWrapper animationWrapper = new ViewWeightAnimationWrapper(ll);
-            ObjectAnimator anim = ObjectAnimator.ofFloat(animationWrapper,
-                    "weight",
-                    animationWrapper.getWeight(),
-                    9f);
+            ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(ll);
+            ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,"height",animationWrapper.getHeight(),height*2/3);
             anim.setDuration(500);
-            anim.setInterpolator(new OvershootInterpolator());
+//            anim.setInterpolator(new OvershootInterpolator());
             anim.start();
             fabToggle.setImageResource(R.drawable.icon_down);
             fabToggle.setOnClickListener(ocl2);
