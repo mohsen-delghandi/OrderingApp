@@ -3,6 +3,7 @@ package com.example.mohsen.orderingapp;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -36,16 +37,17 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
     RecyclerView mRvv;
     LinearLayoutManager mRvlm;
     ViewHolder mHolder;
-    int mPosition;
+    int mPosition,mHeight;
 
 //    boolean animate;
 
 
-    public FoodOrdersAdapter(Context context, List<OrderedItem> list, RecyclerView rvv, LinearLayoutManager rvlm) {
+    public FoodOrdersAdapter(Context context, List<OrderedItem> list, RecyclerView rvv, LinearLayoutManager rvlm,int height) {
         mContext = context;
         mList = list;
         mRvv = rvv;
         mRvlm = rvlm;
+        mHeight = height;
     }
 
 
@@ -217,6 +219,7 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
         notifyItemRangeChanged(position, mList.size());
 
         if (mList.size() == 0) {
+
             ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
             ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
                     "height",
@@ -225,6 +228,24 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
             anim.setDuration(300);
             anim.setInterpolator(new FastOutLinearInInterpolator());
             anim.start();
+
+//            OrdersMenuActivity.ll.animate().y((float)mHeight).setDuration(300).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    OrdersMenuActivity.ll.setVisibility(View.GONE);
+//                }
+//            });
+//
+//            ValueAnimator va = ValueAnimator.ofInt(100, 200);
+//            va.setDuration(400);
+//            va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+//                public void onAnimationUpdate(ValueAnimator animation) {
+//                    Integer value = (Integer) animation.getAnimatedValue();
+//                    v.getLayoutParams().height = value.intValue();
+//                    v.requestLayout();
+//                }
+//            });
+//            va.start();
 
             OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
                 @Override

@@ -24,16 +24,17 @@ public class FoodOrdersFragment extends Fragment{
     Context mContext;
     static FoodOrdersAdapter rva;
     int mPosition;
-    int mFoodCode;
+    int mFoodCode,mHeight;
     List<OrderedItem> mList = new ArrayList<>();
 
-    public FoodOrdersFragment(Context context,int foodCode) {
+    public FoodOrdersFragment(Context context,int foodCode,int height) {
         mContext = context;
         mFoodCode = foodCode;
     }
 
-    public FoodOrdersFragment(Context context) {
+    public FoodOrdersFragment(Context context,int height) {
         mContext = context;
+        mHeight = height;
     }
 
     @Override
@@ -52,7 +53,7 @@ public class FoodOrdersFragment extends Fragment{
 //        rvlm.setStackFromEnd(true);
         rvv.setLayoutManager(rvlm);
 
-        rva = new FoodOrdersAdapter(mContext,mList,rvv,rvlm);
+        rva = new FoodOrdersAdapter(mContext,mList,rvv,rvlm,mHeight);
 
 
 

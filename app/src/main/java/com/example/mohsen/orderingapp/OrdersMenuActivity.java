@@ -1,6 +1,9 @@
 package com.example.mohsen.orderingapp;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -85,7 +88,7 @@ public class OrdersMenuActivity extends MainActivity {
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        FoodOrdersFragment foodOrdersFragment = new FoodOrdersFragment(this);
+        FoodOrdersFragment foodOrdersFragment = new FoodOrdersFragment(this,height);
         fragmentTransaction.add(R.id.food_orders_fragment,foodOrdersFragment);
         fragmentTransaction.commit();
 
@@ -130,26 +133,68 @@ public class OrdersMenuActivity extends MainActivity {
     public static View.OnClickListener ocl2 = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(ll);
-            ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,"height",animationWrapper.getHeight(),height/3);
-            anim.setDuration(300);
-//            anim.setInterpolator(new FastOutLinearInInterpolator());
-            anim.start();
+//            ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(ll);
+//            ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,"height",animationWrapper.getHeight(),height/3);
+//            anim.setDuration(300);
+////            anim.setInterpolator(new FastOutLinearInInterpolator());
+//            anim.start();
+
+//            OrdersMenuActivity.ll.animate().y((float)height/4).setDuration(300).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    OrdersMenuActivity.ll.setVisibility(View.GONE);
+//                }
+//            });
+
+            ValueAnimator va = ValueAnimator.ofInt(height*2/3,height/5);
+            va.setDuration(300);
+            va.setInterpolator(new FastOutLinearInInterpolator());
+            va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    Integer value = (Integer) animation.getAnimatedValue();
+                    OrdersMenuActivity.ll.getLayoutParams().height = value.intValue();
+                    OrdersMenuActivity.ll.requestLayout();
+                }
+            });
+            va.start();
+
             fabToggle.setImageResource(R.drawable.icon_up);
             fabToggle.setOnClickListener(ocl);
         }
     };
 
 
+
+
     public static View.OnClickListener ocl = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
 
-            ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(ll);
-            ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,"height",animationWrapper.getHeight(),height*2/3);
-            anim.setDuration(500);
-//            anim.setInterpolator(new OvershootInterpolator());
-            anim.start();
+//            ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(ll);
+//            ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,"height",animationWrapper.getHeight(),height*2/3);
+//            anim.setDuration(500);
+////            anim.setInterpolator(new OvershootInterpolator());
+//            anim.start();
+
+//            OrdersMenuActivity.ll.animate().y((float)height*2/3).setDuration(300).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//
+//                }
+//            });
+
+            ValueAnimator va = ValueAnimator.ofInt(height/5,height*2/3);
+            va.setDuration(500);
+            va.setInterpolator(new OvershootInterpolator());
+            va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    Integer value = (Integer) animation.getAnimatedValue();
+                    OrdersMenuActivity.ll.getLayoutParams().height = value.intValue();
+                    OrdersMenuActivity.ll.requestLayout();
+                }
+            });
+            va.start();
+
             fabToggle.setImageResource(R.drawable.icon_down);
             fabToggle.setOnClickListener(ocl2);
         }

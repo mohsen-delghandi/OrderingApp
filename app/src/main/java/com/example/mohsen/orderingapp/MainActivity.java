@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity {
         handler.removeCallbacks(r);
     }
     public void startHandler() {
-        handler.postDelayed(r, 30000);
+        handler.postDelayed(r, 15000);
     }
 
 

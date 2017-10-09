@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/icon_remove"
             android:scaleType="centerCrop"
-            android:tint="#ccc"/>
+            android:tint="#FF5252"/>
 
         <TextView
             android:id="@+id/food_order_item_name"
@@ -46,7 +46,7 @@
             android:id="@+id/food_order_item_tedad"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:maxLines="1"
             android:padding="@dimen/padding_bit"
             android:gravity="center"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/icon_minus"
             android:scaleType="centerCrop"
-            android:tint="#FF5252"/>
+            android:tint="@color/accent"/>
 
 
 
