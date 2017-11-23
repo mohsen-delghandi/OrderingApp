@@ -1,6 +1,7 @@
 
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
 
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layoutDirection="rtl"
     android:id="@+id/food_item_cardView"
     android:layout_width="match_parent"
@@ -19,7 +20,7 @@
             android:id="@+id/food_order_item_remove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_remove"
+            app:srcCompat="@drawable/icon_remove"
             android:scaleType="centerCrop"
             android:tint="#FF5252"/>
 
@@ -38,7 +39,7 @@
             android:id="@+id/food_order_item_plus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_plus"
+            app:srcCompat="@drawable/icon_plus"
             android:scaleType="centerCrop"
             android:tint="#388E3C"/>
 

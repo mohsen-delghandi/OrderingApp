@@ -22,16 +22,12 @@
     <dimen name="dimen_large">40dp</dimen>
     <dimen name="dimen_xlarge">45dp</dimen>
     <dimen name="dimen_xxlarge">50dp</dimen>
-    <dimen name="dimen_xxxlarge">45dp</dimen>
-    <dimen name="dimen_icon">24dp</dimen>
-    <dimen name="dimen_icon_box">48dp</dimen>
-    <dimen name="dimen_item_height">99dp</dimen>
-    <dimen name="dimen_item_height2">75dp</dimen>
-    <dimen name="dimen_item_height3">81dp</dimen>
+    <dimen name="dimen_xxxlarge">75dp</dimen>
+    <dimen name="dimen_toolbar">64dp</dimen>
 
 
     <dimen name="height_slider_main">170dp</dimen>
-    <dimen name="height_item_product">150dp</dimen>
+    <dimen name="height_item_product">200dp</dimen>
     <dimen name="width_item_product">85dp</dimen>
     <dimen name="height_item_category">90dp</dimen>
     <dimen name="rate_product">22px</dimen>
