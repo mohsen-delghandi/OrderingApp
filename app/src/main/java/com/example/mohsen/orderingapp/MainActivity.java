@@ -95,21 +95,21 @@ public class MainActivity extends BaseActivity {
     List<String> videoAddressList = new ArrayList<String >();
     boolean isStarted = false;
 
-    public void stopHandler() {
-        handler.removeCallbacks(r);
-    }
-    public void startHandler() {
-        handler.postDelayed(r, 15000);
-    }
+//    public void stopHandler() {
+//        handler.removeCallbacks(r);
+//    }
+//    public void startHandler() {
+//        handler.postDelayed(r, 15000);
+//    }
 
 
-    @Override
-    public void onUserInteraction() {
-        // TODO Auto-generated method stub
-        super.onUserInteraction();
-        stopHandler();//stop first and then start
-        startHandler();
-    }
+//    @Override
+//    public void onUserInteraction() {
+//        // TODO Auto-generated method stub
+//        super.onUserInteraction();
+//        stopHandler();//stop first and then start
+//        startHandler();
+//    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -145,7 +145,6 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -271,62 +270,62 @@ public class MainActivity extends BaseActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        btScreenSaver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                include.setVisibility(View.VISIBLE);
-                navigationView.setVisibility(View.VISIBLE);
-                frameLayout.setVisibility(View.GONE);
-                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        btScreenSaver.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                include.setVisibility(View.VISIBLE);
+//                navigationView.setVisibility(View.VISIBLE);
+//                frameLayout.setVisibility(View.GONE);
+//                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+//                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+////                vvScreenSaver.stopPlayback();
+//                stopPosition = vvScreenSaver.getCurrentPosition();
 //                vvScreenSaver.stopPlayback();
-                stopPosition = vvScreenSaver.getCurrentPosition();
-                vvScreenSaver.stopPlayback();
-                startHandler();
-            }
-        });
+//                startHandler();
+//            }
+//        });
 
         handler = new Handler();
-        r = new Runnable() {
+//        r = new Runnable() {
+//            @Override
+//            public void run() {
+//                include.setVisibility(View.GONE);
+//                navigationView.setVisibility(View.GONE);
+//                frameLayout.setVisibility(View.VISIBLE);
+//                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+////                Uri video = Uri.parse(Environment.getExternalStorageDirectory() + "/orderingappvideos/video1.mp4");
+////                vvScreenSaver.setVideoURI(video);
+////                vvScreenSaver.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+////                    @Override
+////                    public void onPrepared(MediaPlayer mp) {
+//////                        mp.setLooping(true);
+////                        vvScreenSaver.start();
+////                    }
+////                });
+//
+//
+//                startVideo(vvScreenSaver,videoAddressList,currentVideo);
+//
+//
+//
+////                vvScreenSaver.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+////                    @Override
+////                    public void onCompletion(MediaPlayer mediaPlayer) {
+////                        startVideo(vvScreenSaver,"https://storage.backtory.com/ordering-app-video/video2.mp4");
+////                    }
+////                });
+////                vvScreenSaver.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+////                    @Override
+////                    public void onCompletion(MediaPlayer mediaPlayer) {
+////                        startVideo(vvScreenSaver,"https://storage.backtory.com/ordering-app-video/video3.mp4");
+////                    }
+////                });
+//                stopHandler();
+//            }
+//        };
 
-            @Override
-            public void run() {
-                include.setVisibility(View.GONE);
-                navigationView.setVisibility(View.GONE);
-                frameLayout.setVisibility(View.VISIBLE);
-                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//                Uri video = Uri.parse(Environment.getExternalStorageDirectory() + "/orderingappvideos/video1.mp4");
-//                vvScreenSaver.setVideoURI(video);
-//                vvScreenSaver.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//                    @Override
-//                    public void onPrepared(MediaPlayer mp) {
-////                        mp.setLooping(true);
-//                        vvScreenSaver.start();
-//                    }
-//                });
-
-
-                startVideo(vvScreenSaver,videoAddressList,currentVideo);
-
-
-
-//                vvScreenSaver.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//                    @Override
-//                    public void onCompletion(MediaPlayer mediaPlayer) {
-//                        startVideo(vvScreenSaver,"https://storage.backtory.com/ordering-app-video/video2.mp4");
-//                    }
-//                });
-//                vvScreenSaver.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//                    @Override
-//                    public void onCompletion(MediaPlayer mediaPlayer) {
-//                        startVideo(vvScreenSaver,"https://storage.backtory.com/ordering-app-video/video3.mp4");
-//                    }
-//                });
-                stopHandler();
-            }
-        };
-        startHandler();
+//        startHandler();
 
         SQLiteDatabase db2 = new MyDatabase(this).getWritableDatabase();
         Cursor cursor = db2.query(MyDatabase.SETTINGS_TABLE,new String[]{MyDatabase.TITLE},null,null,null,null,null);

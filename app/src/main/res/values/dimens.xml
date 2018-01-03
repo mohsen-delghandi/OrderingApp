@@ -2,6 +2,10 @@
 
 
     <!-- Font Size -->
+    <dimen name="font_xxsmall">13sp</dimen>
+    <dimen name="font_dialog">20sp</dimen>
+    <dimen name="font_xxlarge">45sp</dimen>
+
     <dimen name="font_xsmall">10sp</dimen>
     <dimen name="font_small">13sp</dimen>
     <dimen name="font_medium">18sp</dimen>
@@ -9,6 +13,10 @@
     <dimen name="font_xlarge">26sp</dimen>
 
     <!-- Padding Size -->
+    <dimen name="padding_xbit">2dp</dimen>
+    <dimen name="padding_bit">4dp</dimen>
+    <dimen name="padding_inner">12dp</dimen>
+
     <dimen name="padding_small">5dp</dimen>
     <dimen name="padding_medium">8dp</dimen>
     <dimen name="padding_large">10dp</dimen>
@@ -16,6 +24,11 @@
     <dimen name="padding_box">40dp</dimen>
 
     <!-- Space Size -->
+    <dimen name="dimen_icon">48dp</dimen>
+    <dimen name="dimen_icon_box">60dp</dimen>
+    <dimen name="dimen_item_height">199dp</dimen>
+    <dimen name="dimen_item_height2">125dp</dimen>
+
     <dimen name="dimen_xsmall">5dp</dimen>
     <dimen name="dimen_small">10dp</dimen>
     <dimen name="dimen_medium">20dp</dimen>
@@ -24,7 +37,7 @@
     <dimen name="dimen_xxlarge">50dp</dimen>
     <dimen name="dimen_xxxlarge">75dp</dimen>
     <dimen name="dimen_toolbar">64dp</dimen>
-
+    <dimen name="dimen_item_height3">131dp</dimen>
 
     <dimen name="height_slider_main">170dp</dimen>
     <dimen name="height_item_product">200dp</dimen>
