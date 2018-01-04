@@ -1,4 +1,4 @@
-package com.example.mohsen.orderingapp;
+package co.sansystem.mohsen.orderingapp;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,27 +8,25 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sansystem.mohsen.orderingapp.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * Created by Mohsen on 2017-06-16.
@@ -176,11 +174,15 @@ public class SettingsActivity2 extends MainActivity {
         cursor.close();
         db.close();
 
-        String[] ipArray = ip.split("\\.");
-        etIP1.setText(ipArray[0]);
-        etIP2.setText(ipArray[1]);
-        etIP3.setText(ipArray[2]);
-        etIP4.setText(ipArray[3]);
+        try {
+            String[] ipArray = ip.split("\\.");
+            etIP1.setText(ipArray[0]);
+            etIP2.setText(ipArray[1]);
+            etIP3.setText(ipArray[2]);
+            etIP4.setText(ipArray[3]);
+        }catch (Exception e){
+
+        }
 
         et_title = (EditText) findViewById(R.id.editText_title);
         et_title.setText(title);
@@ -231,23 +233,23 @@ public class SettingsActivity2 extends MainActivity {
             }
         });
 
-        final TableRow trMain = (TableRow)findViewById(R.id.tr_main);
-        TextView tvResponces = (TextView)findViewById(R.id.textView_responces);
+        final TableRow trMain = (TableRow) findViewById(R.id.tr_main);
+        TextView tvResponces = (TextView) findViewById(R.id.textView_responces);
         tvResponces.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SQLiteDatabase db3 = new MyDatabase(SettingsActivity2.this).getReadableDatabase();
-                Cursor ccc = db3.query(MyDatabase.RESPONCES_TABLE,new String[]{MyDatabase.ID,MyDatabase.RESPONCE},null,null,null,null,null,null);
+                Cursor ccc = db3.query(MyDatabase.RESPONCES_TABLE, new String[]{MyDatabase.ID, MyDatabase.RESPONCE}, null, null, null, null, null, null);
                 ArrayList<String> responces = new ArrayList<>();
-                if (ccc.moveToFirst()){
-                    do{
+                if (ccc.moveToFirst()) {
+                    do {
                         responces.add(ccc.getInt(0) + " --- " + ccc.getString(1));
-                    }while (ccc.moveToNext());
-                }else{
+                    } while (ccc.moveToNext());
+                } else {
                     responces = null;
                 }
 
-                if(responces!=null) {
+                if (responces != null) {
                     final RecyclerView rvResponces = (RecyclerView) findViewById(R.id.responces_recyclerView);
                     trMain.setVisibility(View.GONE);
                     ivTitlebar.setVisibility(View.VISIBLE);
@@ -256,7 +258,7 @@ public class SettingsActivity2 extends MainActivity {
                         @Override
                         public void onClick(View view) {
                             SQLiteDatabase dbbb = new MyDatabase(SettingsActivity2.this).getWritableDatabase();
-                            dbbb.delete(MyDatabase.RESPONCES_TABLE,null,null);
+                            dbbb.delete(MyDatabase.RESPONCES_TABLE, null, null);
                             dbbb.close();
                             ivTitlebar.setVisibility(View.GONE);
                             rvResponces.setVisibility(View.GONE);
@@ -269,8 +271,8 @@ public class SettingsActivity2 extends MainActivity {
                     rvResponces.setLayoutManager(rvlm);
                     RecyclerView.Adapter rvAdapter = new ResponcesListAdapter(SettingsActivity2.this, responces);
                     rvResponces.setAdapter(rvAdapter);
-                    rvResponces.scrollToPosition(rvResponces.getAdapter().getItemCount()-1);
-                }else{
+                    rvResponces.scrollToPosition(rvResponces.getAdapter().getItemCount() - 1);
+                } else {
                     Toast.makeText(SettingsActivity2.this, "تاریخچه ای موجود نیست.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -310,7 +312,7 @@ public class SettingsActivity2 extends MainActivity {
                     db.delete(MyDatabase.FOOD_CATEGORY_TABLE, null, null);
                     db.delete(MyDatabase.FOOD_TABLE, null, null);
 
-                    for (int i = 0 ; i < jsonArray.length() ; i++) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         ContentValues cv = new ContentValues();
                         cv.put(MyDatabase.CODE, jsonObject.get("ID") + "");
@@ -318,7 +320,7 @@ public class SettingsActivity2 extends MainActivity {
                         cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject.get("Pic") + "", Base64.DEFAULT));
                         id = db.insert(MyDatabase.FOOD_CATEGORY_TABLE, null, cv);
                     }
-                    for (int i = 0 ; i < jsonArray2.length() ; i++) {
+                    for (int i = 0; i < jsonArray2.length(); i++) {
                         JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
                         ContentValues cv = new ContentValues();
                         cv.put(MyDatabase.CODE, jsonObject2.get("ID") + "");
@@ -338,7 +340,7 @@ public class SettingsActivity2 extends MainActivity {
                         if ((id != -1) && (id2 != -1)) {
                             Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
                             isUpdated = true;
-                            if(isSettingsUpdate){
+                            if (isSettingsUpdate) {
                                 Intent i = new Intent(SettingsActivity2.this, OrdersMenuActivity.class);
                                 startActivity(i);
                                 SettingsActivity2.this.finish();

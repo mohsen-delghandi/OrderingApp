@@ -1,6 +1,8 @@
-package com.example.mohsen.orderingapp;
+package co.sansystem.mohsen.orderingapp;
 
 import android.app.Application;
+
+import com.sansystem.mohsen.orderingapp.R;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 

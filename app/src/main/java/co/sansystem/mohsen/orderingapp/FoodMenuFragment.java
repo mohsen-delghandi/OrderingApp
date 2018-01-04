@@ -1,18 +1,18 @@
-package com.example.mohsen.orderingapp;
+package co.sansystem.mohsen.orderingapp;
 
 import android.app.FragmentManager;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.sansystem.mohsen.orderingapp.R;
 
 import java.util.ArrayList;
 
@@ -39,6 +39,10 @@ public class FoodMenuFragment extends Fragment {
         }else{
             mFoodsCategoryCode = Integer.parseInt(foodsCategoryCode);
         }
+    }
+
+    public FoodMenuFragment(){
+
     }
 
     @Override

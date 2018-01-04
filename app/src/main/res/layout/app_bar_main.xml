@@ -5,7 +5,7 @@
     android:layoutDirection="rtl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.mohsen.orderingapp.OrdersMenuActivity">
+    tools:context="com.sansystem.mohsen.orderingapp.co.sansystem.mohsen.orderingapp.OrdersMenuActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
