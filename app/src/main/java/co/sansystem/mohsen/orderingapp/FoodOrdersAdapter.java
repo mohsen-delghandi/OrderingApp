@@ -1,14 +1,9 @@
-package com.example.mohsen.orderingapp;
+package co.sansystem.mohsen.orderingapp;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.support.annotation.AnimRes;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.widget.CardView;
@@ -21,7 +16,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.sansystem.mohsen.orderingapp.R;
 
 import java.util.ArrayList;
 import java.util.List;

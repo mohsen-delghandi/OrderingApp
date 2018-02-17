@@ -1,17 +1,12 @@
-package com.example.mohsen.orderingapp;
+package co.sansystem.mohsen.orderingapp;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
-
-import com.example.mohsen.orderingapp.R;
 
 import java.io.File;
 import java.io.FileOutputStream;

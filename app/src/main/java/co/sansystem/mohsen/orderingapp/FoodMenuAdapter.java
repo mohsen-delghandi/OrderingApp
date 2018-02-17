@@ -1,30 +1,24 @@
-package com.example.mohsen.orderingapp;
+package co.sansystem.mohsen.orderingapp;
 
 import android.animation.ObjectAnimator;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.sansystem.mohsen.orderingapp.R;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.mohsen.orderingapp;
+package co.sansystem.mohsen.orderingapp;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,16 +6,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.sansystem.mohsen.orderingapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.example.mohsen.orderingapp;
+package co.sansystem.mohsen.orderingapp;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;

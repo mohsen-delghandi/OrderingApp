@@ -1,4 +1,4 @@
-package com.example.mohsen.orderingapp;
+package co.sansystem.mohsen.orderingapp;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -6,13 +6,10 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.Nullable;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,6 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.sansystem.mohsen.orderingapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

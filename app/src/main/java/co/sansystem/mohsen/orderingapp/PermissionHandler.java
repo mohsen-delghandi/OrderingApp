@@ -1,4 +1,4 @@
-package com.example.mohsen.orderingapp;
+package co.sansystem.mohsen.orderingapp;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
