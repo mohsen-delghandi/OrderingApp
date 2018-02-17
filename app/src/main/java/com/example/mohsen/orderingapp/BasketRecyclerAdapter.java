@@ -29,9 +29,9 @@ public class BasketRecyclerAdapter extends RecyclerView.Adapter<BasketRecyclerAd
         public TextView tv,tv2,tv3;
         public ViewHolder(View v) {
             super(v);
-            tv = (TextView)v.findViewById(R.id.textView_foodName);
-            tv2 = (TextView)v.findViewById(R.id.textView_foodNumber);
-            tv3 = (TextView)v.findViewById(R.id.textView_foodPrice);
+            tv = v.findViewById(R.id.textView_foodName);
+            tv2 = v.findViewById(R.id.textView_foodNumber);
+            tv3 = v.findViewById(R.id.textView_foodPrice);
         }
     }
 

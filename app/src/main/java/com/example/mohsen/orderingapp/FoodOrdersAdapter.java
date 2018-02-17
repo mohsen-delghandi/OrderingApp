@@ -58,12 +58,12 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
 
         public ViewHolder(View v) {
             super(v);
-            tv = (TextView) v.findViewById(R.id.food_order_item_name);
-            tv2 = (TextView) v.findViewById(R.id.food_order_item_tedad);
-            cv = (CardView) v.findViewById(R.id.food_item_cardView);
-            ivRemove = (ImageView) v.findViewById(R.id.food_order_item_remove);
-            ivPlus = (ImageView) v.findViewById(R.id.food_order_item_plus);
-            ivMinus = (ImageView) v.findViewById(R.id.food_order_item_minus);
+            tv = v.findViewById(R.id.food_order_item_name);
+            tv2 = v.findViewById(R.id.food_order_item_tedad);
+            cv = v.findViewById(R.id.food_item_cardView);
+            ivRemove = v.findViewById(R.id.food_order_item_remove);
+            ivPlus = v.findViewById(R.id.food_order_item_plus);
+            ivMinus = v.findViewById(R.id.food_order_item_minus);
 
         }
     }

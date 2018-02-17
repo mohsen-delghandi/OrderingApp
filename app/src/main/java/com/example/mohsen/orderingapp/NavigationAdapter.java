@@ -50,8 +50,8 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         public ImageView iv;
         public ViewHolder(View v) {
             super(v);
-            tv = (TextView)v.findViewById(R.id.nav_textView);
-            iv = (ImageView)v.findViewById(R.id.nav_imageView);
+            tv = v.findViewById(R.id.nav_textView);
+            iv = v.findViewById(R.id.nav_imageView);
         }
     }
 

@@ -66,11 +66,11 @@ public class CustomDialogClass extends Dialog implements
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.basket_dialog_layout);
-        etTable = (EditText)findViewById(R.id.editText_tableNumber);
-        llLoadingDialog = (LinearLayout)findViewById(R.id.llLoading_dialog);
-        tlMain = (TableLayout)findViewById(R.id.tableLayout_main);
-        yes = (TextView) findViewById(R.id.textView_ok);
-        no = (TextView) findViewById(R.id.textView_cancel);
+        etTable = findViewById(R.id.editText_tableNumber);
+        llLoadingDialog = findViewById(R.id.llLoading_dialog);
+        tlMain = findViewById(R.id.tableLayout_main);
+        yes = findViewById(R.id.textView_ok);
+        no = findViewById(R.id.textView_cancel);
         yes.setOnClickListener(this);
         no.setOnClickListener(this);
 
@@ -111,7 +111,7 @@ public class CustomDialogClass extends Dialog implements
 
         mPrice /= 10;
 
-        TextView tv = (TextView)findViewById(R.id.textView_price);
+        TextView tv = findViewById(R.id.textView_price);
         int a =  (mPrice+"").length();
         mPriceFormatted = (mPrice+"").substring(0,a%3);
         for(int i = 0 ; i < (mPrice+"").length()/3 ; i++) {

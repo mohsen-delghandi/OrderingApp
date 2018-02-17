@@ -61,10 +61,10 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
         LinearLayout ll;
         public ViewHolder(View v) {
             super(v);
-            tv = (TextView)v.findViewById(R.id.food_item_textView);
-            tvFavorite = (TextView)v.findViewById(R.id.textView_favorite);
-            iv = (ImageView)v.findViewById(R.id.food_item_imageView);
-            ll = (LinearLayout)v.findViewById(R.id.linearLayout_cardView);
+            tv = v.findViewById(R.id.food_item_textView);
+            tvFavorite = v.findViewById(R.id.textView_favorite);
+            iv = v.findViewById(R.id.food_item_imageView);
+            ll = v.findViewById(R.id.linearLayout_cardView);
         }
     }
 

@@ -36,8 +36,8 @@ public class ResponcesListAdapter extends RecyclerView.Adapter<ResponcesListAdap
         LinearLayout ll;
         public ViewHolder(View v) {
             super(v);
-            tv = (TextView)v.findViewById(R.id.responce_item_textView);
-            ll = (LinearLayout)v.findViewById(R.id.linearLayout_responce_cardView);
+            tv = v.findViewById(R.id.responce_item_textView);
+            ll = v.findViewById(R.id.linearLayout_responce_cardView);
         }
     }
 
