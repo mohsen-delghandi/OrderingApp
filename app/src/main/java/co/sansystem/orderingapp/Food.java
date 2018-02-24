@@ -1,4 +1,4 @@
-package co.sansystem.mohsen.orderingapp;
+package co.sansystem.orderingapp;
 
 import android.content.Context;
 import android.database.Cursor;

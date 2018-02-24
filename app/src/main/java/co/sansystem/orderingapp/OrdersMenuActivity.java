@@ -1,4 +1,4 @@
-package co.sansystem.mohsen.orderingapp;
+package co.sansystem.orderingapp;
 
 import android.animation.ValueAnimator;
 import android.app.FragmentManager;

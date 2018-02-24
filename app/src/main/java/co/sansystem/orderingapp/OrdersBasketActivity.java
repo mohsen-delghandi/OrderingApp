@@ -1,20 +1,17 @@
-package com.example.mohsen.orderingapp;
+package co.sansystem.orderingapp;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.sansystem.mohsen.orderingapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,13 +25,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class OrdersBasketActivity extends MainActivity {
 
-    long mPrice = 0;
     String mPriceFormatted = "";
-    TextView tv_ID,tv_Name,tv_Pic;
+    long mPrice = 0;
+    TextView tv_ID, tv_Name, tv_Pic;
     ImageView iv;
     JSONObject jsonObject;
     JSONArray jsonArray;
-    String json,json2;
+    String json, json2;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -44,7 +41,7 @@ public class OrdersBasketActivity extends MainActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setInflater(this,R.layout.food_basket_layout);
+        setInflater(this, R.layout.food_basket_layout);
 
         toggle.setDrawerIndicatorEnabled(false);
         toggle.setHomeAsUpIndicator(R.drawable.icon_back);
@@ -83,15 +80,15 @@ public class OrdersBasketActivity extends MainActivity {
 //        }
 //        tv.setText(mPriceFormatted+"");
 
-        tv_ID = (TextView)findViewById(R.id.textView_ID);
-        tv_Name = (TextView)findViewById(R.id.textView_Name_Group);
-        tv_Pic = (TextView)findViewById(R.id.textView_Pic);
-        iv = (ImageView)findViewById(R.id.image);
+        tv_ID = (TextView) findViewById(R.id.textView_ID);
+        tv_Name = (TextView) findViewById(R.id.textView_Name_Group);
+        tv_Pic = (TextView) findViewById(R.id.textView_Pic);
+        iv = (ImageView) findViewById(R.id.image);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                CallWebService cws = new CallWebService(OrdersBasketActivity.this,"GetFood","test");
+                CallWebService cws = new CallWebService(OrdersBasketActivity.this, "GetFood", "test");
                 json = cws.Call("test");
 
                 try {
@@ -102,11 +99,11 @@ public class OrdersBasketActivity extends MainActivity {
                         @Override
                         public void run() {
                             try {
-                                tv_ID.setText(jsonObject.get("ID")+"");
-                                tv_Name.setText(jsonObject.get("Name_Food")+"");
-                                tv_Pic.setText(jsonObject.get("Pic_Food")+"");
+                                tv_ID.setText(jsonObject.get("ID") + "");
+                                tv_Name.setText(jsonObject.get("Name_Food") + "");
+                                tv_Pic.setText(jsonObject.get("Pic_Food") + "");
 
-                                byte[] decodedString = Base64.decode(jsonObject.get("Pic_Food")+"", Base64.DEFAULT);
+                                byte[] decodedString = Base64.decode(jsonObject.get("Pic_Food") + "", Base64.DEFAULT);
                                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                                 iv.setImageBitmap(decodedByte);
@@ -119,7 +116,6 @@ public class OrdersBasketActivity extends MainActivity {
                     });
 
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
 //                } catch (InterruptedException e) {
@@ -129,13 +125,6 @@ public class OrdersBasketActivity extends MainActivity {
             }
 
         }).start();
-
-
-
-
-
-
-
 
 
     }
