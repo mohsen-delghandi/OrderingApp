@@ -99,11 +99,12 @@ public class OrdersBasketActivity extends MainActivity {
                         @Override
                         public void run() {
                             try {
-                                tv_ID.setText(jsonObject.get("ID") + "");
-                                tv_Name.setText(jsonObject.get("Name_Food") + "");
-                                tv_Pic.setText(jsonObject.get("Pic_Food") + "");
 
-                                byte[] decodedString = Base64.decode(jsonObject.get("Pic_Food") + "", Base64.DEFAULT);
+                                tv_ID.setText(jsonObject.get("ID_Kala") + "");
+                                tv_Name.setText(jsonObject.get("Name_Kala") + "");
+                                tv_Pic.setText(jsonObject.get("Picture") + "");
+
+                                byte[] decodedString = Base64.decode(jsonObject.get("Picture") + "", Base64.DEFAULT);
                                 Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                                 iv.setImageBitmap(decodedByte);

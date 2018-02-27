@@ -33,6 +33,10 @@
             android:windowSoftInputMode="adjustResize"
             android:name="co.sansystem.orderingapp.SettingsActivity2"
             android:screenOrientation="portrait"/>
+        <activity
+            android:windowSoftInputMode="adjustResize"
+            android:name="co.sansystem.orderingapp.LoginActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name="co.sansystem.orderingapp.OrdersMenuActivity"
             android:screenOrientation="portrait"/>
     </application>

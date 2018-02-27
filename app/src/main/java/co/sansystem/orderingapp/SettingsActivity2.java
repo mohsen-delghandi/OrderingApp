@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class SettingsActivity2 extends MainActivity {
 
 
-    TextView bt_save;
+    TextView bt_save,bt_logout;
     LinearLayout bt_update;
     EditText et_title;
     EditText etIP1, etIP2, etIP3, etIP4;
@@ -81,10 +81,21 @@ public class SettingsActivity2 extends MainActivity {
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         bt_save = (TextView) findViewById(R.id.button_save);
+        bt_logout = (TextView) findViewById(R.id.button_logout);
         etIP1 = (EditText) findViewById(R.id.editText_ip_1);
         etIP2 = (EditText) findViewById(R.id.editText_ip_2);
         etIP3 = (EditText) findViewById(R.id.editText_ip_3);
         etIP4 = (EditText) findViewById(R.id.editText_ip_4);
+
+        bt_logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppPreferenceTools appPreferenceTools = new AppPreferenceTools(SettingsActivity2.this);
+                appPreferenceTools.removeAllPrefs();
+                startActivity(new Intent(SettingsActivity2.this,LoginActivity.class));
+                finish();
+            }
+        });
 
         etIP1.addTextChangedListener(new TextWatcher() {
             @Override
@@ -297,7 +308,6 @@ public class SettingsActivity2 extends MainActivity {
             @Override
             public void run() {
 
-
                 CallWebService cws = new CallWebService(context, "GetGroupFood", "test");
                 json = cws.Call("test");
 
@@ -315,19 +325,19 @@ public class SettingsActivity2 extends MainActivity {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         ContentValues cv = new ContentValues();
-                        cv.put(MyDatabase.CODE, jsonObject.get("ID") + "");
-                        cv.put(MyDatabase.NAME, jsonObject.get("Name_Group") + "");
-                        cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject.get("Pic") + "", Base64.DEFAULT));
+                        cv.put(MyDatabase.CODE, jsonObject.get("ID_Group") + "");
+                        cv.put(MyDatabase.NAME, jsonObject.get("NameGroup") + "");
+                        cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject.get("ImageGroup") + "", Base64.DEFAULT));
                         id = db.insert(MyDatabase.FOOD_CATEGORY_TABLE, null, cv);
                     }
                     for (int i = 0; i < jsonArray2.length(); i++) {
                         JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
                         ContentValues cv = new ContentValues();
-                        cv.put(MyDatabase.CODE, jsonObject2.get("ID") + "");
-                        cv.put(MyDatabase.NAME, jsonObject2.get("Name_Food") + "");
-                        cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject2.get("Pic_Food") + "", Base64.DEFAULT));
-                        cv.put(MyDatabase.CATEGORY_CODE, jsonObject2.get("ID_Group") + "");
-                        cv.put(MyDatabase.PRICE, jsonObject2.get("Price_Food") + "");
+                        cv.put(MyDatabase.CODE, jsonObject2.get("ID_Kala") + "");
+                        cv.put(MyDatabase.NAME, jsonObject2.get("Name_Kala") + "");
+                        cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject2.get("Picture") + "", Base64.DEFAULT));
+                        cv.put(MyDatabase.CATEGORY_CODE, jsonObject2.get("Fk_GroupKala") + "");
+                        cv.put(MyDatabase.PRICE, jsonObject2.get("GheymatForoshAsli") + "");
                         id2 = db.insert(MyDatabase.FOOD_TABLE, null, cv);
                     }
                     db.close();

@@ -225,6 +225,22 @@
                 android:textColor="@color/icons"
                 android:textSize="@dimen/font_xsmall" />
 
+            <TextView
+                android:id="@+id/button_logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:background="@drawable/button_shape2"
+                android:gravity="center"
+                android:paddingBottom="@dimen/padding_bit"
+                android:paddingLeft="@dimen/padding_large"
+                android:paddingRight="@dimen/padding_large"
+                android:paddingTop="@dimen/padding_bit"
+                android:text="خروج"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xsmall" />
+
 
         </LinearLayout>
 

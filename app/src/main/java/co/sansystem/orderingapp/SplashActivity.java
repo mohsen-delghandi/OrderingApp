@@ -183,7 +183,7 @@ public class SplashActivity extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Intent i = new Intent(SplashActivity.this, OrdersMenuActivity.class);
+                            Intent i = new Intent(SplashActivity.this, LoginActivity.class);
                             startActivity(i);
                             overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                             finish();
@@ -194,15 +194,28 @@ public class SplashActivity extends AppCompatActivity {
 
 
         } else {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent i = new Intent(SplashActivity.this, OrdersMenuActivity.class);
-                    startActivity(i);
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                    finish();
-                }
-            }, 2000);
+            AppPreferenceTools appPreferenceTools = new AppPreferenceTools(SplashActivity.this);
+            if(appPreferenceTools.isAuthorized()) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent i = new Intent(SplashActivity.this, OrdersMenuActivity.class);
+                        startActivity(i);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        finish();
+                    }
+                }, 2000);
+            }else{
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                        startActivity(i);
+                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                        finish();
+                    }
+                }, 2000);
+            }
         }
     }
 }

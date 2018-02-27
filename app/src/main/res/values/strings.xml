@@ -1,10 +1,14 @@
 <resources>
-    <string name="app_name">Parmin</string>
+    <string name="app_name">SanOrder</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
 
+    <string name="registered" translatable="false">registered</string>
+    <string name="user_name" translatable="false">user_name</string>
+    <string name="user_password" translatable="false">user_password</string>
+    <string name="user_id" translatable="false">user_id</string>
 
 </resources>

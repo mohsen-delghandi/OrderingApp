@@ -164,9 +164,9 @@ public class SettingsActivity extends MainActivity {
                     for(int i = 0 ; i < jsonArray.length()-1 ; i++){
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         ContentValues cv = new ContentValues();
-                        cv.put(MyDatabase.CODE,jsonObject.get("ID")+"");
-                        cv.put(MyDatabase.NAME,jsonObject.get("Name_Group")+"");
-                        cv.put(MyDatabase.IMAGE,Base64.decode(jsonObject.get("Pic")+"", Base64.DEFAULT));
+                        cv.put(MyDatabase.CODE,jsonObject.get("ID_Group")+"");
+                        cv.put(MyDatabase.NAME,jsonObject.get("NameGroup")+"");
+                        cv.put(MyDatabase.IMAGE,Base64.decode(jsonObject.get("ImageGroup")+"", Base64.DEFAULT));
                         id = db.insert(MyDatabase.FOOD_CATEGORY_TABLE,null,cv);
                     }
                     for(int i = 0 ; i < jsonArray2.length()-1 ; i++){
