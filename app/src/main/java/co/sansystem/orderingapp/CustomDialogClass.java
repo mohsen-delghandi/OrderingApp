@@ -44,20 +44,21 @@ public class CustomDialogClass extends Dialog implements
 
     public Activity c;
     public Dialog d;
-    public TextView yes,no;
+    public TextView yes, no;
     public EditText etTable;
+    public EditText etName;
     long mPrice = 0;
-    String mPriceFormatted = "",response;
+    String mPriceFormatted = "", response;
     JSONArray jsonArray;
     CallWebService cws;
     LinearLayout llLoadingDialog;
     TableLayout tlMain;
+    AppPreferenceTools appPreferenceTools;
 
     public CustomDialogClass(Activity a) {
         super(a);
         this.c = a;
     }
-
 
 
     @Override
@@ -66,13 +67,14 @@ public class CustomDialogClass extends Dialog implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.basket_dialog_layout);
         etTable = findViewById(R.id.editText_tableNumber);
+        etName = findViewById(R.id.editText_tableNumber);
         llLoadingDialog = findViewById(R.id.llLoading_dialog);
         tlMain = findViewById(R.id.tableLayout_main);
         yes = findViewById(R.id.textView_ok);
         no = findViewById(R.id.textView_cancel);
         yes.setOnClickListener(this);
         no.setOnClickListener(this);
-
+        appPreferenceTools = new AppPreferenceTools(c);
 
         etTable.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -104,20 +106,20 @@ public class CustomDialogClass extends Dialog implements
         });
 
 
-        for(int i = 0 ; i < FoodOrdersAdapter.mList.size() ; i++){
-            mPrice += Integer.parseInt(FoodOrdersAdapter.mList.get(i).getmPrice())*FoodOrdersAdapter.mList.get(i).getmNumber();
+        for (int i = 0; i < FoodOrdersAdapter.mList.size(); i++) {
+            mPrice += Integer.parseInt(FoodOrdersAdapter.mList.get(i).getmPrice()) * FoodOrdersAdapter.mList.get(i).getmNumber();
         }
 
         mPrice /= 10;
 
         TextView tv = findViewById(R.id.textView_price);
-        int a =  (mPrice+"").length();
-        mPriceFormatted = (mPrice+"").substring(0,a%3);
-        for(int i = 0 ; i < (mPrice+"").length()/3 ; i++) {
+        int a = (mPrice + "").length();
+        mPriceFormatted = (mPrice + "").substring(0, a % 3);
+        for (int i = 0; i < (mPrice + "").length() / 3; i++) {
             if (!mPriceFormatted.equals("")) mPriceFormatted += ",";
-            mPriceFormatted += (mPrice+"").substring(a % 3 + 3 * i , a % 3 + 3 * (i+1));
+            mPriceFormatted += (mPrice + "").substring(a % 3 + 3 * i, a % 3 + 3 * (i + 1));
         }
-        tv.setText(mPriceFormatted+"");
+        tv.setText(mPriceFormatted + "");
 
     }
 
@@ -135,17 +137,21 @@ public class CustomDialogClass extends Dialog implements
         switch (v.getId()) {
             case R.id.textView_ok:
 
-                if(etTable.getText().toString().equals("") || (Integer.parseInt(etTable.getText()+"") < 1)){
+                if (etTable.getText().toString().equals("") || (Integer.parseInt(etTable.getText() + "") < 1)) {
                     Toast.makeText(c, "شماره میز صحیح نیست.", Toast.LENGTH_SHORT).show();
-                }else {
+                } else if (etName.getText().toString().equals("")) {
+                    Toast.makeText(c, "نام مشتری را وارد کنید.", Toast.LENGTH_SHORT).show();
+                } else {
                     jsonArray = new JSONArray();
-                    for (int i = 0 ; i < FoodOrdersAdapter.mList.size() ; i++){
+                    for (int i = 0; i < FoodOrdersAdapter.mList.size(); i++) {
                         JSONObject jsonObject = new JSONObject();
                         try {
                             jsonObject.put("Food_Code", FoodOrdersAdapter.mList.get(i).getCode());
-                            jsonObject.put("Food_Count",FoodOrdersAdapter.mList.get(i).getmNumber());
-                            jsonObject.put("Food_Price",Integer.parseInt(FoodOrdersAdapter.mList.get(i).getmPrice())*FoodOrdersAdapter.mList.get(i).getmNumber());
+                            jsonObject.put("Food_Count", FoodOrdersAdapter.mList.get(i).getmNumber());
+                            jsonObject.put("Food_Price", Integer.parseInt(FoodOrdersAdapter.mList.get(i).getmPrice()) * FoodOrdersAdapter.mList.get(i).getmNumber());
                             jsonObject.put("Table_Number", etTable.getText() + "");
+                            jsonObject.put("Costumer_Code", appPreferenceTools.getDefaultCostumerCode() + "");
+                            jsonObject.put("Costumer_Name", etTable.getText() + "");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -158,7 +164,7 @@ public class CustomDialogClass extends Dialog implements
                         public void run() {
                             new Handler(Looper.getMainLooper()).post(new Runnable() {
                                 public void run() {
-                                    InputMethodManager imm = (InputMethodManager)c.getSystemService(INPUT_METHOD_SERVICE);
+                                    InputMethodManager imm = (InputMethodManager) c.getSystemService(INPUT_METHOD_SERVICE);
                                     imm.hideSoftInputFromWindow(etTable.getWindowToken(), 0);
                                     llLoadingDialog.setVisibility(View.VISIBLE);
                                     tlMain.setAlpha(0.1f);
@@ -203,10 +209,10 @@ public class CustomDialogClass extends Dialog implements
                                     public void run() {
                                         SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
                                         ContentValues cv2 = new ContentValues();
-                                        SimpleDateFormat format= new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                                         String myDate = format.format(new Date());
-                                        cv2.put(MyDatabase.RESPONCE,myDate + " --> " +response);
-                                        db2.insert(MyDatabase.RESPONCES_TABLE,null,cv2);
+                                        cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response);
+                                        db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
                                         db2.close();
                                         llLoadingDialog.setVisibility(View.GONE);
                                         tlMain.setAlpha(1f);

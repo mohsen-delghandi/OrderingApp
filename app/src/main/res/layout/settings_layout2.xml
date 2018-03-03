@@ -209,6 +209,28 @@
                 android:textColor="@color/icons"
                 android:inputType="text"/>
 
+            <LinearLayout
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textSize="@dimen/font_xsmall"
+                    android:textColor="@color/icons"
+                    android:text="چاپ فاکتور پس از تایید صندوق"/>
+
+                <CheckBox
+                    android:id="@+id/checkbox_print"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/button_save"
                 android:layout_width="wrap_content"

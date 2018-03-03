@@ -29,6 +29,18 @@ public class AppPreferenceTools {
                 .apply();
     }
 
+    public void saveDefaultCostumerCode(String code) {
+        mPreference.edit()
+                .putString(this.mContext.getString(R.string.default_customer_code), code)
+                .apply();
+    }
+
+    public void printAfterConfirm(boolean b) {
+        mPreference.edit()
+                .putBoolean(this.mContext.getString(R.string.default_customer_code), b)
+                .apply();
+    }
+
     public void loginOK() {
         mPreference.edit()
                 .putString(this.mContext.getString(R.string.registered), "registered")
@@ -41,6 +53,14 @@ public class AppPreferenceTools {
 
     public String getUserID() {
         return mPreference.getString(this.mContext.getString(R.string.user_id), "");
+    }
+
+    public String getDefaultCostumerCode() {
+        return mPreference.getString(this.mContext.getString(R.string.default_customer_code), "");
+    }
+
+    public Boolean getprintAfterConfirm() {
+        return mPreference.getBoolean(this.mContext.getString(R.string.print_after_confirm), false);
     }
 
     public void removeAllPrefs() {

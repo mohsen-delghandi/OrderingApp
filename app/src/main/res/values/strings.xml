@@ -10,5 +10,7 @@
     <string name="user_name" translatable="false">user_name</string>
     <string name="user_password" translatable="false">user_password</string>
     <string name="user_id" translatable="false">user_id</string>
+    <string name="default_customer_code" translatable="false">default_customer_code</string>
+    <string name="print_after_confirm" translatable="false">print_after_confirm</string>
 
 </resources>

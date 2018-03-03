@@ -47,6 +47,11 @@
                             android:layout_height="@dimen/width_nav"
                             android:background="@drawable/icon_happy"/>
 
+                        <!--<TextView-->
+                            <!--android:layout_width="@dimen/width_nav"-->
+                            <!--android:layout_height="@dimen/width_nav"-->
+                            <!--android:background="@drawable/icon_happy"/>-->
+
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

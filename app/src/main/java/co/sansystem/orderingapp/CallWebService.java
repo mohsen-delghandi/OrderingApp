@@ -23,6 +23,18 @@ public class CallWebService {
     public String SOAP_PROPERTY_NAME;
     public String SOAP_PROPERTY_NAME2;
 
+    public CallWebService(Context context, String methodName) {
+        SQLiteDatabase db = new MyDatabase(context).getReadableDatabase();
+        Cursor cursor = db.query(MyDatabase.SETTINGS_TABLE,new String[]{MyDatabase.IP},null,null,null,null,null);
+        cursor.moveToFirst();
+        SOAP_ADDRESS = "http://" + cursor.getString(0) + "/sanorder.asmx";
+//        SOAP_ADDRESS = "http://192.168.1.35/ParminWebService.asmx";
+        SOAP_ACTION += methodName;
+        OPERATION_NAME = methodName;
+        cursor.close();
+        db.close();
+    }
+
     public CallWebService(Context context, String methodName, String propertyName) {
         SQLiteDatabase db = new MyDatabase(context).getReadableDatabase();
         Cursor cursor = db.query(MyDatabase.SETTINGS_TABLE,new String[]{MyDatabase.IP},null,null,null,null,null);
@@ -35,6 +47,7 @@ public class CallWebService {
         cursor.close();
         db.close();
     }
+
     public CallWebService(Context context, String methodName, String propertyName, String propertyName2) {
         SQLiteDatabase db = new MyDatabase(context).getReadableDatabase();
         Cursor cursor = db.query(MyDatabase.SETTINGS_TABLE,new String[]{MyDatabase.IP},null,null,null,null,null);
@@ -47,6 +60,28 @@ public class CallWebService {
         SOAP_PROPERTY_NAME2 = propertyName2;
         cursor.close();
         db.close();
+    }
+
+    public String Call(){
+        SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,OPERATION_NAME);
+        SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        envelope.dotNet = true;
+
+        envelope.setOutputSoapObject(request);
+
+        HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS,2000);
+
+        Object response=null;
+        try
+        {
+            httpTransport.call(SOAP_ACTION, envelope);
+            response = envelope.getResponse();
+        }
+        catch (Exception exception)
+        {
+            response=exception.toString();
+        }
+        return response.toString();
     }
 
     public String Call(String s){
@@ -75,6 +110,7 @@ public class CallWebService {
         }
         return response.toString();
     }
+
     public String Call(String s,String s2){
         SoapObject request = new SoapObject(WSDL_TARGET_NAMESPACE,OPERATION_NAME);
         PropertyInfo pi=new PropertyInfo();
