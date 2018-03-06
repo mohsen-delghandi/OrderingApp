@@ -2,16 +2,19 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_toggle"
-        android:layout_width="@dimen/dimen_icon_box"
-        android:layout_height="@dimen/dimen_icon_box"
+        android:layout_width="@dimen/dimen_icon"
+        android:layout_height="@dimen/dimen_icon"
         android:layout_margin="@dimen/dimen_xxxlarge"
         android:clickable="true"
+        android:scaleType="centerCrop"
         app:layout_anchor="@+id/food_orders_fragment"
-        app:layout_anchorGravity="top|right" />
+        app:layout_anchorGravity="top|right"
+        app:srcCompat="@drawable/icon_up" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,17 +61,11 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@color/accent"/>
-
         <LinearLayout
             android:id="@+id/food_orders_fragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:paddingTop="@dimen/padding_large"
             android:orientation="vertical">
 
         </LinearLayout>

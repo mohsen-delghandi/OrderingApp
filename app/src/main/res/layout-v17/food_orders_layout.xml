@@ -4,10 +4,18 @@
     android:layout_height="match_parent"
     android:padding="@dimen/padding_medium">
 
+    <!--<TextView-->
+    <!--android:id="@+id/aaaaaaaa"-->
+    <!--android:text="aaaaaaa"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent" />-->
+
+
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/food_menu_recyclerView"
+        android:id="@+id/food_orders_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
 
     </android.support.v7.widget.RecyclerView>

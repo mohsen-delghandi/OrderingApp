@@ -37,7 +37,7 @@ public class AppPreferenceTools {
 
     public void printAfterConfirm(boolean b) {
         mPreference.edit()
-                .putBoolean(this.mContext.getString(R.string.default_customer_code), b)
+                .putBoolean(this.mContext.getString(R.string.print_after_confirm), b)
                 .apply();
     }
 
@@ -59,7 +59,7 @@ public class AppPreferenceTools {
         return mPreference.getString(this.mContext.getString(R.string.default_customer_code), "");
     }
 
-    public Boolean getprintAfterConfirm() {
+    public boolean getprintAfterConfirm() {
         return mPreference.getBoolean(this.mContext.getString(R.string.print_after_confirm), false);
     }
 

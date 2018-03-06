@@ -25,13 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="co.sansystem.orderingapp.OrdersBasketActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="co.sansystem.orderingapp.SettingsActivity"
-            android:screenOrientation="portrait"/>
         <activity
             android:windowSoftInputMode="adjustResize"
-            android:name="co.sansystem.orderingapp.SettingsActivity2"
+            android:name="co.sansystem.orderingapp.SettingsActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:windowSoftInputMode="adjustResize"

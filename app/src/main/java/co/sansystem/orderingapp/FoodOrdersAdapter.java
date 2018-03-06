@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.AnimRes;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.widget.CardView;
@@ -12,9 +13,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sansystem.mohsen.orderingapp.R;
@@ -77,6 +80,31 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
         mPosition = position;
 //        holder.setIsRecyclable(false);
         holder.tv.setText(mList.get(position).mName);
+        holder.tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final ExpDialogClass cdd2 = new ExpDialogClass(mContext);
+                cdd2.show();
+                Window window = cdd2.getWindow();
+                window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                cdd2.yes.setText("تایید");
+                cdd2.no.setText("انصراف");
+                cdd2.yes.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        holder.tv.setText(holder.tv.getText().toString() + cdd2.text.getText().toString());
+                        mList.get(position).mExp = cdd2.text.getText().toString();
+                        cdd2.dismiss();
+                    }
+                });
+                cdd2.no.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        cdd2.dismiss();
+                    }
+                });
+            }
+        });
         holder.tv2.setText(mList.get(position).mNumber + "");
         mRvv.smoothScrollToPosition(mRvv.getAdapter().getItemCount());
 

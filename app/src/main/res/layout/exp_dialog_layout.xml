@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding_small">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TableRow
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:gravity="center">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView_exp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:weightSum="5">
+
+            <EditText
+                android:id="@+id/editText_dialog_text"
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_weight="5"
+                android:gravity="right"
+                android:lines="3"
+                android:background="@android:color/transparent"
+                android:textSize="@dimen/font_medium"
+                android:textColor="@color/primary_text"
+                android:padding="@dimen/padding_large"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="left">
+
+            <TextView
+                android:id="@+id/textView_cancel"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="خیر"
+                android:textSize="@dimen/font_medium"
+                android:background="@color/accent"
+                android:textColor="@color/icons"
+                android:padding="@dimen/padding_large"/>
+
+
+
+            <TextView
+                android:id="@+id/textView_ok"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="بله"
+                android:textSize="@dimen/font_medium"
+                android:background="@color/green"
+                android:textColor="@color/icons"
+                android:padding="@dimen/padding_large"/>
+
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>

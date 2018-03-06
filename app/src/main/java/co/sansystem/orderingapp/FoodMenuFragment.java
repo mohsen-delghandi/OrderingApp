@@ -61,7 +61,7 @@ public class FoodMenuFragment extends Fragment {
         ArrayList<byte[]> foodsImages = new ArrayList<>();
         ArrayList<String> foodsCodes = new ArrayList<>();
         ArrayList<String> foodsPrices = new ArrayList<>();
-        SQLiteDatabase mydb = new MyDatabase(mContext).getReadableDatabase();
+        SQLiteDatabase mydb = new MyDatabase(getActivity()).getWritableDatabase();
         Cursor cur;
 
         if(mFoodsCategoryCode == -1){
@@ -87,7 +87,8 @@ public class FoodMenuFragment extends Fragment {
                 OrdersMenuActivity.linearLayout.setVisibility(View.VISIBLE);
             }
         }
-
+        cur.close();
+        mydb.close();
         rva = new FoodMenuAdapter(mContext,foodsImages,foodsNames,mFragmentManager,foodsCodes,foodsPrices,mHeight);
 
         rvv.setAdapter(rva);

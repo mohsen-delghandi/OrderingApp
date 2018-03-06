@@ -9,14 +9,14 @@ public class OrderedItem {
     public int mNumber;
     public String  mPrice;
     public String mCode;
-//    public int mCode;
+    public String mExp;
 
-    OrderedItem(String name,int number,String code,String price/*,int code*/) {
+    OrderedItem(String name,int number,String code,String price,String exp) {
         mNumber = number;
         mName = name;
         mPrice = price;
         mCode = code;
-//        mCode = code;
+        mExp = exp;
     }
 
     public String  getCode() {
@@ -29,5 +29,9 @@ public class OrderedItem {
 
     public String getmPrice() {
         return mPrice;
+    }
+
+    public String getmExp() {
+        return mExp;
     }
 }

@@ -55,8 +55,8 @@ public class LoginActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        name = etUserName.getText().toString();
-                        password = etPassword.getText().toString();
+                        name = etUserName.getText().toString().trim();
+                        password = etPassword.getText().toString().trim();
                         CallWebService cws = new CallWebService(LoginActivity.this, "LoginGarson", "_UserName", "_Password");
                         responce = cws.Call(name, password);
 

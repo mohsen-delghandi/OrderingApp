@@ -1,6 +1,7 @@
 package co.sansystem.orderingapp;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,11 +9,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -71,7 +74,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
 
 
     @Override
-    public void onBindViewHolder(FoodMenuAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final FoodMenuAdapter.ViewHolder holder, final int position) {
         mHolder = holder;
         holder.setIsRecyclable(false);
 //        holder.ll.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,holder.tv.getLayoutParams().width));
@@ -88,10 +91,26 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
             }
         }
 
+        cf.close();
+        dbf2.close();
         v.setId(position);
 
         Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsImages.get(position), 0, mFoodsImages.get(position).length);
         holder.iv.setImageBitmap(decodedByte);
+        holder.iv.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @SuppressLint("NewApi")
+            @Override
+            public void onGlobalLayout() {
+                int h = holder.iv.getMeasuredWidth();
+                holder.iv.setLayoutParams(new LinearLayout.LayoutParams(h, h));
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    holder.iv.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    holder.iv.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        });
 
         v.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,16 +142,16 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
                 OrdersMenuActivity.fabToggle.setOnClickListener(OrdersMenuActivity.ocl);
 
                 if(FoodOrdersAdapter.mList.size() == 0){
-                    data = new OrderedItem(mFoodsNames.get(position),1,mFoodsCodes.get(position),mFoodsPrices.get(position));
+                    data = new OrderedItem(mFoodsNames.get(position),1,mFoodsCodes.get(position),mFoodsPrices.get(position),"");
                 }
 
                 for(int i = 0 ; i < FoodOrdersAdapter.mList.size() ; i++){
                     if(FoodOrdersAdapter.mList.get(i).getCode().equals(mFoodsCodes.get(position))){
-                        data = new OrderedItem(mFoodsNames.get(position),FoodOrdersAdapter.mList.get(i).getmNumber()+1,mFoodsCodes.get(position),mFoodsPrices.get(position));
+                        data = new OrderedItem(mFoodsNames.get(position),FoodOrdersAdapter.mList.get(i).getmNumber()+1,mFoodsCodes.get(position),mFoodsPrices.get(position),"");
                         FoodOrdersAdapter.mList.remove(i);
                         i = FoodOrdersAdapter.mList.size();
                     }else{
-                        data = new OrderedItem(mFoodsNames.get(position),1,mFoodsCodes.get(position),mFoodsPrices.get(position));
+                        data = new OrderedItem(mFoodsNames.get(position),1,mFoodsCodes.get(position),mFoodsPrices.get(position),"");
                     }
                 }
 

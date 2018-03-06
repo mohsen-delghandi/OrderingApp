@@ -1,303 +1,299 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layoutDirection="rtl"
+    android:background="@drawable/splash_back"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/splash_back">
+    android:layoutDirection="rtl">
 
-        <TableRow
-            android:id="@+id/logo_splash"
-            android:layout_centerInParent="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:weightSum="3">
+    <TableRow
+        android:id="@+id/logo_splash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:weightSum="3">
 
 
         <ImageView
-            android:layout_gravity="center"
             android:id="@+id/imgLogo"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_weight="1"
             android:src="@drawable/logo_middle" />
 
-        </TableRow>
+    </TableRow>
 
-        <TableRow
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:weightSum="3">
+
+
+        <ImageView
+            android:id="@+id/imgLogo2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:src="@drawable/logo_bottom" />
+
+
+    </TableRow>
+
+    <LinearLayout
+        android:id="@+id/llLoading_splash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dimen_xxxlarge"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.wang.avi.AVLoadingIndicatorView
+            style="@style/AVLoadingIndicatorView.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:indicatorColor="@color/icons"
+            app:indicatorName="BallClipRotateMultipleIndicator" />
+
+        <TextView
+            android:id="@+id/tvLoading_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="3"
-            android:gravity="center">
+            android:layout_below="@+id/pvLoading_view"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/padding_large"
+            android:gravity="center"
+            android:text="لطفا شکیبا باشید"
+            android:textColor="@color/icons" />
+    </LinearLayout>
 
-
-                <ImageView
-                    android:id="@+id/imgLogo2"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="bottom"
-                    android:layout_alignParentBottom="true"
-                    android:src="@drawable/logo_bottom"
-                    android:adjustViewBounds="true"
-                    android:layout_height="wrap_content" />
-
-
-        </TableRow>
+    <TableRow
+        android:id="@+id/tr_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:weightSum="4">
 
         <LinearLayout
-            android:layout_marginBottom="@dimen/dimen_xxxlarge"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
+            android:id="@+id/ll_settings_splash"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:background="@drawable/splash_back2"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="gone"
-            android:id="@+id/llLoading_splash">
+            android:paddingBottom="@dimen/padding_box"
+            android:paddingLeft="@dimen/padding_spinner"
+            android:paddingRight="@dimen/padding_spinner"
+            android:paddingTop="@dimen/padding_box"
+            android:visibility="gone">
 
-                <com.wang.avi.AVLoadingIndicatorView
-                    style="@style/AVLoadingIndicatorView.Large"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:indicatorColor="@color/icons"
-                    app:indicatorName="BallClipRotateMultipleIndicator"
-                    />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/padding_box"
+                android:gravity="right"
+                android:text="جهت ورود به برنامه و اتصال به سرور، اطلاعات زیر را وارد نمایید."
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xsmall" />
 
-                <TextView
-                    android:id="@+id/tvLoading_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/pvLoading_view"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="@dimen/padding_large"
-                    android:gravity="center"
-                    android:text="لطفا شکیبا باشید"
-                    android:textColor="@color/icons"/>
-        </LinearLayout>
-
-        <TableRow
-            android:id="@+id/tr_main"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="4"
-            android:gravity="center"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="آی پی سرور"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xsmall" />
 
             <LinearLayout
-                android:id="@+id/ll_settings_splash"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:background="@drawable/splash_back2"
-                android:gravity="center"
-                android:visibility="gone"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/padding_box"
-                android:paddingLeft="@dimen/padding_spinner"
-                android:paddingRight="@dimen/padding_spinner"
-                android:paddingTop="@dimen/padding_box">
+                android:layoutDirection="ltr"
+                android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/padding_box"
-                        android:gravity="right"
-                        android:text="جهت ورود به برنامه و اتصال به سرور، اطلاعات زیر را وارد نمایید."
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
+                <!--<EditText-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_weight="0"-->
+                <!--android:textSize="@dimen/font_xsmall"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingBottom="@dimen/padding_bit"/>-->
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:text="آی پی سرور"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
-
-                <LinearLayout
-                    android:layoutDirection="ltr"
-                    android:layout_width="match_parent"
+                <EditText
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <!--<EditText-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_weight="0"-->
-                        <!--android:textSize="@dimen/font_xsmall"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:paddingBottom="@dimen/padding_bit"/>-->
-
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:background="@drawable/shape_underline"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:text="."
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_medium"
-                        android:visibility="invisible" />
-
-                    <EditText
-                        android:id="@+id/editText_ip_firstrun1"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/shape_underline"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:nextFocusDown="@+id/editText_ip_firstrun2"
-                        android:paddingBottom="@dimen/padding_bit"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
-
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:text="."
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_medium" />
-
-                    <EditText
-                        android:id="@+id/editText_ip_firstrun2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/shape_underline"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:nextFocusDown="@+id/editText_ip_firstrun3"
-                        android:paddingBottom="@dimen/padding_bit"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:text="."
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_medium" />
-
-                    <EditText
-                        android:id="@+id/editText_ip_firstrun3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/shape_underline"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:nextFocusDown="@+id/editText_ip_firstrun4"
-                        android:paddingBottom="@dimen/padding_bit"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:text="."
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_medium" />
-
-                    <EditText
-                        android:id="@+id/editText_ip_firstrun4"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/shape_underline"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:nextFocusDown="@+id/editText_title_firstrun"
-                        android:paddingBottom="@dimen/padding_bit"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
-
-                    <EditText
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0"
-                        android:background="@drawable/shape_underline"
-                        android:gravity="center"
-                        android:inputType="number"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall"
-                        android:visibility="invisible" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:text="."
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_medium"
-                        android:visibility="invisible" />
-
-
-                </LinearLayout>
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/padding_spinner"
-                    android:gravity="right"
-                    android:text="عنوان مجموعه"
+                    android:layout_weight="0"
+                    android:background="@drawable/shape_underline"
+                    android:gravity="center"
+                    android:inputType="number"
                     android:textColor="@color/icons"
-                    android:textSize="@dimen/font_xsmall" />
-
-                    <EditText
-                        android:id="@+id/editText_title_firstrun"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:background="@drawable/shape_underline"
-                        android:gravity="center"
-                        android:inputType="text"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
+                    android:textSize="@dimen/font_xsmall"
+                    android:visibility="invisible" />
 
                 <TextView
-                    android:id="@+id/button_save_firstRun"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginTop="@dimen/padding_spinner"
-                    android:background="@drawable/button_shape2"
+                    android:layout_gravity="bottom"
+                    android:text="."
+                    android:textColor="@color/icons"
+                    android:textSize="@dimen/font_medium"
+                    android:visibility="invisible" />
+
+                <EditText
+                    android:id="@+id/editText_ip_firstrun1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline"
                     android:gravity="center"
-                    android:paddingBottom="@dimen/padding_medium"
-                    android:paddingLeft="@dimen/padding_large"
-                    android:paddingRight="@dimen/padding_large"
-                    android:paddingTop="@dimen/padding_medium"
-                    android:text="اتصال به سرور"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_ip_firstrun2"
+                    android:paddingBottom="@dimen/padding_bit"
                     android:textColor="@color/icons"
                     android:textSize="@dimen/font_xsmall" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="."
+                    android:textColor="@color/icons"
+                    android:textSize="@dimen/font_medium" />
+
+                <EditText
+                    android:id="@+id/editText_ip_firstrun2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_ip_firstrun3"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/icons"
+                    android:textSize="@dimen/font_xsmall" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="."
+                    android:textColor="@color/icons"
+                    android:textSize="@dimen/font_medium" />
+
+                <EditText
+                    android:id="@+id/editText_ip_firstrun3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_ip_firstrun4"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/icons"
+                    android:textSize="@dimen/font_xsmall" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="."
+                    android:textColor="@color/icons"
+                    android:textSize="@dimen/font_medium" />
+
+                <EditText
+                    android:id="@+id/editText_ip_firstrun4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_title_firstrun"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/icons"
+                    android:textSize="@dimen/font_xsmall" />
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:background="@drawable/shape_underline"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:textColor="@color/icons"
+                    android:textSize="@dimen/font_xsmall"
+                    android:visibility="invisible" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:text="."
+                    android:textColor="@color/icons"
+                    android:textSize="@dimen/font_medium"
+                    android:visibility="invisible" />
 
 
             </LinearLayout>
 
-        </TableRow>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:gravity="right"
+                android:text="عنوان مجموعه"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xsmall" />
+
+            <EditText
+                android:id="@+id/editText_title_firstrun"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/shape_underline"
+                android:gravity="center"
+                android:inputType="text"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xsmall" />
+
+            <TextView
+                android:id="@+id/button_save_firstRun"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:background="@drawable/button_shape2"
+                android:gravity="center"
+                android:paddingBottom="@dimen/padding_medium"
+                android:paddingLeft="@dimen/padding_large"
+                android:paddingRight="@dimen/padding_large"
+                android:paddingTop="@dimen/padding_medium"
+                android:text="اتصال به سرور"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xsmall" />
 
 
+        </LinearLayout>
 
+    </TableRow>
 
 
 </RelativeLayout>

@@ -27,12 +27,14 @@ public class OrdersMenuActivity extends MainActivity {
     RecyclerView mNavigationRecycler;
     RecyclerView.LayoutManager mRecyclerManager;
     RecyclerView.Adapter mRecyclerAdapter;
-    public static LinearLayout ll,ll2;
+    public static LinearLayout ll, ll2;
     public static FloatingActionButton fabToggle;
     public static TextView tvTayid;
     int firstRun;
     public static LinearLayout linearLayout;
-    CustomDialogClass cdd;
+    CustomDialogClass cdd, cdd2;
+    AppPreferenceTools appPreferenceTools;
+    String costumerCode;
 
     @Override
     public void onBackPressed() {
@@ -42,26 +44,29 @@ public class OrdersMenuActivity extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setInflater(this,R.layout.orders_menu_layout);
+        setInflater(this, R.layout.orders_menu_layout);
 
-        fabToggle = (FloatingActionButton)findViewById(R.id.fab_toggle);
+        fabToggle = (FloatingActionButton) findViewById(R.id.fab_toggle);
         fabToggle.setVisibility(View.GONE);
 
         drawer.openDrawer(Gravity.START);
+        appPreferenceTools = new AppPreferenceTools(this);
+        costumerCode = appPreferenceTools.getDefaultCostumerCode();
 
         linearLayout = (LinearLayout) findViewById(R.id.linearLayout_happy);
 //        linearLayout.setVisibility(View.GONE);
 
-        ll = (LinearLayout)findViewById(R.id.food_orders_fragment);
-        ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0,0f));
-        ll2 = (LinearLayout)findViewById(R.id.food_menu_fragment);
-        tvTayid = (TextView)findViewById(R.id.textView_tayid);
+        ll = (LinearLayout) findViewById(R.id.food_orders_fragment);
+        ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 0f));
+        ll2 = (LinearLayout) findViewById(R.id.food_menu_fragment);
+        tvTayid = (TextView) findViewById(R.id.textView_tayid);
         tvTayid.setVisibility(View.GONE);
         tvTayid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cdd=new CustomDialogClass(OrdersMenuActivity.this);
+                cdd = new CustomDialogClass(OrdersMenuActivity.this, costumerCode);
                 cdd.show();
+                cdd.setCancelable(false);
                 Window window = cdd.getWindow();
                 window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             }
@@ -76,23 +81,49 @@ public class OrdersMenuActivity extends MainActivity {
         ivTitlebar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(OrdersMenuActivity.this,SettingsActivity2.class);
-                startActivity(i);
-
+                if (FoodOrdersAdapter.mList.size() == 0) {
+                    Intent i = new Intent(OrdersMenuActivity.this, SettingsActivity.class);
+                    startActivity(i);
+                    finish();
+                } else {
+                    cdd2 = new CustomDialogClass(OrdersMenuActivity.this, costumerCode);
+                    cdd2.show();
+                    Window window = cdd2.getWindow();
+                    window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    cdd2.jameKol.setVisibility(View.GONE);
+                    cdd2.tv.setText("هشدار");
+                    cdd2.no.setText("خیر");
+                    cdd2.text.setText("با ورود به تنظیمات لیست سفارش خالی می شود،آیا مطمئن هستید؟");
+                    cdd2.text.setTextSize(25);
+                    cdd2.text.setPadding(40, 40, 40, 40);
+                    cdd2.etTable.setVisibility(View.GONE);
+                    cdd2.llLoadingDialog.setVisibility(View.GONE);
+                    cdd2.tvNameMoshtari.setVisibility(View.GONE);
+                    cdd2.etName.setVisibility(View.GONE);
+                    cdd2.tlMain.setAlpha(1f);
+                    cdd2.yes.setText("بله");
+                    cdd2.yes.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent i = new Intent(OrdersMenuActivity.this, SettingsActivity.class);
+                            startActivity(i);
+                            finish();
+                        }
+                    });
+                }
             }
         });
 
 
-
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        FoodOrdersFragment foodOrdersFragment = new FoodOrdersFragment(this,height);
-        fragmentTransaction.add(R.id.food_orders_fragment,foodOrdersFragment);
+        FoodOrdersFragment foodOrdersFragment = new FoodOrdersFragment(this, height);
+        fragmentTransaction.add(R.id.food_orders_fragment, foodOrdersFragment);
         fragmentTransaction.commit();
 
         //Navigation recycler
 
-        mNavigationRecycler = (RecyclerView)findViewById(R.id.nav_recyclerView);
+        mNavigationRecycler = (RecyclerView) findViewById(R.id.nav_recyclerView);
         mNavigationRecycler.setHasFixedSize(true);
         mNavigationRecycler.setNestedScrollingEnabled(false);
 
@@ -101,12 +132,8 @@ public class OrdersMenuActivity extends MainActivity {
 
         Food food = new Food(this);
 
-        mRecyclerAdapter = new NavigationAdapter(this,width,food.getFoodCategoryImages(),food.getFoodCategoryNames(),fragmentManager,drawer,food.getFoodCategoryCodes(),height);
+        mRecyclerAdapter = new NavigationAdapter(this, width, food.getFoodCategoryImages(), food.getFoodCategoryNames(), fragmentManager, drawer, food.getFoodCategoryCodes(), height);
         mNavigationRecycler.setAdapter(mRecyclerAdapter);
-
-
-
-
 
 
 //        if(SettingsActivity.isUpdated) {
@@ -124,7 +151,7 @@ public class OrdersMenuActivity extends MainActivity {
 
     @Override
     public void startVideo(VideoView videoView, List<String> videoAddressList, int i) {
-        if(cdd!=null && cdd.isShowing())  cdd.dismiss();
+        if (cdd != null && cdd.isShowing()) cdd.dismiss();
         super.startVideo(videoView, videoAddressList, i);
     }
 
@@ -144,7 +171,7 @@ public class OrdersMenuActivity extends MainActivity {
 //                }
 //            });
 
-            ValueAnimator va = ValueAnimator.ofInt(height*2/3,height/5);
+            ValueAnimator va = ValueAnimator.ofInt(height * 2 / 3, height / 5);
             va.setDuration(300);
             va.setInterpolator(new FastOutLinearInInterpolator());
             va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -160,8 +187,6 @@ public class OrdersMenuActivity extends MainActivity {
             fabToggle.setOnClickListener(ocl);
         }
     };
-
-
 
 
     public static View.OnClickListener ocl = new View.OnClickListener() {
@@ -181,7 +206,7 @@ public class OrdersMenuActivity extends MainActivity {
 //                }
 //            });
 
-            ValueAnimator va = ValueAnimator.ofInt(height/5,height*2/3);
+            ValueAnimator va = ValueAnimator.ofInt(height / 5, height * 2 / 3);
             va.setDuration(500);
             va.setInterpolator(new OvershootInterpolator());
             va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {

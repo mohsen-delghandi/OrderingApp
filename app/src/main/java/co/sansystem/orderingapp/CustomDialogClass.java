@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,20 +45,22 @@ public class CustomDialogClass extends Dialog implements
 
     public Activity c;
     public Dialog d;
-    public TextView yes, no;
+    public TextView yes, no,text,jameKol,tv,tvNameMoshtari;
     public EditText etTable;
     public EditText etName;
     long mPrice = 0;
-    String mPriceFormatted = "", response;
+    String mPriceFormatted = "", response,costumerCode;
     JSONArray jsonArray;
     CallWebService cws;
     LinearLayout llLoadingDialog;
     TableLayout tlMain;
+    TableRow trJameKol;
     AppPreferenceTools appPreferenceTools;
 
-    public CustomDialogClass(Activity a) {
+    public CustomDialogClass(Activity a, String defaultCostumerCode) {
         super(a);
         this.c = a;
+        costumerCode = defaultCostumerCode;
     }
 
 
@@ -66,12 +69,19 @@ public class CustomDialogClass extends Dialog implements
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.basket_dialog_layout);
+
         etTable = findViewById(R.id.editText_tableNumber);
-        etName = findViewById(R.id.editText_tableNumber);
+        etName = findViewById(R.id.editText_name);
         llLoadingDialog = findViewById(R.id.llLoading_dialog);
         tlMain = findViewById(R.id.tableLayout_main);
         yes = findViewById(R.id.textView_ok);
         no = findViewById(R.id.textView_cancel);
+        text = findViewById(R.id.textView_text);
+        jameKol = findViewById(R.id.textView_jameKol);
+        tv = findViewById(R.id.textView_price);
+        tvNameMoshtari = findViewById(R.id.textView_nameMoshtari);
+        trJameKol = findViewById(R.id.tableRow_jameKol);
+        no.setBackgroundColor(c.getResources().getColor(R.color.red));
         yes.setOnClickListener(this);
         no.setOnClickListener(this);
         appPreferenceTools = new AppPreferenceTools(c);
@@ -112,7 +122,6 @@ public class CustomDialogClass extends Dialog implements
 
         mPrice /= 10;
 
-        TextView tv = findViewById(R.id.textView_price);
         int a = (mPrice + "").length();
         mPriceFormatted = (mPrice + "").substring(0, a % 3);
         for (int i = 0; i < (mPrice + "").length() / 3; i++) {
@@ -128,7 +137,11 @@ public class CustomDialogClass extends Dialog implements
         InputMethodManager inputMethodManager = (InputMethodManager) c.getSystemService(INPUT_METHOD_SERVICE);
 //        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 //        inputMethodManager.hideSoftInputFromWindow(c.getCurrentFocus().getWindowToken(), 0);
-        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        if(getCurrentFocus()!=null) {
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }else{
+            inputMethodManager.hideSoftInputFromWindow(c.getCurrentFocus().getWindowToken(), 0);
+        }
         super.dismiss();
     }
 
@@ -150,8 +163,16 @@ public class CustomDialogClass extends Dialog implements
                             jsonObject.put("Food_Count", FoodOrdersAdapter.mList.get(i).getmNumber());
                             jsonObject.put("Food_Price", Integer.parseInt(FoodOrdersAdapter.mList.get(i).getmPrice()) * FoodOrdersAdapter.mList.get(i).getmNumber());
                             jsonObject.put("Table_Number", etTable.getText() + "");
-                            jsonObject.put("Costumer_Code", appPreferenceTools.getDefaultCostumerCode() + "");
-                            jsonObject.put("Costumer_Name", etTable.getText() + "");
+                            jsonObject.put("Costumer_Code", costumerCode);
+                            jsonObject.put("Costumer_Name", etName.getText() + "");
+                            if (appPreferenceTools.getprintAfterConfirm()) {
+                                jsonObject.put("Print_Confirm", "true");
+                            } else {
+                                jsonObject.put("Print_Confirm", "false");
+                            }
+                            jsonObject.put("Food_Exp", FoodOrdersAdapter.mList.get(i).getmExp());
+                            jsonObject.put("User_Id", appPreferenceTools.getUserID() +"");
+                            jsonObject.put("Price_Sum", mPrice +"");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -172,7 +193,7 @@ public class CustomDialogClass extends Dialog implements
                             });
 
                             response = cws.Call(jsonArray.toString());
-                            if (response.equals("1")) {
+                            if (response.length() > 4 && response.substring(0, 4).equals("True")) {
                                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                                     public void run() {
                                         Toast.makeText(c, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
@@ -199,7 +220,23 @@ public class CustomDialogClass extends Dialog implements
                                                 OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
                                             }
                                         });
-                                        dismiss();
+
+                                        jameKol.setText("فاکتور با موفقیت ثبت گردید.");
+                                        jameKol.setTextSize(30);
+                                        jameKol.setTextColor(c.getResources().getColor(R.color.icons));
+                                        trJameKol.setBackgroundColor(c.getResources().getColor(R.color.accent));
+                                        tv.setVisibility(View.GONE);
+                                        no.setText("تایید");
+                                        no.setBackgroundColor(c.getResources().getColor(R.color.green));
+                                        text.setText("شماره فیش ارسالی به شماره "+response.substring(4)+" به نام "+etName.getText().toString().trim()+" ثبت گردید.");
+                                        text.setTextSize(25);
+                                        text.setPadding(40,40,40,40);
+                                        etTable.setVisibility(View.GONE);
+                                        llLoadingDialog.setVisibility(View.GONE);
+                                        tvNameMoshtari.setVisibility(View.GONE);
+                                        etName.setVisibility(View.GONE);
+                                        tlMain.setAlpha(1f);
+                                        yes.setVisibility(View.GONE);
 //                                        InputMethodManager inputMethodManager = (InputMethodManager) c.getSystemService(INPUT_METHOD_SERVICE);
 //                                        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                                     }

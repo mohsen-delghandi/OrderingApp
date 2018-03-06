@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layoutDirection="rtl"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -39,33 +40,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
+
+
+
+
         <TableRow
-            android:id="@+id/tableRow_jameKol"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:gravity="right"
             android:weightSum="5"
             android:background="@drawable/shape_underline">
-
-            <!--<TextView-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_weight=".5"-->
-                <!--android:text="تومان"-->
-                <!--android:gravity="center|bottom"-->
-                <!--android:textSize="@dimen/font_xsmall"-->
-                <!--android:textColor="@color/primary_text"/>-->
-
-
-            <TextView
-                android:id="@+id/textView_price"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:textSize="@dimen/font_large"
-                android:textColor="@color/accent"/>
-
 
             <TextView
                 android:id="@+id/textView_jameKol"
@@ -77,6 +62,24 @@
                 android:textSize="@dimen/font_small"
                 android:textColor="@color/primary_text"/>
 
+            <TextView
+                android:id="@+id/textView_price"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:textSize="@dimen/font_large"
+                android:textColor="@color/accent"/>
+
+            <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_weight=".5"-->
+                <!--android:text="تومان"-->
+                <!--android:gravity="center|bottom"-->
+                <!--android:textSize="@dimen/font_xsmall"-->
+                <!--android:textColor="@color/primary_text"/>-->
+
 
 
         </TableRow>
@@ -86,18 +89,6 @@
             android:layout_width="match_parent"
             android:gravity="right"
             android:weightSum="7">
-
-
-
-            <EditText
-                android:id="@+id/editText_tableNumber"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_weight=".5"
-                android:gravity="center"
-                android:textSize="@dimen/font_small"
-                android:inputType="number"
-                android:textColor="@color/primary_text"/>
 
             <TextView
                 android:id="@+id/textView_text"
@@ -109,6 +100,18 @@
                 android:textSize="@dimen/font_small"
                 android:textColor="@color/primary_text"/>
 
+            <EditText
+                android:id="@+id/editText_tableNumber"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight=".5"
+                android:gravity="center"
+                android:textSize="@dimen/font_small"
+                android:inputType="number"
+                android:textColor="@color/primary_text"/>
+
+
+
 
         </TableRow>
 
@@ -118,7 +121,15 @@
             android:gravity="right"
             android:weightSum="7">
 
-
+            <TextView
+                android:id="@+id/textView_nameMoshtari"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="نام مشتری"
+                android:gravity="center"
+                android:textSize="@dimen/font_small"
+                android:textColor="@color/primary_text"/>
 
             <EditText
                 android:id="@+id/editText_name"
@@ -131,36 +142,13 @@
                 android:textColor="@color/primary_text"/>
 
 
-            <TextView
-                android:id="@+id/textView_nameMoshtari"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:text="نام مشتری"
-                android:gravity="center"
-                android:textSize="@dimen/font_small"
-                android:textColor="@color/primary_text"/>
+
 
         </TableRow>
 
         <TableRow
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
-
-
-
-            <TextView
-                android:id="@+id/textView_cancel"
-                android:layout_alignParentBottom="true"
-                android:gravity="center"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="انصراف"
-                android:textSize="@dimen/font_small"
-                android:textColor="@color/icons"
-                android:background="#F44336"
-                android:padding="@dimen/padding_medium"/>
 
             <TextView
                 android:id="@+id/textView_ok"
@@ -173,6 +161,19 @@
                 android:textSize="@dimen/font_small"
                 android:textColor="@color/icons"
                 android:background="#388E3C"
+                android:padding="@dimen/padding_medium"/>
+
+            <TextView
+                android:id="@+id/textView_cancel"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="انصراف"
+                android:textSize="@dimen/font_small"
+                android:textColor="@color/icons"
+                android:background="#F44336"
                 android:padding="@dimen/padding_medium"/>
 
         </TableRow>
