@@ -1,7 +1,10 @@
 package co.sansystem.orderingapp;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -22,6 +25,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 /**
  * Created by Mohsen on 2017-06-16.
  */
@@ -29,10 +34,16 @@ import java.util.ArrayList;
 public class LoginActivity extends AppCompatActivity {
 
     EditText etUserName, etPassword;
-    TextView btSignIn, btSave;
+    TextView btSignIn,btChangeIp, btSave;
     String responce, responce2, name, id, password;
     Spinner spCostumerCode;
-    TableRow trMain, trDefaultCode;
+    TableRow trMain;
+
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +53,28 @@ public class LoginActivity extends AppCompatActivity {
         etUserName = (EditText) findViewById(R.id.editText_userName);
         etPassword = (EditText) findViewById(R.id.editText_password);
         btSignIn = (TextView) findViewById(R.id.button_sign_in);
+        btChangeIp = (TextView) findViewById(R.id.button_change_ip);
         btSave = (TextView) findViewById(R.id.button_save);
-        trDefaultCode = (TableRow) findViewById(R.id.tr_costumer_code);
         trMain = (TableRow) findViewById(R.id.tr_main);
         spCostumerCode = (Spinner) findViewById(R.id.spinner_default_costumer);
 
         final AppPreferenceTools appPreferenceTools = new AppPreferenceTools(LoginActivity.this);
+
+        btChangeIp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SQLiteDatabase dbb = new MyDatabase(LoginActivity.this).getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                cv.put(MyDatabase.FIRST_RUN,1);
+                dbb.update(MyDatabase.SETTINGS_TABLE,cv,MyDatabase.ID + " = 1",null);
+
+
+                Intent i = new Intent(LoginActivity.this, SettingsActivity.class);
+                i.putExtra("status","fromSplash");
+                startActivity(i);
+                finish();
+            }
+        });
 
         btSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,61 +88,11 @@ public class LoginActivity extends AppCompatActivity {
                         responce = cws.Call(name, password);
 
                         if (responce.length() > 5 && responce.substring(0, 4).equals("true")) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    trMain.setVisibility(View.GONE);
-                                    trDefaultCode.setVisibility(View.VISIBLE);
-                                }
-                            });
 
-
-                            CallWebService cws2 = new CallWebService(LoginActivity.this, "GetListContact");
-                            responce2 = cws2.Call();
-                            JSONArray jsonArray = null;
-                            final ArrayList<String> costumerNames = new ArrayList<String>();
-                            final ArrayList<String> costumerCodes = new ArrayList<String>();
-                            try {
-                                jsonArray = new JSONArray(responce2);
-                                for (int i = 0; i < jsonArray.length() - 1; i++) {
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    costumerNames.add(jsonObject.get("FullName").toString());
-                                    costumerCodes.add(jsonObject.get("Tafzili_ID").toString());
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ArrayAdapter<String> adapter =
-                                            new ArrayAdapter<String>(LoginActivity.this, android.R.layout.simple_spinner_item, costumerNames.toArray(new String[costumerNames.size()]));
-                                    spCostumerCode.setAdapter(adapter);
-                                }
-                            });
-
-                            spCostumerCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                @Override
-                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                    appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(i));
-                                }
-
-                                @Override
-                                public void onNothingSelected(AdapterView<?> adapterView) {
-                                    appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(0));
-                                }
-                            });
-
-                            btSave.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    appPreferenceTools.loginOK();
-                                    appPreferenceTools.saveUserAuthenticationInfo(name, password, responce.substring(5));
-                                    startActivity(new Intent(LoginActivity.this, OrdersMenuActivity.class));
-                                    finish();
-                                }
-                            });
+                            appPreferenceTools.loginOK();
+                            appPreferenceTools.saveUserAuthenticationInfo(name, password, responce.substring(5));
+                            startActivity(new Intent(LoginActivity.this, OrdersMenuActivity.class));
+                            finish();
                         } else {
                             if (responce.equals("0")) {
                                 runOnUiThread(new Runnable() {

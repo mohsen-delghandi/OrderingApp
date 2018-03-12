@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.AnimRes;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.widget.CardView;
@@ -36,17 +37,17 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
     RecyclerView mRvv;
     LinearLayoutManager mRvlm;
     ViewHolder mHolder;
-    int mPosition,mHeight;
+    int mPosition, mHeight;
+    List<String> exps;
 
-//    boolean animate;
 
-
-    public FoodOrdersAdapter(Context context, List<OrderedItem> list, RecyclerView rvv, LinearLayoutManager rvlm,int height) {
+    public FoodOrdersAdapter(Context context, List<OrderedItem> list, RecyclerView rvv, LinearLayoutManager rvlm, int height) {
         mContext = context;
         mList = list;
         mRvv = rvv;
         mRvlm = rvlm;
         mHeight = height;
+        exps = new ArrayList<>();
     }
 
 
@@ -78,8 +79,11 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
     public void onBindViewHolder(final FoodOrdersAdapter.ViewHolder holder, final int position) {
         mHolder = holder;
         mPosition = position;
-//        holder.setIsRecyclable(false);
-        holder.tv.setText(mList.get(position).mName);
+        if(exps.size() <= position){
+            exps.add("");
+        }
+
+        holder.tv.setText(mList.get(position).mName + " " + exps.get(position));
         holder.tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,7 +96,8 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
                 cdd2.yes.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        holder.tv.setText(holder.tv.getText().toString() + cdd2.text.getText().toString());
+                        holder.tv.setText(holder.tv.getText().toString() + " " + cdd2.text.getText().toString());
+                        exps.set(position,cdd2.text.getText().toString() + " " + exps.get(position));
                         mList.get(position).mExp = cdd2.text.getText().toString();
                         cdd2.dismiss();
                     }
@@ -114,11 +119,6 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
             public void onClick(View view) {
 
                 removeItem(position);
-
-//                SQLiteDatabase db = new MyDatabase(mContext).getWritableDatabase();
-//                db.delete(MyDatabase.ORDERS_TABLE,MyDatabase.CODE + "= ?",new String[]{mList.get(position).});
-//                db.close();
-
             }
 
 //                long duration = setAnimation(holder.cv,android.R.anim.slide_out_right);
@@ -186,34 +186,9 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
                     removeItem(position);
                 }
                 notifyDataSetChanged();
-//                animate = false;
             }
         });
-
-//        if((position == mList.size()-1) && animate ) {
-//            setAnimation(holder.cv, android.R.anim.slide_in_left);
-//        }
-
-//        holder.cv.setAnimation(AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left));
-//        holder.tv.getParent()..setAnimation(AnimationUtils.loadAnimation(mContext, android.R.anim.slide_in_left));
-//        notifyItemInserted(position);
-//        mRvv.scrollToPosition(position);
-//        mRvlm.scrollToPosition(position)
-
     }
-
-
-    private long setAnimation(View viewToAnimate, @AnimRes int id) {
-        // If the bound view wasn't previously displayed on screen, it's animated
-//        if (position == mList.size()-1)
-//        {
-        Animation animation = AnimationUtils.loadAnimation(mContext, id);
-        long duration = animation.getDuration();
-        viewToAnimate.startAnimation(animation);
-//        }
-        return duration;
-    }
-
 
     @Override
     public int getItemCount() {
@@ -238,54 +213,50 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
 //    }
 
     public void removeItem(int position) {
-        mList.remove(position);
+        if (mList.size() > 0) {
+            mList.remove(position);
+            exps.remove(position);
+            try {
+                Thread.sleep(150);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mList.size());
 
         if (mList.size() == 0) {
 
-            ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
-            ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
-                    "height",
-                    animationWrapper.getHeight(),
-                    0);
-            anim.setDuration(300);
-            anim.setInterpolator(new FastOutLinearInInterpolator());
-            anim.start();
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
+                ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
+                        "height",
+                        animationWrapper.getHeight(),
+                        0);
+                anim.setDuration(300);
+                anim.setInterpolator(new FastOutLinearInInterpolator());
+                anim.start();
+                OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
+                    }
+                });
 
-//            OrdersMenuActivity.ll.animate().y((float)mHeight).setDuration(300).setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    OrdersMenuActivity.ll.setVisibility(View.GONE);
-//                }
-//            });
-//
-//            ValueAnimator va = ValueAnimator.ofInt(100, 200);
-//            va.setDuration(400);
-//            va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//                public void onAnimationUpdate(ValueAnimator animation) {
-//                    Integer value = (Integer) animation.getAnimatedValue();
-//                    v.getLayoutParams().height = value.intValue();
-//                    v.requestLayout();
-//                }
-//            });
-//            va.start();
-
-            OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
-                }
-            });
-
-            OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
-                }
-            });
+                OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
+                    }
+                });
+            }else{
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
+                params.height = 0;
+                OrdersMenuActivity.ll.setLayoutParams(params);
+                OrdersMenuActivity.fabToggle.setAlpha(0f);
+                OrdersMenuActivity.tvTayid.setAlpha(0f);
+            }
         }
-
     }
 }
 

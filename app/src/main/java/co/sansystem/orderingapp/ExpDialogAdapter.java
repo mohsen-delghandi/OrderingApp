@@ -51,7 +51,7 @@ public class ExpDialogAdapter extends RecyclerView.Adapter<ExpDialogAdapter.ExpV
         holder.llMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                text.setText(text.getText().toString()+ "," + currentModel.get(position));
+                text.setText(text.getText().toString()+ " " + currentModel.get(position));
             }
         });
     }

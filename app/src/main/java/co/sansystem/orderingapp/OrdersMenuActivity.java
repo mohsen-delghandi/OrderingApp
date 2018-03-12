@@ -1,9 +1,13 @@
 package co.sansystem.orderingapp;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
@@ -74,7 +78,7 @@ public class OrdersMenuActivity extends MainActivity {
 
         fabToggle.setOnClickListener(ocl);
 
-        tvTitlebar.setText(title + " - " + "منو");
+        tvTitlebar.setText(title + " - " + "کاربر " + appPreferenceTools.getUserName());
 
         ivTitlebar.setVisibility(View.VISIBLE);
         ivTitlebar.setImageResource(R.drawable.settings_icon);
@@ -94,6 +98,7 @@ public class OrdersMenuActivity extends MainActivity {
                     cdd2.tv.setText("هشدار");
                     cdd2.no.setText("خیر");
                     cdd2.text.setText("با ورود به تنظیمات لیست سفارش خالی می شود،آیا مطمئن هستید؟");
+                    cdd2.trVaziat.setVisibility(View.GONE);
                     cdd2.text.setTextSize(25);
                     cdd2.text.setPadding(40, 40, 40, 40);
                     cdd2.etTable.setVisibility(View.GONE);
@@ -158,30 +163,26 @@ public class OrdersMenuActivity extends MainActivity {
     public static View.OnClickListener ocl2 = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-//            ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(ll);
-//            ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,"height",animationWrapper.getHeight(),height/3);
-//            anim.setDuration(300);
-////            anim.setInterpolator(new FastOutLinearInInterpolator());
-//            anim.start();
 
-//            OrdersMenuActivity.ll.animate().y((float)height/4).setDuration(300).setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    OrdersMenuActivity.ll.setVisibility(View.GONE);
-//                }
-//            });
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                ValueAnimator va = ValueAnimator.ofInt(height * 2 / 3, height / 5);
+                va.setDuration(300);
+                va.setInterpolator(new FastOutLinearInInterpolator());
+                va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        Integer value = (Integer) animation.getAnimatedValue();
+                        OrdersMenuActivity.ll.getLayoutParams().height = value.intValue();
+                        OrdersMenuActivity.ll.requestLayout();
+                    }
+                });
+                va.start();
+            }else{
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
+                params.height = height / 5;
+                OrdersMenuActivity.ll.setLayoutParams(params);
+            }
 
-            ValueAnimator va = ValueAnimator.ofInt(height * 2 / 3, height / 5);
-            va.setDuration(300);
-            va.setInterpolator(new FastOutLinearInInterpolator());
-            va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    Integer value = (Integer) animation.getAnimatedValue();
-                    OrdersMenuActivity.ll.getLayoutParams().height = value.intValue();
-                    OrdersMenuActivity.ll.requestLayout();
-                }
-            });
-            va.start();
+
 
             fabToggle.setImageResource(R.drawable.icon_up);
             fabToggle.setOnClickListener(ocl);
@@ -193,30 +194,25 @@ public class OrdersMenuActivity extends MainActivity {
         @Override
         public void onClick(View view) {
 
-//            ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(ll);
-//            ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,"height",animationWrapper.getHeight(),height*2/3);
-//            anim.setDuration(500);
-////            anim.setInterpolator(new OvershootInterpolator());
-//            anim.start();
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                ValueAnimator va = ValueAnimator.ofInt(height / 5, height * 2 / 3);
+                va.setDuration(500);
+                va.setInterpolator(new OvershootInterpolator());
+                va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        Integer value = (Integer) animation.getAnimatedValue();
+                        OrdersMenuActivity.ll.getLayoutParams().height = value.intValue();
+                        OrdersMenuActivity.ll.requestLayout();
+                    }
+                });
+                va.start();
+            }else{
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
+                params.height = height * 2 / 3;
+                OrdersMenuActivity.ll.setLayoutParams(params);
+            }
 
-//            OrdersMenuActivity.ll.animate().y((float)height*2/3).setDuration(300).setListener(new AnimatorListenerAdapter() {
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//
-//                }
-//            });
 
-            ValueAnimator va = ValueAnimator.ofInt(height / 5, height * 2 / 3);
-            va.setDuration(500);
-            va.setInterpolator(new OvershootInterpolator());
-            va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    Integer value = (Integer) animation.getAnimatedValue();
-                    OrdersMenuActivity.ll.getLayoutParams().height = value.intValue();
-                    OrdersMenuActivity.ll.requestLayout();
-                }
-            });
-            va.start();
 
             fabToggle.setImageResource(R.drawable.icon_down);
             fabToggle.setOnClickListener(ocl2);

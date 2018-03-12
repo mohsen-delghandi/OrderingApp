@@ -4,12 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_light"
+    android:background="@drawable/splash_back"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="@dimen/padding_large">
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/responces_recyclerView"
@@ -18,7 +19,6 @@
         android:visibility="gone">
 
     </android.support.v7.widget.RecyclerView>
-
 
     <TableRow
         android:id="@+id/tr_main"
@@ -35,7 +35,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="3"
-            android:background="@drawable/gradient_back"
             android:gravity="center"
             android:orientation="vertical"
             android:paddingBottom="@dimen/padding_box"
@@ -186,6 +185,7 @@
 
             </LinearLayout>
 
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -203,6 +203,90 @@
                 android:background="@drawable/shape_underline"
                 android:gravity="center"
                 android:inputType="text"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xsmall" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/button_save_ip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:background="@drawable/button_shape2"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:paddingLeft="@dimen/padding_large"
+                    android:paddingRight="@dimen/padding_large"
+                    android:paddingTop="@dimen/padding_bit"
+                    android:text="ذخیره"
+                    android:textColor="@color/icons"
+                    android:textSize="@dimen/font_xsmall" />
+
+                <TextView
+                    android:id="@+id/textView_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="@dimen/padding_spinner"
+                    android:layout_marginTop="@dimen/padding_spinner"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:paddingLeft="@dimen/padding_large"
+                    android:paddingRight="@dimen/padding_large"
+                    android:paddingTop="@dimen/padding_bit"
+                    android:textColor="@color/icons"
+                    android:textSize="@dimen/font_xsmall" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView_costumer_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:gravity="right"
+                android:text="مشتری پیش فرض"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xsmall" />
+
+            <Spinner
+                android:id="@+id/spinner_default_costumer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/padding_medium"
+                android:background="@drawable/shape_underline"
+                android:gravity="center"
+                android:inputType="text"
+                android:padding="@dimen/padding_medium"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xsmall" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:gravity="right"
+                android:text="وضعیت سفارش پیش فرض"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xsmall" />
+
+            <Spinner
+                android:id="@+id/spinner_vaziat_sefaresh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="@dimen/padding_medium"
+                android:background="@drawable/shape_underline"
+                android:gravity="center"
+                android:inputType="text"
+                android:padding="@dimen/padding_medium"
                 android:textColor="@color/icons"
                 android:textSize="@dimen/font_xsmall" />
 
@@ -240,7 +324,7 @@
                 android:paddingLeft="@dimen/padding_large"
                 android:paddingRight="@dimen/padding_large"
                 android:paddingTop="@dimen/padding_bit"
-                android:text="ذخیره و به روز رسانی"
+                android:text="به روز رسانی"
                 android:textColor="@color/icons"
                 android:textSize="@dimen/font_xsmall" />
 
@@ -265,32 +349,21 @@
 
     </TableRow>
 
+    <LinearLayout
+        android:id="@+id/llLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible">
 
-    <!--<FrameLayout-->
-    <!--android:id="@+id/frameLayout_screenSaver"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent">-->
-
-    <!--<VideoView-->
-    <!--android:id="@+id/videoView_screenSaver"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"/>-->
-
-    <!--<Button-->
-    <!--android:id="@+id/button_screenSaver"-->
-    <!--android:elevation="@dimen/padding_bit"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="جهت ثبت سفارش کلیک کنید"-->
-    <!--android:layout_gravity="bottom|center_horizontal"-->
-    <!--android:textColor="@color/primary_dark"-->
-    <!--android:paddingRight="@dimen/padding_medium"-->
-    <!--android:paddingLeft="@dimen/padding_medium"-->
-    <!--android:textSize="@dimen/font_large"-->
-    <!--android:background="@drawable/button_shape"-->
-    <!--/>-->
-
-    <!--</FrameLayout>-->
-
+        <com.wang.avi.AVLoadingIndicatorView
+            style="@style/AVLoadingIndicatorView.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:indicatorColor="@color/icons"
+            app:indicatorName="BallClipRotateMultipleIndicator" />
+    </LinearLayout>
 
 </RelativeLayout>

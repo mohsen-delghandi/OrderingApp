@@ -5,18 +5,37 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sansystem.mohsen.orderingapp.R;
+import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Mohsen on 2017-06-29.
@@ -35,7 +54,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     static DrawerLayout mDrawer;
     public static boolean isFavorite;
 
-    public NavigationAdapter(Context context, int width, ArrayList<byte[]> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, DrawerLayout drawer, ArrayList<String> foodCategoryCodes,int height) {
+    public NavigationAdapter(Context context, int width, ArrayList<byte[]> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, DrawerLayout drawer, ArrayList<String> foodCategoryCodes, int height) {
         mContext = context;
         mWidth = width;
         mFoodsCategoryImages = foodsImages;
@@ -49,6 +68,7 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tv;
         public ImageView iv;
+
         public ViewHolder(View v) {
             super(v);
             tv = v.findViewById(R.id.nav_textView);
@@ -65,10 +85,9 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
     @Override
     public void onBindViewHolder(NavigationAdapter.ViewHolder holder, int position) {
-        if (position == 0){
+        if (position == 0) {
             holder.tv.setText("خواستنی ها");
             holder.setIsRecyclable(false);
-            holder.iv.setImageDrawable(mContext.getResources().getDrawable(R.drawable.heart));
             holder.iv.getLayoutParams().width = mWidth / 5;
             holder.iv.getLayoutParams().height = mWidth / 5;
 
@@ -78,13 +97,17 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
                     refreshFavorites();
                 }
             });
-        }else{
-            position --;
+        } else {
+            position--;
             holder.tv.setText(mFoodsCategoryNames.get(position));
             holder.setIsRecyclable(false);
-//        byte[] decodedString = Base64.decode(mFoodsCategoryImages.get(position), Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsCategoryImages.get(position), 0, mFoodsCategoryImages.get(position).length);
-            holder.iv.setImageBitmap(decodedByte);
+            try {
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsCategoryImages.get(position), 0, mFoodsCategoryImages.get(position).length);
+                holder.iv.setImageBitmap(decodedByte);
+            }catch (Exception e){
+
+            }
+
             holder.iv.getLayoutParams().width = mWidth / 5;
             holder.iv.getLayoutParams().height = mWidth / 5;
 
@@ -93,9 +116,8 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
                 @Override
                 public void onClick(View view) {
                     FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-                    FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager, mFoodsCategoryCodes.get(finalPosition),mHeight);
+                    FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager, mFoodsCategoryCodes.get(finalPosition), mHeight);
                     fragmentTransaction.replace(R.id.food_menu_fragment, foodMenuFragment);
-//                fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                     fragmentTransaction.commit();
                     mDrawer.closeDrawer(Gravity.START);
@@ -106,9 +128,9 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         }
     }
 
-    public static void refreshFavorites(){
+    public static void refreshFavorites() {
         FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager,"favorites",mHeight);
+        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager, "favorites", mHeight);
 //        if(FoodMenuFragment.isFavoriteEmpty){
 //            OrdersMenuActivity.linearLayout.setVisibility(View.VISIBLE);
 //        }else{
@@ -125,6 +147,30 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return mFoodsCategoryImages.size()+1;
+        return mFoodsCategoryImages.size() + 1;
+    }
+
+    public File createImageFile() {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File mFileTemp = null;
+        String root = mContext.getDir("my_sub_dir", Context.MODE_PRIVATE).getAbsolutePath();
+        File myDir = new File(root + "/Img");
+        if (!myDir.exists()) {
+            myDir.mkdirs();
+        }
+        try {
+            mFileTemp = File.createTempFile(imageFileName, ".jpg", myDir.getAbsoluteFile());
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return mFileTemp;
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 }

@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -17,8 +18,11 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -45,17 +49,19 @@ public class CustomDialogClass extends Dialog implements
 
     public Activity c;
     public Dialog d;
-    public TextView yes, no,text,jameKol,tv,tvNameMoshtari;
+    public TextView yes, no, text, jameKol, tv, tvNameMoshtari;
     public EditText etTable;
     public EditText etName;
     long mPrice = 0;
-    String mPriceFormatted = "", response,costumerCode;
+    String mPriceFormatted = "", response, costumerCode;
     JSONArray jsonArray;
     CallWebService cws;
     LinearLayout llLoadingDialog;
     TableLayout tlMain;
-    TableRow trJameKol;
+    TableRow trJameKol, trVaziat;
     AppPreferenceTools appPreferenceTools;
+    Spinner spVaziatSefaresh;
+    String vaziatSefaresh;
 
     public CustomDialogClass(Activity a, String defaultCostumerCode) {
         super(a);
@@ -81,10 +87,32 @@ public class CustomDialogClass extends Dialog implements
         tv = findViewById(R.id.textView_price);
         tvNameMoshtari = findViewById(R.id.textView_nameMoshtari);
         trJameKol = findViewById(R.id.tableRow_jameKol);
+        trVaziat = findViewById(R.id.tableRow_vaziat);
         no.setBackgroundColor(c.getResources().getColor(R.color.red));
         yes.setOnClickListener(this);
         no.setOnClickListener(this);
         appPreferenceTools = new AppPreferenceTools(c);
+        spVaziatSefaresh = findViewById(R.id.spinner_vaziat_sefaresh);
+
+        vaziatSefaresh = appPreferenceTools.getVaziatSefaresh();
+
+        ArrayAdapter<String> adapterVaziatSefaresh =
+                new ArrayAdapter<String>(c, android.R.layout.simple_spinner_item, c.getResources().getStringArray(R.array.vaziat_sefaresh));
+        spVaziatSefaresh.setAdapter(adapterVaziatSefaresh);
+
+        spVaziatSefaresh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                vaziatSefaresh = i + "";
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                vaziatSefaresh = "0";
+            }
+        });
+
+        spVaziatSefaresh.setSelection(Integer.parseInt(appPreferenceTools.getVaziatSefaresh()));
 
         etTable.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -120,8 +148,6 @@ public class CustomDialogClass extends Dialog implements
             mPrice += Integer.parseInt(FoodOrdersAdapter.mList.get(i).getmPrice()) * FoodOrdersAdapter.mList.get(i).getmNumber();
         }
 
-        mPrice /= 10;
-
         int a = (mPrice + "").length();
         mPriceFormatted = (mPrice + "").substring(0, a % 3);
         for (int i = 0; i < (mPrice + "").length() / 3; i++) {
@@ -129,7 +155,6 @@ public class CustomDialogClass extends Dialog implements
             mPriceFormatted += (mPrice + "").substring(a % 3 + 3 * i, a % 3 + 3 * (i + 1));
         }
         tv.setText(mPriceFormatted + "");
-
     }
 
     @Override
@@ -137,9 +162,9 @@ public class CustomDialogClass extends Dialog implements
         InputMethodManager inputMethodManager = (InputMethodManager) c.getSystemService(INPUT_METHOD_SERVICE);
 //        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 //        inputMethodManager.hideSoftInputFromWindow(c.getCurrentFocus().getWindowToken(), 0);
-        if(getCurrentFocus()!=null) {
+        if (getCurrentFocus() != null) {
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        }else{
+        } else {
             inputMethodManager.hideSoftInputFromWindow(c.getCurrentFocus().getWindowToken(), 0);
         }
         super.dismiss();
@@ -171,8 +196,9 @@ public class CustomDialogClass extends Dialog implements
                                 jsonObject.put("Print_Confirm", "false");
                             }
                             jsonObject.put("Food_Exp", FoodOrdersAdapter.mList.get(i).getmExp());
-                            jsonObject.put("User_Id", appPreferenceTools.getUserID() +"");
-                            jsonObject.put("Price_Sum", mPrice +"");
+                            jsonObject.put("User_Id", appPreferenceTools.getUserID() + "");
+                            jsonObject.put("Price_Sum", mPrice + "");
+                            jsonObject.put("Vaziat_Sefaresh", vaziatSefaresh);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -198,43 +224,53 @@ public class CustomDialogClass extends Dialog implements
                                     public void run() {
                                         Toast.makeText(c, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
                                         FoodOrdersAdapter.mList.clear();
-                                        ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
-                                        ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
-                                                "height",
-                                                animationWrapper.getHeight(),
-                                                0);
-                                        anim.setDuration(300);
-                                        anim.setInterpolator(new FastOutLinearInInterpolator());
-                                        anim.start();
+                                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
 
-                                        OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
-                                            @Override
-                                            public void onAnimationEnd(Animator animation) {
-                                                OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
-                                            }
-                                        });
+                                            ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
+                                            ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
+                                                    "height",
+                                                    animationWrapper.getHeight(),
+                                                    0);
+                                            anim.setDuration(300);
+                                            anim.setInterpolator(new FastOutLinearInInterpolator());
+                                            anim.start();
 
-                                        OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
-                                            @Override
-                                            public void onAnimationEnd(Animator animation) {
-                                                OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
-                                            }
-                                        });
+                                            OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationEnd(Animator animation) {
+                                                    OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
+                                                }
+                                            });
+
+                                            OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                                                @Override
+                                                public void onAnimationEnd(Animator animation) {
+                                                    OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
+                                                }
+                                            });
+                                        } else {
+                                            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
+                                            params.height = 0;
+                                            OrdersMenuActivity.ll.setLayoutParams(params);
+                                            OrdersMenuActivity.tvTayid.setAlpha(0f);
+                                            OrdersMenuActivity.fabToggle.setAlpha(0f);
+                                        }
 
                                         jameKol.setText("فاکتور با موفقیت ثبت گردید.");
                                         jameKol.setTextSize(30);
-                                        jameKol.setTextColor(c.getResources().getColor(R.color.icons));
-                                        trJameKol.setBackgroundColor(c.getResources().getColor(R.color.accent));
+                                        jameKol.setTextColor(c.getResources().getColor(R.color.accent));
+                                        // trJameKol.setBackgroundColor(c.getResources().getColor(R.color.accent));
                                         tv.setVisibility(View.GONE);
                                         no.setText("تایید");
                                         no.setBackgroundColor(c.getResources().getColor(R.color.green));
-                                        text.setText("شماره فیش ارسالی به شماره "+response.substring(4)+" به نام "+etName.getText().toString().trim()+" ثبت گردید.");
+                                        text.setText("شماره فیش ارسالی به شماره " + response.substring(4) + " به نام " + etName.getText().toString().trim() + " ثبت گردید.");
                                         text.setTextSize(25);
-                                        text.setPadding(40,40,40,40);
+                                        text.setPadding(40, 40, 40, 40);
                                         etTable.setVisibility(View.GONE);
                                         llLoadingDialog.setVisibility(View.GONE);
                                         tvNameMoshtari.setVisibility(View.GONE);
                                         etName.setVisibility(View.GONE);
+                                        trVaziat.setVisibility(View.GONE);
                                         tlMain.setAlpha(1f);
                                         yes.setVisibility(View.GONE);
 //                                        InputMethodManager inputMethodManager = (InputMethodManager) c.getSystemService(INPUT_METHOD_SERVICE);

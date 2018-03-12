@@ -26,7 +26,7 @@
     <!-- Space Size -->
     <dimen name="dimen_icon">48dp</dimen>
     <dimen name="dimen_icon_box">60dp</dimen>
-    <dimen name="dimen_item_height">199dp</dimen>
+    <dimen name="dimen_item_height">120dp</dimen>
     <dimen name="dimen_item_height2">125dp</dimen>
 
     <dimen name="dimen_xsmall">5dp</dimen>

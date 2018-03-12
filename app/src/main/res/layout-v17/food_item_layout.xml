@@ -17,7 +17,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_item_height"
                 android:layout_alignParentTop="true"
-                android:scaleType="centerCrop" />
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"/>
 
             <TextView
                 android:id="@+id/food_item_textView"

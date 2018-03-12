@@ -69,7 +69,7 @@ public class CallWebService {
 
         envelope.setOutputSoapObject(request);
 
-        HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS,2000);
+        HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS,10000);
 
         Object response=null;
         try
@@ -96,7 +96,7 @@ public class CallWebService {
 
         envelope.setOutputSoapObject(request);
 
-        HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS,2000);
+        HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS,10000);
 
         Object response=null;
         try
@@ -128,7 +128,7 @@ public class CallWebService {
 
         envelope.setOutputSoapObject(request);
 
-        HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS,5000);
+        HttpTransportSE httpTransport = new HttpTransportSE(SOAP_ADDRESS,10000);
 
         Object response=null;
         try

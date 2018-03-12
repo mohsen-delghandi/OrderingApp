@@ -1,5 +1,6 @@
 package co.sansystem.orderingapp;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -13,11 +14,15 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +33,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -37,41 +45,59 @@ import java.util.ArrayList;
 public class SettingsActivity extends MainActivity {
 
 
-    TextView bt_save,bt_logout;
+    TextView bt_save, btSaveIP, bt_logout,tvStatus;
     EditText et_title;
     EditText etIP1, etIP2, etIP3, etIP4;
-    String ip;
+    String ip, status = null;
     CheckBox checkBox;
+    LinearLayout llLoading;
 
     public static String json = null, json2 = null;
     public static JSONArray jsonArray, jsonArray2;
     public static long id, id2;
     public static boolean isUpdated;
     public boolean isSettingsUpdate = false;
+    Spinner spCostumerCode;
+    Spinner spVaziatSefaresh;
+    Intent intent;
 
     public SettingsActivity() {
     }
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(this,OrdersMenuActivity.class));
+        startActivity(new Intent(this, OrdersMenuActivity.class));
         finish();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setInflater(this, R.layout.settings_layout);
+        setInflater(this,R.layout.settings_layout);
 
-        tvTitlebar.setText(title + " - " + "تنظیمات");
-        toggle.setDrawerIndicatorEnabled(false);
-        toggle.setHomeAsUpIndicator(R.drawable.icon_back);
+        llLoading = (LinearLayout) findViewById(R.id.llLoading);
+        tvStatus = (TextView) findViewById(R.id.textView_status);
+
+        if (getIntent().getExtras() != null) {
+            intent = getIntent();
+            status = intent.getExtras().getString("status");
+        }
+
+        if (status != null && status.equals("fromSplash")) {
+            tvTitlebar.setText("تنظیمات اولین ورود به برنامه");
+        } else {
+            tvTitlebar.setText(title + " - " + "تنظیمات");
+            toggle.setDrawerIndicatorEnabled(false);
+            toggle.setHomeAsUpIndicator(R.drawable.icon_back);
+        }
         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
+        spCostumerCode = (Spinner) findViewById(R.id.spinner_default_costumer);
+        spVaziatSefaresh = (Spinner) findViewById(R.id.spinner_vaziat_sefaresh);
 
         checkBox = (CheckBox) findViewById(R.id.checkbox_print);
         final AppPreferenceTools appPreferenceTools = new AppPreferenceTools(this);
@@ -86,6 +112,7 @@ public class SettingsActivity extends MainActivity {
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         bt_save = (TextView) findViewById(R.id.button_save);
+        btSaveIP = (TextView) findViewById(R.id.button_save_ip);
         bt_logout = (TextView) findViewById(R.id.button_logout);
         etIP1 = (EditText) findViewById(R.id.editText_ip_1);
         etIP2 = (EditText) findViewById(R.id.editText_ip_2);
@@ -97,10 +124,104 @@ public class SettingsActivity extends MainActivity {
             public void onClick(View view) {
                 AppPreferenceTools appPreferenceTools = new AppPreferenceTools(SettingsActivity.this);
                 appPreferenceTools.removeAllPrefs();
-                startActivity(new Intent(SettingsActivity.this,LoginActivity.class));
+                startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
                 finish();
             }
         });
+        if (status != null && status.equals("fromSplash")) {
+            bt_logout.setVisibility(View.GONE);
+        }
+
+        ArrayAdapter<String> adapterVaziatSefaresh =
+                new ArrayAdapter<String>(SettingsActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.vaziat_sefaresh));
+        spVaziatSefaresh.setAdapter(adapterVaziatSefaresh);
+
+        spVaziatSefaresh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                appPreferenceTools.saveVaziateSefaresh(i + "");
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                appPreferenceTools.saveVaziateSefaresh("0");
+            }
+        });
+
+        if (!appPreferenceTools.getVaziatSefaresh().equals("")) {
+            spVaziatSefaresh.setSelection(Integer.parseInt(appPreferenceTools.getVaziatSefaresh()));
+        } else {
+            spVaziatSefaresh.setSelection(0);
+        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                CallWebService cws2 = new CallWebService(SettingsActivity.this, "GetListContact");
+                final String responce2 = cws2.Call();
+
+                JSONArray jsonArray = null;
+                final ArrayList<String> costumerNames = new ArrayList<String>();
+                final ArrayList<String> costumerCodes = new ArrayList<String>();
+
+                if(responce2.length()>4 && responce2.substring(0,4).equals("True")){
+                    try {
+                        jsonArray = new JSONArray(responce2.substring(4));
+                        for (int i = 0; i < jsonArray.length() - 1; i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            costumerNames.add(jsonObject.get("FullName").toString());
+                            costumerCodes.add(jsonObject.get("Tafzili_ID").toString());
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayAdapter<String> adapter =
+                                new ArrayAdapter<String>(SettingsActivity.this, android.R.layout.simple_spinner_item, costumerNames.toArray(new String[costumerNames.size()]));
+                        spCostumerCode.setAdapter(adapter);
+                        llLoading.setVisibility(View.GONE);
+
+                        if(responce2.length()>4 && responce2.substring(0,4).equals("True")){
+                            tvStatus.setText("ارتباط برقرار شد.");
+                        }else{
+                            tvStatus.setText("ارتباط برقرار نشد.");
+                        }
+
+                        }
+                });
+
+                spCostumerCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(i));
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(0));
+                    }
+                });
+
+                for (int i = 0; i < costumerNames.size(); i++) {
+                    if (appPreferenceTools.getDefaultCostumerCode().equals(costumerCodes.get(i))) {
+                        final int finalI = i;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                spCostumerCode.setSelection(finalI);
+                            }
+                        });
+                    }
+                }
+            }
+
+        }).start();
 
         etIP1.addTextChangedListener(new TextWatcher() {
             @Override
@@ -196,7 +317,7 @@ public class SettingsActivity extends MainActivity {
             etIP2.setText(ipArray[1]);
             etIP3.setText(ipArray[2]);
             etIP4.setText(ipArray[3]);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -205,6 +326,26 @@ public class SettingsActivity extends MainActivity {
 
         final int[] u = new int[1];
 
+
+        btSaveIP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SQLiteDatabase db = new MyDatabase(SettingsActivity.this).getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                String ip = etIP1.getText().toString().trim() + "." +
+                        etIP2.getText().toString().trim() + "." +
+                        etIP3.getText().toString().trim() + "." +
+                        etIP4.getText().toString().trim();
+                cv.put(MyDatabase.IP, ip);
+                cv.put(MyDatabase.TITLE, et_title.getText().toString());
+                u[0] = db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
+                db.close();
+
+                startActivity(getIntent());
+                finish();
+            }
+        });
         fab.setImageResource(R.drawable.save);
         bt_save.setOnClickListener(new View.OnClickListener() {
 
@@ -214,16 +355,6 @@ public class SettingsActivity extends MainActivity {
                 AsyncTask at = new AsyncTask() {
                     @Override
                     protected void onPreExecute() {
-                        SQLiteDatabase db = new MyDatabase(SettingsActivity.this).getWritableDatabase();
-                        ContentValues cv = new ContentValues();
-                        String ip = etIP1.getText().toString().trim() + "." +
-                                etIP2.getText().toString().trim() + "." +
-                                etIP3.getText().toString().trim() + "." +
-                                etIP4.getText().toString().trim();
-                        cv.put(MyDatabase.IP, ip);
-                        cv.put(MyDatabase.TITLE, et_title.getText().toString());
-                        u[0] = db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
-                        db.close();
                     }
 
                     @Override
@@ -309,10 +440,9 @@ public class SettingsActivity extends MainActivity {
         }
         id = -1;
         id2 = -1;
-        new Thread(new Runnable() {
+        new AsyncTask<Void, Void, Void>() {
             @Override
-            public void run() {
-
+            protected Void doInBackground(Void... voids) {
                 CallWebService cws = new CallWebService(context, "GetGroupFood", "test");
                 json = cws.Call("test");
 
@@ -327,6 +457,9 @@ public class SettingsActivity extends MainActivity {
                     db.delete(MyDatabase.FOOD_CATEGORY_TABLE, null, null);
                     db.delete(MyDatabase.FOOD_TABLE, null, null);
 
+//                    deleteRecursive(new File(getBaseContext().getFilesDir().getAbsolutePath() + "/group"));
+//                    deleteRecursive(new File(getBaseContext().getFilesDir().getAbsolutePath() + "/kala"));
+
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         ContentValues cv = new ContentValues();
@@ -334,6 +467,15 @@ public class SettingsActivity extends MainActivity {
                         cv.put(MyDatabase.NAME, jsonObject.get("NameGroup") + "");
                         cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject.get("ImageGroup") + "", Base64.DEFAULT));
                         id = db.insert(MyDatabase.FOOD_CATEGORY_TABLE, null, cv);
+
+//                        byte[] bx = Base64.decode(jsonObject.get("ImageGroup") + "", Base64.DEFAULT);
+//
+//                        saveFile(
+//                                getBaseContext().getFilesDir().getAbsolutePath() + "/group",
+//                                jsonObject.get("ID_Group") + ".jpg",
+//                                bx
+//                        );
+
                     }
                     for (int i = 0; i < jsonArray2.length(); i++) {
                         JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
@@ -344,36 +486,83 @@ public class SettingsActivity extends MainActivity {
                         cv.put(MyDatabase.CATEGORY_CODE, jsonObject2.get("Fk_GroupKala") + "");
                         cv.put(MyDatabase.PRICE, jsonObject2.get("GheymatForoshAsli") + "");
                         id2 = db.insert(MyDatabase.FOOD_TABLE, null, cv);
+
+//                        byte[] bx = Base64.decode(jsonObject2.get("Picture") + "", Base64.DEFAULT);
+//
+//                        saveFile(
+//                                getBaseContext().getFilesDir().getAbsolutePath() + "/kala",
+//                                jsonObject2.get("ID_Kala") + ".jpg",
+//                                bx
+//                        );
                     }
                     db.close();
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Log.d("img", "not ok : " + e.getMessage());
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if ((id != -1) && (id2 != -1)) {
-                            Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
-                            isUpdated = true;
-                            if (isSettingsUpdate) {
-                                Intent i = new Intent(SettingsActivity.this, OrdersMenuActivity.class);
-                                startActivity(i);
-                                SettingsActivity.this.finish();
-                            }
-                        } else {
-                            Toast.makeText(context, "خطا در بروزرسانی.", Toast.LENGTH_SHORT).show();
-                            isUpdated = false;
-                        }
-                        if (ll != null) {
-                            ll.setVisibility(View.GONE);
-                        }
-
-                    }
-                });
-
-
+                return null;
             }
-        }).start();
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                if ((id != -1) && (id2 != -1)) {
+                    Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
+                    isUpdated = true;
+
+                    SQLiteDatabase db2 = new MyDatabase(SettingsActivity.this).getWritableDatabase();
+                    ContentValues cv2 = new ContentValues();
+                    cv2.put(MyDatabase.FIRST_RUN, 0);
+                    db2.update(MyDatabase.SETTINGS_TABLE, cv2, MyDatabase.ID + " = ?", new String[]{"1"});
+                    db2.close();
+
+                    if (isSettingsUpdate) {
+                        Intent i = new Intent(SettingsActivity.this, OrdersMenuActivity.class);
+                        startActivity(i);
+                        SettingsActivity.this.finish();
+                    }
+
+                    if (status != null && status.equals("fromSplash")) {
+
+                        Intent i = new Intent(SettingsActivity.this, LoginActivity.class);
+                        startActivity(i);
+                        SettingsActivity.this.finish();
+                    }
+
+                } else {
+                    Toast.makeText(context, "خطا در بروزرسانی.", Toast.LENGTH_SHORT).show();
+                    isUpdated = false;
+
+                }
+                if (ll != null) {
+                    ll.setVisibility(View.GONE);
+                }
+            }
+        }.execute();
     }
+//
+//    public void saveFile(String path, String name, byte[] bytes) {
+//        File file = new File(path);
+//        try {
+//            if (!file.exists()) {
+//                file.mkdirs();
+//            }
+//            file = new File(path + "/" + name);
+//            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+//            bos.write(bytes);
+//            bos.flush();
+//            bos.close();
+//        } catch (Exception e) {
+//            Log.e("file save : ", e.getMessage());
+//        }
+//    }
+//
+//    void deleteRecursive(File fileOrDirectory) {
+//        if (fileOrDirectory.isDirectory())
+//            for (File child : fileOrDirectory.listFiles())
+//                deleteRecursive(child);
+//
+//        fileOrDirectory.delete();
+//    }
 }
 

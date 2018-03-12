@@ -18,8 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:paddingTop="@dimen/padding_small"
-            android:paddingBottom="@dimen/padding_small"
+            android:padding="@dimen/padding_medium"
             android:text="کامپیوتر"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/font_small" />

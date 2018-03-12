@@ -144,6 +144,48 @@
         </TableRow>
 
         <TableRow
+            android:id="@+id/tableRow_vaziat"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:weightSum="7">
+
+            <EditText
+                android:visibility="invisible"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="0.1"
+                android:gravity="center"
+                android:textSize="@dimen/font_small"
+                android:inputType="text"
+                android:textColor="@color/primary_text"/>
+
+            <Spinner
+                android:id="@+id/spinner_vaziat_sefaresh"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="4.9"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/shape_underline"
+                android:padding="@dimen/padding_medium"
+                android:gravity="center"
+                android:inputType="text"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xsmall" />
+
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="وضعیت سفارش"
+                android:gravity="center"
+                android:textSize="@dimen/font_small"
+                android:textColor="@color/primary_text"/>
+
+        </TableRow>
+
+        <TableRow
             android:layout_height="wrap_content"
             android:layout_width="match_parent">
 

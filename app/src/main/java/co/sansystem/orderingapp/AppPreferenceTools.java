@@ -35,6 +35,12 @@ public class AppPreferenceTools {
                 .apply();
     }
 
+    public void saveVaziateSefaresh(String code) {
+        mPreference.edit()
+                .putString(this.mContext.getString(R.string.vaziate_sefaresh), code)
+                .apply();
+    }
+
     public void printAfterConfirm(boolean b) {
         mPreference.edit()
                 .putBoolean(this.mContext.getString(R.string.print_after_confirm), b)
@@ -55,8 +61,16 @@ public class AppPreferenceTools {
         return mPreference.getString(this.mContext.getString(R.string.user_id), "");
     }
 
+    public String getUserName() {
+        return mPreference.getString(this.mContext.getString(R.string.user_name), "");
+    }
+
     public String getDefaultCostumerCode() {
         return mPreference.getString(this.mContext.getString(R.string.default_customer_code), "");
+    }
+
+    public String getVaziatSefaresh() {
+        return mPreference.getString(this.mContext.getString(R.string.vaziate_sefaresh), "");
     }
 
     public boolean getprintAfterConfirm() {

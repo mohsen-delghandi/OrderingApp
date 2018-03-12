@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 import com.sansystem.mohsen.orderingapp.R;
 
+import java.util.Set;
+
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -152,50 +154,25 @@ public class SplashActivity extends AppCompatActivity {
         dbb.close();
 
         if (firstRun == 1) {
-
-            trMainSplash.setVisibility(View.GONE);
-            linearLayout.setVisibility(View.VISIBLE);
-            button.setOnClickListener(new View.OnClickListener() {
+            new Handler().postDelayed(new Runnable() {
                 @Override
-                public void onClick(View view) {
-
-                    SQLiteDatabase db = new MyDatabase(SplashActivity.this).getWritableDatabase();
-                    ContentValues cv = new ContentValues();
-                    String ip = etIPFirstRun1.getText().toString().trim() + "." +
-                            etIPFirstRun2.getText().toString().trim() + "." +
-                            etIPFirstRun3.getText().toString().trim() + "." +
-                            etIPFirstRun4.getText().toString().trim();
-                    cv.put(MyDatabase.IP, ip);
-                    cv.put(MyDatabase.TITLE, etTitleFirstRun.getText().toString());
-                    int u = db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
-                    db.close();
-                    linearLayout.setVisibility(View.GONE);
-
-                    SettingsActivity sa = new SettingsActivity();
-                    sa.updateMenu(SplashActivity.this, llLoadingSplash);
-                    trMainSplash.setVisibility(View.VISIBLE);
-                    SQLiteDatabase db2 = new MyDatabase(SplashActivity.this).getWritableDatabase();
-                    ContentValues cv2 = new ContentValues();
-                    cv2.put(MyDatabase.FIRST_RUN, 0);
-                    db2.update(MyDatabase.SETTINGS_TABLE, cv2, MyDatabase.ID + " = ?", new String[]{"1"});
-                    db2.close();
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent i = new Intent(SplashActivity.this, LoginActivity.class);
-                            startActivity(i);
-                            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                            finish();
-                        }
-                    }, 2000);
+                public void run() {
+                    Intent i = new Intent(SplashActivity.this, SettingsActivity.class);
+                    i.putExtra("status","fromSplash");
+                    startActivity(i);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    finish();
                 }
-            });
+            }, 2000);
+
+
+
+
 
 
         } else {
             AppPreferenceTools appPreferenceTools = new AppPreferenceTools(SplashActivity.this);
-            if(appPreferenceTools.isAuthorized()) {
+            if (appPreferenceTools.isAuthorized()) {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -205,7 +182,7 @@ public class SplashActivity extends AppCompatActivity {
                         finish();
                     }
                 }, 2000);
-            }else{
+            } else {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {

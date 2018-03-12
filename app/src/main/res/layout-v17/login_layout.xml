@@ -89,58 +89,10 @@
                 android:textColor="@color/icons"
                 android:textSize="@dimen/font_xsmall" />
 
-        </LinearLayout>
 
-    </TableRow>
-
-    <TableRow
-        android:visibility="gone"
-        android:id="@+id/tr_costumer_code"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:gravity="center"
-        android:weightSum="4">
-
-        <LinearLayout
-            android:id="@+id/ll_costumer_code"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:background="@drawable/gradient_back"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/padding_box"
-            android:paddingLeft="@dimen/padding_spinner"
-            android:paddingRight="@dimen/padding_spinner"
-            android:paddingTop="@dimen/padding_box">
 
             <TextView
-                android:id="@+id/textView_costumer_code"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="مشتری پیش فرض"
-                android:textColor="@color/icons"
-                android:textSize="@dimen/font_xsmall" />
-
-            <Spinner
-                android:id="@+id/spinner_default_costumer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:background="@drawable/shape_underline"
-                android:padding="@dimen/padding_medium"
-                android:layout_margin="@dimen/padding_medium"
-                android:gravity="center"
-                android:inputType="text"
-                android:textColor="@color/icons"
-                android:textSize="@dimen/font_xsmall" />
-
-            <TextView
-                android:id="@+id/button_save"
+                android:id="@+id/button_change_ip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
@@ -151,7 +103,7 @@
                 android:paddingLeft="@dimen/padding_large"
                 android:paddingRight="@dimen/padding_large"
                 android:paddingTop="@dimen/padding_bit"
-                android:text="ذخیره"
+                android:text="تغییر آی پی"
                 android:textColor="@color/icons"
                 android:textSize="@dimen/font_xsmall" />
 

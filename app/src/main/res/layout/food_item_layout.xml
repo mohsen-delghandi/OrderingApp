@@ -15,9 +15,10 @@
             <ImageView
                 android:id="@+id/food_item_imageView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:scaleType="centerCrop" />
+                android:layout_height="@dimen/dimen_item_height"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:layout_alignParentTop="true" />
 
             <TextView
                 android:id="@+id/food_item_textView"

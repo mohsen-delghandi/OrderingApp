@@ -22,7 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sansystem.mohsen.orderingapp.R;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -97,6 +99,13 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
 
         Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsImages.get(position), 0, mFoodsImages.get(position).length);
         holder.iv.setImageBitmap(decodedByte);
+
+//        File file = new File(mContext.getFilesDir().getAbsolutePath() + "/kala/" + mFoodsCodes.get(position)+".jpg");
+//        Picasso.
+//                with(mContext).
+//                load(file).
+//                into(holder.iv);
+
         holder.iv.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @SuppressLint("NewApi")
             @Override
@@ -131,14 +140,20 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
                     obj2.start();
                 }
 
-                ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
-                ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
-                        "height",
-                        animationWrapper.getHeight(),
-                        mHeight/3);
-                anim.setDuration(300);
-                anim.setInterpolator(new FastOutLinearInInterpolator());
-                anim.start();
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                    ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
+                    ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
+                            "height",
+                            animationWrapper.getHeight(),
+                            mHeight / 3);
+                    anim.setDuration(300);
+                    anim.setInterpolator(new FastOutLinearInInterpolator());
+                    anim.start();
+                }else{
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
+                    params.height = mHeight / 3;
+                    OrdersMenuActivity.ll.setLayoutParams(params);
+                }
                 OrdersMenuActivity.fabToggle.setOnClickListener(OrdersMenuActivity.ocl);
 
                 if(FoodOrdersAdapter.mList.size() == 0){
