@@ -234,6 +234,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:layout_marginLeft="@dimen/padding_spinner"
+                    android:background="@drawable/border_shape_round"
                     android:layout_marginTop="@dimen/padding_spinner"
                     android:gravity="center"
                     android:paddingBottom="@dimen/padding_bit"

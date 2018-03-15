@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.os.Looper;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -37,6 +39,10 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -62,6 +68,7 @@ public class CustomDialogClass extends Dialog implements
     AppPreferenceTools appPreferenceTools;
     Spinner spVaziatSefaresh;
     String vaziatSefaresh;
+    private WebService mTService;
 
     public CustomDialogClass(Activity a, String defaultCostumerCode) {
         super(a);
@@ -75,6 +82,9 @@ public class CustomDialogClass extends Dialog implements
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.basket_dialog_layout);
+
+        WebProvider provider = new WebProvider();
+        mTService = provider.getTService();
 
         etTable = findViewById(R.id.editText_tableNumber);
         etName = findViewById(R.id.editText_name);
@@ -205,97 +215,194 @@ public class CustomDialogClass extends Dialog implements
                         jsonArray.put(jsonObject);
                     }
 
-                    cws = new CallWebService(c.getBaseContext(), "SaveFactor", "JsonString");
-                    new Thread(new Runnable() {
+
+                    InputMethodManager imm = (InputMethodManager) c.getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(etTable.getWindowToken(), 0);
+                    llLoadingDialog.setVisibility(View.VISIBLE);
+                    tlMain.setAlpha(0.1f);
+
+                    Call<Object> call = mTService.saveFactor(jsonArray.toString());
+                    call.enqueue(new Callback<Object>() {
                         @Override
-                        public void run() {
-                            new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                public void run() {
-                                    InputMethodManager imm = (InputMethodManager) c.getSystemService(INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow(etTable.getWindowToken(), 0);
-                                    llLoadingDialog.setVisibility(View.VISIBLE);
-                                    tlMain.setAlpha(0.1f);
-                                }
-                            });
+                        public void onResponse(Call<Object> call, Response<Object> response) {
 
-                            response = cws.Call(jsonArray.toString());
-                            if (response.length() > 4 && response.substring(0, 4).equals("True")) {
-                                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                    public void run() {
-                                        Toast.makeText(c, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
-                                        FoodOrdersAdapter.mList.clear();
-                                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                            if (response.isSuccessful()) {
 
-                                            ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
-                                            ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
-                                                    "height",
-                                                    animationWrapper.getHeight(),
-                                                    0);
-                                            anim.setDuration(300);
-                                            anim.setInterpolator(new FastOutLinearInInterpolator());
-                                            anim.start();
+                                Toast.makeText(c, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
+                                FoodOrdersAdapter.mList.clear();
+                                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
 
-                                            OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
-                                                @Override
-                                                public void onAnimationEnd(Animator animation) {
-                                                    OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
-                                                }
-                                            });
+                                    ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
+                                    ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
+                                            "height",
+                                            animationWrapper.getHeight(),
+                                            0);
+                                    anim.setDuration(300);
+                                    anim.setInterpolator(new FastOutLinearInInterpolator());
+                                    anim.start();
 
-                                            OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
-                                                @Override
-                                                public void onAnimationEnd(Animator animation) {
-                                                    OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
-                                                }
-                                            });
-                                        } else {
-                                            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
-                                            params.height = 0;
-                                            OrdersMenuActivity.ll.setLayoutParams(params);
-                                            OrdersMenuActivity.tvTayid.setAlpha(0f);
-                                            OrdersMenuActivity.fabToggle.setAlpha(0f);
+                                    OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
                                         }
+                                    });
 
-                                        jameKol.setText("فاکتور با موفقیت ثبت گردید.");
-                                        jameKol.setTextSize(30);
-                                        jameKol.setTextColor(c.getResources().getColor(R.color.accent));
-                                        // trJameKol.setBackgroundColor(c.getResources().getColor(R.color.accent));
-                                        tv.setVisibility(View.GONE);
-                                        no.setText("تایید");
-                                        no.setBackgroundColor(c.getResources().getColor(R.color.green));
-                                        text.setText("شماره فیش ارسالی به شماره " + response.substring(4) + " به نام " + etName.getText().toString().trim() + " ثبت گردید.");
-                                        text.setTextSize(25);
-                                        text.setPadding(40, 40, 40, 40);
-                                        etTable.setVisibility(View.GONE);
-                                        llLoadingDialog.setVisibility(View.GONE);
-                                        tvNameMoshtari.setVisibility(View.GONE);
-                                        etName.setVisibility(View.GONE);
-                                        trVaziat.setVisibility(View.GONE);
-                                        tlMain.setAlpha(1f);
-                                        yes.setVisibility(View.GONE);
-//                                        InputMethodManager inputMethodManager = (InputMethodManager) c.getSystemService(INPUT_METHOD_SERVICE);
-//                                        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                                    }
-                                });
+                                    OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                                        @Override
+                                        public void onAnimationEnd(Animator animation) {
+                                            OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
+                                        }
+                                    });
+                                } else {
+                                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
+                                    params.height = 0;
+                                    OrdersMenuActivity.ll.setLayoutParams(params);
+                                    OrdersMenuActivity.tvTayid.setAlpha(0f);
+                                    OrdersMenuActivity.fabToggle.setAlpha(0f);
+                                }
+
+                                jameKol.setText("فاکتور با موفقیت ثبت گردید.");
+                                jameKol.setTextSize(30);
+                                jameKol.setTextColor(c.getResources().getColor(R.color.accent));
+                                // trJameKol.setBackgroundColor(c.getResources().getColor(R.color.accent));
+                                tv.setVisibility(View.GONE);
+                                no.setText("تایید");
+                                no.setBackgroundColor(c.getResources().getColor(R.color.green));
+                                text.setText("شماره فیش ارسالی به شماره " + response.body().toString().substring(4) + " به نام " + etName.getText().toString().trim() + " ثبت گردید.");
+                                text.setTextSize(25);
+                                text.setPadding(40, 40, 40, 40);
+                                etTable.setVisibility(View.GONE);
+                                llLoadingDialog.setVisibility(View.GONE);
+                                tvNameMoshtari.setVisibility(View.GONE);
+                                etName.setVisibility(View.GONE);
+                                trVaziat.setVisibility(View.GONE);
+                                tlMain.setAlpha(1f);
+                                yes.setVisibility(View.GONE);
                             } else {
-                                new Handler(Looper.getMainLooper()).post(new Runnable() {
-                                    public void run() {
-                                        SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
-                                        ContentValues cv2 = new ContentValues();
-                                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                                        String myDate = format.format(new Date());
-                                        cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response);
-                                        db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
-                                        db2.close();
-                                        llLoadingDialog.setVisibility(View.GONE);
-                                        tlMain.setAlpha(1f);
-                                        Toast.makeText(c, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-//                                        dismiss();
-                                    }
-                                });
+
+                                SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
+                                ContentValues cv2 = new ContentValues();
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                                String myDate = format.format(new Date());
+                                cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response);
+                                db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+                                db2.close();
+                                llLoadingDialog.setVisibility(View.GONE);
+                                tlMain.setAlpha(1f);
+                                Toast.makeText(c, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+
                             }
                         }
-                    }).start();
+
+                        @Override
+                        public void onFailure(Call<Object> call, Throwable t) {
+
+                            SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
+                            ContentValues cv2 = new ContentValues();
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                            String myDate = format.format(new Date());
+                            cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response);
+                            db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+                            db2.close();
+                            llLoadingDialog.setVisibility(View.GONE);
+                            tlMain.setAlpha(1f);
+                            Toast.makeText(c, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
+//                    cws = new CallWebService(c.getBaseContext(), "SaveFactor", "JsonString");
+//                    new Thread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                                public void run() {
+//                                    InputMethodManager imm = (InputMethodManager) c.getSystemService(INPUT_METHOD_SERVICE);
+//                                    imm.hideSoftInputFromWindow(etTable.getWindowToken(), 0);
+//                                    llLoadingDialog.setVisibility(View.VISIBLE);
+//                                    tlMain.setAlpha(0.1f);
+//                                }
+//                            });
+
+//                            response = cws.Call(jsonArray.toString());
+//                            if (response.length() > 4 && response.substring(0, 4).equals("True")) {
+//                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                                    public void run() {
+//                                        Toast.makeText(c, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
+//                                        FoodOrdersAdapter.mList.clear();
+//                                        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+//
+//                                            ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
+//                                            ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
+//                                                    "height",
+//                                                    animationWrapper.getHeight(),
+//                                                    0);
+//                                            anim.setDuration(300);
+//                                            anim.setInterpolator(new FastOutLinearInInterpolator());
+//                                            anim.start();
+//
+//                                            OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+//                                                @Override
+//                                                public void onAnimationEnd(Animator animation) {
+//                                                    OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
+//                                                }
+//                                            });
+//
+//                                            OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
+//                                                @Override
+//                                                public void onAnimationEnd(Animator animation) {
+//                                                    OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
+//                                                }
+//                                            });
+//                                        } else {
+//                                            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
+//                                            params.height = 0;
+//                                            OrdersMenuActivity.ll.setLayoutParams(params);
+//                                            OrdersMenuActivity.tvTayid.setAlpha(0f);
+//                                            OrdersMenuActivity.fabToggle.setAlpha(0f);
+//                                        }
+//
+//                                        jameKol.setText("فاکتور با موفقیت ثبت گردید.");
+//                                        jameKol.setTextSize(30);
+//                                        jameKol.setTextColor(c.getResources().getColor(R.color.accent));
+//                                        // trJameKol.setBackgroundColor(c.getResources().getColor(R.color.accent));
+//                                        tv.setVisibility(View.GONE);
+//                                        no.setText("تایید");
+//                                        no.setBackgroundColor(c.getResources().getColor(R.color.green));
+//                                        text.setText("شماره فیش ارسالی به شماره " + response.substring(4) + " به نام " + etName.getText().toString().trim() + " ثبت گردید.");
+//                                        text.setTextSize(25);
+//                                        text.setPadding(40, 40, 40, 40);
+//                                        etTable.setVisibility(View.GONE);
+//                                        llLoadingDialog.setVisibility(View.GONE);
+//                                        tvNameMoshtari.setVisibility(View.GONE);
+//                                        etName.setVisibility(View.GONE);
+//                                        trVaziat.setVisibility(View.GONE);
+//                                        tlMain.setAlpha(1f);
+//                                        yes.setVisibility(View.GONE);
+////                                        InputMethodManager inputMethodManager = (InputMethodManager) c.getSystemService(INPUT_METHOD_SERVICE);
+////                                        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+//                                    }
+//                                });
+//                            } else {
+//                                new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                                    public void run() {
+//                                        SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
+//                                        ContentValues cv2 = new ContentValues();
+//                                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+//                                        String myDate = format.format(new Date());
+//                                        cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response);
+//                                        db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+//                                        db2.close();
+//                                        llLoadingDialog.setVisibility(View.GONE);
+//                                        tlMain.setAlpha(1f);
+//                                        Toast.makeText(c, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+////                                        dismiss();
+//                                    }
+//                                });
+//                            }
+//                        }
+//                    }).start();
 
 
                 }

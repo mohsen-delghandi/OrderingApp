@@ -238,6 +238,7 @@
                             android:layout_marginLeft="@dimen/padding_spinner"
                             android:layout_marginTop="@dimen/padding_spinner"
                             android:gravity="center"
+                            android:background="@drawable/border_shape_round"
                             android:paddingBottom="@dimen/padding_bit"
                             android:paddingLeft="@dimen/padding_large"
                             android:paddingRight="@dimen/padding_large"

@@ -205,19 +205,12 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
     }
 
 
-//    // Remove a RecyclerView item containing a specified Data object
-//    public void remove(OrderedItem data) {
-//        int position = mList.indexOf(data);
-//        mList.remove(position);
-//        notifyItemRemoved(position);
-//    }
-
     public void removeItem(int position) {
         if (mList.size() > 0) {
             mList.remove(position);
             exps.remove(position);
             try {
-                Thread.sleep(150);
+                Thread.sleep(250);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

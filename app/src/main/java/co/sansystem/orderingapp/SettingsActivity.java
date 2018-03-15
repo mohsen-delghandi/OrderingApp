@@ -38,6 +38,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 /**
  * Created by Mohsen on 2017-06-16.
  */
@@ -45,7 +49,7 @@ import java.util.ArrayList;
 public class SettingsActivity extends MainActivity {
 
 
-    TextView bt_save, btSaveIP, bt_logout,tvStatus;
+    TextView bt_save, btSaveIP, bt_logout, tvStatus;
     EditText et_title;
     EditText etIP1, etIP2, etIP3, etIP4;
     String ip, status = null;
@@ -54,12 +58,14 @@ public class SettingsActivity extends MainActivity {
 
     public static String json = null, json2 = null;
     public static JSONArray jsonArray, jsonArray2;
-    public static long id, id2;
+    //    public static long id, id2;
     public static boolean isUpdated;
     public boolean isSettingsUpdate = false;
     Spinner spCostumerCode;
     Spinner spVaziatSefaresh;
     Intent intent;
+    private WebService mTService;
+    private WebService mTService2;
 
     public SettingsActivity() {
     }
@@ -73,7 +79,13 @@ public class SettingsActivity extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setInflater(this,R.layout.settings_layout);
+        setInflater(this, R.layout.settings_layout);
+
+        WebProvider provider = new WebProvider();
+        mTService = provider.getTService();
+
+        WebProvider provider2 = new WebProvider();
+        mTService2 = provider2.getTService();
 
         llLoading = (LinearLayout) findViewById(R.id.llLoading);
         tvStatus = (TextView) findViewById(R.id.textView_status);
@@ -154,20 +166,18 @@ public class SettingsActivity extends MainActivity {
             spVaziatSefaresh.setSelection(0);
         }
 
-        new Thread(new Runnable() {
+        Call<Object> call = mTService.getListContact();
+        call.enqueue(new Callback<Object>() {
             @Override
-            public void run() {
+            public void onResponse(Call<Object> call, Response<Object> response) {
 
-                CallWebService cws2 = new CallWebService(SettingsActivity.this, "GetListContact");
-                final String responce2 = cws2.Call();
+                if (response.isSuccessful()) {
+                    JSONArray jsonArray = null;
+                    final ArrayList<String> costumerNames = new ArrayList<String>();
+                    final ArrayList<String> costumerCodes = new ArrayList<String>();
 
-                JSONArray jsonArray = null;
-                final ArrayList<String> costumerNames = new ArrayList<String>();
-                final ArrayList<String> costumerCodes = new ArrayList<String>();
-
-                if(responce2.length()>4 && responce2.substring(0,4).equals("True")){
                     try {
-                        jsonArray = new JSONArray(responce2.substring(4));
+                        jsonArray = new JSONArray(response.body().toString());
                         for (int i = 0; i < jsonArray.length() - 1; i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             costumerNames.add(jsonObject.get("FullName").toString());
@@ -176,52 +186,125 @@ public class SettingsActivity extends MainActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ArrayAdapter<String> adapter =
-                                new ArrayAdapter<String>(SettingsActivity.this, android.R.layout.simple_spinner_item, costumerNames.toArray(new String[costumerNames.size()]));
-                        spCostumerCode.setAdapter(adapter);
-                        llLoading.setVisibility(View.GONE);
+                    ArrayAdapter<String> adapter =
+                            new ArrayAdapter<String>(SettingsActivity.this, android.R.layout.simple_spinner_item, costumerNames.toArray(new String[costumerNames.size()]));
+                    spCostumerCode.setAdapter(adapter);
+                    llLoading.setVisibility(View.GONE);
 
-                        if(responce2.length()>4 && responce2.substring(0,4).equals("True")){
-                            tvStatus.setText("ارتباط برقرار شد.");
-                        }else{
-                            tvStatus.setText("ارتباط برقرار نشد.");
+
+                    tvStatus.setText("ارتباط برقرار شد.");
+                    tvStatus.setTextColor(getResources().getColor(R.color.green));
+
+                    spCostumerCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(i));
                         }
 
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                            appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(0));
                         }
-                });
+                    });
 
-                spCostumerCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(i));
+                    for (int i = 0; i < costumerNames.size(); i++) {
+                        if (appPreferenceTools.getDefaultCostumerCode().equals(costumerCodes.get(i))) {
+                            final int finalI = i;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    spCostumerCode.setSelection(finalI);
+                                }
+                            });
+                        }
                     }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-                        appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(0));
-                    }
-                });
+                } else {
 
-                for (int i = 0; i < costumerNames.size(); i++) {
-                    if (appPreferenceTools.getDefaultCostumerCode().equals(costumerCodes.get(i))) {
-                        final int finalI = i;
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                spCostumerCode.setSelection(finalI);
-                            }
-                        });
-                    }
+                    tvStatus.setText("ارتباط برقرار نشد.");
+                    tvStatus.setTextColor(getResources().getColor(R.color.red));
                 }
             }
 
-        }).start();
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                tvStatus.setText("ارتباط برقرار نشد.");
+                tvStatus.setTextColor(getResources().getColor(R.color.red));
+            }
+        });
+
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                CallWebService cws2 = new CallWebService(SettingsActivity.this, "GetListContact");
+//                final String responce2 = cws2.Call();
+
+//                JSONArray jsonArray = null;
+//                final ArrayList<String> costumerNames = new ArrayList<String>();
+//                final ArrayList<String> costumerCodes = new ArrayList<String>();
+//
+//                if (responce2.length() > 4 && responce2.substring(0, 4).equals("True")) {
+//                    try {
+//                        jsonArray = new JSONArray(responce2.substring(4));
+//                        for (int i = 0; i < jsonArray.length() - 1; i++) {
+//                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                            costumerNames.add(jsonObject.get("FullName").toString());
+//                            costumerCodes.add(jsonObject.get("Tafzili_ID").toString());
+//                        }
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ArrayAdapter<String> adapter =
+//                                new ArrayAdapter<String>(SettingsActivity.this, android.R.layout.simple_spinner_item, costumerNames.toArray(new String[costumerNames.size()]));
+//                        spCostumerCode.setAdapter(adapter);
+//                        llLoading.setVisibility(View.GONE);
+//
+//                        if (responce2.length() > 4 && responce2.substring(0, 4).equals("True")) {
+//                            tvStatus.setText("ارتباط برقرار شد.");
+//                            tvStatus.setTextColor(getResources().getColor(R.color.green));
+//                        } else {
+//                            tvStatus.setText("ارتباط برقرار نشد.");
+//                            tvStatus.setTextColor(getResources().getColor(R.color.red));
+//                        }
+//
+//                    }
+//                });
+
+//                spCostumerCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                        appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(i));
+//                    }
+//
+//                    @Override
+//                    public void onNothingSelected(AdapterView<?> adapterView) {
+//                        appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(0));
+//                    }
+//                });
+//
+//                for (int i = 0; i < costumerNames.size(); i++) {
+//                    if (appPreferenceTools.getDefaultCostumerCode().equals(costumerCodes.get(i))) {
+//                        final int finalI = i;
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//
+//                                spCostumerCode.setSelection(finalI);
+//                            }
+//                        });
+//                    }
+//                }
+//            }
+
+//        }).start();
 
         etIP1.addTextChangedListener(new TextWatcher() {
             @Override
@@ -440,106 +523,207 @@ public class SettingsActivity extends MainActivity {
         }
         id = -1;
         id2 = -1;
-        new AsyncTask<Void, Void, Void>() {
+
+
+        Call<Object> call = mTService.getGroupFood();
+        call.enqueue(new Callback<Object>() {
             @Override
-            protected Void doInBackground(Void... voids) {
-                CallWebService cws = new CallWebService(context, "GetGroupFood", "test");
-                json = cws.Call("test");
+            public void onResponse(Call<Object> call, Response<Object> response) {
 
-                CallWebService cws2 = new CallWebService(context, "GetFood", "test");
-                json2 = cws2.Call("test");
+                if (response.isSuccessful()) {
 
-                try {
-                    jsonArray = new JSONArray(json);
-                    jsonArray2 = new JSONArray(json2);
+                    json = response.body().toString();
+                    try {
+                        jsonArray = new JSONArray(json);
 
-                    SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
-                    db.delete(MyDatabase.FOOD_CATEGORY_TABLE, null, null);
-                    db.delete(MyDatabase.FOOD_TABLE, null, null);
+                        SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
+                        db.delete(MyDatabase.FOOD_CATEGORY_TABLE, null, null);
 
-//                    deleteRecursive(new File(getBaseContext().getFilesDir().getAbsolutePath() + "/group"));
-//                    deleteRecursive(new File(getBaseContext().getFilesDir().getAbsolutePath() + "/kala"));
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            ContentValues cv = new ContentValues();
+                            cv.put(MyDatabase.CODE, jsonObject.get("ID_Group") + "");
+                            cv.put(MyDatabase.NAME, jsonObject.get("NameGroup") + "");
+                            cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject.get("ImageGroup") + "", Base64.DEFAULT));
+                            db.insert(MyDatabase.FOOD_CATEGORY_TABLE, null, cv);
+                        }
 
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        ContentValues cv = new ContentValues();
-                        cv.put(MyDatabase.CODE, jsonObject.get("ID_Group") + "");
-                        cv.put(MyDatabase.NAME, jsonObject.get("NameGroup") + "");
-                        cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject.get("ImageGroup") + "", Base64.DEFAULT));
-                        id = db.insert(MyDatabase.FOOD_CATEGORY_TABLE, null, cv);
+                        Call<Object> call2 = mTService2.getFood();
+                        call2.enqueue(new Callback<Object>() {
+                            @Override
+                            public void onResponse(Call<Object> call2, Response<Object> response2) {
 
-//                        byte[] bx = Base64.decode(jsonObject.get("ImageGroup") + "", Base64.DEFAULT);
-//
-//                        saveFile(
-//                                getBaseContext().getFilesDir().getAbsolutePath() + "/group",
-//                                jsonObject.get("ID_Group") + ".jpg",
-//                                bx
-//                        );
+                                if (response2.isSuccessful()) {
 
+                                    json2 = response2.body().toString();
+                                    try {
+                                        jsonArray2 = new JSONArray(json2);
+
+                                        SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
+                                        db.delete(MyDatabase.FOOD_TABLE, null, null);
+
+                                        for (int i = 0; i < jsonArray2.length(); i++) {
+                                            JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
+                                            ContentValues cv = new ContentValues();
+                                            cv.put(MyDatabase.CODE, jsonObject2.get("ID_Kala") + "");
+                                            cv.put(MyDatabase.NAME, jsonObject2.get("Name_Kala") + "");
+                                            cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject2.get("Picture") + "", Base64.DEFAULT));
+                                            cv.put(MyDatabase.CATEGORY_CODE, jsonObject2.get("Fk_GroupKala") + "");
+                                            cv.put(MyDatabase.PRICE, jsonObject2.get("GheymatForoshAsli") + "");
+                                            id2 = db.insert(MyDatabase.FOOD_TABLE, null, cv);
+                                        }
+
+                                        db.close();
+
+                                        Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
+
+                                        isUpdated = true;
+
+                                        SQLiteDatabase db2 = new MyDatabase(SettingsActivity.this).getWritableDatabase();
+                                        ContentValues cv2 = new ContentValues();
+                                        cv2.put(MyDatabase.FIRST_RUN, 0);
+                                        db2.update(MyDatabase.SETTINGS_TABLE, cv2, MyDatabase.ID + " = ?", new String[]{"1"});
+                                        db2.close();
+
+                                        if (isSettingsUpdate) {
+                                            Intent i2 = new Intent(SettingsActivity.this, OrdersMenuActivity.class);
+                                            startActivity(i2);
+                                            SettingsActivity.this.finish();
+                                        }
+
+                                        if (status != null && status.equals("fromSplash")) {
+
+                                            Intent ii = new Intent(SettingsActivity.this, LoginActivity.class);
+                                            startActivity(ii);
+                                            SettingsActivity.this.finish();
+                                        }
+                                    } catch (
+                                            JSONException e)
+
+                                    {
+                                        e.printStackTrace();
+                                    }
+
+
+                                } else
+
+                                {
+                                    Toast.makeText(SettingsActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Object> call, Throwable t) {
+                            }
+                        });
+                    } catch (
+                            JSONException e)
+
+                    {
+                        e.printStackTrace();
                     }
-                    for (int i = 0; i < jsonArray2.length(); i++) {
-                        JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
-                        ContentValues cv = new ContentValues();
-                        cv.put(MyDatabase.CODE, jsonObject2.get("ID_Kala") + "");
-                        cv.put(MyDatabase.NAME, jsonObject2.get("Name_Kala") + "");
-                        cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject2.get("Picture") + "", Base64.DEFAULT));
-                        cv.put(MyDatabase.CATEGORY_CODE, jsonObject2.get("Fk_GroupKala") + "");
-                        cv.put(MyDatabase.PRICE, jsonObject2.get("GheymatForoshAsli") + "");
-                        id2 = db.insert(MyDatabase.FOOD_TABLE, null, cv);
 
-//                        byte[] bx = Base64.decode(jsonObject2.get("Picture") + "", Base64.DEFAULT);
-//
-//                        saveFile(
-//                                getBaseContext().getFilesDir().getAbsolutePath() + "/kala",
-//                                jsonObject2.get("ID_Kala") + ".jpg",
-//                                bx
-//                        );
-                    }
-                    db.close();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d("img", "not ok : " + e.getMessage());
+
+                } else
+
+                {
+                    Toast.makeText(SettingsActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                 }
-                return null;
             }
 
             @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                if ((id != -1) && (id2 != -1)) {
-                    Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
-                    isUpdated = true;
-
-                    SQLiteDatabase db2 = new MyDatabase(SettingsActivity.this).getWritableDatabase();
-                    ContentValues cv2 = new ContentValues();
-                    cv2.put(MyDatabase.FIRST_RUN, 0);
-                    db2.update(MyDatabase.SETTINGS_TABLE, cv2, MyDatabase.ID + " = ?", new String[]{"1"});
-                    db2.close();
-
-                    if (isSettingsUpdate) {
-                        Intent i = new Intent(SettingsActivity.this, OrdersMenuActivity.class);
-                        startActivity(i);
-                        SettingsActivity.this.finish();
-                    }
-
-                    if (status != null && status.equals("fromSplash")) {
-
-                        Intent i = new Intent(SettingsActivity.this, LoginActivity.class);
-                        startActivity(i);
-                        SettingsActivity.this.finish();
-                    }
-
-                } else {
-                    Toast.makeText(context, "خطا در بروزرسانی.", Toast.LENGTH_SHORT).show();
-                    isUpdated = false;
-
-                }
-                if (ll != null) {
-                    ll.setVisibility(View.GONE);
-                }
+            public void onFailure(Call<Object> call, Throwable t) {
             }
-        }.execute();
-    }
+        });
+
+
+//        new AsyncTask<Void, Void, Void>()
+//
+//        {
+//            @Override
+//            protected Void doInBackground(Void... voids) {
+////                CallWebService cws = new CallWebService(context, "GetGroupFood", "test");
+////                json = cws.Call("test");
+//
+////                CallWebService cws2 = new CallWebService(context, "GetFood", "test");
+////                json2 = cws2.Call("test");
+//
+//                try {
+////                    jsonArray = new JSONArray(json);
+////                    jsonArray2 = new JSONArray(json2);
+//
+////                    SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
+////                    db.delete(MyDatabase.FOOD_CATEGORY_TABLE, null, null);
+////                    db.delete(MyDatabase.FOOD_TABLE, null, null);
+//
+////                    deleteRecursive(new File(getBaseContext().getFilesDir().getAbsolutePath() + "/group"));
+////                    deleteRecursive(new File(getBaseContext().getFilesDir().getAbsolutePath() + "/kala"));
+//
+////                    for (int i = 0; i < jsonArray.length(); i++) {
+////                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+////                        ContentValues cv = new ContentValues();
+////                        cv.put(MyDatabase.CODE, jsonObject.get("ID_Group") + "");
+////                        cv.put(MyDatabase.NAME, jsonObject.get("NameGroup") + "");
+////                        cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject.get("ImageGroup") + "", Base64.DEFAULT));
+////                        id = db.insert(MyDatabase.FOOD_CATEGORY_TABLE, null, cv);
+////                    }
+////                    for (int i = 0; i < jsonArray2.length(); i++) {
+////                        JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
+////                        ContentValues cv = new ContentValues();
+////                        cv.put(MyDatabase.CODE, jsonObject2.get("ID_Kala") + "");
+////                        cv.put(MyDatabase.NAME, jsonObject2.get("Name_Kala") + "");
+////                        cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject2.get("Picture") + "", Base64.DEFAULT));
+////                        cv.put(MyDatabase.CATEGORY_CODE, jsonObject2.get("Fk_GroupKala") + "");
+////                        cv.put(MyDatabase.PRICE, jsonObject2.get("GheymatForoshAsli") + "");
+////                        id2 = db.insert(MyDatabase.FOOD_TABLE, null, cv);
+////                    }
+////                    db.close();
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                    Log.d("img", "not ok : " + e.getMessage());
+//                }
+//                return null;
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Void aVoid) {
+//                super.onPostExecute(aVoid);
+//                if ((id != -1) && (id2 != -1)) {
+////                    Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
+////                    isUpdated = true;
+////
+////                    SQLiteDatabase db2 = new MyDatabase(SettingsActivity.this).getWritableDatabase();
+////                    ContentValues cv2 = new ContentValues();
+////                    cv2.put(MyDatabase.FIRST_RUN, 0);
+////                    db2.update(MyDatabase.SETTINGS_TABLE, cv2, MyDatabase.ID + " = ?", new String[]{"1"});
+////                    db2.close();
+////
+////                    if (isSettingsUpdate) {
+////                        Intent i = new Intent(SettingsActivity.this, OrdersMenuActivity.class);
+////                        startActivity(i);
+////                        SettingsActivity.this.finish();
+////                    }
+////
+////                    if (status != null && status.equals("fromSplash")) {
+////
+////                        Intent i = new Intent(SettingsActivity.this, LoginActivity.class);
+////                        startActivity(i);
+////                        SettingsActivity.this.finish();
+////                    }
+//
+//                } else {
+//                    Toast.makeText(context, "خطا در بروزرسانی.", Toast.LENGTH_SHORT).show();
+//                    isUpdated = false;
+//
+//                }
+//                if (ll != null) {
+//                    ll.setVisibility(View.GONE);
+//                }
+//            }
+//        }.
+//
+//                execute();
+//    }
 //
 //    public void saveFile(String path, String name, byte[] bytes) {
 //        File file = new File(path);
@@ -564,5 +748,6 @@ public class SettingsActivity extends MainActivity {
 //
 //        fileOrDirectory.delete();
 //    }
+    }
 }
 

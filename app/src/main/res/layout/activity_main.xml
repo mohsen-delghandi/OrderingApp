@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:layout_gravity="right"
+    android:fitsSystemWindows="true"
     app:layout_anchorGravity="right"
     tools:openDrawer="right">
 
@@ -19,40 +18,39 @@
 
         <VideoView
             android:id="@+id/videoView"
-            android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
 
         <Button
-            android:elevation="@dimen/padding_large"
             android:layout_width="@dimen/dimen_item_height3"
             android:layout_height="@dimen/dimen_item_height3"
-            android:text="ثبت سفارش"
             android:layout_gravity="bottom|start"
-            android:textColor="@color/primary_dark"
-            android:paddingRight="@dimen/padding_medium"
-            android:paddingLeft="@dimen/padding_medium"
-            android:textSize="@dimen/font_large"
-            app:fontPath="fonts/IRANSansWeb_Bold.ttf"
             android:layout_margin="@dimen/padding_medium"
             android:background="@drawable/shape_circle_shadow"
-            />
+            android:elevation="@dimen/padding_large"
+            android:paddingLeft="@dimen/padding_medium"
+            android:paddingRight="@dimen/padding_medium"
+            android:text="ثبت سفارش"
+            android:textColor="@color/primary_dark"
+            android:textSize="@dimen/font_large"
+            app:fontPath="fonts/IRANSansWeb_Bold.ttf"
+            tools:ignore="MissingPrefix" />
 
         <Button
             android:id="@+id/button_screenSaver"
-            android:elevation="@dimen/padding_large"
             android:layout_width="@dimen/dimen_item_height2"
             android:layout_height="@dimen/dimen_item_height2"
-            android:text="ثبت سفارش"
             android:layout_gravity="bottom|start"
-            android:textColor="#fff"
-            android:paddingRight="@dimen/padding_medium"
-            android:paddingLeft="@dimen/padding_medium"
-            android:textSize="@dimen/font_large"
             android:layout_margin="@dimen/padding_large"
             android:background="@drawable/shape_circle"
             android:backgroundTint="#39b54a"
-            />
+            android:elevation="@dimen/padding_large"
+            android:paddingLeft="@dimen/padding_medium"
+            android:paddingRight="@dimen/padding_medium"
+            android:text="ثبت سفارش"
+            android:textColor="#fff"
+            android:textSize="@dimen/font_large" />
 
     </FrameLayout>
 
@@ -60,7 +58,7 @@
         android:id="@+id/include"
         layout="@layout/app_bar_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
@@ -87,7 +85,7 @@
                     android:id="@+id/nav_recyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scrollbars="vertical"/>
+                    android:scrollbars="vertical" />
             </LinearLayout>
             <!--loading-->
 
@@ -98,18 +96,17 @@
         android:id="@+id/llLoading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:visibility="gone"
         android:background="#CCD1C4E9"
-        android:orientation="vertical">
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <com.wang.avi.AVLoadingIndicatorView
             style="@style/AVLoadingIndicatorView.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:indicatorColor="@color/primary_dark"
-            app:indicatorName="BallClipRotateMultipleIndicator"
-            />
+            app:indicatorName="BallClipRotateMultipleIndicator" />
 
         <TextView
             android:id="@+id/tvLoading_text"
@@ -120,7 +117,7 @@
             android:layout_marginTop="@dimen/padding_large"
             android:gravity="center"
             android:text="لطفا شکیبا باشید"
-            android:textColor="@color/primary_text"/>
+            android:textColor="@color/primary_text" />
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
