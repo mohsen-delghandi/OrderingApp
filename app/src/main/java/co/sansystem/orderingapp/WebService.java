@@ -1,9 +1,12 @@
 package co.sansystem.orderingapp;
 
 
+import com.google.gson.JsonObject;
+
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -25,6 +28,15 @@ public interface WebService {
     @GET("GetFood")
     Call<Object> getFood();
 
-    @GET("SaveFactor/{jsonString}")
-    Call<Object> saveFactor(@Path("jsonString") String jsonString);
+    @POST("SaveFactor")
+    Call<Object> saveFactor(@Body List<FactorModel> factorModelList);
+
+    @GET("CancleFactor/{factorNumber}/{sanadNumber}/{userId}")
+    Call<Boolean> deleteFactor(@Path("factorNumber") String factorNumber,@Path("sanadNumber") String sanadNumber,@Path("userId") String userId);
+
+    @GET("GetLastFactors")
+    Call<List<MiniFactorModel>> getLastFactors();
+
+    @GET("GetSefaresh/{factorNumber}")
+    Call<List<FactorModel>> getSefaresh(@Path("factorNumber") String factorNumber);
 }

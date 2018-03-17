@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -34,7 +35,6 @@ public class OrdersMenuActivity extends MainActivity {
     public static LinearLayout ll, ll2;
     public static FloatingActionButton fabToggle;
     public static TextView tvTayid;
-    int firstRun;
     public static LinearLayout linearLayout;
     CustomDialogClass cdd, cdd2;
     AppPreferenceTools appPreferenceTools;
@@ -58,7 +58,6 @@ public class OrdersMenuActivity extends MainActivity {
         costumerCode = appPreferenceTools.getDefaultCostumerCode();
 
         linearLayout = (LinearLayout) findViewById(R.id.linearLayout_happy);
-//        linearLayout.setVisibility(View.GONE);
 
         ll = (LinearLayout) findViewById(R.id.food_orders_fragment);
         ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 0f));
@@ -68,7 +67,13 @@ public class OrdersMenuActivity extends MainActivity {
         tvTayid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                cdd = new CustomDialogClass(OrdersMenuActivity.this, costumerCode);
+                if(getIntent().getExtras() != null){
+                    cdd = new CustomDialogClass(OrdersMenuActivity.this, costumerCode,
+                            getIntent().getExtras().getString("tableNumber"),getIntent().getExtras().getString("Costumer_Name"),
+                            getIntent().getExtras().getString("Vaziat_Sefaresh"));
+                }else {
+                    cdd = new CustomDialogClass(OrdersMenuActivity.this, costumerCode);
+                }
                 cdd.show();
                 cdd.setCancelable(false);
                 Window window = cdd.getWindow();
@@ -81,6 +86,15 @@ public class OrdersMenuActivity extends MainActivity {
         tvTitlebar.setText(title + " - " + "کاربر " + appPreferenceTools.getUserName());
 
         ivTitlebar.setVisibility(View.VISIBLE);
+        ivTitlebarList.setVisibility(View.VISIBLE);
+        ivTitlebarList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(OrdersMenuActivity.this, LastFactorsActivity.class);
+                startActivity(i);
+            }
+        });
+
         ivTitlebar.setImageResource(R.drawable.settings_icon);
         ivTitlebar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +136,34 @@ public class OrdersMenuActivity extends MainActivity {
 
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        FoodOrdersFragment foodOrdersFragment = new FoodOrdersFragment(this, height);
+
+        Fragment foodOrdersFragment = null;
+        if(getIntent().getExtras() != null){
+            if(getIntent().getExtras().getBoolean("editMode")){
+                foodOrdersFragment = new FoodOrdersFragment(this, height,FoodOrdersAdapter.mList);
+
+                OrdersMenuActivity.fabToggle.setImageResource(R.drawable.icon_up);
+                OrdersMenuActivity.fabToggle.setVisibility(View.VISIBLE);
+
+                OrdersMenuActivity.tvTayid.setVisibility(View.VISIBLE);
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+                    ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
+                    ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
+                            "height",
+                            animationWrapper.getHeight(),
+                            MainActivity.height / 3);
+                    anim.setDuration(300);
+                    anim.setInterpolator(new FastOutLinearInInterpolator());
+                    anim.start();
+                }else{
+                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
+                    params.height = MainActivity.height / 3;
+                    OrdersMenuActivity.ll.setLayoutParams(params);
+                }
+            }
+        }else {
+            foodOrdersFragment = new FoodOrdersFragment(this, height);
+        }
         fragmentTransaction.add(R.id.food_orders_fragment, foodOrdersFragment);
         fragmentTransaction.commit();
 
@@ -141,15 +182,7 @@ public class OrdersMenuActivity extends MainActivity {
         mNavigationRecycler.setAdapter(mRecyclerAdapter);
 
 
-//        if(SettingsActivity.isUpdated) {
-//            FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
-//            FoodMenuFragment foodMenuFragment = new FoodMenuFragment(this, fragmentManager, food.getFoodCategoryCodes().get(1));
-//            fragmentTransaction2.replace(R.id.food_menu_fragment, foodMenuFragment);
-//            fragmentTransaction2.addToBackStack(null);
-//            fragmentTransaction2.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//            fragmentTransaction2.commit();
-//            drawer.closeDrawer(Gravity.START);
-//        }
+
 
         NavigationAdapter.refreshFavorites();
     }

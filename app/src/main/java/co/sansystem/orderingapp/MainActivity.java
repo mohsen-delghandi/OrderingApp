@@ -54,6 +54,7 @@ public class MainActivity extends BaseActivity {
     FloatingActionButton fab;
     TextView tvTitlebar;
     ImageView ivTitlebar;
+    ImageView ivTitlebarList;
     ActionBarDrawerToggle toggle;
     NavigationView nv;
     String json,json2;
@@ -143,6 +144,8 @@ public class MainActivity extends BaseActivity {
 
         ivTitlebar = (ImageView)findViewById(R.id.titleBar_icon);
         ivTitlebar.setVisibility(View.GONE);
+        ivTitlebarList = (ImageView)findViewById(R.id.titleBar_icon2);
+        ivTitlebarList.setVisibility(View.GONE);
 
         ns = (LinearLayout) findViewById(R.id.nestedscrollview);
 

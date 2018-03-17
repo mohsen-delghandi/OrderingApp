@@ -151,17 +151,21 @@ public class SettingsActivity extends MainActivity {
         spVaziatSefaresh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                appPreferenceTools.saveVaziateSefaresh(i + "");
+                appPreferenceTools.saveVaziateSefaresh(getResources().getStringArray(R.array.vaziat_sefaresh)[i]);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                appPreferenceTools.saveVaziateSefaresh("0");
+                appPreferenceTools.saveVaziateSefaresh("بیرون بر");
             }
         });
 
         if (!appPreferenceTools.getVaziatSefaresh().equals("")) {
-            spVaziatSefaresh.setSelection(Integer.parseInt(appPreferenceTools.getVaziatSefaresh()));
+            for(int i = 0 ; i < getResources().getStringArray(R.array.vaziat_sefaresh).length ; i++){
+                if(getResources().getStringArray(R.array.vaziat_sefaresh)[i].equals(appPreferenceTools.getVaziatSefaresh())){
+                    spVaziatSefaresh.setSelection(i);
+                }
+            }
         } else {
             spVaziatSefaresh.setSelection(0);
         }

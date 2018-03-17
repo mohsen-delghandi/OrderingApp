@@ -2,9 +2,9 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layoutDirection="rtl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layoutDirection="rtl"
     tools:context="co.sansystem.orderingapp.OrdersMenuActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -21,23 +21,31 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <LinearLayout
-                android:gravity="center_vertical|left"
-                android:paddingLeft="@dimen/padding_large"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:gravity="center_vertical|left"
+                android:paddingLeft="@dimen/padding_large">
+
                 <TextView
                     android:id="@+id/titleBar_title"
-                    android:textSize="@dimen/font_medium"
-                    android:gravity="right"
                     android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:gravity="right"
                     android:textColor="#fff"
-                    android:layout_height="wrap_content"/>
+                    android:textSize="@dimen/font_medium" />
 
                 <ImageView
-                android:id="@+id/titleBar_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                    android:id="@+id/titleBar_icon2"
+                    android:layout_width="@dimen/dimen_medium"
+                    android:layout_height="@dimen/dimen_medium"
+                    android:layout_margin="@dimen/padding_small"
+                    android:src="@drawable/icon_list" />
+
+                <ImageView
+                    android:id="@+id/titleBar_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
         </android.support.v7.widget.Toolbar>
@@ -46,17 +54,17 @@
 
 
     <LinearLayout
-        android:layout_marginTop="?attr/actionBarSize"
-        android:orientation="vertical"
+        android:id="@+id/nestedscrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/nestedscrollview"></LinearLayout>
+        android:layout_marginTop="?attr/actionBarSize"
+        android:orientation="vertical"></LinearLayout>
 
     <!--<android.support.v4.widget.NestedScrollView-->
-        <!--android:background="#fff"-->
-        <!--android:id="@+id/nestedscrollview"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
+    <!--android:background="#fff"-->
+    <!--android:id="@+id/nestedscrollview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent">-->
 
     <!--</android.support.v4.widget.NestedScrollView>-->
 

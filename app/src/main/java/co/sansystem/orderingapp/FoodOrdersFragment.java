@@ -20,17 +20,17 @@ import java.util.List;
 
 public class FoodOrdersFragment extends Fragment{
 
-    RecyclerView rvv;
-    LinearLayoutManager rvlm;
+    RecyclerView recyclerView;
+    LinearLayoutManager linearLayoutManager;
     Context mContext;
-    static FoodOrdersAdapter rva;
-    int mPosition;
-    int mFoodCode,mHeight;
+    static FoodOrdersAdapter foodOrdersAdapter;
+    int mHeight;
     List<OrderedItem> mList = new ArrayList<>();
 
-    public FoodOrdersFragment(Context context,int foodCode,int height) {
+    public FoodOrdersFragment(Context context,int height,List<OrderedItem> mList) {
         mContext = context;
-        mFoodCode = foodCode;
+        mHeight = height;
+        this.mList = mList;
     }
 
     public FoodOrdersFragment(Context context,int height) {
@@ -46,24 +46,24 @@ public class FoodOrdersFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.food_orders_layout, container, false);
-        rvv = v.findViewById(R.id.food_orders_recyclerView);
+        recyclerView = v.findViewById(R.id.food_orders_recyclerView);
 
-        rvv.setHasFixedSize(true);
-        rvv.setNestedScrollingEnabled(false);
-
-
-
-
-        rvlm = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
-//        rvlm.setStackFromEnd(true);
-        rvv.setLayoutManager(rvlm);
-
-        rva = new FoodOrdersAdapter(mContext,mList,rvv,rvlm,mHeight);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setNestedScrollingEnabled(false);
 
 
 
-        rvv.setAdapter(rva);
-//        rvv.scrollToPosition(mList.size());
+
+        linearLayoutManager = new LinearLayoutManager(mContext,LinearLayoutManager.VERTICAL,false);
+//        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        foodOrdersAdapter = new FoodOrdersAdapter(mContext,mList, recyclerView, linearLayoutManager,mHeight);
+
+
+
+        recyclerView.setAdapter(foodOrdersAdapter);
+//        recyclerView.scrollToPosition(mList.size());
 
 
         return v;
@@ -72,7 +72,7 @@ public class FoodOrdersFragment extends Fragment{
 
 
     public static void insert(OrderedItem data,int number){
-        rva.insert(data);
+        foodOrdersAdapter.insert(data);
     }
 
 }

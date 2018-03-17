@@ -37,6 +37,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name="co.sansystem.orderingapp.OrdersMenuActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name="co.sansystem.orderingapp.LastFactorsActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 

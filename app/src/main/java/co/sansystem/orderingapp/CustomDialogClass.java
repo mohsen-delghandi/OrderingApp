@@ -30,6 +30,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.sansystem.mohsen.orderingapp.R;
 
 import org.json.JSONArray;
@@ -37,7 +38,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import retrofit2.Call;
@@ -68,12 +71,22 @@ public class CustomDialogClass extends Dialog implements
     AppPreferenceTools appPreferenceTools;
     Spinner spVaziatSefaresh;
     String vaziatSefaresh;
+    String tableNumber = null,costumerName = null,vaziat_sefaresh = null;
     private WebService mTService;
 
     public CustomDialogClass(Activity a, String defaultCostumerCode) {
         super(a);
         this.c = a;
         costumerCode = defaultCostumerCode;
+    }
+
+    public CustomDialogClass(Activity a, String defaultCostumerCode, String tableNumber, String costumer_name, String vaziat_sefaresh) {
+        super(a);
+        this.c = a;
+        costumerCode = defaultCostumerCode;
+        this.tableNumber = tableNumber;
+        costumerName = costumer_name;
+        this.vaziat_sefaresh = vaziat_sefaresh;
     }
 
 
@@ -104,6 +117,7 @@ public class CustomDialogClass extends Dialog implements
         appPreferenceTools = new AppPreferenceTools(c);
         spVaziatSefaresh = findViewById(R.id.spinner_vaziat_sefaresh);
 
+
         vaziatSefaresh = appPreferenceTools.getVaziatSefaresh();
 
         ArrayAdapter<String> adapterVaziatSefaresh =
@@ -113,16 +127,31 @@ public class CustomDialogClass extends Dialog implements
         spVaziatSefaresh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                vaziatSefaresh = i + "";
+                vaziatSefaresh = c.getResources().getStringArray(R.array.vaziat_sefaresh)[i];
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                vaziatSefaresh = "0";
+                vaziatSefaresh = "بیرون بر";
             }
         });
 
-        spVaziatSefaresh.setSelection(Integer.parseInt(appPreferenceTools.getVaziatSefaresh()));
+
+        if(tableNumber != null){
+            etTable.setText(tableNumber);
+            etName.setText(costumerName);
+            for(int i = 0 ; i < c.getResources().getStringArray(R.array.vaziat_sefaresh).length ; i++){
+                if(c.getResources().getStringArray(R.array.vaziat_sefaresh)[i].equals(vaziat_sefaresh)){
+                    spVaziatSefaresh.setSelection(i);
+                }
+            }
+        }
+
+        for(int i = 0 ; i < c.getResources().getStringArray(R.array.vaziat_sefaresh).length ; i++){
+            if(c.getResources().getStringArray(R.array.vaziat_sefaresh)[i].equals(vaziat_sefaresh)){
+                spVaziatSefaresh.setSelection(i);
+            }
+        }
 
         etTable.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -190,29 +219,27 @@ public class CustomDialogClass extends Dialog implements
                 } else if (etName.getText().toString().equals("")) {
                     Toast.makeText(c, "نام مشتری را وارد کنید.", Toast.LENGTH_SHORT).show();
                 } else {
-                    jsonArray = new JSONArray();
+                    List<FactorModel> factorModelList = new ArrayList<>();
                     for (int i = 0; i < FoodOrdersAdapter.mList.size(); i++) {
-                        JSONObject jsonObject = new JSONObject();
-                        try {
-                            jsonObject.put("Food_Code", FoodOrdersAdapter.mList.get(i).getCode());
-                            jsonObject.put("Food_Count", FoodOrdersAdapter.mList.get(i).getmNumber());
-                            jsonObject.put("Food_Price", Integer.parseInt(FoodOrdersAdapter.mList.get(i).getmPrice()) * FoodOrdersAdapter.mList.get(i).getmNumber());
-                            jsonObject.put("Table_Number", etTable.getText() + "");
-                            jsonObject.put("Costumer_Code", costumerCode);
-                            jsonObject.put("Costumer_Name", etName.getText() + "");
-                            if (appPreferenceTools.getprintAfterConfirm()) {
-                                jsonObject.put("Print_Confirm", "true");
-                            } else {
-                                jsonObject.put("Print_Confirm", "false");
-                            }
-                            jsonObject.put("Food_Exp", FoodOrdersAdapter.mList.get(i).getmExp());
-                            jsonObject.put("User_Id", appPreferenceTools.getUserID() + "");
-                            jsonObject.put("Price_Sum", mPrice + "");
-                            jsonObject.put("Vaziat_Sefaresh", vaziatSefaresh);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        FactorModel factorModel = new FactorModel();
+
+                        factorModel.setFoodCode(FoodOrdersAdapter.mList.get(i).getCode());
+                        factorModel.setFoodCount(FoodOrdersAdapter.mList.get(i).getmNumber());
+                        factorModel.setSumPriceRow((Integer.parseInt(FoodOrdersAdapter.mList.get(i).getmPrice()) * FoodOrdersAdapter.mList.get(i).getmNumber())+"");
+                        factorModel.setTableNumber(etTable.getText() + "");
+                        factorModel.setCostumerCode(costumerCode);
+                        factorModel.setCostumerName(etName.getText() + "");
+                        if (appPreferenceTools.getprintAfterConfirm()) {
+                            factorModel.setPrintConfirm("true");
+                        } else {
+                            factorModel.setPrintConfirm("false");
                         }
-                        jsonArray.put(jsonObject);
+                        factorModel.setFoodExp(FoodOrdersAdapter.mList.get(i).getmExp());
+                        factorModel.setUserId(appPreferenceTools.getUserID() + "");
+                        factorModel.setPriceSum(mPrice + "");
+                        factorModel.setVaziatSefaresh(vaziatSefaresh);
+
+                        factorModelList.add(factorModel);
                     }
 
 
@@ -221,7 +248,7 @@ public class CustomDialogClass extends Dialog implements
                     llLoadingDialog.setVisibility(View.VISIBLE);
                     tlMain.setAlpha(0.1f);
 
-                    Call<Object> call = mTService.saveFactor(jsonArray.toString());
+                    Call<Object> call = mTService.saveFactor(factorModelList);
                     call.enqueue(new Callback<Object>() {
                         @Override
                         public void onResponse(Call<Object> call, Response<Object> response) {
@@ -265,11 +292,10 @@ public class CustomDialogClass extends Dialog implements
                                 jameKol.setText("فاکتور با موفقیت ثبت گردید.");
                                 jameKol.setTextSize(30);
                                 jameKol.setTextColor(c.getResources().getColor(R.color.accent));
-                                // trJameKol.setBackgroundColor(c.getResources().getColor(R.color.accent));
                                 tv.setVisibility(View.GONE);
                                 no.setText("تایید");
                                 no.setBackgroundColor(c.getResources().getColor(R.color.green));
-                                text.setText("شماره فیش ارسالی به شماره " + response.body().toString().substring(4) + " به نام " + etName.getText().toString().trim() + " ثبت گردید.");
+                                text.setText("شماره فیش ارسالی به شماره " + response.body().toString() + " به نام " + etName.getText().toString().trim() + " ثبت گردید.");
                                 text.setTextSize(25);
                                 text.setPadding(40, 40, 40, 40);
                                 etTable.setVisibility(View.GONE);
