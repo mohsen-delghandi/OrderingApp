@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="co.sansystem.orderingapp.Font"
+        android:name="co.sansystem.orderingapp.Utility.Font.Font"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,7 +18,7 @@
         <activity
             android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait"
-            android:name="co.sansystem.orderingapp.SplashActivity"
+            android:name="co.sansystem.orderingapp.UI.Activities.SplashActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -29,15 +29,15 @@
         </activity>
         <activity
             android:windowSoftInputMode="adjustResize"
-            android:name="co.sansystem.orderingapp.SettingsActivity"
+            android:name="co.sansystem.orderingapp.UI.Activities.SettingsActivity"
             android:screenOrientation="portrait"/>
         <activity
             android:windowSoftInputMode="adjustResize"
-            android:name="co.sansystem.orderingapp.LoginActivity"
+            android:name="co.sansystem.orderingapp.UI.Activities.LoginActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name="co.sansystem.orderingapp.OrdersMenuActivity"
+        <activity android:name="co.sansystem.orderingapp.UI.Activities.OrdersMenuActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name="co.sansystem.orderingapp.LastFactorsActivity"
+        <activity android:name="co.sansystem.orderingapp.UI.Activities.LastFactorsActivity"
             android:screenOrientation="portrait"/>
     </application>
 

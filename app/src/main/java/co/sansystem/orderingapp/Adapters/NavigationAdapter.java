@@ -107,33 +107,41 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-                    FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager, mFoodsCategoryCodes.get(finalPosition), mHeight);
-                    fragmentTransaction.replace(R.id.food_menu_fragment, foodMenuFragment);
-                    fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-                    fragmentTransaction.commit();
-                    mDrawer.closeDrawer(Gravity.START);
-                    isFavorite = false;
-                    OrdersMenuActivity.linearLayout.setVisibility(View.GONE);
+                    try {
+                        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+                        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager, mFoodsCategoryCodes.get(finalPosition), mHeight);
+                        fragmentTransaction.replace(R.id.food_menu_fragment, foodMenuFragment);
+                        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                        fragmentTransaction.commit();
+                        mDrawer.closeDrawer(Gravity.START);
+                        isFavorite = false;
+                        OrdersMenuActivity.linearLayout.setVisibility(View.GONE);
+                    }catch (Exception e){
+
+                    }
                 }
             });
         }
     }
 
     public static void refreshFavorites() {
-        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-        FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager, "favorites", mHeight);
+        try {
+            FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+            FoodMenuFragment foodMenuFragment = new FoodMenuFragment(mContext, mFragmentManager, "favorites", mHeight);
 //        if(FoodMenuFragment.isFavoriteEmpty){
 //            OrdersMenuActivity.linearLayout.setVisibility(View.VISIBLE);
 //        }else{
 //            OrdersMenuActivity.linearLayout.setVisibility(View.GONE);
 //        }
-        fragmentTransaction.replace(R.id.food_menu_fragment, foodMenuFragment);
+            fragmentTransaction.replace(R.id.food_menu_fragment, foodMenuFragment);
 //                fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction.commit();
-        mDrawer.closeDrawer(Gravity.START);
-        isFavorite = true;
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            fragmentTransaction.commit();
+            mDrawer.closeDrawer(Gravity.START);
+            isFavorite = true;
+        }catch (Exception e){
+
+        }
 
     }
 

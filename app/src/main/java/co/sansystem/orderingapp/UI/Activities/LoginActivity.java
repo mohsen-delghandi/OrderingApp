@@ -3,14 +3,10 @@ package co.sansystem.orderingapp.UI.Activities;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TableRow;
@@ -19,11 +15,6 @@ import android.widget.Toast;
 
 import com.sansystem.mohsen.orderingapp.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import co.sansystem.orderingapp.Models.UserModel;
@@ -109,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             if (!response.body().get(0).getLoginID().equals("0")) {
                                 appPreferenceTools.loginOK();
-                                appPreferenceTools.saveUserAuthenticationInfo(response.body().get(0).getLoginName(), password, response.body().toString());
+                                appPreferenceTools.saveUserAuthenticationInfo(response.body().get(0).getLoginName(), password, response.body().get(0).getLoginID());
                                 startActivity(new Intent(LoginActivity.this, OrdersMenuActivity.class));
                                 finish();
                             } else {

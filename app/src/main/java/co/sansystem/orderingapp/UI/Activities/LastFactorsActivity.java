@@ -1,24 +1,14 @@
 package co.sansystem.orderingapp.UI.Activities;
 
-import android.content.ContentValues;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
 
 import com.sansystem.mohsen.orderingapp.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import co.sansystem.orderingapp.Adapters.LastFactorsAdapter;
@@ -54,6 +44,17 @@ public class LastFactorsActivity extends MainActivity {
 
         WebProvider provider = new WebProvider();
         mTService = provider.getTService();
+
+        tvTitlebar.setText(title + " - " + "فیش های اخیر");
+        toggle.setDrawerIndicatorEnabled(false);
+        toggle.setHomeAsUpIndicator(R.drawable.icon_back);
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(this);
         loadingDialogClass.show();

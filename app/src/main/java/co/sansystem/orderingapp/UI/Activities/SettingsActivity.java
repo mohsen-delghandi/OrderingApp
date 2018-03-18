@@ -120,12 +120,6 @@ public class SettingsActivity extends MainActivity {
             toggle.setDrawerIndicatorEnabled(false);
             toggle.setHomeAsUpIndicator(R.drawable.icon_back);
         }
-        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
         spCostumerCode = (Spinner) findViewById(R.id.spinner_default_costumer);
         spVaziatSefaresh = (Spinner) findViewById(R.id.spinner_vaziat_sefaresh);
 
@@ -139,6 +133,12 @@ public class SettingsActivity extends MainActivity {
             }
         });
 
+        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         bt_save = (TextView) findViewById(R.id.button_save);

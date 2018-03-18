@@ -8,7 +8,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:layoutDirection="rtl"
-
     tools:openDrawer="start">
 
     <FrameLayout
@@ -51,7 +50,6 @@
             android:textSize="@dimen/font_large"
             android:layout_margin="@dimen/padding_large"
             android:background="@drawable/shape_circle"
-            android:backgroundTint="#39b54a"
             />
 
     </FrameLayout>
