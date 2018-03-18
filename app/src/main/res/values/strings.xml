@@ -13,6 +13,7 @@
     <string name="default_customer_code" translatable="false">default_customer_code</string>
     <string name="vaziate_sefaresh" translatable="false">vaziate_sefaresh</string>
     <string name="print_after_confirm" translatable="false">print_after_confirm</string>
+    <string name="domain_name" translatable="false">domain_name</string>
 
     <string-array name="vaziat_sefaresh">
         <item>بیرون بر</item>

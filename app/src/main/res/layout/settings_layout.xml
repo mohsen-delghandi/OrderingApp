@@ -241,6 +241,7 @@
                     android:paddingLeft="@dimen/padding_large"
                     android:paddingRight="@dimen/padding_large"
                     android:paddingTop="@dimen/padding_bit"
+                    android:visibility="gone"
                     android:textColor="@color/icons"
                     android:textSize="@dimen/font_xsmall" />
 
@@ -364,7 +365,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:indicatorColor="@color/icons"
-            app:indicatorName="BallClipRotateMultipleIndicator" />
+            app:indicatorName="BallSpinFadeLoaderIndicator" />
     </LinearLayout>
 
 </RelativeLayout>

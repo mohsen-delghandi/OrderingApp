@@ -39,7 +39,9 @@
                     android:layout_width="@dimen/dimen_medium"
                     android:layout_height="@dimen/dimen_medium"
                     android:src="@drawable/icon_list"
-                    android:layout_margin="@dimen/padding_small" />
+                    android:layout_marginRight="@dimen/padding_large"
+                    android:layout_marginLeft="@dimen/padding_large"
+                    />
 
                 <ImageView
                     android:id="@+id/titleBar_icon"
