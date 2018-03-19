@@ -93,8 +93,12 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
             position--;
             holder.tv.setText(mFoodsCategoryNames.get(position));
             holder.setIsRecyclable(false);
+
+//            Runtime.getRuntime().gc();
             try {
-                Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsCategoryImages.get(position), 0, mFoodsCategoryImages.get(position).length);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsCategoryImages.get(position), 0,
+                        mFoodsCategoryImages.get(position).length);
+//                decodedByte.compress(Bitmap.CompressFormat.PNG,10,new ByteArrayOutputStream());
                 holder.iv.setImageBitmap(decodedByte);
             }catch (Exception e){
 

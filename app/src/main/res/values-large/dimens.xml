@@ -13,6 +13,7 @@
     <dimen name="font_xsmall">16sp</dimen>
     <dimen name="font_dialog">20sp</dimen>
     <dimen name="font_small">18sp</dimen>
+    <dimen name="font_xmedium">19sp</dimen>
     <dimen name="font_medium">20sp</dimen>
     <dimen name="font_large">24sp</dimen>
     <dimen name="font_xlarge">30sp</dimen>

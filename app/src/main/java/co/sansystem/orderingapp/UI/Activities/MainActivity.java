@@ -7,7 +7,6 @@ import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -27,9 +26,6 @@ import android.widget.VideoView;
 
 import com.sansystem.mohsen.orderingapp.R;
 
-import org.json.JSONArray;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import co.sansystem.orderingapp.Utility.Database.MyDatabase;
@@ -55,31 +51,10 @@ public class MainActivity extends BaseActivity {
     ImageView ivTitlebarList;
     ActionBarDrawerToggle toggle;
     NavigationView nv;
-    String json,json2;
-    JSONArray jsonArray,jsonArray2;
     LinearLayout ll_loading;
     long id, id2;
     String title;
-    Handler handler;
-    Runnable r;
-    List<String> videoAddressList = new ArrayList<String >();
     boolean isStarted = false;
-
-//    public void stopHandler() {
-//        handler.removeCallbacks(r);
-//    }
-//    public void startHandler() {
-//        handler.postDelayed(r, 15000);
-//    }
-
-
-//    @Override
-//    public void onUserInteraction() {
-//        // TODO Auto-generated method stub
-//        super.onUserInteraction();
-//        stopHandler();//stop first and then start
-//        startHandler();
-//    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -165,7 +140,7 @@ public class MainActivity extends BaseActivity {
 
         nv = (NavigationView)findViewById(R.id.nav_view);
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) nv.getLayoutParams();
-        params.width = width/4;
+        params.width = width/3;
         nv.setLayoutParams(params);
     }
 

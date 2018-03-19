@@ -101,8 +101,13 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
         dbf2.close();
         v.setId(position);
 
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsImages.get(position), 0, mFoodsImages.get(position).length);
-        holder.iv.setImageBitmap(decodedByte);
+        System.gc();
+        try {
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsImages.get(position), 0, mFoodsImages.get(position).length);
+            holder.iv.setImageBitmap(decodedByte);
+        }catch (Exception e){
+
+        }
 
 //        File file = new File(mContext.getFilesDir().getAbsolutePath() + "/kala/" + mFoodsCodes.get(position)+".jpg");
 //        Picasso.

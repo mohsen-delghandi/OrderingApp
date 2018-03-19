@@ -515,7 +515,11 @@ public class SettingsActivity extends MainActivity {
                                     ContentValues cv = new ContentValues();
                                     cv.put(MyDatabase.CODE, foodModel.getIDKala());
                                     cv.put(MyDatabase.NAME, foodModel.getNameKala());
-                                    cv.put(MyDatabase.IMAGE, Base64.decode(foodModel.getPicture(), Base64.DEFAULT));
+                                    try {
+                                        cv.put(MyDatabase.IMAGE, Base64.decode(foodModel.getPicture(), Base64.DEFAULT));
+                                    }catch (Exception e){
+
+                                    }
                                     cv.put(MyDatabase.CATEGORY_CODE, foodModel.getFkGroupKala());
                                     cv.put(MyDatabase.PRICE, foodModel.getGheymatForoshAsli());
                                     id2 = db.insert(MyDatabase.FOOD_TABLE, null, cv);

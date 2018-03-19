@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutDirection="rtl"
-    tools:context="co.sansystem.orderingapp.OrdersMenuActivity">
+    tools:context="co.sansystem.orderingapp.UI.Activities.OrdersMenuActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
@@ -33,7 +33,7 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:textColor="#fff"
-                    android:textSize="@dimen/font_medium" />
+                    android:textSize="@dimen/font_xmedium" />
 
                 <ImageView
                     android:id="@+id/titleBar_icon2"

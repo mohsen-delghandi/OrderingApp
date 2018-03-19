@@ -8,6 +8,7 @@
 
     <dimen name="font_xsmall">10sp</dimen>
     <dimen name="font_small">13sp</dimen>
+    <dimen name="font_xmedium">15sp</dimen>
     <dimen name="font_medium">18sp</dimen>
     <dimen name="font_large">22sp</dimen>
     <dimen name="font_xlarge">26sp</dimen>
