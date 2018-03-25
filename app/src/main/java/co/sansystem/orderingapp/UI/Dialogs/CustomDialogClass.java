@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -36,6 +37,7 @@ import java.util.Locale;
 
 import co.sansystem.orderingapp.Adapters.FoodOrdersAdapter;
 import co.sansystem.orderingapp.Adapters.NavigationAdapter;
+import co.sansystem.orderingapp.Models.ContactModel;
 import co.sansystem.orderingapp.Models.FactorModel;
 import co.sansystem.orderingapp.Models.FavoriteModel;
 import co.sansystem.orderingapp.UI.Activities.MainActivity;
@@ -62,13 +64,13 @@ public class CustomDialogClass extends Dialog implements
     public Dialog d;
     public TextView yes, no, text, jameKol, tvJameKol, tvNameMoshtari, tvMaliatText, tvMaliat, tvTakhfifText, tvTakhfif, tvServiceText, tvService, tvFactorText, tvFactor;
     public EditText etTable;
-    public EditText etName;
+//    public EditText etName;
     long mPrice = 0;
     String response, costumerCode;
     public LinearLayout llLoadingDialog;
     public TableLayout tlMain;
     TableRow trJameKol;
-    public TableRow trVaziat;
+//    public TableRow trVaziat;
     AppPreferenceTools appPreferenceTools;
     Spinner spVaziatSefaresh;
     String vaziatSefaresh;
@@ -76,6 +78,7 @@ public class CustomDialogClass extends Dialog implements
     private WebService mTService;
     private WebService mTService2;
     private WebService mTService3;
+    public AutoCompleteTextView textView;
 
     public CustomDialogClass(Activity a, String defaultCostumerCode) {
         super(a);
@@ -102,6 +105,8 @@ public class CustomDialogClass extends Dialog implements
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.basket_dialog_layout);
 
+
+
         WebProvider provider = new WebProvider();
         mTService = provider.getTService();
 
@@ -111,8 +116,37 @@ public class CustomDialogClass extends Dialog implements
         WebProvider provider3 = new WebProvider();
         mTService3 = provider3.getTService();
 
+
+        final ArrayList<String> costumerNamess = new ArrayList<String>();
+        final ArrayList<String> costumerCodess = new ArrayList<String>();
+
+        Call<List<ContactModel>> call = mTService2.getListContact();
+        call.enqueue(new Callback<List<ContactModel>>() {
+            @Override
+            public void onResponse(Call<List<ContactModel>> call, Response<List<ContactModel>> response) {
+
+                if (response.isSuccessful()) {
+
+                    for (ContactModel contactModel :
+                            response.body()) {
+                        costumerNamess.add(contactModel.getFullName());
+                        costumerCodess.add(contactModel.getTafziliID());
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ContactModel>> call, Throwable t) {
+            }
+        });
+
+        textView = findViewById(R.id.editText_name);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(c,android.R.layout.simple_dropdown_item_1line,costumerNamess);
+        textView.setAdapter(adapter);
+
         etTable = findViewById(R.id.editText_tableNumber);
-        etName = findViewById(R.id.editText_name);
+//        etName = findViewById(R.id.editText_name);
         llLoadingDialog = findViewById(R.id.llLoading_dialog);
         tlMain = findViewById(R.id.tableLayout_main);
         yes = findViewById(R.id.textView_ok);
@@ -122,7 +156,7 @@ public class CustomDialogClass extends Dialog implements
         tvJameKol = findViewById(R.id.textView_price);
         tvNameMoshtari = findViewById(R.id.textView_nameMoshtari);
         trJameKol = findViewById(R.id.tableRow_jameKol);
-        trVaziat = findViewById(R.id.tableRow_vaziat);
+//        trVaziat = findViewById(R.id.tableRow_vaziat);
         no.setBackgroundColor(c.getResources().getColor(R.color.red));
         yes.setOnClickListener(this);
         no.setOnClickListener(this);
@@ -148,6 +182,13 @@ public class CustomDialogClass extends Dialog implements
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 vaziatSefaresh = c.getResources().getStringArray(R.array.vaziat_sefaresh)[i];
+                if(i == 2 || i == 3 || i == 4){
+                    text.setVisibility(View.VISIBLE);
+                    etTable.setVisibility(View.VISIBLE);
+                }else {
+                    text.setVisibility(View.INVISIBLE);
+                    etTable.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override
@@ -159,7 +200,7 @@ public class CustomDialogClass extends Dialog implements
 
         if (tableNumber != null) {
             etTable.setText(tableNumber);
-            etName.setText(costumerName);
+            textView.setText(costumerName);
             for (int i = 0; i < c.getResources().getStringArray(R.array.vaziat_sefaresh).length; i++) {
                 if (c.getResources().getStringArray(R.array.vaziat_sefaresh)[i].equals(vaziat_sefaresh)) {
                     spVaziatSefaresh.setSelection(i);
@@ -259,7 +300,7 @@ public class CustomDialogClass extends Dialog implements
 
                 if (etTable.getText().toString().equals("") || (Integer.parseInt(etTable.getText() + "") < 1)) {
                     Toast.makeText(c, "شماره میز صحیح نیست.", Toast.LENGTH_SHORT).show();
-                } else if (etName.getText().toString().equals("")) {
+                } else if (textView.getText().toString().equals("")) {
                     Toast.makeText(c, "نام مشتری را وارد کنید.", Toast.LENGTH_SHORT).show();
                 } else {
                     List<FactorModel> factorModelList = new ArrayList<>();
@@ -271,7 +312,7 @@ public class CustomDialogClass extends Dialog implements
                         factorModel.setSumPriceRow((Integer.parseInt(FoodOrdersAdapter.mList.get(i).getmPrice()) * FoodOrdersAdapter.mList.get(i).getmNumber()) + "");
                         factorModel.setTableNumber(etTable.getText() + "");
                         factorModel.setCostumerCode(costumerCode);
-                        factorModel.setCostumerName(etName.getText() + "");
+                        factorModel.setCostumerName(textView.getText() + "");
                         if (appPreferenceTools.getprintAfterConfirm()) {
                             factorModel.setPrintConfirm("true");
                         } else {
@@ -351,14 +392,14 @@ public class CustomDialogClass extends Dialog implements
                                 tvFactorText.setVisibility(View.GONE);
                                 no.setText("تایید");
                                 no.setBackgroundColor(c.getResources().getColor(R.color.green));
-                                text.setText("شماره فیش ارسالی به شماره " + response.body().toString() + " به نام " + etName.getText().toString().trim() + " ثبت گردید.");
+                                text.setText("شماره فیش ارسالی به شماره " + response.body().toString() + " به نام " + textView.getText().toString().trim() + " ثبت گردید.");
                                 text.setTextSize(25);
                                 text.setPadding(40, 40, 40, 40);
                                 etTable.setVisibility(View.GONE);
                                 llLoadingDialog.setVisibility(View.GONE);
                                 tvNameMoshtari.setVisibility(View.GONE);
-                                etName.setVisibility(View.GONE);
-                                trVaziat.setVisibility(View.GONE);
+                                textView.setVisibility(View.GONE);
+//                                trVaziat.setVisibility(View.GONE);
                                 tlMain.setAlpha(1f);
                                 yes.setVisibility(View.GONE);
 

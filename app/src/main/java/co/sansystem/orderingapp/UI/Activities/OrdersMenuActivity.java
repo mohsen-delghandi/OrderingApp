@@ -117,13 +117,22 @@ public class OrdersMenuActivity extends MainActivity {
                     cdd2.tvJameKol.setText("هشدار");
                     cdd2.no.setText("خیر");
                     cdd2.text.setText("با ورود به تنظیمات لیست سفارش خالی می شود،آیا مطمئن هستید؟");
-                    cdd2.trVaziat.setVisibility(View.GONE);
+//                    cdd2.trVaziat.setVisibility(View.GONE);
                     cdd2.text.setTextSize(25);
                     cdd2.text.setPadding(40, 40, 40, 40);
                     cdd2.etTable.setVisibility(View.GONE);
                     cdd2.llLoadingDialog.setVisibility(View.GONE);
                     cdd2.tvNameMoshtari.setVisibility(View.GONE);
-                    cdd2.etName.setVisibility(View.GONE);
+                    cdd2.textView.setVisibility(View.GONE);
+                    cdd2.tvJameKol.setVisibility(View.GONE);
+                    cdd2.tvMaliat.setVisibility(View.GONE);
+                    cdd2.tvMaliatText.setVisibility(View.GONE);
+                    cdd2.tvTakhfif.setVisibility(View.GONE);
+                    cdd2.tvTakhfifText.setVisibility(View.GONE);
+                    cdd2.tvService.setVisibility(View.GONE);
+                    cdd2.tvServiceText.setVisibility(View.GONE);
+                    cdd2.tvFactor.setVisibility(View.GONE);
+                    cdd2.tvFactorText.setVisibility(View.GONE);
                     cdd2.tlMain.setAlpha(1f);
                     cdd2.yes.setText("بله");
                     cdd2.yes.setOnClickListener(new View.OnClickListener() {

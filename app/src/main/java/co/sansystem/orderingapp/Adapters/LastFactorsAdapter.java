@@ -98,13 +98,13 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
                 cdd2.tvJameKol.setText("هشدار");
                 cdd2.no.setText("خیر");
                 cdd2.text.setText("آیا از لغو فاکتور مطمئن هستید؟");
-                cdd2.trVaziat.setVisibility(View.GONE);
+//                cdd2.trVaziat.setVisibility(View.GONE);
                 cdd2.text.setTextSize(25);
                 cdd2.text.setPadding(40, 40, 40, 40);
                 cdd2.etTable.setVisibility(View.GONE);
                 cdd2.llLoadingDialog.setVisibility(View.GONE);
                 cdd2.tvNameMoshtari.setVisibility(View.GONE);
-                cdd2.etName.setVisibility(View.GONE);
+                cdd2.textView.setVisibility(View.GONE);
                 cdd2.tlMain.setAlpha(1f);
                 cdd2.yes.setText("بله");
                 cdd2.yes.setOnClickListener(new View.OnClickListener() {
