@@ -114,7 +114,7 @@ public class OrdersMenuActivity extends MainActivity {
                     Window window = cdd2.getWindow();
                     window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     cdd2.jameKol.setVisibility(View.GONE);
-                    cdd2.tv.setText("هشدار");
+                    cdd2.tvJameKol.setText("هشدار");
                     cdd2.no.setText("خیر");
                     cdd2.text.setText("با ورود به تنظیمات لیست سفارش خالی می شود،آیا مطمئن هستید؟");
                     cdd2.trVaziat.setVisibility(View.GONE);

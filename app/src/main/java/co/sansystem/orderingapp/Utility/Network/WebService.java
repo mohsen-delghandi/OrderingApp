@@ -1,8 +1,6 @@
 package co.sansystem.orderingapp.Utility.Network;
 
 
-import com.google.gson.JsonObject;
-
 import java.util.List;
 
 import co.sansystem.orderingapp.Models.ContactModel;
@@ -12,6 +10,8 @@ import co.sansystem.orderingapp.Models.FavoriteModel;
 import co.sansystem.orderingapp.Models.FoodModel;
 import co.sansystem.orderingapp.Models.GroupFoodModel;
 import co.sansystem.orderingapp.Models.MiniFactorModel;
+import co.sansystem.orderingapp.Models.ReportModel;
+import co.sansystem.orderingapp.Models.SettingModel;
 import co.sansystem.orderingapp.Models.UserModel;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -50,4 +50,10 @@ public interface WebService {
 
     @GET("GetSefaresh/{factorNumber}")
     Call<List<FactorModel>> getSefaresh(@Path("factorNumber") String factorNumber);
+
+    @GET("ReportForush/{azTarikh}/{taTarikh}")
+    Call<List<ReportModel>> reportForush(@Path("azTarikh") String azTarikh, @Path("taTarikh") String taTarikh);
+
+    @GET("GetSettingDarsad")
+    Call<List<SettingModel>> getSettingDarsad();
 }

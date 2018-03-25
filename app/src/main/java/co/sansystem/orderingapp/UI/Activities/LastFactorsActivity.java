@@ -1,5 +1,6 @@
 package co.sansystem.orderingapp.UI.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,6 +45,15 @@ public class LastFactorsActivity extends MainActivity {
 
         WebProvider provider = new WebProvider();
         mTService = provider.getTService();
+
+        ivTitlebarList.setVisibility(View.VISIBLE);
+        ivTitlebarList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(LastFactorsActivity.this, ReportActivity.class);
+                startActivity(i);
+            }
+        });
 
         tvTitlebar.setText(title + " - " + "فیش های اخیر");
         toggle.setDrawerIndicatorEnabled(false);

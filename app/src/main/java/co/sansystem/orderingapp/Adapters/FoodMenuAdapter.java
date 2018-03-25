@@ -83,7 +83,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
     public void onBindViewHolder(final FoodMenuAdapter.ViewHolder holder, final int position) {
         mHolder = holder;
         holder.setIsRecyclable(false);
-//        holder.ll.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,holder.tv.getLayoutParams().width));
+//        holder.ll.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,holder.tvJameKol.getLayoutParams().width));
         holder.tv.setText(mFoodsNames.get(position));
         SQLiteDatabase dbf2 = new MyDatabase(mContext).getReadableDatabase();
         Cursor cf = dbf2.query(MyDatabase.FOOD_TABLE,new String[]{MyDatabase.FAVORITE},MyDatabase.CODE + " = ?",new String[]{mFoodsCodes.get(position)},null,null,null);

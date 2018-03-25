@@ -44,4 +44,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.6.1'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
     compile 'com.android.support:multidex:1.0.2'
+
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }

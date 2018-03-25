@@ -69,9 +69,57 @@ public class FactorModel {
     @Expose
     private String userId;
 
+    public String getJameMablaghMaliat() {
+        return JameMablaghMaliat;
+    }
+
+    public void setJameMablaghMaliat(String jameMablaghMaliat) {
+        JameMablaghMaliat = jameMablaghMaliat;
+    }
+
+    public String getJameMablaghKhales() {
+        return JameMablaghKhales;
+    }
+
+    public void setJameMablaghKhales(String jameMablaghKhales) {
+        JameMablaghKhales = jameMablaghKhales;
+    }
+
+    public String getJameMablaghTakhfif() {
+        return JameMablaghTakhfif;
+    }
+
+    public void setJameMablaghTakhfif(String jameMablaghTakhfif) {
+        JameMablaghTakhfif = jameMablaghTakhfif;
+    }
+
+    public String getJameMablaghServic() {
+        return JameMablaghServic;
+    }
+
+    public void setJameMablaghServic(String jameMablaghServic) {
+        JameMablaghServic = jameMablaghServic;
+    }
+
     @SerializedName("Price_Sum")
     @Expose
     private String priceSum;
+
+    @SerializedName("JameMablaghMaliat")
+    @Expose
+    private String JameMablaghMaliat;
+
+    @SerializedName("JameMablaghKhales")
+    @Expose
+    private String JameMablaghKhales;
+
+    @SerializedName("JameMablaghTakhfif")
+    @Expose
+    private String JameMablaghTakhfif;
+
+    @SerializedName("JameMablaghServic")
+    @Expose
+    private String JameMablaghServic;
 
     @SerializedName("ForooshKalaParent_TypeFact")
     @Expose

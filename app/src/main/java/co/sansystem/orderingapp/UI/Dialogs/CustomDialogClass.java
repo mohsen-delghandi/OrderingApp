@@ -38,6 +38,7 @@ import co.sansystem.orderingapp.Adapters.FoodOrdersAdapter;
 import co.sansystem.orderingapp.Adapters.NavigationAdapter;
 import co.sansystem.orderingapp.Models.FactorModel;
 import co.sansystem.orderingapp.Models.FavoriteModel;
+import co.sansystem.orderingapp.UI.Activities.MainActivity;
 import co.sansystem.orderingapp.UI.Activities.OrdersMenuActivity;
 import co.sansystem.orderingapp.Utility.Animation.ViewHeightAnimationWrapper;
 import co.sansystem.orderingapp.Utility.Database.MyDatabase;
@@ -59,11 +60,11 @@ public class CustomDialogClass extends Dialog implements
 
     public Activity c;
     public Dialog d;
-    public TextView yes, no, text, jameKol, tv, tvNameMoshtari;
+    public TextView yes, no, text, jameKol, tvJameKol, tvNameMoshtari, tvMaliatText, tvMaliat, tvTakhfifText, tvTakhfif, tvServiceText, tvService, tvFactorText, tvFactor;
     public EditText etTable;
     public EditText etName;
     long mPrice = 0;
-    String mPriceFormatted = "", response, costumerCode;
+    String response, costumerCode;
     public LinearLayout llLoadingDialog;
     public TableLayout tlMain;
     TableRow trJameKol;
@@ -73,6 +74,7 @@ public class CustomDialogClass extends Dialog implements
     String vaziatSefaresh;
     String tableNumber = null, costumerName = null, vaziat_sefaresh = null, factorNumber = "0", Fish_Number = "0";
     private WebService mTService;
+    private WebService mTService2;
     private WebService mTService3;
 
     public CustomDialogClass(Activity a, String defaultCostumerCode) {
@@ -103,6 +105,9 @@ public class CustomDialogClass extends Dialog implements
         WebProvider provider = new WebProvider();
         mTService = provider.getTService();
 
+        WebProvider provider2 = new WebProvider();
+        mTService2 = provider2.getTService();
+
         WebProvider provider3 = new WebProvider();
         mTService3 = provider3.getTService();
 
@@ -114,7 +119,7 @@ public class CustomDialogClass extends Dialog implements
         no = findViewById(R.id.textView_cancel);
         text = findViewById(R.id.textView_text);
         jameKol = findViewById(R.id.textView_jameKol);
-        tv = findViewById(R.id.textView_price);
+        tvJameKol = findViewById(R.id.textView_price);
         tvNameMoshtari = findViewById(R.id.textView_nameMoshtari);
         trJameKol = findViewById(R.id.tableRow_jameKol);
         trVaziat = findViewById(R.id.tableRow_vaziat);
@@ -124,6 +129,14 @@ public class CustomDialogClass extends Dialog implements
         appPreferenceTools = new AppPreferenceTools(c);
         spVaziatSefaresh = findViewById(R.id.spinner_vaziat_sefaresh);
 
+        tvMaliat = findViewById(R.id.textView_maliyat);
+        tvMaliatText = findViewById(R.id.textView_maliyat_text);
+        tvTakhfif = findViewById(R.id.textView_takhfif);
+        tvTakhfifText = findViewById(R.id.textView_takhfif_text);
+        tvService = findViewById(R.id.textView_service);
+        tvServiceText = findViewById(R.id.textView_service_text);
+        tvFactor = findViewById(R.id.textView_factor);
+        tvFactorText = findViewById(R.id.textView_factor_text);
 
         vaziatSefaresh = appPreferenceTools.getVaziatSefaresh();
 
@@ -194,20 +207,43 @@ public class CustomDialogClass extends Dialog implements
             mPrice += Integer.parseInt(FoodOrdersAdapter.mList.get(i).getmPrice()) * FoodOrdersAdapter.mList.get(i).getmNumber();
         }
 
-        int a = (mPrice + "").length();
-        mPriceFormatted = (mPrice + "").substring(0, a % 3);
-        for (int i = 0; i < (mPrice + "").length() / 3; i++) {
-            if (!mPriceFormatted.equals("")) mPriceFormatted += ",";
-            mPriceFormatted += (mPrice + "").substring(a % 3 + 3 * i, a % 3 + 3 * (i + 1));
+        tvFactor.setText(MainActivity.priceFormatter(mPrice + ""));
+
+
+        if (appPreferenceTools.getDarsadTakhfif().equals("0.0")) {
+            if (appPreferenceTools.getMablaghTakhfif().equals("0")) {
+                tvTakhfif.setText("0");
+            } else {
+                tvTakhfif.setText(Integer.parseInt(appPreferenceTools.getMablaghTakhfif())+"");
+            }
+        } else {
+            tvTakhfif.setText(((int)Float.parseFloat(appPreferenceTools.getDarsadTakhfif()) * mPrice /100) + "");
         }
-        tv.setText(mPriceFormatted + "");
+
+        if (appPreferenceTools.getDarsadService().equals("0.0")) {
+            if (appPreferenceTools.getMablaghService().equals("0")) {
+                tvService.setText("0");
+            } else {
+                tvService.setText(appPreferenceTools.getMablaghService());
+            }
+        } else {
+            tvService.setText(((int)Float.parseFloat(appPreferenceTools.getDarsadService()) * (mPrice - (int)Float.parseFloat(tvTakhfif.getText().toString())) /100) + "");
+        }
+
+        if (appPreferenceTools.getDarsadMaliyat().equals("0.0")) {
+            tvMaliat.setText("0");
+        } else {
+            tvMaliat.setText(((int)Float.parseFloat(appPreferenceTools.getDarsadMaliyat()) * (mPrice - (int)Float.parseFloat(tvTakhfif.getText().toString())) /100) + "");
+        }
+
+        tvJameKol.setText(MainActivity.priceFormatter((int) (mPrice - Float.parseFloat(tvTakhfif.getText().toString()) + Float.parseFloat(tvMaliat.getText().toString()) + Float.parseFloat(tvService.getText().toString())) + ""));
+
+
     }
 
     @Override
     public void dismiss() {
         InputMethodManager inputMethodManager = (InputMethodManager) c.getSystemService(INPUT_METHOD_SERVICE);
-//        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-//        inputMethodManager.hideSoftInputFromWindow(c.getCurrentFocus().getWindowToken(), 0);
         if (getCurrentFocus() != null) {
             inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         } else {
@@ -245,6 +281,11 @@ public class CustomDialogClass extends Dialog implements
                         factorModel.setUserId(appPreferenceTools.getUserID() + "");
                         factorModel.setPriceSum(mPrice + "");
                         factorModel.setVaziatSefaresh(vaziatSefaresh);
+                        factorModel.setJameMablaghMaliat(tvMaliat.getText().toString());
+                        factorModel.setJameMablaghKhales((mPrice - Float.parseFloat(tvTakhfif.getText().toString()) + Float.parseFloat(tvMaliat.getText().toString()) +
+                                Float.parseFloat(tvService.getText().toString())) + "");
+                        factorModel.setJameMablaghTakhfif(tvTakhfif.getText().toString());
+                        factorModel.setJameMablaghServic(tvService.getText().toString());
 
                         factorModelList.add(factorModel);
                     }
@@ -255,7 +296,7 @@ public class CustomDialogClass extends Dialog implements
                     llLoadingDialog.setVisibility(View.VISIBLE);
                     tlMain.setAlpha(0.1f);
 
-                    Call<Object> call = mTService.saveFactor(factorModelList,factorNumber,Fish_Number);
+                    Call<Object> call = mTService.saveFactor(factorModelList, factorNumber, Fish_Number);
                     call.enqueue(new Callback<Object>() {
                         @Override
                         public void onResponse(Call<Object> call, Response<Object> response) {
@@ -299,7 +340,15 @@ public class CustomDialogClass extends Dialog implements
                                 jameKol.setText("فاکتور با موفقیت ثبت گردید.");
                                 jameKol.setTextSize(30);
                                 jameKol.setTextColor(c.getResources().getColor(R.color.accent));
-                                tv.setVisibility(View.GONE);
+                                tvJameKol.setVisibility(View.GONE);
+                                tvMaliat.setVisibility(View.GONE);
+                                tvMaliatText.setVisibility(View.GONE);
+                                tvTakhfif.setVisibility(View.GONE);
+                                tvTakhfifText.setVisibility(View.GONE);
+                                tvService.setVisibility(View.GONE);
+                                tvServiceText.setVisibility(View.GONE);
+                                tvFactor.setVisibility(View.GONE);
+                                tvFactorText.setVisibility(View.GONE);
                                 no.setText("تایید");
                                 no.setBackgroundColor(c.getResources().getColor(R.color.green));
                                 text.setText("شماره فیش ارسالی به شماره " + response.body().toString() + " به نام " + etName.getText().toString().trim() + " ثبت گردید.");

@@ -144,6 +144,17 @@ public class MainActivity extends BaseActivity {
         nv.setLayoutParams(params);
     }
 
+    public static String priceFormatter(String mPrice){
+        String mPriceFormatted;
+        int a = (mPrice + "").length();
+        mPriceFormatted = (mPrice + "").substring(0, a % 3);
+        for (int i = 0; i < (mPrice + "").length() / 3; i++) {
+            if (!mPriceFormatted.equals("")) mPriceFormatted += ",";
+            mPriceFormatted += (mPrice + "").substring(a % 3 + 3 * i, a % 3 + 3 * (i + 1));
+        }
+        return mPriceFormatted;
+    }
+
 
     @Override
     public void onBackPressed() {

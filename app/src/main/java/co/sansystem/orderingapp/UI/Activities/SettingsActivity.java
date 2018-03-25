@@ -38,6 +38,7 @@ import co.sansystem.orderingapp.Models.ContactModel;
 import co.sansystem.orderingapp.Models.FavoriteModel;
 import co.sansystem.orderingapp.Models.FoodModel;
 import co.sansystem.orderingapp.Models.GroupFoodModel;
+import co.sansystem.orderingapp.Models.SettingModel;
 import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
 import co.sansystem.orderingapp.Utility.Network.WebService;
@@ -71,6 +72,7 @@ public class SettingsActivity extends MainActivity {
     private WebService mTService;
     private WebService mTService2;
     private WebService mTService3;
+    private WebService mTService4;
     AppPreferenceTools appPreferenceTools;
 
     public SettingsActivity() {
@@ -104,6 +106,9 @@ public class SettingsActivity extends MainActivity {
 
         WebProvider provider3 = new WebProvider();
         mTService3 = provider3.getTService();
+
+        WebProvider provider4 = new WebProvider();
+        mTService4 = provider4.getTService();
 
         llLoading = (LinearLayout) findViewById(R.id.llLoading);
         tvStatus = (TextView) findViewById(R.id.textView_status);
@@ -478,7 +483,6 @@ public class SettingsActivity extends MainActivity {
         id = -1;
         id2 = -1;
 
-
         Call<List<GroupFoodModel>> call = mTService.getGroupFood();
         call.enqueue(new Callback<List<GroupFoodModel>>() {
             @Override
@@ -528,29 +532,6 @@ public class SettingsActivity extends MainActivity {
 
                                 db.close();
 
-                                Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
-
-                                isUpdated = true;
-
-                                SQLiteDatabase db2 = new MyDatabase(SettingsActivity.this).getWritableDatabase();
-                                ContentValues cv2 = new ContentValues();
-                                cv2.put(MyDatabase.FIRST_RUN, 0);
-                                db2.update(MyDatabase.SETTINGS_TABLE, cv2, MyDatabase.ID + " = ?", new String[]{"1"});
-                                db2.close();
-
-                                if (isSettingsUpdate) {
-                                    Intent i2 = new Intent(SettingsActivity.this, OrdersMenuActivity.class);
-                                    startActivity(i2);
-                                    SettingsActivity.this.finish();
-                                }
-
-                                if (status != null && status.equals("fromSplash")) {
-
-                                    Intent ii = new Intent(SettingsActivity.this, LoginActivity.class);
-                                    startActivity(ii);
-                                    SettingsActivity.this.finish();
-                                }
-
                                 Call<List<FavoriteModel>> call = mTService3.getFoodFavorite();
                                 call.enqueue(new Callback<List<FavoriteModel>>() {
 
@@ -559,7 +540,6 @@ public class SettingsActivity extends MainActivity {
                                             (Call<List<FavoriteModel>> call, Response<List<FavoriteModel>> response) {
 
                                         if (response.isSuccessful()) {
-
 
                                             SQLiteDatabase dbFavorite = new MyDatabase(SettingsActivity.this).getWritableDatabase();
 
@@ -577,6 +557,46 @@ public class SettingsActivity extends MainActivity {
                                             dbFavorite.close();
 
                                             NavigationAdapter.refreshFavorites();
+
+                                            Call<List<SettingModel>> call22 = mTService4.getSettingDarsad();
+                                            call22.enqueue(new Callback<List<SettingModel>>() {
+
+                                                @Override
+                                                public void onResponse(Call<List<SettingModel>> call, Response<List<SettingModel>> response) {
+
+                                                    if (response.isSuccessful()) {
+                                                        appPreferenceTools.saveSettings(response.body().get(0).getSettingDardadTakhfif(),response.body().get(0).getSettingMablaghTakhfif()
+                                                                ,response.body().get(0).getSettingDarsadService(),response.body().get(0).getSettingMablaghService(),response.body().get(0).getSettingDarsadMaliyat());
+
+                                                        Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
+
+                                                        isUpdated = true;
+
+                                                        SQLiteDatabase db2 = new MyDatabase(SettingsActivity.this).getWritableDatabase();
+                                                        ContentValues cv2 = new ContentValues();
+                                                        cv2.put(MyDatabase.FIRST_RUN, 0);
+                                                        db2.update(MyDatabase.SETTINGS_TABLE, cv2, MyDatabase.ID + " = ?", new String[]{"1"});
+                                                        db2.close();
+
+                                                        if (isSettingsUpdate) {
+                                                            Intent i2 = new Intent(SettingsActivity.this, OrdersMenuActivity.class);
+                                                            startActivity(i2);
+                                                            SettingsActivity.this.finish();
+                                                        }
+
+                                                        if (status != null && status.equals("fromSplash")) {
+
+                                                            Intent ii = new Intent(SettingsActivity.this, LoginActivity.class);
+                                                            startActivity(ii);
+                                                            SettingsActivity.this.finish();
+                                                        }
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onFailure(Call<List<SettingModel>> call, Throwable t) {
+                                                }
+                                            });
                                         }
 
                                     }

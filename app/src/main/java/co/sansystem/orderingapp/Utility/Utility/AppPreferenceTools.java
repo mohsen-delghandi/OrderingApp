@@ -41,6 +41,16 @@ public class AppPreferenceTools {
                 .apply();
     }
 
+    public void saveSettings(String darsadTakhfif,String mablaghTakhfif,String darsadService,String mablaghService,String darsadMaliyat) {
+        mPreference.edit()
+                .putString(this.mContext.getString(R.string.darsad_takhfif), darsadTakhfif)
+                .putString(this.mContext.getString(R.string.darsad_maliyat), darsadMaliyat)
+                .putString(this.mContext.getString(R.string.darsad_service), darsadService)
+                .putString(this.mContext.getString(R.string.mablagh_service), mablaghService)
+                .putString(this.mContext.getString(R.string.mablagh_takhfif), mablaghTakhfif)
+                .apply();
+    }
+
     public void saveVaziateSefaresh(String code) {
         mPreference.edit()
                 .putString(this.mContext.getString(R.string.vaziate_sefaresh), code)
@@ -69,6 +79,26 @@ public class AppPreferenceTools {
 
     public String getUserName() {
         return mPreference.getString(this.mContext.getString(R.string.user_name), "");
+    }
+
+    public String getDarsadTakhfif() {
+        return mPreference.getString(this.mContext.getString(R.string.darsad_takhfif), "0");
+    }
+
+    public String getDarsadService() {
+        return mPreference.getString(this.mContext.getString(R.string.darsad_service), "0");
+    }
+
+    public String getDarsadMaliyat() {
+        return mPreference.getString(this.mContext.getString(R.string.darsad_maliyat), "0");
+    }
+
+    public String getMablaghService() {
+        return mPreference.getString(this.mContext.getString(R.string.mablagh_service), "0");
+    }
+
+    public String getMablaghTakhfif() {
+        return mPreference.getString(this.mContext.getString(R.string.mablagh_takhfif), "0");
     }
 
     public String getDefaultCostumerCode() {

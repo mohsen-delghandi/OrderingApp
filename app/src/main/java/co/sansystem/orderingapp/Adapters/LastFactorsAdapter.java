@@ -95,7 +95,7 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
                 Window window = cdd2.getWindow();
                 window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 cdd2.jameKol.setVisibility(View.GONE);
-                cdd2.tv.setText("هشدار");
+                cdd2.tvJameKol.setText("هشدار");
                 cdd2.no.setText("خیر");
                 cdd2.text.setText("آیا از لغو فاکتور مطمئن هستید؟");
                 cdd2.trVaziat.setVisibility(View.GONE);

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layoutDirection="rtl"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -40,10 +41,158 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <TableRow
+            android:paddingTop="@dimen/padding_medium"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:weightSum="5">
+
+            <TextView
+                android:id="@+id/textView_factor_text"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="جمع فاکتور"
+                android:gravity="center"
+                android:textSize="@dimen/font_small"
+                android:textColor="@color/primary_text"/>
+
+            <TextView
+                android:id="@+id/textView_factor"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:textSize="@dimen/font_medium"
+                android:textColor="@color/accent"/>
+
+            <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_weight=".5"-->
+                <!--android:text="تومان"-->
+                <!--android:gravity="center|bottom"-->
+                <!--android:textSize="@dimen/font_xsmall"-->
+                <!--android:textColor="@color/primary_text"/>-->
 
 
 
+        </TableRow>
 
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:weightSum="5">
+
+            <TextView
+                android:id="@+id/textView_takhfif_text"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="مبلغ تخفیف"
+                android:gravity="center"
+                android:textSize="@dimen/font_small"
+                android:textColor="@color/primary_text"/>
+
+            <TextView
+                android:id="@+id/textView_takhfif"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:textSize="@dimen/font_medium"
+                android:textColor="@color/accent"/>
+
+            <!--<TextView-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_weight=".5"-->
+            <!--android:text="تومان"-->
+            <!--android:gravity="center|bottom"-->
+            <!--android:textSize="@dimen/font_xsmall"-->
+            <!--android:textColor="@color/primary_text"/>-->
+
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:weightSum="5">
+
+            <TextView
+                android:id="@+id/textView_maliyat_text"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="مبلغ مالیات"
+                android:gravity="center"
+                android:textSize="@dimen/font_small"
+                android:textColor="@color/primary_text"/>
+
+            <TextView
+                android:id="@+id/textView_maliyat"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:textSize="@dimen/font_medium"
+                android:textColor="@color/accent"/>
+
+            <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_weight=".5"-->
+                <!--android:text="تومان"-->
+                <!--android:gravity="center|bottom"-->
+                <!--android:textSize="@dimen/font_xsmall"-->
+                <!--android:textColor="@color/primary_text"/>-->
+
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:weightSum="5">
+
+            <TextView
+                android:id="@+id/textView_service_text"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="مبلغ سرویس"
+                android:gravity="center"
+                android:textSize="@dimen/font_small"
+                android:textColor="@color/primary_text"/>
+
+            <TextView
+                android:id="@+id/textView_service"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:textSize="@dimen/font_medium"
+                android:textColor="@color/accent"/>
+
+            <!--<TextView-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_weight=".5"-->
+                <!--android:text="تومان"-->
+                <!--android:gravity="center|bottom"-->
+                <!--android:textSize="@dimen/font_xsmall"-->
+                <!--android:textColor="@color/primary_text"/>-->
+
+
+
+        </TableRow>
 
         <TableRow
             android:layout_height="wrap_content"
@@ -68,8 +217,10 @@
                 android:layout_width="wrap_content"
                 android:layout_weight="2"
                 android:gravity="center"
-                android:textSize="@dimen/font_large"
-                android:textColor="@color/accent"/>
+                app:fontPath="fonts/IRANSansWeb_Bold.ttf"
+                android:textSize="@dimen/font_xlarge"
+                android:textColor="@color/accent"
+                tools:ignore="MissingPrefix" />
 
             <!--<TextView-->
                 <!--android:layout_height="wrap_content"-->
