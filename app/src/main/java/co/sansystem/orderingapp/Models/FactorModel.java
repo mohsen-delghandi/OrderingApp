@@ -21,6 +21,30 @@ public class FactorModel {
     @Expose
     private String foodName;
 
+    @SerializedName("Address")
+    @Expose
+    private String address;
+
+    @SerializedName("Tell")
+    @Expose
+    private String tell;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getTell() {
+        return tell;
+    }
+
+    public void setTell(String tell) {
+        this.tell = tell;
+    }
+
     @SerializedName("ID_Kala")
     @Expose
     private String foodCode;

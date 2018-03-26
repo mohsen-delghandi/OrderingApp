@@ -11,6 +11,19 @@ public class ContactModel {
     @SerializedName("FullName")
     @Expose
     private String fullName;
+
+    @SerializedName("Contacts_ID")
+    @Expose
+    private String contactsID;
+
+    public String getContactsID() {
+        return contactsID;
+    }
+
+    public void setContactsID(String contactsID) {
+        this.contactsID = contactsID;
+    }
+
     @SerializedName("Tafzili_ID")
     @Expose
     private String tafziliID;

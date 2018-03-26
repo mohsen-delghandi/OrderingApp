@@ -244,23 +244,11 @@
             android:weightSum="7">
 
 
-
-            <EditText
-                android:visibility="invisible"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_weight=".1"
-                android:gravity="center"
-                android:textSize="@dimen/font_small"
-                android:inputType="text"
-                android:textColor="@color/primary_text"/>
-
-
             <EditText
                 android:id="@+id/editText_tableNumber"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_weight="1.5"
                 android:gravity="center"
                 android:textSize="@dimen/font_small"
                 android:inputType="number"
@@ -273,24 +261,14 @@
                 android:layout_weight="1"
                 android:text="شماره میز"
                 android:gravity="center"
-                android:textSize="@dimen/font_small"
-                android:textColor="@color/primary_text"/>
-
-            <EditText
-                android:visibility="invisible"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_weight="0.1"
-                android:gravity="center"
-                android:textSize="@dimen/font_small"
-                android:inputType="text"
+                android:textSize="@dimen/font_xsmall"
                 android:textColor="@color/primary_text"/>
 
             <Spinner
                 android:id="@+id/spinner_vaziat_sefaresh"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_weight="3.9"
+                android:layout_width="0dp"
+                android:layout_weight="2.5"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/shape_underline"
                 android:padding="@dimen/padding_medium"
@@ -301,48 +279,19 @@
 
 
             <TextView
+                android:id="@+id/textView_vaziat"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_weight="0.9"
+                android:layout_width="0dp"
+                android:layout_weight="2"
                 android:text="وضعیت سفارش"
                 android:gravity="center"
-                android:textSize="@dimen/font_small"
+                android:textSize="@dimen/font_xsmall"
                 android:textColor="@color/primary_text"/>
 
 
 
         </TableRow>
 
-        <!--<TableRow-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:gravity="right"-->
-            <!--android:weightSum="7">-->
-
-
-
-            <!--<EditText-->
-                <!--android:id="@+id/editText_name"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_weight="5"-->
-                <!--android:gravity="center"-->
-                <!--android:textSize="@dimen/font_small"-->
-                <!--android:inputType="text"-->
-                <!--android:textColor="@color/primary_text"/>-->
-
-
-            <!--<TextView-->
-                <!--android:id="@+id/textView_nameMoshtari"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_weight="1"-->
-                <!--android:text="نام مشتری"-->
-                <!--android:gravity="center"-->
-                <!--android:textSize="@dimen/font_small"-->
-                <!--android:textColor="@color/primary_text"/>-->
-
-        <!--</TableRow>-->
 
 
         <TableRow
@@ -351,13 +300,15 @@
             android:gravity="right"
             android:weightSum="7">
 
+
+
             <AutoCompleteTextView
                 android:id="@+id/editText_name"
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_weight="5"
                 android:gravity="center"
-                android:completionThreshold="2"
+                android:completionThreshold="1"
                 android:textSize="@dimen/font_small"
                 android:inputType="text"
                 android:textColor="@color/primary_text"/>
@@ -368,6 +319,67 @@
                 android:layout_width="wrap_content"
                 android:layout_weight="1"
                 android:text="نام مشتری"
+                android:gravity="center"
+                android:textSize="@dimen/font_small"
+                android:textColor="@color/primary_text"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:weightSum="7">
+
+            <AutoCompleteTextView
+                android:id="@+id/editText_tell"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:completionThreshold="1"
+                android:textSize="@dimen/font_small"
+                android:inputType="text"
+                android:textColor="@color/primary_text"/>
+
+            <TextView
+                android:id="@+id/textView_tell"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="شماره تلفن"
+                android:gravity="center"
+                android:textSize="@dimen/font_small"
+                android:textColor="@color/primary_text"/>
+
+
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:weightSum="7">
+
+            <AutoCompleteTextView
+                android:id="@+id/editText_adress"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:completionThreshold="1"
+                android:textSize="@dimen/font_small"
+                android:inputType="text"
+                android:textColor="@color/primary_text"/>
+
+            <TextView
+                android:id="@+id/textView_address"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:text="آدرس"
                 android:gravity="center"
                 android:textSize="@dimen/font_small"
                 android:textColor="@color/primary_text"/>

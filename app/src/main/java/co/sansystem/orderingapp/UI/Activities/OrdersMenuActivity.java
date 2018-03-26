@@ -133,6 +133,12 @@ public class OrdersMenuActivity extends MainActivity {
                     cdd2.tvServiceText.setVisibility(View.GONE);
                     cdd2.tvFactor.setVisibility(View.GONE);
                     cdd2.tvFactorText.setVisibility(View.GONE);
+                    cdd2.tvTell.setVisibility(View.GONE);
+                    cdd2.tvAddress.setVisibility(View.GONE);
+                    cdd2.textViewTell.setVisibility(View.GONE);
+                    cdd2.textViewAddress.setVisibility(View.GONE);
+                    cdd2.tvVaziat.setVisibility(View.GONE);
+                    cdd2.spVaziatSefaresh.setVisibility(View.GONE);
                     cdd2.tlMain.setAlpha(1f);
                     cdd2.yes.setText("بله");
                     cdd2.yes.setOnClickListener(new View.OnClickListener() {

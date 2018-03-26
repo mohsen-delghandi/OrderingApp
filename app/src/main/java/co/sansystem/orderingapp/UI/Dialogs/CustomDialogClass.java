@@ -37,9 +37,11 @@ import java.util.Locale;
 
 import co.sansystem.orderingapp.Adapters.FoodOrdersAdapter;
 import co.sansystem.orderingapp.Adapters.NavigationAdapter;
+import co.sansystem.orderingapp.Models.AddressModel;
 import co.sansystem.orderingapp.Models.ContactModel;
 import co.sansystem.orderingapp.Models.FactorModel;
 import co.sansystem.orderingapp.Models.FavoriteModel;
+import co.sansystem.orderingapp.Models.TellModel;
 import co.sansystem.orderingapp.UI.Activities.MainActivity;
 import co.sansystem.orderingapp.UI.Activities.OrdersMenuActivity;
 import co.sansystem.orderingapp.Utility.Animation.ViewHeightAnimationWrapper;
@@ -63,6 +65,7 @@ public class CustomDialogClass extends Dialog implements
     public Activity c;
     public Dialog d;
     public TextView yes, no, text, jameKol, tvJameKol, tvNameMoshtari, tvMaliatText, tvMaliat, tvTakhfifText, tvTakhfif, tvServiceText, tvService, tvFactorText, tvFactor;
+    public TextView tvTell,tvAddress,tvVaziat;
     public EditText etTable;
 //    public EditText etName;
     long mPrice = 0;
@@ -72,13 +75,17 @@ public class CustomDialogClass extends Dialog implements
     TableRow trJameKol;
 //    public TableRow trVaziat;
     AppPreferenceTools appPreferenceTools;
-    Spinner spVaziatSefaresh;
+    public Spinner spVaziatSefaresh;
     String vaziatSefaresh;
     String tableNumber = null, costumerName = null, vaziat_sefaresh = null, factorNumber = "0", Fish_Number = "0";
     private WebService mTService;
     private WebService mTService2;
     private WebService mTService3;
+    private WebService mTService4;
+    private WebService mTService5;
     public AutoCompleteTextView textView;
+    public AutoCompleteTextView textViewAddress;
+    public AutoCompleteTextView textViewTell;
 
     public CustomDialogClass(Activity a, String defaultCostumerCode) {
         super(a);
@@ -116,9 +123,17 @@ public class CustomDialogClass extends Dialog implements
         WebProvider provider3 = new WebProvider();
         mTService3 = provider3.getTService();
 
+        WebProvider provider4 = new WebProvider();
+        mTService4 = provider4.getTService();
+
+        WebProvider provider5 = new WebProvider();
+        mTService5 = provider5.getTService();
+
 
         final ArrayList<String> costumerNamess = new ArrayList<String>();
         final ArrayList<String> costumerCodess = new ArrayList<String>();
+        final ArrayList<String> costumerAddresses = new ArrayList<String>();
+        final ArrayList<String> costumerTells = new ArrayList<String>();
 
         Call<List<ContactModel>> call = mTService2.getListContact();
         call.enqueue(new Callback<List<ContactModel>>() {
@@ -130,7 +145,7 @@ public class CustomDialogClass extends Dialog implements
                     for (ContactModel contactModel :
                             response.body()) {
                         costumerNamess.add(contactModel.getFullName());
-                        costumerCodess.add(contactModel.getTafziliID());
+                        costumerCodess.add(contactModel.getContactsID());
                     }
 
                 }
@@ -142,10 +157,79 @@ public class CustomDialogClass extends Dialog implements
         });
 
         textView = findViewById(R.id.editText_name);
+        textViewAddress = findViewById(R.id.editText_adress);
+        textViewTell = findViewById(R.id.editText_tell);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(c,android.R.layout.simple_dropdown_item_1line,costumerNamess);
         textView.setAdapter(adapter);
 
+        textView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
+                String selection = (String) parent.getItemAtPosition(position);
+                int pos = -1;
+
+                for (int i = 0; i < costumerNamess.size(); i++) {
+                    if (costumerNamess.get(i).equals(selection)) {
+                        pos = i;
+                        break;
+                    }
+                }
+
+                Call<List<AddressModel>> call2 = mTService4.getAddressContact(costumerCodess.get(pos));
+                call2.enqueue(new Callback<List<AddressModel>>() {
+                    @Override
+                    public void onResponse(Call<List<AddressModel>> call2, Response<List<AddressModel>> response) {
+
+                        if (response.isSuccessful()) {
+
+                            for (AddressModel addressModel :
+                                    response.body()) {
+                                costumerAddresses.add(addressModel.getAdress());
+                            }
+
+                            ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(c,android.R.layout.simple_dropdown_item_1line,costumerAddresses);
+                            textViewAddress.setAdapter(adapter2);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<AddressModel>> call2, Throwable t) {
+                        Toast.makeText(c, "aaa", Toast.LENGTH_SHORT).show();
+                    }
+
+                });
+
+                Call<List<TellModel>> calll = mTService5.getTellContact(costumerCodess.get(pos));
+                calll.enqueue(new Callback<List<TellModel>>() {
+                    @Override
+                    public void onResponse(Call<List<TellModel>> calll, Response<List<TellModel>> response) {
+
+                        if (response.isSuccessful()) {
+
+                            for (TellModel tellModel :
+                                    response.body()) {
+                                costumerTells.add(tellModel.getTellContact());
+                            }
+
+                            ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(c,android.R.layout.simple_dropdown_item_1line,costumerTells);
+                            textViewTell.setAdapter(adapter3);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<TellModel>> calll, Throwable t) {
+                        Toast.makeText(c, "bbb", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+
         etTable = findViewById(R.id.editText_tableNumber);
+        tvTell = findViewById(R.id.textView_tell);
+        tvAddress = findViewById(R.id.textView_address);
+        tvVaziat = findViewById(R.id.textView_vaziat);
 //        etName = findViewById(R.id.editText_name);
         llLoadingDialog = findViewById(R.id.llLoading_dialog);
         tlMain = findViewById(R.id.tableLayout_main);
@@ -298,7 +382,7 @@ public class CustomDialogClass extends Dialog implements
         switch (v.getId()) {
             case R.id.textView_ok:
 
-                if (etTable.getText().toString().equals("") || (Integer.parseInt(etTable.getText() + "") < 1)) {
+                if (etTable.getVisibility() == View.VISIBLE && (etTable.getText().toString().equals("") || (Integer.parseInt(etTable.getText() + "") < 1))) {
                     Toast.makeText(c, "شماره میز صحیح نیست.", Toast.LENGTH_SHORT).show();
                 } else if (textView.getText().toString().equals("")) {
                     Toast.makeText(c, "نام مشتری را وارد کنید.", Toast.LENGTH_SHORT).show();
@@ -313,6 +397,8 @@ public class CustomDialogClass extends Dialog implements
                         factorModel.setTableNumber(etTable.getText() + "");
                         factorModel.setCostumerCode(costumerCode);
                         factorModel.setCostumerName(textView.getText() + "");
+                        factorModel.setAddress(textViewAddress.getText() + "");
+                        factorModel.setTell(textViewTell.getText() + "");
                         if (appPreferenceTools.getprintAfterConfirm()) {
                             factorModel.setPrintConfirm("true");
                         } else {
@@ -390,6 +476,13 @@ public class CustomDialogClass extends Dialog implements
                                 tvServiceText.setVisibility(View.GONE);
                                 tvFactor.setVisibility(View.GONE);
                                 tvFactorText.setVisibility(View.GONE);
+                                tvTell.setVisibility(View.GONE);
+                                tvAddress.setVisibility(View.GONE);
+                                textViewTell.setVisibility(View.GONE);
+                                textViewAddress.setVisibility(View.GONE);
+                                tvVaziat.setVisibility(View.GONE);
+                                spVaziatSefaresh.setVisibility(View.GONE);
+                                text.setVisibility(View.VISIBLE);
                                 no.setText("تایید");
                                 no.setBackgroundColor(c.getResources().getColor(R.color.green));
                                 text.setText("شماره فیش ارسالی به شماره " + response.body().toString() + " به نام " + textView.getText().toString().trim() + " ثبت گردید.");
