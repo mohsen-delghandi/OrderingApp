@@ -4,7 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
-import com.sansystem.mohsen.orderingapp.R;
+import com.sansystem.orderingapp.R;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 

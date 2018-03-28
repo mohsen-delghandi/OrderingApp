@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout_main"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layoutDirection="rtl"
+    android:background="@drawable/shape_underline"
+    android:backgroundTint="#000"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="3"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="نام مشتری : " />
+
+            <TextView
+                android:id="@+id/textView_customerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="وضعیت سفارش : " />
+
+            <TextView
+                android:id="@+id/textView_vaziat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView_tableNumber_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="شماره میز : " />
+
+            <TextView
+                android:id="@+id/textView_tableNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="مبلغ سفارش : " />
+
+            <TextView
+                android:id="@+id/textView_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="1.5"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView_sendFactor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ارسال فیش"
+            android:gravity="center"
+            android:padding="@dimen/padding_medium"
+            android:background="@drawable/border_shape_accent"
+            android:layout_marginBottom="@dimen/padding_medium"
+            android:textColor="@color/primary_text"/>
+
+        <TextView
+            android:id="@+id/textView_deleteFactor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="حذف فیش"
+            android:gravity="center"
+            android:padding="@dimen/padding_medium"
+            android:background="@drawable/border_shape_red"
+            android:textColor="@color/primary_text"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

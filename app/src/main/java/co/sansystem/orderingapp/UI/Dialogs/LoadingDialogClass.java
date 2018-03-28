@@ -8,7 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.sansystem.mohsen.orderingapp.R;
+import com.sansystem.orderingapp.R;
 
 
 /**

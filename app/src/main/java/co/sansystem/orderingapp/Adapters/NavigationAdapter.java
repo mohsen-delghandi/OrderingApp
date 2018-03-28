@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.sansystem.mohsen.orderingapp.R;
+import com.sansystem.orderingapp.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

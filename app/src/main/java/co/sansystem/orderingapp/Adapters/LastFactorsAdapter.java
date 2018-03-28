@@ -1,8 +1,10 @@
 package co.sansystem.orderingapp.Adapters;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,16 +14,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sansystem.mohsen.orderingapp.R;
+import com.sansystem.orderingapp.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-import co.sansystem.orderingapp.Models.FactorModel;
+import co.sansystem.orderingapp.Models.FactorContentModel;
 import co.sansystem.orderingapp.Models.MiniFactorModel;
 import co.sansystem.orderingapp.Models.OrderedItemModel;
 import co.sansystem.orderingapp.UI.Activities.OrdersMenuActivity;
 import co.sansystem.orderingapp.UI.Dialogs.CustomDialogClass;
+import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
 import co.sansystem.orderingapp.Utility.Network.WebService;
 import co.sansystem.orderingapp.Utility.Utility.AppPreferenceTools;
@@ -95,6 +101,25 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
                 Window window = cdd2.getWindow();
                 window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 cdd2.jameKol.setVisibility(View.GONE);
+                cdd2.etTable.setVisibility(View.GONE);
+                cdd2.llLoadingDialog.setVisibility(View.GONE);
+                cdd2.tvNameMoshtari.setVisibility(View.GONE);
+                cdd2.textView.setVisibility(View.GONE);
+                cdd2.tvJameKol.setVisibility(View.GONE);
+                cdd2.tvMaliat.setVisibility(View.GONE);
+                cdd2.tvMaliatText.setVisibility(View.GONE);
+                cdd2.tvTakhfif.setVisibility(View.GONE);
+                cdd2.tvTakhfifText.setVisibility(View.GONE);
+                cdd2.tvService.setVisibility(View.GONE);
+                cdd2.tvServiceText.setVisibility(View.GONE);
+                cdd2.tvFactor.setVisibility(View.GONE);
+                cdd2.tvFactorText.setVisibility(View.GONE);
+                cdd2.tvTell.setVisibility(View.GONE);
+                cdd2.tvAddress.setVisibility(View.GONE);
+                cdd2.textViewTell.setVisibility(View.GONE);
+                cdd2.textViewAddress.setVisibility(View.GONE);
+                cdd2.tvVaziat.setVisibility(View.GONE);
+                cdd2.spVaziatSefaresh.setVisibility(View.GONE);
                 cdd2.tvJameKol.setText("هشدار");
                 cdd2.no.setText("خیر");
                 cdd2.text.setText("آیا از لغو فاکتور مطمئن هستید؟");
@@ -125,12 +150,26 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
                                         Toast.makeText(context, "خطا در لغو فاکتور.", Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
+                                    SQLiteDatabase db2 = new MyDatabase(context).getWritableDatabase();
+                                    ContentValues cv2 = new ContentValues();
+                                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                                    String myDate = format.format(new Date());
+                                    cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
+                                    db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+                                    db2.close();
                                     Toast.makeText(context, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<Boolean> call, Throwable t) {
+                                SQLiteDatabase db2 = new MyDatabase(context).getWritableDatabase();
+                                ContentValues cv2 = new ContentValues();
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                                String myDate = format.format(new Date());
+                                cv2.put(MyDatabase.RESPONCE, myDate + " --> " + t.getMessage());
+                                db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+                                db2.close();
                                 Toast.makeText(context, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                             }
                         });
@@ -144,11 +183,11 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
             @Override
             public void onClick(View view) {
 
-                Call<List<FactorModel>> call = mTService.getSefaresh(currentModel.get(position).getFactor_Number());
-                call.enqueue(new Callback<List<FactorModel>>() {
+                Call<List<FactorContentModel>> call = mTService.getSefaresh(currentModel.get(position).getFactor_Number());
+                call.enqueue(new Callback<List<FactorContentModel>>() {
 
                     @Override
-                    public void onResponse(Call<List<FactorModel>> call, Response<List<FactorModel>> response) {
+                    public void onResponse(Call<List<FactorContentModel>> call, Response<List<FactorContentModel>> response) {
 
                         if (response.isSuccessful()) {
 
@@ -169,12 +208,26 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
                             intent.putExtra("Fish_Number", currentModel.get(position).getFish_Number());
                             context.startActivity(intent);
                         } else {
+                            SQLiteDatabase db2 = new MyDatabase(context).getWritableDatabase();
+                            ContentValues cv2 = new ContentValues();
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                            String myDate = format.format(new Date());
+                            cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
+                            db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+                            db2.close();
                             Toast.makeText(context, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<List<FactorModel>> call, Throwable t) {
+                    public void onFailure(Call<List<FactorContentModel>> call, Throwable t) {
+                        SQLiteDatabase db2 = new MyDatabase(context).getWritableDatabase();
+                        ContentValues cv2 = new ContentValues();
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                        String myDate = format.format(new Date());
+                        cv2.put(MyDatabase.RESPONCE, myDate + " --> " + t.getMessage());
+                        db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+                        db2.close();
                         Toast.makeText(context, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                     }
                 });

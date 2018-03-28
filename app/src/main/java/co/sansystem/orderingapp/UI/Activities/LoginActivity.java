@@ -13,7 +13,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sansystem.mohsen.orderingapp.R;
+import com.sansystem.orderingapp.R;
 
 import java.util.List;
 

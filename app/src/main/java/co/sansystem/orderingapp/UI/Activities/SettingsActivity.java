@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,7 +24,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sansystem.mohsen.orderingapp.R;
+import com.google.gson.Gson;
+import com.sansystem.orderingapp.R;
 
 import org.json.JSONArray;
 
@@ -199,6 +199,17 @@ public class SettingsActivity extends MainActivity {
             public void onResponse(Call<List<ContactModel>> call, Response<List<ContactModel>> response) {
 
                 if (response.isSuccessful()) {
+
+                    SQLiteDatabase db = new MyDatabase(SettingsActivity.this).getWritableDatabase();
+                    db.delete(MyDatabase.CONTACTS_INFORMATION,null,null);
+
+                    Gson gson = new Gson();
+                    String json = gson.toJson(response.body());
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(MyDatabase.LIST_CONTACT_JSON,json);
+                    db.insert(MyDatabase.CONTACTS_INFORMATION,null,contentValues);
+                    db.close();
+
                     final ArrayList<String> costumerNames = new ArrayList<String>();
                     final ArrayList<String> costumerCodes = new ArrayList<String>();
 
@@ -394,31 +405,36 @@ public class SettingsActivity extends MainActivity {
             public void onClick(View view) {
 
 
-                AsyncTask at = new AsyncTask() {
-                    @Override
-                    protected void onPreExecute() {
-                    }
+                isSettingsUpdate = true;
+                updateMenu(SettingsActivity.this, ll_loading);
 
-                    @Override
-                    protected Object doInBackground(Object[] objects) {
-                        isSettingsUpdate = true;
-                        updateMenu(SettingsActivity.this, ll_loading);
-                        return null;
-                    }
+//                AsyncTask at = new AsyncTask() {
+//                    @Override
+//                    protected void onPreExecute() {
+//                    }
+//
+//                    @Override
+//                    protected Object doInBackground(Object[] objects) {
+//                        isSettingsUpdate = true;
+//                        updateMenu(SettingsActivity.this, ll_loading);
+//                        return null;
+//                    }
+//
+//                    @Override
+//                    protected void onPostExecute(Object o) {
+////                        if (u[0] == 1) {
+////                            Toast.makeText(SettingsActivity.this, "عملیات ذخیره با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
+////                            Intent i = new Intent(SettingsActivity.this, OrdersMenuActivity.class);
+////                            startActivity(i);
+////                        } else if (u[0] == 0) {
+////                            Toast.makeText(SettingsActivity.this, "عملیات ذخیره ناموفق بود.", Toast.LENGTH_SHORT).show();
+////                        } else {
+////                            Toast.makeText(SettingsActivity.this, "خطای نامشخص،با پشتیبانی تماس بگیرید.", Toast.LENGTH_SHORT).show();
+////                        }
+//                    }
+//                }.execute();
 
-                    @Override
-                    protected void onPostExecute(Object o) {
-//                        if (u[0] == 1) {
-//                            Toast.makeText(SettingsActivity.this, "عملیات ذخیره با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
-//                            Intent i = new Intent(SettingsActivity.this, OrdersMenuActivity.class);
-//                            startActivity(i);
-//                        } else if (u[0] == 0) {
-//                            Toast.makeText(SettingsActivity.this, "عملیات ذخیره ناموفق بود.", Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            Toast.makeText(SettingsActivity.this, "خطای نامشخص،با پشتیبانی تماس بگیرید.", Toast.LENGTH_SHORT).show();
-//                        }
-                    }
-                }.execute();
+
             }
         });
 
@@ -473,12 +489,7 @@ public class SettingsActivity extends MainActivity {
     public void updateMenu(final Context context, final LinearLayout ll) {
 
         if (ll != null) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ll.setVisibility(View.VISIBLE);
-                }
-            });
+            ll.setVisibility(View.VISIBLE);
         }
         id = -1;
         id2 = -1;
@@ -521,7 +532,7 @@ public class SettingsActivity extends MainActivity {
                                     cv.put(MyDatabase.NAME, foodModel.getNameKala());
                                     try {
                                         cv.put(MyDatabase.IMAGE, Base64.decode(foodModel.getPicture(), Base64.DEFAULT));
-                                    }catch (Exception e){
+                                    } catch (Exception e) {
 
                                     }
                                     cv.put(MyDatabase.CATEGORY_CODE, foodModel.getFkGroupKala());
@@ -565,8 +576,8 @@ public class SettingsActivity extends MainActivity {
                                                 public void onResponse(Call<List<SettingModel>> call, Response<List<SettingModel>> response) {
 
                                                     if (response.isSuccessful()) {
-                                                        appPreferenceTools.saveSettings(response.body().get(0).getSettingDardadTakhfif(),response.body().get(0).getSettingMablaghTakhfif()
-                                                                ,response.body().get(0).getSettingDarsadService(),response.body().get(0).getSettingMablaghService(),response.body().get(0).getSettingDarsadMaliyat());
+                                                        appPreferenceTools.saveSettings(response.body().get(0).getSettingDardadTakhfif(), response.body().get(0).getSettingMablaghTakhfif()
+                                                                , response.body().get(0).getSettingDarsadService(), response.body().get(0).getSettingMablaghService(), response.body().get(0).getSettingDarsadMaliyat());
 
                                                         Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
 
@@ -590,19 +601,35 @@ public class SettingsActivity extends MainActivity {
                                                             startActivity(ii);
                                                             SettingsActivity.this.finish();
                                                         }
+                                                    }else{
+
+                                                        if (ll != null) {
+                                                            ll.setVisibility(View.GONE);
+                                                        }
                                                     }
                                                 }
 
                                                 @Override
                                                 public void onFailure(Call<List<SettingModel>> call, Throwable t) {
+                                                    if (ll != null) {
+                                                        ll.setVisibility(View.GONE);
+                                                    }
                                                 }
                                             });
+                                        }else {
+
+                                            if (ll != null) {
+                                                ll.setVisibility(View.GONE);
+                                            }
                                         }
 
                                     }
 
                                     @Override
                                     public void onFailure(Call<List<FavoriteModel>> call, Throwable t) {
+                                        if (ll != null) {
+                                            ll.setVisibility(View.GONE);
+                                        }
                                     }
                                 });
 
@@ -611,137 +638,37 @@ public class SettingsActivity extends MainActivity {
 
                             {
                                 Toast.makeText(SettingsActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                                if (ll != null) {
+                                    ll.setVisibility(View.GONE);
+                                }
                             }
                         }
 
                         @Override
                         public void onFailure(Call<List<FoodModel>> call, Throwable t) {
+                            if (ll != null) {
+                                ll.setVisibility(View.GONE);
+                            }
                         }
                     });
                 } else
 
                 {
                     Toast.makeText(SettingsActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                    if (ll != null) {
+                        ll.setVisibility(View.GONE);
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<List<GroupFoodModel>> call, Throwable t) {
+                if (ll != null) {
+                    ll.setVisibility(View.GONE);
+                }
             }
         });
 
-
-//        new AsyncTask<Void, Void, Void>()
-//
-//        {
-//            @Override
-//            protected Void doInBackground(Void... voids) {
-////                CallWebService cws = new CallWebService(context, "GetGroupFood", "test");
-////                json = cws.Call("test");
-//
-////                CallWebService cws2 = new CallWebService(context, "GetFood", "test");
-////                json2 = cws2.Call("test");
-//
-//                try {
-////                    jsonArray = new JSONArray(json);
-////                    jsonArray2 = new JSONArray(json2);
-//
-////                    SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
-////                    db.delete(MyDatabase.FOOD_CATEGORY_TABLE, null, null);
-////                    db.delete(MyDatabase.FOOD_TABLE, null, null);
-//
-////                    deleteRecursive(new File(getBaseContext().getFilesDir().getAbsolutePath() + "/group"));
-////                    deleteRecursive(new File(getBaseContext().getFilesDir().getAbsolutePath() + "/kala"));
-//
-////                    for (int i = 0; i < jsonArray.length(); i++) {
-////                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-////                        ContentValues cv = new ContentValues();
-////                        cv.put(MyDatabase.CODE, jsonObject.get("ID_Group") + "");
-////                        cv.put(MyDatabase.NAME, jsonObject.get("NameGroup") + "");
-////                        cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject.get("ImageGroup") + "", Base64.DEFAULT));
-////                        id = db.insert(MyDatabase.FOOD_CATEGORY_TABLE, null, cv);
-////                    }
-////                    for (int i = 0; i < jsonArray2.length(); i++) {
-////                        JSONObject jsonObject2 = jsonArray2.getJSONObject(i);
-////                        ContentValues cv = new ContentValues();
-////                        cv.put(MyDatabase.CODE, jsonObject2.get("ID_Kala") + "");
-////                        cv.put(MyDatabase.NAME, jsonObject2.get("Name_Kala") + "");
-////                        cv.put(MyDatabase.IMAGE, Base64.decode(jsonObject2.get("Picture") + "", Base64.DEFAULT));
-////                        cv.put(MyDatabase.CATEGORY_CODE, jsonObject2.get("Fk_GroupKala") + "");
-////                        cv.put(MyDatabase.PRICE, jsonObject2.get("GheymatForoshAsli") + "");
-////                        id2 = db.insert(MyDatabase.FOOD_TABLE, null, cv);
-////                    }
-////                    db.close();
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                    Log.d("img", "not ok : " + e.getMessage());
-//                }
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Void aVoid) {
-//                super.onPostExecute(aVoid);
-//                if ((id != -1) && (id2 != -1)) {
-////                    Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
-////                    isUpdated = true;
-////
-////                    SQLiteDatabase db2 = new MyDatabase(SettingsActivity.this).getWritableDatabase();
-////                    ContentValues cv2 = new ContentValues();
-////                    cv2.put(MyDatabase.FIRST_RUN, 0);
-////                    db2.update(MyDatabase.SETTINGS_TABLE, cv2, MyDatabase.ID + " = ?", new String[]{"1"});
-////                    db2.close();
-////
-////                    if (isSettingsUpdate) {
-////                        Intent i = new Intent(SettingsActivity.this, OrdersMenuActivity.class);
-////                        startActivity(i);
-////                        SettingsActivity.this.finish();
-////                    }
-////
-////                    if (status != null && status.equals("fromSplash")) {
-////
-////                        Intent i = new Intent(SettingsActivity.this, LoginActivity.class);
-////                        startActivity(i);
-////                        SettingsActivity.this.finish();
-////                    }
-//
-//                } else {
-//                    Toast.makeText(context, "خطا در بروزرسانی.", Toast.LENGTH_SHORT).show();
-//                    isUpdated = false;
-//
-//                }
-//                if (ll != null) {
-//                    ll.setVisibility(View.GONE);
-//                }
-//            }
-//        }.
-//
-//                execute();
-//    }
-//
-//    public void saveFile(String path, String name, byte[] bytes) {
-//        File file = new File(path);
-//        try {
-//            if (!file.exists()) {
-//                file.mkdirs();
-//            }
-//            file = new File(path + "/" + name);
-//            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-//            bos.write(bytes);
-//            bos.flush();
-//            bos.close();
-//        } catch (Exception e) {
-//            Log.e("file save : ", e.getMessage());
-//        }
-//    }
-//
-//    void deleteRecursive(File fileOrDirectory) {
-//        if (fileOrDirectory.isDirectory())
-//            for (File child : fileOrDirectory.listFiles())
-//                deleteRecursive(child);
-//
-//        fileOrDirectory.delete();
-//    }
     }
 }
 

@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.sansystem.mohsen.orderingapp.R;
+import com.sansystem.orderingapp.R;
 
 import java.util.List;
 
@@ -96,6 +96,14 @@ public class OrdersMenuActivity extends MainActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(OrdersMenuActivity.this, LastFactorsActivity.class);
+                startActivity(i);
+            }
+        });
+        ivTitlebarOfflineFactors.setVisibility(View.VISIBLE);
+        ivTitlebarOfflineFactors.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(OrdersMenuActivity.this, OfflineFactorsActivity.class);
                 startActivity(i);
             }
         });

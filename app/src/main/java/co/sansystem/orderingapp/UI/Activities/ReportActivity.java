@@ -1,6 +1,8 @@
 package co.sansystem.orderingapp.UI.Activities;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
@@ -9,14 +11,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sansystem.mohsen.orderingapp.R;
+import com.sansystem.orderingapp.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.sansystem.orderingapp.Models.ReportModel;
 import co.sansystem.orderingapp.UI.Dialogs.LoadingDialogClass;
+import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
 import co.sansystem.orderingapp.Utility.Network.WebService;
 import retrofit2.Call;
@@ -156,6 +162,13 @@ public class ReportActivity extends MainActivity {
                             tvJameFactorLaghvShode.setText(response.body().get(0).getJamSumCancleFact());
                             tvJameMablaghjKhales.setText(response.body().get(0).getMablagkhales());
                         } else {
+                            SQLiteDatabase db2 = new MyDatabase(ReportActivity.this).getWritableDatabase();
+                            ContentValues cv2 = new ContentValues();
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                            String myDate = format.format(new Date());
+                            cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
+                            db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+                            db2.close();
                             Toast.makeText(ReportActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                             loadingDialogClass.dismiss();
                         }
@@ -163,6 +176,13 @@ public class ReportActivity extends MainActivity {
 
                     @Override
                     public void onFailure(Call<List<ReportModel>> call, Throwable t) {
+                        SQLiteDatabase db2 = new MyDatabase(ReportActivity.this).getWritableDatabase();
+                        ContentValues cv2 = new ContentValues();
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                        String myDate = format.format(new Date());
+                        cv2.put(MyDatabase.RESPONCE, myDate + " --> " + t.getMessage());
+                        db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+                        db2.close();
                         Toast.makeText(ReportActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                         loadingDialogClass.dismiss();
                     }

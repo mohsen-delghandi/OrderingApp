@@ -6,7 +6,7 @@ import java.util.List;
 import co.sansystem.orderingapp.Models.AddressModel;
 import co.sansystem.orderingapp.Models.ContactModel;
 import co.sansystem.orderingapp.Models.ExpModel;
-import co.sansystem.orderingapp.Models.FactorModel;
+import co.sansystem.orderingapp.Models.FactorContentModel;
 import co.sansystem.orderingapp.Models.FavoriteModel;
 import co.sansystem.orderingapp.Models.FoodModel;
 import co.sansystem.orderingapp.Models.GroupFoodModel;
@@ -48,7 +48,7 @@ public interface WebService {
     Call<List<FoodModel>> getFood();
 
     @POST("SaveFactor/{factorNumber}/{fishNumber}")
-    Call<Object> saveFactor(@Body List<FactorModel> factorModelList, @Path("factorNumber") String factorNumber, @Path("fishNumber") String fishNumber);
+    Call<Object> saveFactor(@Body List<FactorContentModel> factorModelList, @Path("factorNumber") String factorNumber, @Path("fishNumber") String fishNumber);
 
     @GET("CancleFactor/{factorNumber}/{sanadNumber}/{userId}")
     Call<Boolean> deleteFactor(@Path("factorNumber") String factorNumber,@Path("sanadNumber") String sanadNumber,@Path("userId") String userId);
@@ -57,7 +57,7 @@ public interface WebService {
     Call<List<MiniFactorModel>> getLastFactors();
 
     @GET("GetSefaresh/{factorNumber}")
-    Call<List<FactorModel>> getSefaresh(@Path("factorNumber") String factorNumber);
+    Call<List<FactorContentModel>> getSefaresh(@Path("factorNumber") String factorNumber);
 
     @GET("ReportForush/{azTarikh}/{taTarikh}")
     Call<List<ReportModel>> reportForush(@Path("azTarikh") String azTarikh, @Path("taTarikh") String taTarikh);

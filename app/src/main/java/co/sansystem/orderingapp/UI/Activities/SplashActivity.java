@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.sansystem.mohsen.orderingapp.R;
+import com.sansystem.orderingapp.R;
 
 import co.sansystem.orderingapp.Adapters.FoodOrdersAdapter;
 import co.sansystem.orderingapp.Utility.Database.MyDatabase;

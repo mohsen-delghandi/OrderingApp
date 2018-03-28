@@ -3,7 +3,7 @@ package co.sansystem.orderingapp.Utility.Utility;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.sansystem.mohsen.orderingapp.R;
+import com.sansystem.orderingapp.R;
 
 
 /**

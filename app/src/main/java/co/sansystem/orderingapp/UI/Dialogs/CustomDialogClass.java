@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,7 +28,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sansystem.mohsen.orderingapp.R;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.sansystem.orderingapp.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -39,7 +42,7 @@ import co.sansystem.orderingapp.Adapters.FoodOrdersAdapter;
 import co.sansystem.orderingapp.Adapters.NavigationAdapter;
 import co.sansystem.orderingapp.Models.AddressModel;
 import co.sansystem.orderingapp.Models.ContactModel;
-import co.sansystem.orderingapp.Models.FactorModel;
+import co.sansystem.orderingapp.Models.FactorContentModel;
 import co.sansystem.orderingapp.Models.FavoriteModel;
 import co.sansystem.orderingapp.Models.TellModel;
 import co.sansystem.orderingapp.UI.Activities.MainActivity;
@@ -65,15 +68,13 @@ public class CustomDialogClass extends Dialog implements
     public Activity c;
     public Dialog d;
     public TextView yes, no, text, jameKol, tvJameKol, tvNameMoshtari, tvMaliatText, tvMaliat, tvTakhfifText, tvTakhfif, tvServiceText, tvService, tvFactorText, tvFactor;
-    public TextView tvTell,tvAddress,tvVaziat;
+    public TextView tvTell, tvAddress, tvVaziat;
     public EditText etTable;
-//    public EditText etName;
     long mPrice = 0;
-    String response, costumerCode;
+    String costumerCode;
     public LinearLayout llLoadingDialog;
     public TableLayout tlMain;
     TableRow trJameKol;
-//    public TableRow trVaziat;
     AppPreferenceTools appPreferenceTools;
     public Spinner spVaziatSefaresh;
     String vaziatSefaresh;
@@ -86,6 +87,11 @@ public class CustomDialogClass extends Dialog implements
     public AutoCompleteTextView textView;
     public AutoCompleteTextView textViewAddress;
     public AutoCompleteTextView textViewTell;
+    ArrayList<String> costumerNamess;
+    ArrayList<String> costumerCodess;
+    ArrayList<String> costumerTafzilis;
+    ArrayList<String> costumerAddresses;
+    ArrayList<String> costumerTells;
 
     public CustomDialogClass(Activity a, String defaultCostumerCode) {
         super(a);
@@ -113,7 +119,6 @@ public class CustomDialogClass extends Dialog implements
         setContentView(R.layout.basket_dialog_layout);
 
 
-
         WebProvider provider = new WebProvider();
         mTService = provider.getTService();
 
@@ -130,10 +135,27 @@ public class CustomDialogClass extends Dialog implements
         mTService5 = provider5.getTService();
 
 
-        final ArrayList<String> costumerNamess = new ArrayList<String>();
-        final ArrayList<String> costumerCodess = new ArrayList<String>();
-        final ArrayList<String> costumerAddresses = new ArrayList<String>();
-        final ArrayList<String> costumerTells = new ArrayList<String>();
+        costumerNamess = new ArrayList<String>();
+        costumerCodess = new ArrayList<String>();
+        costumerTafzilis = new ArrayList<String>();
+        costumerAddresses = new ArrayList<String>();
+        costumerTells = new ArrayList<String>();
+
+
+        SQLiteDatabase db = new MyDatabase(c).getWritableDatabase();
+        Cursor cursor = db.query(MyDatabase.CONTACTS_INFORMATION,new String[]{MyDatabase.LIST_CONTACT_JSON},null,null,null,null,null);
+        if(cursor.moveToFirst()){
+            Gson gson = new Gson();
+            String json = cursor.getString(0);
+            List<ContactModel> contactModelList = gson.fromJson(json, new TypeToken<ArrayList<ContactModel>>(){}.getType());
+            for (ContactModel contactModel :
+                    contactModelList) {
+                costumerNamess.add(contactModel.getFullName());
+                costumerCodess.add(contactModel.getContactsID());
+                costumerTafzilis.add(contactModel.getTafziliID());
+            }
+        }
+        db.close();
 
         Call<List<ContactModel>> call = mTService2.getListContact();
         call.enqueue(new Callback<List<ContactModel>>() {
@@ -142,12 +164,24 @@ public class CustomDialogClass extends Dialog implements
 
                 if (response.isSuccessful()) {
 
+                    SQLiteDatabase db = new MyDatabase(c).getWritableDatabase();
+                    db.delete(MyDatabase.CONTACTS_INFORMATION,null,null);
+
+                    Gson gson = new Gson();
+                    String json = gson.toJson(response.body());
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put(MyDatabase.LIST_CONTACT_JSON,json);
+                    db.insert(MyDatabase.CONTACTS_INFORMATION,null,contentValues);
+
+                    db.close();
+
                     for (ContactModel contactModel :
                             response.body()) {
                         costumerNamess.add(contactModel.getFullName());
                         costumerCodess.add(contactModel.getContactsID());
+                        costumerTafzilis.add(contactModel.getTafziliID());
                     }
-
+                    db.close();
                 }
             }
 
@@ -159,10 +193,10 @@ public class CustomDialogClass extends Dialog implements
         textView = findViewById(R.id.editText_name);
         textViewAddress = findViewById(R.id.editText_adress);
         textViewTell = findViewById(R.id.editText_tell);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(c,android.R.layout.simple_dropdown_item_1line,costumerNamess);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(c, android.R.layout.simple_dropdown_item_1line, costumerNamess);
         textView.setAdapter(adapter);
 
-        textView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long rowId) {
@@ -176,6 +210,27 @@ public class CustomDialogClass extends Dialog implements
                     }
                 }
 
+                SQLiteDatabase db = new MyDatabase(c).getWritableDatabase();
+                Cursor cursor = db.query(MyDatabase.CONTACTS_ADDRESSES,new String[]{MyDatabase.LIST_ADDRESS_JSON},null,null,null,null,null);
+                if(cursor.moveToFirst()){
+                    Gson gson = new Gson();
+                    String json = cursor.getString(0);
+                    List<AddressModel> contactModelList = gson.fromJson(json, new TypeToken<ArrayList<AddressModel>>(){}.getType());
+                    for (AddressModel addressModel :
+                            contactModelList) {
+                        costumerAddresses.add(addressModel.getAdress());
+                    }
+
+                    ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(c, android.R.layout.simple_dropdown_item_1line, costumerAddresses);
+                    textViewAddress.setAdapter(adapter2);
+                    if (costumerAddresses.size() == 0) {
+                        textViewAddress.setText("0");
+                    } else {
+                        textViewAddress.setText(costumerAddresses.get(0));
+                    }
+                }
+                db.close();
+
                 Call<List<AddressModel>> call2 = mTService4.getAddressContact(costumerCodess.get(pos));
                 call2.enqueue(new Callback<List<AddressModel>>() {
                     @Override
@@ -183,22 +238,59 @@ public class CustomDialogClass extends Dialog implements
 
                         if (response.isSuccessful()) {
 
+                            SQLiteDatabase db = new MyDatabase(c).getWritableDatabase();
+                            db.delete(MyDatabase.CONTACTS_ADDRESSES,null,null);
+
+                            Gson gson = new Gson();
+                            String json = gson.toJson(response.body());
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(MyDatabase.LIST_ADDRESS_JSON,json);
+                            db.insert(MyDatabase.CONTACTS_ADDRESSES,null,contentValues);
+
+                            db.close();
+
                             for (AddressModel addressModel :
                                     response.body()) {
                                 costumerAddresses.add(addressModel.getAdress());
                             }
 
-                            ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(c,android.R.layout.simple_dropdown_item_1line,costumerAddresses);
+                            ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(c, android.R.layout.simple_dropdown_item_1line, costumerAddresses);
                             textViewAddress.setAdapter(adapter2);
+                            if (costumerAddresses.size() == 0) {
+                                textViewAddress.setText("0");
+                            } else {
+                                textViewAddress.setText(costumerAddresses.get(0));
+                            }
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<AddressModel>> call2, Throwable t) {
-                        Toast.makeText(c, "aaa", Toast.LENGTH_SHORT).show();
                     }
 
                 });
+
+
+                SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
+                Cursor cursor2 = db2.query(MyDatabase.CONTACTS_TELLS,new String[]{MyDatabase.LIST_TELL_JSON},null,null,null,null,null);
+                if(cursor2.moveToFirst()){
+                    Gson gson = new Gson();
+                    String json = cursor2.getString(0);
+                    List<TellModel> contactModelList = gson.fromJson(json, new TypeToken<ArrayList<TellModel>>(){}.getType());
+                    for (TellModel tellModel :
+                            contactModelList) {
+                        costumerTells.add(tellModel.getTellContact());
+                    }
+
+                    ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(c, android.R.layout.simple_dropdown_item_1line, costumerTells);
+                    textViewTell.setAdapter(adapter3);
+                    if (costumerTells.size() == 0) {
+                        textViewTell.setText("0");
+                    } else {
+                        textViewTell.setText(costumerTells.get(0));
+                    }
+                }
+                db2.close();
 
                 Call<List<TellModel>> calll = mTService5.getTellContact(costumerCodess.get(pos));
                 calll.enqueue(new Callback<List<TellModel>>() {
@@ -207,19 +299,35 @@ public class CustomDialogClass extends Dialog implements
 
                         if (response.isSuccessful()) {
 
+
+                            SQLiteDatabase db = new MyDatabase(c).getWritableDatabase();
+                            db.delete(MyDatabase.CONTACTS_TELLS,null,null);
+
+                            Gson gson = new Gson();
+                            String json = gson.toJson(response.body());
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(MyDatabase.LIST_TELL_JSON,json);
+                            db.insert(MyDatabase.CONTACTS_TELLS,null,contentValues);
+
+                            db.close();
+
                             for (TellModel tellModel :
                                     response.body()) {
                                 costumerTells.add(tellModel.getTellContact());
                             }
 
-                            ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(c,android.R.layout.simple_dropdown_item_1line,costumerTells);
+                            ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(c, android.R.layout.simple_dropdown_item_1line, costumerTells);
                             textViewTell.setAdapter(adapter3);
+                            if (costumerTells.size() == 0) {
+                                textViewTell.setText("0");
+                            } else {
+                                textViewTell.setText(costumerTells.get(0));
+                            }
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<TellModel>> calll, Throwable t) {
-                        Toast.makeText(c, "bbb", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -266,12 +374,20 @@ public class CustomDialogClass extends Dialog implements
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 vaziatSefaresh = c.getResources().getStringArray(R.array.vaziat_sefaresh)[i];
-                if(i == 2 || i == 3 || i == 4){
+                if (i == 2 || i == 3 || i == 4) {
                     text.setVisibility(View.VISIBLE);
                     etTable.setVisibility(View.VISIBLE);
-                }else {
+                    tvAddress.setVisibility(View.GONE);
+                    tvTell.setVisibility(View.GONE);
+                    textViewAddress.setVisibility(View.GONE);
+                    textViewTell.setVisibility(View.GONE);
+                } else {
                     text.setVisibility(View.INVISIBLE);
                     etTable.setVisibility(View.INVISIBLE);
+                    tvAddress.setVisibility(View.VISIBLE);
+                    tvTell.setVisibility(View.VISIBLE);
+                    textViewAddress.setVisibility(View.VISIBLE);
+                    textViewTell.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -288,6 +404,22 @@ public class CustomDialogClass extends Dialog implements
             for (int i = 0; i < c.getResources().getStringArray(R.array.vaziat_sefaresh).length; i++) {
                 if (c.getResources().getStringArray(R.array.vaziat_sefaresh)[i].equals(vaziat_sefaresh)) {
                     spVaziatSefaresh.setSelection(i);
+                }
+            }
+
+            for (int i = 0; i < costumerNamess.size(); i++) {
+                if (costumerNamess.get(i).equals(textView.getText().toString())) {
+                    if (costumerAddresses.size() == 0) {
+                        textViewAddress.setText("0");
+                    } else {
+                        textViewAddress.setText(costumerAddresses.get(0));
+                    }
+                    if (costumerTells.size() == 0) {
+                        textViewTell.setText("0");
+                    } else {
+                        textViewTell.setText(costumerTells.get(0));
+                    }
+                    break;
                 }
             }
         }
@@ -339,10 +471,10 @@ public class CustomDialogClass extends Dialog implements
             if (appPreferenceTools.getMablaghTakhfif().equals("0")) {
                 tvTakhfif.setText("0");
             } else {
-                tvTakhfif.setText(Integer.parseInt(appPreferenceTools.getMablaghTakhfif())+"");
+                tvTakhfif.setText(Integer.parseInt(appPreferenceTools.getMablaghTakhfif()) + "");
             }
         } else {
-            tvTakhfif.setText(((int)Float.parseFloat(appPreferenceTools.getDarsadTakhfif()) * mPrice /100) + "");
+            tvTakhfif.setText(((int) Float.parseFloat(appPreferenceTools.getDarsadTakhfif()) * mPrice / 100) + "");
         }
 
         if (appPreferenceTools.getDarsadService().equals("0.0")) {
@@ -352,13 +484,13 @@ public class CustomDialogClass extends Dialog implements
                 tvService.setText(appPreferenceTools.getMablaghService());
             }
         } else {
-            tvService.setText(((int)Float.parseFloat(appPreferenceTools.getDarsadService()) * (mPrice - (int)Float.parseFloat(tvTakhfif.getText().toString())) /100) + "");
+            tvService.setText(((int) Float.parseFloat(appPreferenceTools.getDarsadService()) * (mPrice - (int) Float.parseFloat(tvTakhfif.getText().toString())) / 100) + "");
         }
 
         if (appPreferenceTools.getDarsadMaliyat().equals("0.0")) {
             tvMaliat.setText("0");
         } else {
-            tvMaliat.setText(((int)Float.parseFloat(appPreferenceTools.getDarsadMaliyat()) * (mPrice - (int)Float.parseFloat(tvTakhfif.getText().toString())) /100) + "");
+            tvMaliat.setText(((int) Float.parseFloat(appPreferenceTools.getDarsadMaliyat()) * (mPrice - (int) Float.parseFloat(tvTakhfif.getText().toString())) / 100) + "");
         }
 
         tvJameKol.setText(MainActivity.priceFormatter((int) (mPrice - Float.parseFloat(tvTakhfif.getText().toString()) + Float.parseFloat(tvMaliat.getText().toString()) + Float.parseFloat(tvService.getText().toString())) + ""));
@@ -387,34 +519,48 @@ public class CustomDialogClass extends Dialog implements
                 } else if (textView.getText().toString().equals("")) {
                     Toast.makeText(c, "نام مشتری را وارد کنید.", Toast.LENGTH_SHORT).show();
                 } else {
-                    List<FactorModel> factorModelList = new ArrayList<>();
+                    final List<FactorContentModel> factorContentModelList = new ArrayList<>();
                     for (int i = 0; i < FoodOrdersAdapter.mList.size(); i++) {
-                        FactorModel factorModel = new FactorModel();
+                        FactorContentModel factorContentModel = new FactorContentModel();
 
-                        factorModel.setFoodCode(FoodOrdersAdapter.mList.get(i).getCode());
-                        factorModel.setFoodCount(FoodOrdersAdapter.mList.get(i).getmNumber());
-                        factorModel.setSumPriceRow((Integer.parseInt(FoodOrdersAdapter.mList.get(i).getmPrice()) * FoodOrdersAdapter.mList.get(i).getmNumber()) + "");
-                        factorModel.setTableNumber(etTable.getText() + "");
-                        factorModel.setCostumerCode(costumerCode);
-                        factorModel.setCostumerName(textView.getText() + "");
-                        factorModel.setAddress(textViewAddress.getText() + "");
-                        factorModel.setTell(textViewTell.getText() + "");
-                        if (appPreferenceTools.getprintAfterConfirm()) {
-                            factorModel.setPrintConfirm("true");
+                        factorContentModel.setFoodCode(FoodOrdersAdapter.mList.get(i).getCode());
+                        factorContentModel.setFoodCount(FoodOrdersAdapter.mList.get(i).getmNumber());
+                        factorContentModel.setSumPriceRow((Integer.parseInt(FoodOrdersAdapter.mList.get(i).getmPrice()) * FoodOrdersAdapter.mList.get(i).getmNumber()) + "");
+                        if (etTable.getVisibility() == View.VISIBLE) {
+                            factorContentModel.setTableNumber(etTable.getText() + "");
+                            factorContentModel.setAddress("0");
+                            factorContentModel.setTell("0");
                         } else {
-                            factorModel.setPrintConfirm("false");
+                            factorContentModel.setTableNumber("0");
+                            factorContentModel.setAddress(textViewAddress.getText() + "");
+                            factorContentModel.setTell(textViewTell.getText() + "");
                         }
-                        factorModel.setFoodExp(FoodOrdersAdapter.mList.get(i).getmExp());
-                        factorModel.setUserId(appPreferenceTools.getUserID() + "");
-                        factorModel.setPriceSum(mPrice + "");
-                        factorModel.setVaziatSefaresh(vaziatSefaresh);
-                        factorModel.setJameMablaghMaliat(tvMaliat.getText().toString());
-                        factorModel.setJameMablaghKhales((mPrice - Float.parseFloat(tvTakhfif.getText().toString()) + Float.parseFloat(tvMaliat.getText().toString()) +
-                                Float.parseFloat(tvService.getText().toString())) + "");
-                        factorModel.setJameMablaghTakhfif(tvTakhfif.getText().toString());
-                        factorModel.setJameMablaghServic(tvService.getText().toString());
 
-                        factorModelList.add(factorModel);
+                        factorContentModel.setCostumerCode(costumerCode);
+                        for (int ii = 0; ii < costumerNamess.size(); ii++) {
+                            if (costumerNamess.get(ii).equals(textView.getText().toString())) {
+                                factorContentModel.setCostumerCode(costumerTafzilis.get(ii));
+                                break;
+                            }
+                        }
+
+                        factorContentModel.setCostumerName(textView.getText() + "");
+                        if (appPreferenceTools.getprintAfterConfirm()) {
+                            factorContentModel.setPrintConfirm("true");
+                        } else {
+                            factorContentModel.setPrintConfirm("false");
+                        }
+                        factorContentModel.setFoodExp(FoodOrdersAdapter.mList.get(i).getmExp());
+                        factorContentModel.setUserId(appPreferenceTools.getUserID() + "");
+                        factorContentModel.setPriceSum(mPrice + "");
+                        factorContentModel.setVaziatSefaresh(vaziatSefaresh);
+                        factorContentModel.setJameMablaghMaliat(tvMaliat.getText().toString());
+                        factorContentModel.setJameMablaghKhales((mPrice - Float.parseFloat(tvTakhfif.getText().toString()) + Float.parseFloat(tvMaliat.getText().toString()) +
+                                Float.parseFloat(tvService.getText().toString())) + "");
+                        factorContentModel.setJameMablaghTakhfif(tvTakhfif.getText().toString());
+                        factorContentModel.setJameMablaghServic(tvService.getText().toString());
+
+                        factorContentModelList.add(factorContentModel);
                     }
 
 
@@ -423,7 +569,7 @@ public class CustomDialogClass extends Dialog implements
                     llLoadingDialog.setVisibility(View.VISIBLE);
                     tlMain.setAlpha(0.1f);
 
-                    Call<Object> call = mTService.saveFactor(factorModelList, factorNumber, Fish_Number);
+                    Call<Object> call = mTService.saveFactor(factorContentModelList, factorNumber, Fish_Number);
                     call.enqueue(new Callback<Object>() {
                         @Override
                         public void onResponse(Call<Object> call, Response<Object> response) {
@@ -533,32 +679,44 @@ public class CustomDialogClass extends Dialog implements
                                 ContentValues cv2 = new ContentValues();
                                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                                 String myDate = format.format(new Date());
-                                cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response);
+                                cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
                                 db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+
+                                Gson gson = new Gson();
+                                String json = gson.toJson(factorContentModelList);
+                                ContentValues contentValues = new ContentValues();
+                                contentValues.put(MyDatabase.FACTOR_JSON,json);
+                                db2.insert(MyDatabase.OFFLINE_FACTORS_TABLE,null,contentValues);
+
                                 db2.close();
                                 llLoadingDialog.setVisibility(View.GONE);
                                 tlMain.setAlpha(1f);
                                 Toast.makeText(c, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+
                             }
                         }
 
                         @Override
                         public void onFailure(Call<Object> call, Throwable t) {
-
                             SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
                             ContentValues cv2 = new ContentValues();
                             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                             String myDate = format.format(new Date());
-                            cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response);
+                            cv2.put(MyDatabase.RESPONCE, myDate + " --> " + t.getMessage());
                             db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+
+                            Gson gson = new Gson();
+                            String json = gson.toJson(factorContentModelList);
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(MyDatabase.FACTOR_JSON,json);
+                            db2.insert(MyDatabase.OFFLINE_FACTORS_TABLE,null,contentValues);
+
                             db2.close();
                             llLoadingDialog.setVisibility(View.GONE);
                             tlMain.setAlpha(1f);
                             Toast.makeText(c, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                         }
                     });
-
-
                 }
 
                 break;

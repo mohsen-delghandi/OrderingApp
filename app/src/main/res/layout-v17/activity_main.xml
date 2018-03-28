@@ -35,7 +35,7 @@
             app:fontPath="fonts/IRANSansWeb_Bold.ttf"
             android:layout_margin="@dimen/padding_medium"
             android:background="@drawable/shape_circle_shadow"
-            />
+            tools:ignore="MissingPrefix" />
 
         <Button
             android:id="@+id/button_screenSaver"
