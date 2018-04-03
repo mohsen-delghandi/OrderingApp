@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl"
+    android:background="@drawable/image_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3.5"
+            android:gravity="bottom|center"
+            android:weightSum="3.5">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_ip_page" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".85"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="آی پی سرور"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_large"
+                app:fontPath="fonts/IRANSansWeb_Light.ttf"
+                tools:ignore="MissingPrefix" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:gravity="center|top"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/dimen_large"
+                android:paddingLeft="@dimen/dimen_large"
+                android:text="جهت اتصال اپلیکیشن سفارش گیر با نرم افزار مدیریت سان سیستم آی پی کامپیوتر سرور را در این قسمت وارد کنید."
+                android:textColor="@color/secondary_text"
+                app:fontPath="fonts/IRANSansWeb_Light.ttf"
+                tools:ignore="MissingPrefix"
+                android:textSize="@dimen/font_xsmall" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:layout_weight="2">
+
+            <LinearLayout
+                android:id="@+id/ll_settings_splash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layoutDirection="ltr"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/dimen_large"
+                android:paddingRight="@dimen/dimen_large">
+
+                <EditText
+                    android:id="@+id/editText_ip_firstrun1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline_secondary_text"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_ip_firstrun2"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="@dimen/font_xmedium" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="@dimen/padding_bit"
+                    android:layout_marginRight="@dimen/padding_bit"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/shape_dot" />
+
+                <EditText
+                    android:id="@+id/editText_ip_firstrun2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline_secondary_text"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_ip_firstrun3"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="@dimen/font_xmedium" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="@dimen/padding_bit"
+                    android:layout_marginRight="@dimen/padding_bit"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/shape_dot" />
+
+                <EditText
+                    android:id="@+id/editText_ip_firstrun3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline_secondary_text"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_ip_firstrun4"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="@dimen/font_xmedium" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="@dimen/padding_bit"
+                    android:layout_marginRight="@dimen/padding_bit"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/shape_dot" />
+
+                <EditText
+                    android:id="@+id/editText_ip_firstrun4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline_secondary_text"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_title_firstrun"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="@dimen/font_xmedium" />
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/dimen_large"
+            android:paddingRight="@dimen/dimen_large">
+
+            <TextView
+                android:id="@+id/textView_connect"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_large"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/border_shape_primary"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dimen_large"
+                android:paddingRight="@dimen/dimen_large"
+                android:text="اتصال"
+                app:fontPath="fonts/IRANSansWeb_Medium.ttf"
+                tools:ignore="MissingPrefix"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xmedium" />
+
+            <ImageView
+                android:layout_width="@dimen/dimen_large"
+                android:layout_height="@dimen/dimen_large"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/border_shape_primary"
+                android:paddingLeft="@dimen/padding_large"
+                android:paddingRight="@dimen/padding_large"
+                android:src="@drawable/image_question" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

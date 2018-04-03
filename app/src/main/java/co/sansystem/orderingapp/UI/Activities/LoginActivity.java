@@ -1,15 +1,14 @@
 package co.sansystem.orderingapp.UI.Activities;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +18,6 @@ import java.util.List;
 
 import co.sansystem.orderingapp.Models.UserModel;
 import co.sansystem.orderingapp.UI.Dialogs.LoadingDialogClass;
-import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
 import co.sansystem.orderingapp.Utility.Network.WebService;
 import co.sansystem.orderingapp.Utility.Utility.AppPreferenceTools;
@@ -28,19 +26,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-/**
- * Created by Mohsen on 2017-06-16.
- */
-
 public class LoginActivity extends AppCompatActivity {
 
     EditText etUserName, etPassword;
-    TextView btSignIn, btChangeIp, btSave;
+    TextView btSignIn;
     String name, id, password;
-    Spinner spCostumerCode;
-    TableRow trMain;
-    private WebService mTService;
-
+    WebService mTService;
+    AppPreferenceTools appPreferenceTools;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -48,38 +40,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_layout);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.sign_in_layout);
 
-        WebProvider provider = new WebProvider();
-        mTService = provider.getTService();
+        WebProvider webProvider = new WebProvider();
+        mTService = webProvider.getTService();
+
+        appPreferenceTools = new AppPreferenceTools(this);
 
         etUserName = (EditText) findViewById(R.id.editText_userName);
-        etPassword = (EditText) findViewById(R.id.editText_password);
-        btSignIn = (TextView) findViewById(R.id.button_sign_in);
-        btChangeIp = (TextView) findViewById(R.id.button_change_ip);
-        btSave = (TextView) findViewById(R.id.button_save);
-        trMain = (TableRow) findViewById(R.id.tr_main);
-        spCostumerCode = (Spinner) findViewById(R.id.spinner_default_costumer);
+        etPassword = (EditText) findViewById(R.id.editText_passWord);
 
-        final AppPreferenceTools appPreferenceTools = new AppPreferenceTools(LoginActivity.this);
-
-        btChangeIp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SQLiteDatabase dbb = new MyDatabase(LoginActivity.this).getWritableDatabase();
-                ContentValues cv = new ContentValues();
-                cv.put(MyDatabase.FIRST_RUN, 1);
-                dbb.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = 1", null);
-
-
-                Intent i = new Intent(LoginActivity.this, SettingsActivity.class);
-                i.putExtra("status", "fromSplash");
-                startActivity(i);
-                finish();
-            }
-        });
+        btSignIn = (TextView) findViewById(R.id.textView_signIn);
 
         btSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,11 +65,11 @@ public class LoginActivity extends AppCompatActivity {
                 loadingDialogClass.show();
                 name = etUserName.getText().toString().trim();
                 password = etPassword.getText().toString().trim();
+
                 Call<List<UserModel>> call = mTService.loginGarson(name, password);
                 call.enqueue(new Callback<List<UserModel>>() {
                     @Override
                     public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
-
 
                         loadingDialogClass.dismiss();
                         if (response.isSuccessful()) {
@@ -118,44 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                     }
                 });
-
-
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        name = etUserName.getText().toString().trim();
-//                        password = etPassword.getText().toString().trim();
-//                        CallWebService cws = new CallWebService(LoginActivity.this, "LoginGarson", "_UserName", "_Password");
-//                        responce = cws.Call(name, password);
-//
-//                        if (responce.length() > 5 && responce.substring(0, 4).equals("true")) {
-//
-//                            appPreferenceTools.loginOK();
-//                            appPreferenceTools.saveUserAuthenticationInfo(name, password, responce.substring(5));
-//                            startActivity(new Intent(LoginActivity.this, OrdersMenuActivity.class));
-//                            finish();
-//                        } else {
-//                            if (responce.equals("0")) {
-//                                runOnUiThread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        Toast.makeText(LoginActivity.this, "اطلاعات کاربر معتبر نیست.", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                });
-//                            } else {
-//                                runOnUiThread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        Toast.makeText(LoginActivity.this, "ارتباط با سرور برقرار نشد.", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                });
-//                            }
-//                        }
-//                    }
-//
-//                }).start();
             }
         });
     }
 }
-

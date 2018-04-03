@@ -272,7 +272,6 @@ public class SettingsActivity extends MainActivity {
             }
         });
 
-
         etIP1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -352,7 +351,6 @@ public class SettingsActivity extends MainActivity {
 
             }
         });
-
 
         SQLiteDatabase db = new MyDatabase(SettingsActivity.this).getReadableDatabase();
         Cursor cursor = db.query(MyDatabase.SETTINGS_TABLE, new String[]{MyDatabase.IP}, null, null, null, null, null);
@@ -458,7 +456,7 @@ public class SettingsActivity extends MainActivity {
                     final RecyclerView rvResponces = (RecyclerView) findViewById(R.id.responces_recyclerView);
                     trMain.setVisibility(View.GONE);
                     ivTitlebar.setVisibility(View.VISIBLE);
-                    ivTitlebar.setImageResource(R.drawable.delete_icon);
+                    ivTitlebar.setImageResource(R.drawable.image_delete);
                     ivTitlebar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

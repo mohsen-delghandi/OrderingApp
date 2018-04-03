@@ -110,7 +110,7 @@ public class MyDatabase extends SQLiteOpenHelper {
                         TITLE + " TEXT, " +
                         IP + " TEXT);"
         );
-        db.execSQL("INSERT INTO " + SETTINGS_TABLE + " VALUES ( 1 , 1 , 0 , 'عنوان' , '192.168.1.1' );");
+        db.execSQL("INSERT INTO " + SETTINGS_TABLE + " VALUES ( 1 , 1 , 0 , '' , '192.168.1.1' );");
 
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS " + RESPONCES_TABLE + " (" +

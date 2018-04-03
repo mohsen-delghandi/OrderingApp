@@ -49,7 +49,7 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
 
     public void bind(View view, int position) {
         int resId = swipeAdapterInterface.getSwipeLayoutResourceId(position);
-        SwipeLayout swipeLayout = (SwipeLayout) view.findViewById(resId);
+        SwipeLayout swipeLayout = view.findViewById(resId);
         if (swipeLayout == null)
             throw new IllegalStateException("can not find SwipeLayout in target view");
 

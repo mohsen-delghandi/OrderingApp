@@ -31,7 +31,6 @@ public class OfflineFactorsActivity extends MainActivity {
 
     RecyclerView rvOfflineFactors;
     OfflineFactorsAdapter offlineFactorsAdapter;
-    private WebService mTService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,7 @@ public class OfflineFactorsActivity extends MainActivity {
         rvOfflineFactors.setAdapter(offlineFactorsAdapter);
 
         WebProvider provider = new WebProvider();
-        mTService = provider.getTService();
+        WebService mTService = provider.getTService();
 
         tvTitlebar.setText(title + " - " + "فیش های آفلاین");
         toggle.setDrawerIndicatorEnabled(false);

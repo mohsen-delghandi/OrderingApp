@@ -173,7 +173,7 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
                                 Toast.makeText(context, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                             }
                         });
-                        cdd2.dismiss();;
+                        cdd2.dismiss();
                     }
                 });
             }

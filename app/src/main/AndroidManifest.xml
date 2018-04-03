@@ -29,10 +29,6 @@
             android:windowSoftInputMode="adjustResize"
             android:name="co.sansystem.orderingapp.UI.Activities.SettingsActivity"
             android:screenOrientation="portrait"/>
-        <activity
-            android:windowSoftInputMode="adjustResize"
-            android:name="co.sansystem.orderingapp.UI.Activities.LoginActivity"
-            android:screenOrientation="portrait"/>
         <activity android:name="co.sansystem.orderingapp.UI.Activities.OrdersMenuActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="co.sansystem.orderingapp.UI.Activities.LastFactorsActivity"
@@ -40,6 +36,14 @@
         <activity android:name="co.sansystem.orderingapp.UI.Activities.ReportActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="co.sansystem.orderingapp.UI.Activities.OfflineFactorsActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="co.sansystem.orderingapp.UI.Activities.IpSetActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="co.sansystem.orderingapp.UI.Activities.TitleSetActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="co.sansystem.orderingapp.UI.Activities.OrderInfoActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name="co.sansystem.orderingapp.UI.Activities.LoginActivity"
             android:screenOrientation="portrait"/>
     </application>
 

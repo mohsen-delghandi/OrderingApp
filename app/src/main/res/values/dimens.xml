@@ -9,6 +9,7 @@
     <dimen name="font_xsmall">10sp</dimen>
     <dimen name="font_small">13sp</dimen>
     <dimen name="font_xmedium">15sp</dimen>
+    <dimen name="font_xxmedium">14sp</dimen>
     <dimen name="font_medium">18sp</dimen>
     <dimen name="font_large">22sp</dimen>
     <dimen name="font_xlarge">26sp</dimen>
@@ -33,6 +34,7 @@
     <dimen name="dimen_xsmall">5dp</dimen>
     <dimen name="dimen_small">10dp</dimen>
     <dimen name="dimen_medium">20dp</dimen>
+    <dimen name="dimen_xmedium">30dp</dimen>
     <dimen name="dimen_large">40dp</dimen>
     <dimen name="dimen_xlarge">45dp</dimen>
     <dimen name="dimen_xxlarge">50dp</dimen>
