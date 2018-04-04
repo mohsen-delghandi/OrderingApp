@@ -1,11 +1,6 @@
 package co.sansystem.orderingapp.Adapters;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.os.Build;
-import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,7 +21,6 @@ import java.util.List;
 import co.sansystem.orderingapp.Models.OrderedItemModel;
 import co.sansystem.orderingapp.UI.Activities.OrdersMenuActivity;
 import co.sansystem.orderingapp.UI.Dialogs.ExpDialogClass;
-import co.sansystem.orderingapp.Utility.Animation.ViewHeightAnimationWrapper;
 
 /**
  * Created by Mohsen on 2017-07-03.
@@ -221,35 +216,12 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
 
         if (mList.size() == 0) {
 
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
-                ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
-                        "height",
-                        animationWrapper.getHeight(),
-                        0);
-                anim.setDuration(300);
-                anim.setInterpolator(new FastOutLinearInInterpolator());
-                anim.start();
-                OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
-                    }
-                });
 
-                OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
-                    }
-                });
-            }else{
-                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
+            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
                 params.height = 0;
                 OrdersMenuActivity.ll.setLayoutParams(params);
                 OrdersMenuActivity.fabToggle.setAlpha(0f);
                 OrdersMenuActivity.tvTayid.setAlpha(0f);
-            }
         }
     }
 }

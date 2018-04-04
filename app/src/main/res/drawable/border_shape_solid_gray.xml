@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape= "rectangle"  >
-    <solid android:color="#fff" />
-    <stroke
-        android:width="@dimen/padding_xbit"
-        android:color="#FFCE2B"
-        />
-    <corners android:radius="@dimen/padding_large" />
+    <solid android:color="#E8E8E8" />
     <padding android:bottom="@dimen/padding_bit"
         android:left="@dimen/padding_bit"
         android:right="@dimen/padding_bit"

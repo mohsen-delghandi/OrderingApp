@@ -1,16 +1,11 @@
 package co.sansystem.orderingapp.UI.Dialogs;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -47,7 +42,6 @@ import co.sansystem.orderingapp.Models.FavoriteModel;
 import co.sansystem.orderingapp.Models.TellModel;
 import co.sansystem.orderingapp.UI.Activities.MainActivity;
 import co.sansystem.orderingapp.UI.Activities.OrdersMenuActivity;
-import co.sansystem.orderingapp.Utility.Animation.ViewHeightAnimationWrapper;
 import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
 import co.sansystem.orderingapp.Utility.Network.WebService;
@@ -578,37 +572,12 @@ public class CustomDialogClass extends Dialog implements
 
                                 Toast.makeText(c, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
                                 FoodOrdersAdapter.mList.clear();
-                                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
 
-                                    ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
-                                    ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
-                                            "height",
-                                            animationWrapper.getHeight(),
-                                            0);
-                                    anim.setDuration(300);
-                                    anim.setInterpolator(new FastOutLinearInInterpolator());
-                                    anim.start();
-
-                                    OrdersMenuActivity.tvTayid.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
-                                        @Override
-                                        public void onAnimationEnd(Animator animation) {
-                                            OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
-                                        }
-                                    });
-
-                                    OrdersMenuActivity.fabToggle.animate().alpha(0.0f).setDuration(300).setListener(new AnimatorListenerAdapter() {
-                                        @Override
-                                        public void onAnimationEnd(Animator animation) {
-                                            OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
-                                        }
-                                    });
-                                } else {
                                     LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
                                     params.height = 0;
                                     OrdersMenuActivity.ll.setLayoutParams(params);
                                     OrdersMenuActivity.tvTayid.setAlpha(0f);
                                     OrdersMenuActivity.fabToggle.setAlpha(0f);
-                                }
 
                                 jameKol.setText("فاکتور با موفقیت ثبت گردید.");
                                 jameKol.setTextSize(30);

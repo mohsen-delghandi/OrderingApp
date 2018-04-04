@@ -140,7 +140,8 @@
             <CheckBox
                 android:id="@+id/checkbox_print"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:buttonTint="@color/primary"/>
 
             <TextView
                 android:layout_width="wrap_content"

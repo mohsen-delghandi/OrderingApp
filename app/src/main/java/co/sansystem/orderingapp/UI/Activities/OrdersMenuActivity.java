@@ -7,15 +7,16 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.OvershootInterpolator;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -36,8 +37,9 @@ public class OrdersMenuActivity extends MainActivity {
     RecyclerView mNavigationRecycler;
     RecyclerView.LayoutManager mRecyclerManager;
     RecyclerView.Adapter mRecyclerAdapter;
-    public static LinearLayout ll, ll2;
-    public static FloatingActionButton fabToggle;
+    public static LinearLayout ll;
+    public static ImageView fabToggle;
+    public static FrameLayout frOrders;
     public static TextView tvTayid;
     public static LinearLayout linearLayout;
     CustomDialogClass cdd, cdd2;
@@ -54,8 +56,11 @@ public class OrdersMenuActivity extends MainActivity {
         super.onCreate(savedInstanceState);
         setInflater(this, R.layout.orders_menu_layout);
 
-        fabToggle = (FloatingActionButton) findViewById(R.id.fab_toggle);
+        fabToggle = (ImageView) findViewById(R.id.fab_toggle);
         fabToggle.setVisibility(View.GONE);
+
+        frOrders = (FrameLayout) findViewById(R.id.frameLayout_order);
+        frOrders.setVisibility(View.GONE);
 
         drawer.openDrawer(Gravity.START);
         appPreferenceTools = new AppPreferenceTools(this);
@@ -64,8 +69,7 @@ public class OrdersMenuActivity extends MainActivity {
         linearLayout = (LinearLayout) findViewById(R.id.linearLayout_happy);
 
         ll = (LinearLayout) findViewById(R.id.food_orders_fragment);
-        ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 0f));
-        ll2 = (LinearLayout) findViewById(R.id.food_menu_fragment);
+        ll.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 0));
         tvTayid = (TextView) findViewById(R.id.textView_tayid);
         tvTayid.setVisibility(View.GONE);
         tvTayid.setOnClickListener(new View.OnClickListener() {
@@ -88,25 +92,9 @@ public class OrdersMenuActivity extends MainActivity {
 
         fabToggle.setOnClickListener(ocl);
 
-        tvTitlebar.setText(title + " - " + "کاربر " + appPreferenceTools.getUserName());
+//        tvTitlebar.setText(title + " - " + "کاربر " + appPreferenceTools.getUserName());
 
         ivTitlebar.setVisibility(View.VISIBLE);
-        ivTitlebarList.setVisibility(View.VISIBLE);
-        ivTitlebarList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(OrdersMenuActivity.this, LastFactorsActivity.class);
-                startActivity(i);
-            }
-        });
-        ivTitlebarOfflineFactors.setVisibility(View.VISIBLE);
-        ivTitlebarOfflineFactors.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(OrdersMenuActivity.this, OfflineFactorsActivity.class);
-                startActivity(i);
-            }
-        });
 
         ivTitlebar.setImageResource(R.drawable.settings_icon);
         ivTitlebar.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +179,7 @@ public class OrdersMenuActivity extends MainActivity {
         mNavigationRecycler.setHasFixedSize(true);
         mNavigationRecycler.setNestedScrollingEnabled(false);
 
-        mRecyclerManager = new LinearLayoutManager(this);
+        mRecyclerManager = new GridLayoutManager(this,3);
         mNavigationRecycler.setLayoutManager(mRecyclerManager);
 
         Food food = new Food(this);

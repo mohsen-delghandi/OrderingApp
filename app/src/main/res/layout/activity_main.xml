@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="right"
     android:fitsSystemWindows="true"
+    android:layoutDirection="rtl"
     app:layout_anchorGravity="right"
     tools:openDrawer="right">
 
@@ -65,29 +66,63 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/accent"
+        android:background="@drawable/image_background"
         android:fitsSystemWindows="true"
         android:padding="@dimen/padding_small">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/dimen_xxlarge">
-            <!--main-->
+            android:layout_height="match_parent">
+
             <LinearLayout
                 android:id="@+id/rlMain"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
+                android:layout_marginTop="@dimen/dimen_medium"
+                android:gravity="center"
                 android:orientation="vertical">
-                <!--<include layout="@layout/nav_header_main"/>-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/imageView_nav_back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/image_arrow_forward"
+                        android:scaleType="centerCrop"
+                        android:layout_marginRight="@dimen/padding_large"
+                        android:adjustViewBounds="true"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/padding_large"
+                        android:text="دسته بندی غذایی"
+                        android:textColor="@color/primary_text"
+                        android:textSize="@dimen/font_medium" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:padding="@dimen/padding_spinner"
+                    android:text="جهت فیلتر کردن منوی خود و انتخاب راحت تر و سریع تر سفارشات از این قسمت استفاده کنید."
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_small" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/nav_recyclerView"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:scrollbars="vertical" />
+
             </LinearLayout>
-            <!--loading-->
 
         </RelativeLayout>
     </android.support.design.widget.NavigationView>

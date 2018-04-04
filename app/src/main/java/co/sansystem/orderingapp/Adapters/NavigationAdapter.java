@@ -1,11 +1,13 @@
 package co.sansystem.orderingapp.Adapters;
 
+import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +15,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -76,12 +80,27 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(NavigationAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final NavigationAdapter.ViewHolder holder, int position) {
         if (position == 0) {
             holder.tv.setText("محبوب ترین ها");
             holder.setIsRecyclable(false);
-            holder.iv.getLayoutParams().width = mWidth / 5;
-            holder.iv.getLayoutParams().height = mWidth / 5;
+//            holder.iv.getLayoutParams().width = mWidth / 5;
+//            holder.iv.getLayoutParams().height = mWidth / 5;
+
+            holder.iv.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @SuppressLint("NewApi")
+                @Override
+                public void onGlobalLayout() {
+                    int h = holder.iv.getMeasuredWidth();
+                    holder.iv.setLayoutParams(new FrameLayout.LayoutParams(h, h));
+
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        holder.iv.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    } else {
+                        holder.iv.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                }
+            });
 
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -104,8 +123,23 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
 
             }
 
-            holder.iv.getLayoutParams().width = mWidth / 5;
-            holder.iv.getLayoutParams().height = mWidth / 5;
+            holder.iv.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @SuppressLint("NewApi")
+                @Override
+                public void onGlobalLayout() {
+                    int h = holder.iv.getMeasuredWidth();
+                    holder.iv.setLayoutParams(new FrameLayout.LayoutParams(h, h));
+
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        holder.iv.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    } else {
+                        holder.iv.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
+                }
+            });
+
+//            holder.iv.getLayoutParams().width = mWidth / 5;
+//            holder.iv.getLayoutParams().height = mWidth / 5;
 
             final int finalPosition = position;
             v.setOnClickListener(new View.OnClickListener() {

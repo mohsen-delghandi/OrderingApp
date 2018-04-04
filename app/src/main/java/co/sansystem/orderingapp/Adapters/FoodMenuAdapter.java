@@ -10,12 +10,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
-import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import co.sansystem.orderingapp.Models.OrderedItemModel;
 import co.sansystem.orderingapp.UI.Activities.OrdersMenuActivity;
 import co.sansystem.orderingapp.UI.Fragments.FoodOrdersFragment;
-import co.sansystem.orderingapp.Utility.Animation.ViewHeightAnimationWrapper;
 import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 
 /**
@@ -59,13 +58,12 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tv,tvFavorite;
+        public TextView tv;
         public ImageView iv;
         LinearLayout ll;
         public ViewHolder(View v) {
             super(v);
             tv = v.findViewById(R.id.food_item_textView);
-            tvFavorite = v.findViewById(R.id.textView_favorite);
             iv = v.findViewById(R.id.food_item_imageView);
             ll = v.findViewById(R.id.linearLayout_cardView);
         }
@@ -89,10 +87,8 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
         Cursor cf = dbf2.query(MyDatabase.FOOD_TABLE,new String[]{MyDatabase.FAVORITE},MyDatabase.CODE + " = ?",new String[]{mFoodsCodes.get(position)},null,null,null);
         if (cf.moveToFirst()){
             if(cf.getInt(0)==1){
-                holder.tvFavorite.setVisibility(View.VISIBLE);
                 v.setOnLongClickListener(olclRemoveFavorite);
             }else{
-                holder.tvFavorite.setVisibility(View.INVISIBLE);
                 v.setOnLongClickListener(olclAddFavorite);
             }
         }
@@ -149,20 +145,11 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
                     obj2.start();
                 }
 
-                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-                    ViewHeightAnimationWrapper animationWrapper = new ViewHeightAnimationWrapper(OrdersMenuActivity.ll);
-                    ObjectAnimator anim = ObjectAnimator.ofInt(animationWrapper,
-                            "height",
-                            animationWrapper.getHeight(),
-                            mHeight / 3);
-                    anim.setDuration(300);
-                    anim.setInterpolator(new FastOutLinearInInterpolator());
-                    anim.start();
-                }else{
-                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
+
+                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
                     params.height = mHeight / 3;
                     OrdersMenuActivity.ll.setLayoutParams(params);
-                }
+
                 OrdersMenuActivity.fabToggle.setOnClickListener(OrdersMenuActivity.ocl);
 
                 if(FoodOrdersAdapter.mList.size() == 0){
@@ -179,8 +166,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
                     }
                 }
 
-
-
+                OrdersMenuActivity.frOrders.setVisibility(View.VISIBLE);
                 FoodOrdersAdapter.mList.add(data);
                 FoodOrdersFragment.insert(data,mNumber);
             }
@@ -190,7 +176,6 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
     View.OnLongClickListener olclAddFavorite = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View view) {
-            view.findViewById(R.id.textView_favorite).setVisibility(View.VISIBLE);
             SQLiteDatabase dbf = new MyDatabase(mContext).getWritableDatabase();
             ContentValues cvf = new ContentValues();
             cvf.put(MyDatabase.FAVORITE,1);
@@ -212,7 +197,6 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
 //                onBindViewHolder(mHolder,view.getId());
                 NavigationAdapter.refreshFavorites();
             }
-            view.findViewById(R.id.textView_favorite).setVisibility(View.INVISIBLE);
             SQLiteDatabase dbf = new MyDatabase(mContext).getWritableDatabase();
             ContentValues cvf = new ContentValues();
             cvf.put(MyDatabase.FAVORITE,0);

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -33,7 +34,10 @@ public class LoadingDialogClass extends Dialog {
         window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
 
         WindowManager.LayoutParams lp = window.getAttributes();
-        lp.dimAmount = 0.85f; // Dim level. 0.0 - no dim, 1.0 - completely opaque
+        lp.dimAmount = 0.05f;
+        lp.gravity = Gravity.TOP;
+        lp.x = 0;
+        lp.y = 0;
         window.setAttributes(lp);
     }
 

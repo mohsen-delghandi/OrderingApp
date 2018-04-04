@@ -119,9 +119,9 @@ public class SettingsActivity extends MainActivity {
         }
 
         if (status != null && status.equals("fromSplash")) {
-            tvTitlebar.setText("تنظیمات اولین ورود به برنامه");
+//            tvTitlebar.setText("تنظیمات اولین ورود به برنامه");
         } else {
-            tvTitlebar.setText(title + " - " + "تنظیمات");
+//            tvTitlebar.setText(title + " - " + "تنظیمات");
             toggle.setDrawerIndicatorEnabled(false);
             toggle.setHomeAsUpIndicator(R.drawable.icon_back);
         }

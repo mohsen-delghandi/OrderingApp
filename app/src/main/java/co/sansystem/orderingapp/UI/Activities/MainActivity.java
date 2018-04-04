@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.AppBarLayout;
@@ -18,6 +19,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,9 +50,7 @@ public class MainActivity extends BaseActivity {
     int width,stopPosition,currentVideo = 0;
     FloatingActionButton fab;
     TextView tvTitlebar;
-    ImageView ivTitlebar;
-    ImageView ivTitlebarList;
-    ImageView ivTitlebarOfflineFactors;
+    ImageView ivTitlebar,ivNavBack;
     ActionBarDrawerToggle toggle;
     NavigationView nv;
     LinearLayout ll_loading;
@@ -94,11 +95,20 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window w = getWindow();
+            w.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+            w.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         appBarLayout = (AppBarLayout) findViewById(R.id.appBar);
         setSupportActionBar(toolbar);
+
+        ViewGroup.MarginLayoutParams paramss = (ViewGroup.MarginLayoutParams) toolbar.getLayoutParams();
+        paramss.setMargins(0,getStatusBarHeight(),0,0);
+        toolbar.setLayoutParams(paramss);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         SQLiteDatabase db2 = new MyDatabase(this).getWritableDatabase();
@@ -109,19 +119,16 @@ public class MainActivity extends BaseActivity {
         db2.close();
 
         ll_loading = (LinearLayout)findViewById(R.id.llLoading);
-
+        ivNavBack = (ImageView) findViewById(R.id.imageView_nav_back);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
 
         tvTitlebar = (TextView)findViewById(R.id.titleBar_title);
+        tvTitlebar.setText(title);
 
         ivTitlebar = (ImageView)findViewById(R.id.titleBar_icon);
         ivTitlebar.setVisibility(View.GONE);
-        ivTitlebarList = (ImageView)findViewById(R.id.titleBar_icon2);
-        ivTitlebarList.setVisibility(View.GONE);
-        ivTitlebarOfflineFactors = (ImageView)findViewById(R.id.titleBar_icon3);
-        ivTitlebarOfflineFactors.setVisibility(View.GONE);
 
         ns = (LinearLayout) findViewById(R.id.nestedscrollview);
 
@@ -143,8 +150,24 @@ public class MainActivity extends BaseActivity {
 
         nv = (NavigationView)findViewById(R.id.nav_view);
         DrawerLayout.LayoutParams params = (DrawerLayout.LayoutParams) nv.getLayoutParams();
-        params.width = width/3;
+        params.width = width;
         nv.setLayoutParams(params);
+
+        ivNavBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
+    }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     public static String priceFormatter(String mPrice){

@@ -47,7 +47,7 @@ public class OfflineFactorsActivity extends MainActivity {
         WebProvider provider = new WebProvider();
         WebService mTService = provider.getTService();
 
-        tvTitlebar.setText(title + " - " + "فیش های آفلاین");
+//        tvTitlebar.setText(title + " - " + "فیش های آفلاین");
         toggle.setDrawerIndicatorEnabled(false);
         toggle.setHomeAsUpIndicator(R.drawable.icon_back);
         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {

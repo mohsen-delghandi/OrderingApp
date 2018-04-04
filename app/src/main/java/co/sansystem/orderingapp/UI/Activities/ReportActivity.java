@@ -71,7 +71,7 @@ public class ReportActivity extends MainActivity {
         WebProvider provider = new WebProvider();
         mTService = provider.getTService();
 
-        tvTitlebar.setText(title + " - " + "گزارش های اخیر");
+//        tvTitlebar.setText(title + " - " + "گزارش های اخیر");
         toggle.setDrawerIndicatorEnabled(false);
         toggle.setHomeAsUpIndicator(R.drawable.icon_back);
         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {

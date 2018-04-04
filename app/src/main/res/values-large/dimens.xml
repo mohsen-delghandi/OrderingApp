@@ -5,6 +5,7 @@
     <dimen name="padding_small">10dp</dimen>
     <dimen name="padding_inner">12dp</dimen>
     <dimen name="padding_medium">17dp</dimen>
+    <dimen name="padding_xmedium">19dp</dimen>
     <dimen name="padding_large">20dp</dimen>
     <dimen name="padding_spinner">30dp</dimen>
     <dimen name="padding_box">55dp</dimen>
@@ -25,7 +26,10 @@
     <dimen name="dimen_xmedium">35dp</dimen>
     <dimen name="dimen_large">40dp</dimen>
     <dimen name="dimen_xlarge">50dp</dimen>
+    <dimen name="dimen_xlarge_half_minus">-25dp</dimen>
+    <dimen name="dimen_large_half">20dp</dimen>
     <dimen name="dimen_xxlarge">60dp</dimen>
+    <dimen name="dimen_xxxxlarge">70dp</dimen>
     <dimen name="dimen_xxxlarge">85dp</dimen>
     <dimen name="dimen_icon">48dp</dimen>
     <dimen name="dimen_icon_box">60dp</dimen>

@@ -1,7 +1,6 @@
 package co.sansystem.orderingapp.UI.Activities;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -52,24 +51,7 @@ public class LastFactorsActivity extends MainActivity {
         WebProvider provider = new WebProvider();
         mTService = provider.getTService();
 
-        ivTitlebarList.setVisibility(View.VISIBLE);
-        ivTitlebarList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(LastFactorsActivity.this, ReportActivity.class);
-                startActivity(i);
-            }
-        });
-        ivTitlebarOfflineFactors.setVisibility(View.VISIBLE);
-        ivTitlebarOfflineFactors.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(LastFactorsActivity.this, OfflineFactorsActivity.class);
-                startActivity(i);
-            }
-        });
-
-        tvTitlebar.setText(title + " - " + "فیش های اخیر");
+//        tvTitlebar.setText(title + " - " + "فیش های اخیر");
         toggle.setDrawerIndicatorEnabled(false);
         toggle.setHomeAsUpIndicator(R.drawable.icon_back);
         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {

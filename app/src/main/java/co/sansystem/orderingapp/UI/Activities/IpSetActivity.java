@@ -203,6 +203,7 @@ public class IpSetActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<List<ContactModel>> call, Throwable t) {
                         loadingDialogClass.dismiss();
+                        setProgressBarIndeterminateVisibility(false);
                         Toast.makeText(IpSetActivity.this, "ارتباط با سرور برقرار نشد، دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                     }
                 });
