@@ -5,12 +5,16 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -86,13 +90,12 @@ public class OrdersMenuActivity extends MainActivity {
                 cdd.show();
                 cdd.setCancelable(false);
                 Window window = cdd.getWindow();
-                window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             }
         });
 
         fabToggle.setOnClickListener(ocl);
-
-//        tvTitlebar.setText(title + " - " + "کاربر " + appPreferenceTools.getUserName());
 
         ivTitlebar.setVisibility(View.VISIBLE);
 
@@ -105,46 +108,15 @@ public class OrdersMenuActivity extends MainActivity {
                     startActivity(i);
                     finish();
                 } else {
-                    cdd2 = new CustomDialogClass(OrdersMenuActivity.this, costumerCode);
-                    cdd2.show();
-                    Window window = cdd2.getWindow();
-                    window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    cdd2.jameKol.setVisibility(View.GONE);
-                    cdd2.tvJameKol.setText("هشدار");
-                    cdd2.no.setText("خیر");
-                    cdd2.text.setText("با ورود به تنظیمات لیست سفارش خالی می شود،آیا مطمئن هستید؟");
-//                    cdd2.trVaziat.setVisibility(View.GONE);
-                    cdd2.text.setTextSize(25);
-                    cdd2.text.setPadding(40, 40, 40, 40);
-                    cdd2.etTable.setVisibility(View.GONE);
-                    cdd2.llLoadingDialog.setVisibility(View.GONE);
-                    cdd2.tvNameMoshtari.setVisibility(View.GONE);
-                    cdd2.textView.setVisibility(View.GONE);
-                    cdd2.tvJameKol.setVisibility(View.GONE);
-                    cdd2.tvMaliat.setVisibility(View.GONE);
-                    cdd2.tvMaliatText.setVisibility(View.GONE);
-                    cdd2.tvTakhfif.setVisibility(View.GONE);
-                    cdd2.tvTakhfifText.setVisibility(View.GONE);
-                    cdd2.tvService.setVisibility(View.GONE);
-                    cdd2.tvServiceText.setVisibility(View.GONE);
-                    cdd2.tvFactor.setVisibility(View.GONE);
-                    cdd2.tvFactorText.setVisibility(View.GONE);
-                    cdd2.tvTell.setVisibility(View.GONE);
-                    cdd2.tvAddress.setVisibility(View.GONE);
-                    cdd2.textViewTell.setVisibility(View.GONE);
-                    cdd2.textViewAddress.setVisibility(View.GONE);
-                    cdd2.tvVaziat.setVisibility(View.GONE);
-                    cdd2.spVaziatSefaresh.setVisibility(View.GONE);
-                    cdd2.tlMain.setAlpha(1f);
-                    cdd2.yes.setText("بله");
-                    cdd2.yes.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent i = new Intent(OrdersMenuActivity.this, SettingsActivity.class);
-                            startActivity(i);
-                            finish();
-                        }
-                    });
+
+//                    cdd2.yes.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            Intent i = new Intent(OrdersMenuActivity.this, SettingsActivity.class);
+//                            startActivity(i);
+//                            finish();
+//                        }
+//                    });
                 }
             }
         });
@@ -162,7 +134,7 @@ public class OrdersMenuActivity extends MainActivity {
                 OrdersMenuActivity.fabToggle.setVisibility(View.VISIBLE);
 
                 OrdersMenuActivity.tvTayid.setVisibility(View.VISIBLE);
-                    LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
+                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
                     params.height = MainActivity.height / 3;
                     OrdersMenuActivity.ll.setLayoutParams(params);
 //                }
@@ -192,6 +164,28 @@ public class OrdersMenuActivity extends MainActivity {
 
         NavigationAdapter.refreshFavorites();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.more_tab_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId())
+        {
+            case R.id.lastFactors:
+                startActivity(new Intent(this,LastFactorsActivity.class));
+                break;
+            case R.id.report:
+                startActivity(new Intent(this,ReportActivity.class));
+                break;
+        }
+        return true;
+    }
+
 
     @Override
     public void startVideo(VideoView videoView, List<String> videoAddressList, int i) {

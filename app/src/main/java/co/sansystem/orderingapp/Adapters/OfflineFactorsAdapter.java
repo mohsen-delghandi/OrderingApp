@@ -1,6 +1,5 @@
 package co.sansystem.orderingapp.Adapters;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +20,6 @@ import java.util.Locale;
 
 import co.sansystem.orderingapp.Models.FactorModel;
 import co.sansystem.orderingapp.UI.Activities.MainActivity;
-import co.sansystem.orderingapp.UI.Dialogs.CustomDialogClass;
 import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
 import co.sansystem.orderingapp.Utility.Network.WebService;
@@ -148,56 +145,20 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
         holder.tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final CustomDialogClass cdd2 = new CustomDialogClass((Activity)context, "0");
-                cdd2.show();
-                Window window = cdd2.getWindow();
-                window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                cdd2.jameKol.setVisibility(View.GONE);
-                cdd2.etTable.setVisibility(View.GONE);
-                cdd2.llLoadingDialog.setVisibility(View.GONE);
-                cdd2.tvNameMoshtari.setVisibility(View.GONE);
-                cdd2.textView.setVisibility(View.GONE);
-                cdd2.tvJameKol.setVisibility(View.GONE);
-                cdd2.tvMaliat.setVisibility(View.GONE);
-                cdd2.tvMaliatText.setVisibility(View.GONE);
-                cdd2.tvTakhfif.setVisibility(View.GONE);
-                cdd2.tvTakhfifText.setVisibility(View.GONE);
-                cdd2.tvService.setVisibility(View.GONE);
-                cdd2.tvServiceText.setVisibility(View.GONE);
-                cdd2.tvFactor.setVisibility(View.GONE);
-                cdd2.tvFactorText.setVisibility(View.GONE);
-                cdd2.tvTell.setVisibility(View.GONE);
-                cdd2.tvAddress.setVisibility(View.GONE);
-                cdd2.textViewTell.setVisibility(View.GONE);
-                cdd2.textViewAddress.setVisibility(View.GONE);
-                cdd2.tvVaziat.setVisibility(View.GONE);
-                cdd2.spVaziatSefaresh.setVisibility(View.GONE);
-                cdd2.tvJameKol.setText("هشدار");
-                cdd2.no.setText("خیر");
-                cdd2.text.setText("آیا از حذف فاکتور مطمئن هستید؟");
-//                cdd2.trVaziat.setVisibility(View.GONE);
-                cdd2.text.setTextSize(25);
-                cdd2.text.setPadding(40, 40, 40, 40);
-                cdd2.etTable.setVisibility(View.GONE);
-                cdd2.llLoadingDialog.setVisibility(View.GONE);
-                cdd2.tvNameMoshtari.setVisibility(View.GONE);
-                cdd2.textView.setVisibility(View.GONE);
-                cdd2.tlMain.setAlpha(1f);
-                cdd2.yes.setText("بله");
-                cdd2.yes.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        SQLiteDatabase database = new MyDatabase(context).getWritableDatabase();
-                        database.delete(MyDatabase.OFFLINE_FACTORS_TABLE,MyDatabase.ID + " = " + fatorIDs.get(position),null);
-
-                        Toast.makeText(context, "با موفقیت حذف گردید.", Toast.LENGTH_SHORT).show();
-                        currentModel.remove(position);
-                        fatorIDs.remove(position);
-                        notifyDataSetChanged();
-                        cdd2.dismiss();
-                    }
-                });
+//                cdd2.yes.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//
+//                        SQLiteDatabase database = new MyDatabase(context).getWritableDatabase();
+//                        database.delete(MyDatabase.OFFLINE_FACTORS_TABLE,MyDatabase.ID + " = " + fatorIDs.get(position),null);
+//
+//                        Toast.makeText(context, "با موفقیت حذف گردید.", Toast.LENGTH_SHORT).show();
+//                        currentModel.remove(position);
+//                        fatorIDs.remove(position);
+//                        notifyDataSetChanged();
+//                        cdd2.dismiss();
+//                    }
+//                });
             }
         });
     }
