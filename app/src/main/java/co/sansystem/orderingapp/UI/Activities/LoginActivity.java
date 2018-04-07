@@ -3,12 +3,14 @@ package co.sansystem.orderingapp.UI.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,8 @@ public class LoginActivity extends AppCompatActivity {
     String name, id, password;
     WebService mTService;
     AppPreferenceTools appPreferenceTools;
+    private ImageView ivHelp;
+    private ImageView ivBack;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -46,6 +50,22 @@ public class LoginActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.sign_in_layout);
+
+        ivBack = (ImageView) findViewById(R.id.imageView_back);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        ivHelp = (ImageView) findViewById(R.id.imageView_help);
+        ivHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this,HelpActivity.class));
+            }
+        });
 
         WebProvider webProvider = new WebProvider();
         mTService = webProvider.getTService();
@@ -65,35 +85,41 @@ public class LoginActivity extends AppCompatActivity {
                 loadingDialogClass.show();
                 name = etUserName.getText().toString().trim();
                 password = etPassword.getText().toString().trim();
-
-                Call<List<UserModel>> call = mTService.loginGarson(name, password);
-                call.enqueue(new Callback<List<UserModel>>() {
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
                     @Override
-                    public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
+                    public void run() {
 
-                        loadingDialogClass.dismiss();
-                        if (response.isSuccessful()) {
+                        Call<List<UserModel>> call = mTService.loginGarson(name, password);
+                        call.enqueue(new Callback<List<UserModel>>() {
+                            @Override
+                            public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
 
-                            if (!response.body().get(0).getLoginID().equals("0")) {
-                                appPreferenceTools.loginOK();
-                                appPreferenceTools.saveUserAuthenticationInfo(response.body().get(0).getLoginName(), password, response.body().get(0).getLoginID());
-                                startActivity(new Intent(LoginActivity.this, OrdersMenuActivity.class));
-                                finish();
-                            } else {
-                                Toast.makeText(LoginActivity.this, "کلمه کاربری یا رمز اشتباه است.", Toast.LENGTH_SHORT).show();
+                                loadingDialogClass.dismiss();
+                                if (response.isSuccessful()) {
+
+                                    if (!response.body().get(0).getLoginID().equals("0")) {
+                                        appPreferenceTools.loginOK();
+                                        appPreferenceTools.saveUserAuthenticationInfo(response.body().get(0).getLoginName(), password, response.body().get(0).getLoginID());
+                                        startActivity(new Intent(LoginActivity.this, OrdersMenuActivity.class));
+                                        finish();
+                                    } else {
+                                        Toast.makeText(LoginActivity.this, "کلمه کاربری یا رمز اشتباه است.", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        } else {
-                            Toast.makeText(LoginActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-                        }
-                    }
 
-                    @Override
-                    public void onFailure(Call<List<UserModel>> call, Throwable t) {
+                            @Override
+                            public void onFailure(Call<List<UserModel>> call, Throwable t) {
 
-                        loadingDialogClass.dismiss();
-                        Toast.makeText(LoginActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                                loadingDialogClass.dismiss();
+                                Toast.makeText(LoginActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
-                });
+                }, 1234);
             }
         });
     }

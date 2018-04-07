@@ -1,162 +1,372 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/image_background"
     android:layoutDirection="rtl"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:padding="@dimen/padding_large"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:gravity="center"
+        android:paddingLeft="@dimen/padding_large"
+        android:paddingRight="@dimen/padding_large"
+        android:paddingTop="@dimen/padding_spinner">
+
+        <ImageView
+            android:id="@+id/imageView_nav_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/padding_large"
+            android:adjustViewBounds="true"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_arrow_forward" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/padding_large"
+            android:layout_centerVertical="true"
+            android:text="گزارش حساب"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/font_medium" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:paddingRight="@dimen/dimen_large"
+        android:paddingLeft="@dimen/dimen_large"
+        android:paddingBottom="@dimen/dimen_large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="جهت محاسبه گزارش حساب، تاریخ موردنظر را انتخاب کنید."
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/font_small" />
 
         <LinearLayout
-            android:id="@+id/linearLayout_az_tarikh"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/padding_xlarge"
+            android:paddingBottom="@dimen/padding_xlarge"
+            >
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearLayout_az_tarikh"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="از تاریخ : " />
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="از تاریخ"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_small" />
+
+                <TextView
+                    android:padding="@dimen/padding_medium"
+                    android:id="@+id/textView_az_tarikh"
+                    android:text="1397/02/22"
+                    android:layoutDirection="ltr"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_medium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_underline_thick_primary_text"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout_ta_tarikh"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="تا تاریخ"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_small" />
+
+                <TextView
+                    android:padding="@dimen/padding_medium"
+                    android:id="@+id/textView_ta_tarikh"
+                    android:text="1397/12/22"
+                    android:layoutDirection="ltr"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_medium"
+                    android:background="@drawable/shape_underline_thick_primary_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView_mohasebe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/border_shape_primary_solid"
+            android:padding="@dimen/padding_medium"
+            android:text="محاسبه"
+            android:layout_marginBottom="@dimen/padding_large"
+            android:textColor="@color/icons"
+            android:textSize="@dimen/font_medium" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_large">
 
             <TextView
-                android:id="@+id/textView_az_tarikh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_xbit"
+                android:layout_weight="1"
+                android:background="@drawable/border_shape_solid_gray"
+                android:gravity="center"
+                android:visibility="invisible"
+                android:text="فاکتورهای لغوی"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_small"
+                app:fontPath="fonts/IRANSansWeb.ttf"
+                tools:ignore="MissingPrefix" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_xbit"
+                android:layout_weight="2"
+                android:background="@drawable/border_shape_solid_gray"
+                android:backgroundTint="#ccc"
+                android:gravity="center"
+                android:text="بر حسب تومان"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xmedium"
+                app:fontPath="fonts/IRANSansWeb.ttf"
+                tools:ignore="MissingPrefix" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout_ta_tarikh"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" تا تاریخ :" />
+                android:id="@+id/textView_factor_text"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_xbit"
+                android:layout_weight="1"
+                android:background="@drawable/border_shape_solid_gray"
+                android:gravity="center"
+                android:text="فاکتورهای لغوی"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_small"
+                app:fontPath="fonts/IRANSansWeb.ttf"
+                tools:ignore="MissingPrefix" />
 
             <TextView
-                android:id="@+id/textView_ta_tarikh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:id="@+id/textView_JamSumCancleFact"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_xbit"
+                android:layout_weight="2"
+                android:background="@drawable/border_shape_solid_gray"
+                android:gravity="center"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xmedium"
+                app:fontPath="fonts/IRANSansWeb.ttf"
+                tools:ignore="MissingPrefix" />
 
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_gravity="center"
-        android:id="@+id/textView_mohasebe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_border"
-        android:padding="@dimen/padding_medium"
-        android:text="محاسبه" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_xbit"
+                android:layout_weight="1"
+                android:background="@drawable/border_shape_solid_gray"
+                android:gravity="center"
+                android:text="جمع بیرون بر"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_small"
+                app:fontPath="fonts/IRANSansWeb.ttf"
+                tools:ignore="MissingPrefix" />
 
-    <LinearLayout
-        android:padding="@dimen/padding_medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/textView_JamBirunbar"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_xbit"
+                android:layout_weight="2"
+                android:background="@drawable/border_shape_solid_gray"
+                android:gravity="center"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xmedium"
+                app:fontPath="fonts/IRANSansWeb.ttf"
+                tools:ignore="MissingPrefix" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="جمع کل : " />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView_SumKolFact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_xbit"
+                android:layout_weight="1"
+                android:background="@drawable/border_shape_solid_gray"
+                android:gravity="center"
+                android:text="جمع پیک"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_small"
+                app:fontPath="fonts/IRANSansWeb.ttf"
+                tools:ignore="MissingPrefix" />
 
-    <LinearLayout
-        android:padding="@dimen/padding_medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/textView_Jampeik"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_xbit"
+                android:layout_weight="2"
+                android:background="@drawable/border_shape_solid_gray"
+                android:gravity="center"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xmedium"
+                app:fontPath="fonts/IRANSansWeb.ttf"
+                tools:ignore="MissingPrefix" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="جمع بیرون بر : " />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView_JamBirunbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_xbit"
+                android:layout_weight="1"
+                android:background="@drawable/border_shape_solid_gray"
+                android:gravity="center"
+                android:text="جمع داخل سالن"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_small"
+                app:fontPath="fonts/IRANSansWeb.ttf"
+                tools:ignore="MissingPrefix" />
 
-    <LinearLayout
-        android:padding="@dimen/padding_medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/textView_JaminSalon"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_xbit"
+                android:layout_weight="2"
+                android:background="@drawable/border_shape_solid_gray"
+                android:gravity="center"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xmedium"
+                app:fontPath="fonts/IRANSansWeb.ttf"
+                tools:ignore="MissingPrefix" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="جمع پیک : " />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView_Jampeik"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_xbit"
+                android:layout_weight="1"
+                android:background="@drawable/border_shape_solid_gray"
+                android:gravity="center"
+                android:text="جمع کل"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_small"
+                app:fontPath="fonts/IRANSansWeb.ttf"
+                tools:ignore="MissingPrefix" />
 
-    <LinearLayout
-        android:padding="@dimen/padding_medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/textView_SumKolFact"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_xbit"
+                android:layout_weight="2"
+                android:background="@drawable/border_shape_solid_gray"
+                android:gravity="center"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xmedium"
+                app:fontPath="fonts/IRANSansWeb.ttf"
+                tools:ignore="MissingPrefix" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="جمع سالن ها : " />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/textView_JaminSalon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:id="@+id/tableRow_jameKol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/textView_jameKol"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_xbit"
+                android:layout_weight="1"
+                android:background="@drawable/border_shape_solid_gray"
+                android:gravity="center"
+                android:text="جمع مبلغ خالص"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_small"
+                app:fontPath="fonts/IRANSansWeb.ttf"
+                tools:ignore="MissingPrefix" />
 
-    <LinearLayout
-        android:padding="@dimen/padding_medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="فاکتور های لغو شده :" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textView_JamSumCancleFact"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/textView_mablagkhales"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/padding_xbit"
+                android:background="@color/green"
+                android:gravity="center"
+                android:padding="@dimen/padding_small"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_large"
+                app:fontPath="fonts/IRANSansWeb.ttf"
+                tools:ignore="MissingPrefix" />
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:padding="@dimen/padding_medium"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="جمع مبلغ خالص :" />
-
-        <TextView
-            android:id="@+id/textView_mablagkhales"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        </LinearLayout>
 
     </LinearLayout>
 

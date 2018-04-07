@@ -2,11 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/linearLayout_main"
     android:background="@drawable/image_background"
     android:layoutDirection="rtl">
 
-    <LinearLayout
-        android:padding="@dimen/padding_large"
+    <RelativeLayout
+        android:paddingTop="@dimen/padding_spinner"
+        android:paddingRight="@dimen/padding_large"
+        android:paddingLeft="@dimen/padding_large"
+        android:paddingBottom="@dimen/padding_box"
         android:background="@drawable/shape_underline_primary_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,6 +22,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/image_arrow_forward"
             android:scaleType="centerCrop"
+            android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/padding_large"
             android:adjustViewBounds="true"/>
 
@@ -26,14 +31,15 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/padding_large"
-            android:text="گزارش حساب"
+            android:text="سفارشات اخیر"
+            android:layout_centerVertical="true"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/font_medium" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:background="@color/icons"
+        android:background="@color/red"
         android:id="@+id/last_factors_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

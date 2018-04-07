@@ -1,15 +1,19 @@
 package co.sansystem.orderingapp.UI.Activities;
 
 import android.content.ContentValues;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.AlertDialog;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.sansystem.orderingapp.R;
@@ -28,21 +32,41 @@ import co.sansystem.orderingapp.Utility.Network.WebService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by Mohsen on 2018-03-17.
  */
 
-public class LastFactorsActivity extends MainActivity {
+public class LastFactorsActivity extends AppCompatActivity {
 
     RecyclerView rvLastFactors;
     LastFactorsAdapter lastFactorsAdapter;
     private WebService mTService;
+    ImageView ivBack;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setInflater(this, R.layout.last_factors_layout);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.last_factors_layout);
+
+        ivBack = (ImageView) findViewById(R.id.imageView_nav_back);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         rvLastFactors = (RecyclerView) findViewById(R.id.last_factors_recyclerView);
         rvLastFactors.setHasFixedSize(true);
@@ -52,9 +76,8 @@ public class LastFactorsActivity extends MainActivity {
         rvLastFactors.setAdapter(lastFactorsAdapter);
 
 
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
 
-
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
@@ -64,88 +87,74 @@ public class LastFactorsActivity extends MainActivity {
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position = viewHolder.getAdapterPosition(); //get position which is swipe
 
-                if (direction == ItemTouchHelper.LEFT) {    //if swipe left
+                if (direction == ItemTouchHelper.RIGHT) {    //if swipe left
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(LastFactorsActivity.this); //alert for confirm to delete
-                    builder.setMessage("Are you sure to delete?");    //set message
 
-                    builder.setPositiveButton("REMOVE", new DialogInterface.OnClickListener() { //when click on DELETE
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            lastFactorsAdapter.notifyItemRemoved(position);
-//                            list.remove(position);  //then remove item
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.linearLayout_main), "آیا اطمینان دارید؟", Snackbar.LENGTH_LONG)
+                            .setAction("بله", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    lastFactorsAdapter.deleteAdapterData(position);
+                                }
+                            })
+                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
 
-                            return;
-                        }
-                    }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {  //not removing items if cancel is done
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            lastFactorsAdapter.notifyItemRemoved(position + 1);    //notifies the RecyclerView Adapter that data in adapter has been removed at a particular position.
-                            lastFactorsAdapter.notifyItemRangeChanged(position, lastFactorsAdapter.getItemCount());   //notifies the RecyclerView Adapter that positions of element in adapter has been changed from position(removed element index to end of list), please update it.
-                            return;
-                        }
-                    }).show();  //show alert dialog
+                    snackbar.show();
+
+                    lastFactorsAdapter.notifyDataSetChanged();
                 }
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(rvLastFactors);
 
-
-
-
-
         WebProvider provider = new WebProvider();
         mTService = provider.getTService();
 
-//        tvTitlebar.setText(title + " - " + "فیش های اخیر");
-        toggle.setDrawerIndicatorEnabled(false);
-        toggle.setHomeAsUpIndicator(R.drawable.icon_back);
-        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
         final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(this);
         loadingDialogClass.show();
-        Call<List<MiniFactorModel>> call = mTService.getLastFactors();
-        call.enqueue(new Callback<List<MiniFactorModel>>() {
-
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onResponse(Call<List<MiniFactorModel>> call, Response<List<MiniFactorModel>> response) {
+            public void run() {
 
-                if (response.isSuccessful()) {
-                    lastFactorsAdapter.updateAdapterData(response.body());
-                    lastFactorsAdapter.notifyDataSetChanged();
-                    loadingDialogClass.dismiss();
-                } else {
-                    SQLiteDatabase db2 = new MyDatabase(LastFactorsActivity.this).getWritableDatabase();
-                    ContentValues cv2 = new ContentValues();
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                    String myDate = format.format(new Date());
-                    cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
-                    db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
-                    db2.close();
-                    Toast.makeText(LastFactorsActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-                    loadingDialogClass.dismiss();
-                }
-            }
+                Call<List<MiniFactorModel>> call = mTService.getLastFactors();
+                call.enqueue(new Callback<List<MiniFactorModel>>() {
 
-            @Override
-            public void onFailure(Call<List<MiniFactorModel>> call, Throwable t) {
-                SQLiteDatabase db2 = new MyDatabase(LastFactorsActivity.this).getWritableDatabase();
-                ContentValues cv2 = new ContentValues();
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                String myDate = format.format(new Date());
-                cv2.put(MyDatabase.RESPONCE, myDate + " --> " + t.getMessage());
-                db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
-                db2.close();
-                Toast.makeText(LastFactorsActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-                loadingDialogClass.dismiss();
+                    @Override
+                    public void onResponse(Call<List<MiniFactorModel>> call, Response<List<MiniFactorModel>> response) {
+
+                        if (response.isSuccessful()) {
+                            lastFactorsAdapter.updateAdapterData(response.body());
+                            lastFactorsAdapter.notifyDataSetChanged();
+                            loadingDialogClass.dismiss();
+                        } else {
+                            SQLiteDatabase db2 = new MyDatabase(LastFactorsActivity.this).getWritableDatabase();
+                            ContentValues cv2 = new ContentValues();
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                            String myDate = format.format(new Date());
+                            cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
+                            db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+                            db2.close();
+                            Toast.makeText(LastFactorsActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                            loadingDialogClass.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<MiniFactorModel>> call, Throwable t) {
+                        SQLiteDatabase db2 = new MyDatabase(LastFactorsActivity.this).getWritableDatabase();
+                        ContentValues cv2 = new ContentValues();
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                        String myDate = format.format(new Date());
+                        cv2.put(MyDatabase.RESPONCE, myDate + " --> " + t.getMessage());
+                        db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+                        db2.close();
+                        Toast.makeText(LastFactorsActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                        loadingDialogClass.dismiss();
+                    }
+                });
             }
-        });
+        }, 1234);
     }
 }

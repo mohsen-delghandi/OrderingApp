@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sansystem.orderingapp.R;
@@ -23,6 +24,8 @@ public class TitleSetActivity extends AppCompatActivity {
 
     EditText et_title;
     TextView btSave;
+    private ImageView ivHelp;
+    private ImageView ivBack;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -36,6 +39,22 @@ public class TitleSetActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.title_set_layout);
+
+        ivBack = (ImageView) findViewById(R.id.imageView_back);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        ivHelp = (ImageView) findViewById(R.id.imageView_help);
+        ivHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(TitleSetActivity.this,HelpActivity.class));
+            }
+        });
 
         SQLiteDatabase db = new MyDatabase(this).getWritableDatabase();
         Cursor cursor = db.query(MyDatabase.SETTINGS_TABLE, new String[]{MyDatabase.TITLE}, null, null, null, null, null);
@@ -60,7 +79,6 @@ public class TitleSetActivity extends AppCompatActivity {
                 db.close();
 
                 startActivity(new Intent(TitleSetActivity.this,OrderInfoActivity.class));
-                finish();
             }
         });
     }

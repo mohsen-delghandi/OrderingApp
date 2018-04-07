@@ -7,6 +7,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -574,104 +575,113 @@ public class CustomDialogClass extends Dialog implements
 
                     InputMethodManager imm = (InputMethodManager) c.getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(etTable.getWindowToken(), 0);
-
-                    Call<Object> call = mTService.saveFactor(factorContentModelList, factorNumber, Fish_Number);
-                    call.enqueue(new Callback<Object>() {
+                    final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(c);
+                    loadingDialogClass.show();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
                         @Override
-                        public void onResponse(Call<Object> call, Response<Object> response) {
+                        public void run() {
+                            Call<Object> call = mTService.saveFactor(factorContentModelList, factorNumber, Fish_Number);
+                            call.enqueue(new Callback<Object>() {
+                                @Override
+                                public void onResponse(Call<Object> call, Response<Object> response) {
 
-                            if (response.isSuccessful()) {
+                                    if (response.isSuccessful()) {
+loadingDialogClass.dismiss();
+                                        svMain.setVisibility(View.GONE);
+                                        rlMain.setVisibility(View.GONE);
+                                        rlSuccess.setVisibility(View.VISIBLE);
+                                        llSuccess.setVisibility(View.VISIBLE);
 
-                                svMain.setVisibility(View.GONE);
-                                rlMain.setVisibility(View.GONE);
-                                rlSuccess.setVisibility(View.VISIBLE);
-                                llSuccess.setVisibility(View.VISIBLE);
+                                        tvFishNumber.setText(response.body().toString());
+                                        tvNameMoshtari.setText(textView.getText().toString().trim());
+                                        FoodOrdersAdapter.mList.clear();
 
-                                tvFishNumber.setText(response.body().toString());
-                                tvNameMoshtari.setText(textView.getText().toString().trim());
-                                FoodOrdersAdapter.mList.clear();
+                                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
+                                        params.height = 0;
+                                        OrdersMenuActivity.ll.setLayoutParams(params);
+                                        OrdersMenuActivity.tvTayid.setAlpha(0f);
+                                        OrdersMenuActivity.fabToggle.setAlpha(0f);
 
-                                FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
-                                params.height = 0;
-                                OrdersMenuActivity.ll.setLayoutParams(params);
-                                OrdersMenuActivity.tvTayid.setAlpha(0f);
-                                OrdersMenuActivity.fabToggle.setAlpha(0f);
+                                        Call<List<FavoriteModel>> call2 = mTService3.getFoodFavorite();
+                                        call2.enqueue(new Callback<List<FavoriteModel>>() {
 
-                                Call<List<FavoriteModel>> call2 = mTService3.getFoodFavorite();
-                                call2.enqueue(new Callback<List<FavoriteModel>>() {
+                                            @Override
+                                            public void onResponse
+                                                    (Call<List<FavoriteModel>> call, Response<List<FavoriteModel>> response) {
 
-                                    @Override
-                                    public void onResponse
-                                            (Call<List<FavoriteModel>> call, Response<List<FavoriteModel>> response) {
-
-                                        if (response.isSuccessful()) {
+                                                if (response.isSuccessful()) {
 
 
-                                            SQLiteDatabase dbFavorite = new MyDatabase(c).getWritableDatabase();
+                                                    SQLiteDatabase dbFavorite = new MyDatabase(c).getWritableDatabase();
 
-                                            dbFavorite.execSQL("UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = '0' ;");
+                                                    dbFavorite.execSQL("UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = '0' ;");
 
-                                            for (FavoriteModel favoriteModel :
-                                                    response.body()) {
-                                                dbFavorite.execSQL(" UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = '1' WHERE " + MyDatabase.CODE + " = " + favoriteModel.getIDKala());
+                                                    for (FavoriteModel favoriteModel :
+                                                            response.body()) {
+                                                        dbFavorite.execSQL(" UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = '1' WHERE " + MyDatabase.CODE + " = " + favoriteModel.getIDKala());
+                                                    }
+
+
+                                                    dbFavorite.close();
+
+                                                    NavigationAdapter.refreshFavorites();
+                                                }
+
                                             }
 
+                                            @Override
+                                            public void onFailure(Call<List<FavoriteModel>> call, Throwable t) {
+                                            }
+                                        });
+                                    } else {
+loadingDialogClass.dismiss();
+                                        SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
+                                        ContentValues cv2 = new ContentValues();
+                                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                                        String myDate = format.format(new Date());
+                                        cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
+                                        db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
 
-                                            dbFavorite.close();
+                                        Gson gson = new Gson();
+                                        String json = gson.toJson(factorContentModelList);
+                                        ContentValues contentValues = new ContentValues();
+                                        contentValues.put(MyDatabase.FACTOR_JSON, json);
+                                        db2.insert(MyDatabase.OFFLINE_FACTORS_TABLE, null, contentValues);
 
-                                            NavigationAdapter.refreshFavorites();
-                                        }
+                                        db2.close();
+                                        llLoadingDialog.setVisibility(View.GONE);
+                                        tlMain.setAlpha(1f);
+                                        Toast.makeText(c, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
 
                                     }
+                                }
 
-                                    @Override
-                                    public void onFailure(Call<List<FavoriteModel>> call, Throwable t) {
-                                    }
-                                });
-                            } else {
+                                @Override
+                                public void onFailure(Call<Object> call, Throwable t) {
+                                    loadingDialogClass.dismiss();
+                                    SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
+                                    ContentValues cv2 = new ContentValues();
+                                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                                    String myDate = format.format(new Date());
+                                    cv2.put(MyDatabase.RESPONCE, myDate + " --> " + t.getMessage());
+                                    db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
 
-                                SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
-                                ContentValues cv2 = new ContentValues();
-                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                                String myDate = format.format(new Date());
-                                cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
-                                db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+                                    Gson gson = new Gson();
+                                    String json = gson.toJson(factorContentModelList);
+                                    ContentValues contentValues = new ContentValues();
+                                    contentValues.put(MyDatabase.FACTOR_JSON, json);
+                                    db2.insert(MyDatabase.OFFLINE_FACTORS_TABLE, null, contentValues);
 
-                                Gson gson = new Gson();
-                                String json = gson.toJson(factorContentModelList);
-                                ContentValues contentValues = new ContentValues();
-                                contentValues.put(MyDatabase.FACTOR_JSON, json);
-                                db2.insert(MyDatabase.OFFLINE_FACTORS_TABLE, null, contentValues);
-
-                                db2.close();
-                                llLoadingDialog.setVisibility(View.GONE);
-                                tlMain.setAlpha(1f);
-                                Toast.makeText(c, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-
-                            }
+                                    db2.close();
+                                    llLoadingDialog.setVisibility(View.GONE);
+                                    tlMain.setAlpha(1f);
+                                    Toast.makeText(c, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
+                    }, 1234);
 
-                        @Override
-                        public void onFailure(Call<Object> call, Throwable t) {
-                            SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
-                            ContentValues cv2 = new ContentValues();
-                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                            String myDate = format.format(new Date());
-                            cv2.put(MyDatabase.RESPONCE, myDate + " --> " + t.getMessage());
-                            db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
-
-                            Gson gson = new Gson();
-                            String json = gson.toJson(factorContentModelList);
-                            ContentValues contentValues = new ContentValues();
-                            contentValues.put(MyDatabase.FACTOR_JSON, json);
-                            db2.insert(MyDatabase.OFFLINE_FACTORS_TABLE, null, contentValues);
-
-                            db2.close();
-                            llLoadingDialog.setVisibility(View.GONE);
-                            tlMain.setAlpha(1f);
-                            Toast.makeText(c, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
                 }
 
                 break;

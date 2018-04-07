@@ -1,20 +1,24 @@
 package co.sansystem.orderingapp.UI.Activities;
 
-import android.app.DatePickerDialog;
-import android.content.ContentValues;
-import android.database.sqlite.SQLiteDatabase;
+import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
+import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.DatePicker;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alirezaafkar.sundatepicker.DatePicker;
+import com.alirezaafkar.sundatepicker.components.DateItem;
+import com.alirezaafkar.sundatepicker.interfaces.DateSetListener;
 import com.sansystem.orderingapp.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -22,18 +26,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import co.sansystem.orderingapp.Models.ReportModel;
 import co.sansystem.orderingapp.UI.Dialogs.LoadingDialogClass;
-import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
 import co.sansystem.orderingapp.Utility.Network.WebService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by Mohsen on 2018-03-25.
  */
 
-public class ReportActivity extends MainActivity {
+public class ReportActivity extends AppCompatActivity {
     private WebService mTService;
 
     @BindView(R.id.linearLayout_az_tarikh)
@@ -60,85 +64,106 @@ public class ReportActivity extends MainActivity {
     TextView tvMohasebe;
 
     String azTarikh, taTarikh;
-    String day, month, year;
+    String dayy, monthh, yearr;
+    ImageView ivBack;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setInflater(this, R.layout.report_layout);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.report_layout);
         ButterKnife.bind(this);
 
-        WebProvider provider = new WebProvider();
-        mTService = provider.getTService();
-
-//        tvTitlebar.setText(title + " - " + "گزارش های اخیر");
-        toggle.setDrawerIndicatorEnabled(false);
-        toggle.setHomeAsUpIndicator(R.drawable.icon_back);
-        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+        ivBack = (ImageView) findViewById(R.id.imageView_nav_back);
+        ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onBackPressed();
             }
         });
-        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        azTarikh = "01-01-2018";
-        tvAZTarikh.setText(azTarikh);
+        WebProvider provider = new WebProvider();
+        mTService = provider.getTService();
+
+        final DatePicker.Builder builder = new DatePicker
+                .Builder()
+                .theme(R.style.DialogTheme)
+                .future(true);
+
+        final Date mDate = new Date();
+        builder.date(mDate.getDay(), mDate.getMonth(), mDate.getYear());
+
+
+        tvAZTarikh.setText(mDate.getDate());
         llAzTarikh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final DatePickerDialog datePickerDialog = new DatePickerDialog(ReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+
+                builder.build(new DateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        if ((i2 + "").length() == 1) {
-                            day = "0" + i2;
+                    public void onDateSet(int id, @Nullable Calendar calendar, int day, int month, int year) {
+                        mDate.setDate(day, month, year);
+
+
+                        if ((calendar.get(Calendar.DAY_OF_MONTH) + "").length() == 1) {
+                            dayy = "0" + calendar.get(Calendar.DAY_OF_MONTH);
                         } else {
-                            day = i2 + "";
+                            dayy = calendar.get(Calendar.DAY_OF_MONTH) + "";
                         }
 
-                        if (((i1 + 1) + "").length() == 1) {
-                            month = "0" + (i1 + 1);
+                        if (((calendar.get(Calendar.MONTH) + 1) + "").length() == 1) {
+                            monthh = "0" + (calendar.get(Calendar.MONTH) + 1);
                         } else {
-                            month = (i1 + 1) + "";
+                            monthh = (calendar.get(Calendar.MONTH) + 1) + "";
                         }
 
-                        year = i + "";
+                        yearr = calendar.get(Calendar.YEAR) + "";
 
-                        azTarikh = day + "-" + month + "-" + year;
-                        tvAZTarikh.setText(azTarikh);
+
+
+                        azTarikh = dayy + "-" + monthh + "-" + yearr;
+                        tvAZTarikh.setText(mDate.getDate());
                     }
-                }, 2018, 0, 01);
-                datePickerDialog.show();
+                }).show(getSupportFragmentManager(), "");
             }
         });
 
-        taTarikh = "01-02-2018";
-        tvTaTarikh.setText(taTarikh);
+        tvTaTarikh.setText(mDate.getDate());
         llTaTarikh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final DatePickerDialog datePickerDialog = new DatePickerDialog(ReportActivity.this, new DatePickerDialog.OnDateSetListener() {
+                builder.build(new DateSetListener() {
                     @Override
-                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-                        if ((i2 + "").length() == 1) {
-                            day = "0" + i2;
+                    public void onDateSet(int id, @Nullable Calendar calendar, int day, int month, int year) {
+                        mDate.setDate(day, month, year);
+
+
+                        if ((calendar.get(Calendar.DAY_OF_MONTH) + "").length() == 1) {
+                            dayy = "0" + calendar.get(Calendar.DAY_OF_MONTH);
                         } else {
-                            day = i2 + "";
+                            dayy = calendar.get(Calendar.DAY_OF_MONTH) + "";
                         }
 
-                        if (((i1 + 1) + "").length() == 1) {
-                            month = "0" + (i1 + 1);
+                        if (((calendar.get(Calendar.MONTH) + 1) + "").length() == 1) {
+                            monthh = "0" + (calendar.get(Calendar.MONTH) + 1);
                         } else {
-                            month = (i1 + 1) + "";
+                            monthh = (calendar.get(Calendar.MONTH) + 1) + "";
                         }
 
-                        year = i + "";
+                        yearr = calendar.get(Calendar.YEAR) + "";
 
-                        taTarikh = day + "-" + month + "-" + year;
-                        tvTaTarikh.setText(taTarikh);
+
+
+                        taTarikh = dayy + "-" + monthh + "-" + yearr;
+                        tvTaTarikh.setText(mDate.getDate());
                     }
-                }, 2018, 1, 01);
-                datePickerDialog.show();
+                }).show(getSupportFragmentManager(), "");
             }
         });
 
@@ -147,47 +172,53 @@ public class ReportActivity extends MainActivity {
             public void onClick(View view) {
                 final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(ReportActivity.this);
                 loadingDialogClass.show();
-                Call<List<ReportModel>> call = mTService.reportForush(azTarikh,taTarikh);
-                call.enqueue(new Callback<List<ReportModel>>() {
-
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
                     @Override
-                    public void onResponse(Call<List<ReportModel>> call, Response<List<ReportModel>> response) {
+                    public void run() {
+                        Call<List<ReportModel>> call = mTService.reportForush(azTarikh, taTarikh);
+                        call.enqueue(new Callback<List<ReportModel>>() {
 
-                        if (response.isSuccessful()) {
-                            loadingDialogClass.dismiss();
-                            tvJameKol.setText(response.body().get(0).getSumKolFact());
-                            tvJameBirunBar.setText(response.body().get(0).getJamBirunbar());
-                            tvJamePeyk.setText(response.body().get(0).getJampeik());
-                            tvJameSalonHa.setText(response.body().get(0).getJaminSalon());
-                            tvJameFactorLaghvShode.setText(response.body().get(0).getJamSumCancleFact());
-                            tvJameMablaghjKhales.setText(response.body().get(0).getMablagkhales());
-                        } else {
-                            SQLiteDatabase db2 = new MyDatabase(ReportActivity.this).getWritableDatabase();
-                            ContentValues cv2 = new ContentValues();
-                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                            String myDate = format.format(new Date());
-                            cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
-                            db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
-                            db2.close();
-                            Toast.makeText(ReportActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-                            loadingDialogClass.dismiss();
-                        }
-                    }
+                            @Override
+                            public void onResponse(Call<List<ReportModel>> call, Response<List<ReportModel>> response) {
 
-                    @Override
-                    public void onFailure(Call<List<ReportModel>> call, Throwable t) {
-                        SQLiteDatabase db2 = new MyDatabase(ReportActivity.this).getWritableDatabase();
-                        ContentValues cv2 = new ContentValues();
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                        String myDate = format.format(new Date());
-                        cv2.put(MyDatabase.RESPONCE, myDate + " --> " + t.getMessage());
-                        db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
-                        db2.close();
-                        Toast.makeText(ReportActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-                        loadingDialogClass.dismiss();
+                                if (response.isSuccessful()) {
+                                    loadingDialogClass.dismiss();
+                                    tvJameKol.setText(MainActivity.priceFormatter(response.body().get(0).getSumKolFact()));
+                                    tvJameBirunBar.setText(MainActivity.priceFormatter(response.body().get(0).getJamBirunbar()));
+                                    tvJamePeyk.setText(MainActivity.priceFormatter(response.body().get(0).getJampeik()));
+                                    tvJameSalonHa.setText(MainActivity.priceFormatter(response.body().get(0).getJaminSalon()));
+                                    tvJameFactorLaghvShode.setText(MainActivity.priceFormatter(response.body().get(0).getJamSumCancleFact()));
+                                    tvJameMablaghjKhales.setText(MainActivity.priceFormatter(response.body().get(0).getMablagkhales()));
+                                } else {
+
+                                    Toast.makeText(ReportActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                                    loadingDialogClass.dismiss();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<ReportModel>> call, Throwable t) {
+
+                                Toast.makeText(ReportActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                                loadingDialogClass.dismiss();
+                            }
+                        });
                     }
-                });
+                }, 1234);
             }
         });
+    }
+}
+
+class Date extends DateItem {
+    String getDate() {
+        Calendar calendar = getCalendar();
+        return String.format(Locale.US,
+                "%d/%d/%d",
+                getYear(), getMonth(), getDay(),
+                calendar.get(Calendar.YEAR),
+                +calendar.get(Calendar.MONTH) + 1,
+                +calendar.get(Calendar.DAY_OF_MONTH));
     }
 }

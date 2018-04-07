@@ -2,20 +2,385 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layoutDirection="rtl"
+    android:background="@drawable/image_background"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding_large"
+        android:paddingRight="@dimen/padding_large"
+        android:paddingTop="@dimen/padding_spinner">
+
+        <ImageView
+            android:id="@+id/imageView_nav_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/padding_large"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:layout_centerVertical="true"
+            android:src="@drawable/image_arrow_forward" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/padding_large"
+            android:text="تنظیمات"
+            android:layout_centerVertical="true"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/font_medium" />
+
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="@dimen/padding_large">
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_xlarge"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView_responces"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="آی پی سرور"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xsmall" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="جهت اتصال اپلیکیشن سفارش گیر با نرم افزار مدیریت سان سیستم، آی پی کامپیوتر سرور را در این قسمت وارد نمایید."
+                android:padding="@dimen/padding_spinner"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xsmall" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="ltr"
+                android:padding="@dimen/padding_spinner"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/editText_ip_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline_secondary_text"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_ip_2"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_small" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="@dimen/padding_bit"
+                    android:layout_marginRight="@dimen/padding_bit"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/shape_dot" />
+
+                <EditText
+                    android:id="@+id/editText_ip_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline_secondary_text"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_ip_3"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_small" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="@dimen/padding_bit"
+                    android:layout_marginRight="@dimen/padding_bit"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/shape_dot" />
+
+                <EditText
+                    android:id="@+id/editText_ip_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline_secondary_text"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_ip_4"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_small" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="@dimen/padding_bit"
+                    android:layout_marginRight="@dimen/padding_bit"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/shape_dot" />
+
+                <EditText
+                    android:id="@+id/editText_ip_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline_secondary_text"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_title"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_small" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView_connect"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_large"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/border_shape_solid_gray2_radius"
+                android:backgroundTint="@color/secondary_text"
+                android:gravity="center"
+                android:layout_gravity="left"
+                android:paddingLeft="@dimen/padding_spinner"
+                android:paddingRight="@dimen/padding_spinner"
+                android:text="اتصال"
+                android:layout_marginLeft="@dimen/padding_spinner"
+                app:fontPath="fonts/IRANSansWeb_Medium.ttf"
+                tools:ignore="MissingPrefix"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xmedium" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/secondary_text"
+                android:layout_marginTop="@dimen/padding_large"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="به روز رسانی منوی غذایی"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xsmall" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="جهت به روز رسانی منوی غذایی دکمه زیر را لمس کنید."
+                android:padding="@dimen/padding_spinner"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xsmall" />
+
+            <TextView
+                android:id="@+id/textView_update"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_large"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/border_shape_solid_gray2_radius"
+                android:backgroundTint="@color/secondary_text"
+                android:gravity="center"
+                android:layout_gravity="left"
+                android:paddingLeft="@dimen/padding_spinner"
+                android:paddingRight="@dimen/padding_spinner"
+                android:text="به روز رسانی"
+                android:layout_marginLeft="@dimen/padding_spinner"
+                app:fontPath="fonts/IRANSansWeb_Medium.ttf"
+                tools:ignore="MissingPrefix"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xmedium" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/secondary_text"
+                android:layout_marginTop="@dimen/padding_large"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:gravity="right"
+                android:text="عنوان مجموعه"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xsmall" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="نام مجموعه ی خود (رستوران، فست فود، کافی شاپ) را جهت شخصی سازی اپلیکیشن وارد نمایید."
+                android:padding="@dimen/padding_spinner"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xsmall" />
+
+            <EditText
+                android:id="@+id/editText_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/shape_underline_secondary_text"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/padding_spinner"
+                android:layout_marginLeft="@dimen/padding_spinner"
+                android:layout_marginBottom="@dimen/padding_spinner"
+                android:inputType="text"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_small" />
+
+            <TextView
+                android:id="@+id/textView_save"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_large"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/border_shape_solid_gray2_radius"
+                android:backgroundTint="@color/secondary_text"
+                android:gravity="center"
+                android:layout_gravity="left"
+                android:paddingLeft="@dimen/padding_spinner"
+                android:paddingRight="@dimen/padding_spinner"
+                android:text="ثبت"
+                android:layout_marginLeft="@dimen/padding_spinner"
+                app:fontPath="fonts/IRANSansWeb_Medium.ttf"
+                tools:ignore="MissingPrefix"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xmedium" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/secondary_text"
+                android:layout_marginTop="@dimen/padding_large"/>
+
+            <TextView
+                android:id="@+id/textView_costumer_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:gravity="right"
+                android:text="نام مشتری پیش فرض را انتخاب کنید."
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xsmall" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:background="@drawable/shape_border_secondary_text">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_expand"/>
+
+                <Spinner
+                    android:id="@+id/spinner_default_costumer"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_xmedium"
+                    android:layout_gravity="center_vertical"
+                    android:background="@android:color/transparent"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:gravity="right"
+                android:text="وضعیت سفارش پیش فرض را انتخاب کنید."
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xsmall" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:background="@drawable/shape_border_secondary_text">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/image_expand"/>
+
+                <Spinner
+                    android:id="@+id/spinner_vaziat_sefaresh"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dimen_xmedium"
+                    android:layout_gravity="center_vertical"
+                    android:background="@android:color/transparent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:paddingTop="@dimen/padding_medium"
+                android:gravity="right">
+
+                <CheckBox
+                    android:id="@+id/checkbox_print"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/primary"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="چاپ فاکتور پس از تایید صندوق"
+                    android:layout_marginBottom="@dimen/padding_small"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_small"
+                    android:gravity="center"
+                    app:fontPath="fonts/IRANSansWeb_Light.ttf"
+                    tools:ignore="MissingPrefix" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_large"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/border_shape_solid_gray2_radius"
+                android:backgroundTint="@color/secondary_text"
+                android:gravity="center"
+                android:layout_gravity="left"
+                android:paddingLeft="@dimen/padding_spinner"
+                android:paddingRight="@dimen/padding_spinner"
+                android:text="تایید"
+                android:layout_marginLeft="@dimen/padding_spinner"
+                app:fontPath="fonts/IRANSansWeb_Medium.ttf"
+                tools:ignore="MissingPrefix"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xmedium" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/responces_recyclerView"
@@ -25,355 +390,7 @@
 
             </android.support.v7.widget.RecyclerView>
 
-            <TableRow
-                android:id="@+id/tr_main"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:gravity="center"
-                android:weightSum="4">
-
-                <LinearLayout
-                    android:id="@+id/ll_settings_splash"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/padding_box"
-                    android:paddingLeft="@dimen/padding_spinner"
-                    android:paddingRight="@dimen/padding_spinner"
-                    android:paddingTop="@dimen/padding_box">
-
-
-                    <TextView
-                        android:id="@+id/textView_responces"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:text="آی پی سرور"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layoutDirection="ltr"
-                        android:orientation="horizontal">
-
-                        <!--<EditText-->
-                        <!--android:layout_width="0dp"-->
-                        <!--android:layout_weight="0"-->
-                        <!--android:textSize="@dimen/font_xsmall"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:paddingBottom="@dimen/padding_bit"/>-->
-
-                        <EditText
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0"
-                            android:background="@drawable/shape_underline"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:textColor="@color/icons"
-                            android:textSize="@dimen/font_xsmall"
-                            android:visibility="invisible" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:text="."
-                            android:textColor="@color/icons"
-                            android:textSize="@dimen/font_medium"
-                            android:visibility="invisible" />
-
-                        <EditText
-                            android:id="@+id/editText_ip_1"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/shape_underline"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:nextFocusDown="@+id/editText_ip_2"
-                            android:paddingBottom="@dimen/padding_bit"
-                            android:textColor="@color/icons"
-                            android:textSize="@dimen/font_xsmall" />
-
-                        <TextView
-                            android:id="@+id/textView2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:text="."
-                            android:textColor="@color/icons"
-                            android:textSize="@dimen/font_medium" />
-
-                        <EditText
-                            android:id="@+id/editText_ip_2"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/shape_underline"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:nextFocusDown="@+id/editText_ip_3"
-                            android:paddingBottom="@dimen/padding_bit"
-                            android:textColor="@color/icons"
-                            android:textSize="@dimen/font_xsmall" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:text="."
-                            android:textColor="@color/icons"
-                            android:textSize="@dimen/font_medium" />
-
-                        <EditText
-                            android:id="@+id/editText_ip_3"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/shape_underline"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:nextFocusDown="@+id/editText_ip_4"
-                            android:paddingBottom="@dimen/padding_bit"
-                            android:textColor="@color/icons"
-                            android:textSize="@dimen/font_xsmall" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:text="."
-                            android:textColor="@color/icons"
-                            android:textSize="@dimen/font_medium" />
-
-                        <EditText
-                            android:id="@+id/editText_ip_4"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/shape_underline"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:nextFocusDown="@+id/editText_title"
-                            android:paddingBottom="@dimen/padding_bit"
-                            android:textColor="@color/icons"
-                            android:textSize="@dimen/font_xsmall" />
-
-                        <EditText
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0"
-                            android:background="@drawable/shape_underline"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:textColor="@color/icons"
-                            android:textSize="@dimen/font_xsmall"
-                            android:visibility="invisible" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="bottom"
-                            android:text="."
-                            android:textColor="@color/icons"
-                            android:textSize="@dimen/font_medium"
-                            android:visibility="invisible" />
-
-
-                    </LinearLayout>
-
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/padding_spinner"
-                        android:gravity="right"
-                        android:text="عنوان مجموعه"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
-
-                    <EditText
-                        android:id="@+id/editText_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:background="@drawable/shape_underline"
-                        android:gravity="center"
-                        android:inputType="text"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/padding_spinner"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/button_save_ip"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left"
-                            android:background="@drawable/button_shape2"
-                            android:gravity="center"
-                            android:paddingBottom="@dimen/padding_bit"
-                            android:paddingLeft="@dimen/padding_large"
-                            android:paddingRight="@dimen/padding_large"
-                            android:paddingTop="@dimen/padding_bit"
-                            android:text="ذخیره"
-                            android:textColor="@color/icons"
-                            android:textSize="@dimen/font_xsmall" />
-
-                        <TextView
-                            android:id="@+id/textView_status"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="left"
-                            android:layout_marginLeft="@dimen/padding_spinner"
-                            android:layout_marginTop="@dimen/padding_spinner"
-                            android:background="@drawable/border_shape_round"
-                            android:gravity="center"
-                            android:paddingBottom="@dimen/padding_bit"
-                            android:paddingLeft="@dimen/padding_large"
-                            android:paddingRight="@dimen/padding_large"
-                            android:paddingTop="@dimen/padding_bit"
-                            android:textColor="@color/icons"
-                            android:textSize="@dimen/font_xsmall"
-                            android:visibility="gone" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/textView_costumer_code"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/padding_spinner"
-                        android:gravity="right"
-                        android:text="مشتری پیش فرض"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
-
-                    <Spinner
-                        android:id="@+id/spinner_default_costumer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="@dimen/padding_medium"
-                        android:background="@drawable/shape_underline"
-                        android:gravity="center"
-                        android:inputType="text"
-                        android:padding="@dimen/padding_medium"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/padding_spinner"
-                        android:gravity="right"
-                        android:text="وضعیت سفارش پیش فرض"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
-
-                    <Spinner
-                        android:id="@+id/spinner_vaziat_sefaresh"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_margin="@dimen/padding_medium"
-                        android:background="@drawable/shape_underline"
-                        android:gravity="center"
-                        android:inputType="text"
-                        android:padding="@dimen/padding_medium"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/padding_medium"
-                        android:gravity="center_vertical|right"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:text="چاپ فاکتور پس از تایید صندوق"
-                            android:textColor="@color/icons"
-                            android:textSize="@dimen/font_xsmall" />
-
-                        <CheckBox
-                            android:id="@+id/checkbox_print"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/button_save"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_marginTop="@dimen/padding_spinner"
-                        android:background="@drawable/button_shape2"
-                        android:gravity="center"
-                        android:paddingBottom="@dimen/padding_bit"
-                        android:paddingLeft="@dimen/padding_large"
-                        android:paddingRight="@dimen/padding_large"
-                        android:paddingTop="@dimen/padding_bit"
-                        android:text="به روز رسانی"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
-
-                    <TextView
-                        android:id="@+id/button_logout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="left"
-                        android:layout_marginTop="@dimen/padding_spinner"
-                        android:background="@drawable/button_shape2"
-                        android:gravity="center"
-                        android:paddingBottom="@dimen/padding_bit"
-                        android:paddingLeft="@dimen/padding_large"
-                        android:paddingRight="@dimen/padding_large"
-                        android:paddingTop="@dimen/padding_bit"
-                        android:text="خروج"
-                        android:textColor="@color/icons"
-                        android:textSize="@dimen/font_xsmall" />
-
-
-                </LinearLayout>
-
-            </TableRow>
-
-            <LinearLayout
-                android:id="@+id/llLoading"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="visible">
-
-                <com.wang.avi.AVLoadingIndicatorView
-                    style="@style/AVLoadingIndicatorView.Large"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:indicatorColor="@color/icons"
-                    app:indicatorName="BallSpinFadeLoaderIndicator" />
-            </LinearLayout>
-
-        </RelativeLayout>
+        </LinearLayout>
 
     </ScrollView>
 

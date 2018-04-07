@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/padding_large"
     android:background="@android:color/transparent"
     android:gravity="top"
     android:layout_gravity="top"
@@ -11,9 +11,9 @@
         android:id="@+id/progressBar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:indeterminate="true"
-        android:layout_gravity="top"
+        android:scaleY="999"
         android:theme="@style/LinearProgress" />
 
 </LinearLayout>

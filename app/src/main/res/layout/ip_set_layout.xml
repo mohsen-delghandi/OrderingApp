@@ -191,6 +191,7 @@
                 android:textSize="@dimen/font_xmedium" />
 
             <ImageView
+                android:id="@+id/imageView_help"
                 android:layout_width="@dimen/dimen_large"
                 android:layout_height="@dimen/dimen_large"
                 android:layout_alignParentLeft="true"

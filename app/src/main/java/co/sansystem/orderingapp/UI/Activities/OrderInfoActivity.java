@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -42,6 +44,8 @@ public class OrderInfoActivity extends AppCompatActivity {
     WebService mTService;
     CheckBox checkBox;
     AppPreferenceTools appPreferenceTools;
+    private ImageView ivHelp;
+    private ImageView ivBack;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -55,6 +59,23 @@ public class OrderInfoActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.order_info_layout);
+
+        ivBack = (ImageView) findViewById(R.id.imageView_back);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+
+        ivHelp = (ImageView) findViewById(R.id.imageView_help);
+        ivHelp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(OrderInfoActivity.this,HelpActivity.class));
+            }
+        });
 
         appPreferenceTools = new AppPreferenceTools(this);
 
@@ -75,73 +96,79 @@ public class OrderInfoActivity extends AppCompatActivity {
 
         final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(this);
         loadingDialogClass.show();
-
-        Call<List<ContactModel>> call = mTService.getListContact();
-        call.enqueue(new Callback<List<ContactModel>>() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onResponse(Call<List<ContactModel>> call, Response<List<ContactModel>> response) {
+            public void run() {
+                Call<List<ContactModel>> call = mTService.getListContact();
+                call.enqueue(new Callback<List<ContactModel>>() {
+                    @Override
+                    public void onResponse(Call<List<ContactModel>> call, Response<List<ContactModel>> response) {
 
-                if (response.isSuccessful()) {
+                        if (response.isSuccessful()) {
 
-                    SQLiteDatabase db = new MyDatabase(OrderInfoActivity.this).getWritableDatabase();
-                    db.delete(MyDatabase.CONTACTS_INFORMATION,null,null);
+                            SQLiteDatabase db = new MyDatabase(OrderInfoActivity.this).getWritableDatabase();
+                            db.delete(MyDatabase.CONTACTS_INFORMATION,null,null);
 
-                    Gson gson = new Gson();
-                    String json = gson.toJson(response.body());
-                    ContentValues contentValues = new ContentValues();
-                    contentValues.put(MyDatabase.LIST_CONTACT_JSON,json);
-                    db.insert(MyDatabase.CONTACTS_INFORMATION,null,contentValues);
-                    db.close();
+                            Gson gson = new Gson();
+                            String json = gson.toJson(response.body());
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(MyDatabase.LIST_CONTACT_JSON,json);
+                            db.insert(MyDatabase.CONTACTS_INFORMATION,null,contentValues);
+                            db.close();
 
-                    final ArrayList<String> costumerNames = new ArrayList<String>();
-                    final ArrayList<String> costumerCodes = new ArrayList<String>();
+                            final ArrayList<String> costumerNames = new ArrayList<String>();
+                            final ArrayList<String> costumerCodes = new ArrayList<String>();
 
-                    for (ContactModel contactModel :
-                            response.body()) {
-                        costumerNames.add(contactModel.getFullName());
-                        costumerCodes.add(contactModel.getTafziliID());
-                    }
+                            for (ContactModel contactModel :
+                                    response.body()) {
+                                costumerNames.add(contactModel.getFullName());
+                                costumerCodes.add(contactModel.getTafziliID());
+                            }
 
-                    ArrayAdapter<String> adapter =
-                            new ArrayAdapter<String>(OrderInfoActivity.this, android.R.layout.simple_spinner_item, costumerNames.toArray(new String[costumerNames.size()]));
-                    spCostumerCode.setAdapter(adapter);
-                    loadingDialogClass.dismiss();
+                            ArrayAdapter<String> adapter =
+                                    new ArrayAdapter<String>(OrderInfoActivity.this, android.R.layout.simple_spinner_item, costumerNames.toArray(new String[costumerNames.size()]));
+                            spCostumerCode.setAdapter(adapter);
+                            loadingDialogClass.dismiss();
 
-                    spCostumerCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(i));
-                        }
-
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
-                            appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(0));
-                        }
-                    });
-
-                    for (int i = 0; i < costumerNames.size(); i++) {
-                        if (appPreferenceTools.getDefaultCostumerCode().equals(costumerCodes.get(i))) {
-                            final int finalI = i;
-                            runOnUiThread(new Runnable() {
+                            spCostumerCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
-                                public void run() {
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(i));
+                                }
 
-                                    spCostumerCode.setSelection(finalI);
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+                                    appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(0));
                                 }
                             });
+
+                            for (int i = 0; i < costumerNames.size(); i++) {
+                                if (appPreferenceTools.getDefaultCostumerCode().equals(costumerCodes.get(i))) {
+                                    final int finalI = i;
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+
+                                            spCostumerCode.setSelection(finalI);
+                                        }
+                                    });
+                                }
+                            }
+
+                        } else {
+                            loadingDialogClass.dismiss();
                         }
                     }
 
-                } else {
-                    loadingDialogClass.dismiss();
-                }
+                    @Override
+                    public void onFailure(Call<List<ContactModel>> call, Throwable t) {
+                        loadingDialogClass.dismiss();
+                    }
+                });
             }
+        }, 1234);
 
-            @Override
-            public void onFailure(Call<List<ContactModel>> call, Throwable t) {
-                loadingDialogClass.dismiss();
-            }
-        });
 
 
         ArrayAdapter<String> adapterVaziatSefaresh =
@@ -174,7 +201,6 @@ public class OrderInfoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(OrderInfoActivity.this,LoginActivity.class));
-                finish();
             }
         });
     }

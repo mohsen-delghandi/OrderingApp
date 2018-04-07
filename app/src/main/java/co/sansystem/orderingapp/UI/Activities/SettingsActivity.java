@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,14 +14,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ import co.sansystem.orderingapp.Models.FavoriteModel;
 import co.sansystem.orderingapp.Models.FoodModel;
 import co.sansystem.orderingapp.Models.GroupFoodModel;
 import co.sansystem.orderingapp.Models.SettingModel;
+import co.sansystem.orderingapp.UI.Dialogs.LoadingDialogClass;
 import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
 import co.sansystem.orderingapp.Utility.Network.WebService;
@@ -54,12 +56,12 @@ import retrofit2.Response;
 public class SettingsActivity extends MainActivity {
 
 
-    TextView bt_save, btSaveIP, bt_logout, tvStatus;
+    TextView btSave, btConnect, btOk, btUpdate;
     EditText et_title;
     EditText etIP1, etIP2, etIP3, etIP4;
     String ip, status = null;
     CheckBox checkBox;
-    LinearLayout llLoading;
+    int vaziatSefaresh;
 
     public static String json = null, json2 = null;
     public static JSONArray jsonArray, jsonArray2;
@@ -74,6 +76,9 @@ public class SettingsActivity extends MainActivity {
     private WebService mTService3;
     private WebService mTService4;
     AppPreferenceTools appPreferenceTools;
+    private String costumerCode;
+
+    ImageView ivBack;
 
     public SettingsActivity() {
     }
@@ -87,7 +92,22 @@ public class SettingsActivity extends MainActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setInflater(this, R.layout.settings_layout);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.settings_layout);
+
+        ivBack = (ImageView) findViewById(R.id.imageView_nav_back);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        btSave = (TextView) findViewById(R.id.textView_save);
+        btConnect = (TextView) findViewById(R.id.textView_connect);
+        btOk = (TextView) findViewById(R.id.textView_ok);
+        btUpdate = (TextView) findViewById(R.id.textView_update);
 
         appPreferenceTools = new AppPreferenceTools(this);
 
@@ -110,8 +130,6 @@ public class SettingsActivity extends MainActivity {
         WebProvider provider4 = new WebProvider();
         mTService4 = provider4.getTService();
 
-        llLoading = (LinearLayout) findViewById(R.id.llLoading);
-        tvStatus = (TextView) findViewById(R.id.textView_status);
 
         if (getIntent().getExtras() != null) {
             intent = getIntent();
@@ -131,12 +149,6 @@ public class SettingsActivity extends MainActivity {
         checkBox = (CheckBox) findViewById(R.id.checkbox_print);
         final AppPreferenceTools appPreferenceTools = new AppPreferenceTools(this);
         checkBox.setChecked(appPreferenceTools.getprintAfterConfirm());
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                appPreferenceTools.printAfterConfirm(b);
-            }
-        });
 
         toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
@@ -146,26 +158,10 @@ public class SettingsActivity extends MainActivity {
         });
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        bt_save = (TextView) findViewById(R.id.button_save);
-        btSaveIP = (TextView) findViewById(R.id.button_save_ip);
-        bt_logout = (TextView) findViewById(R.id.button_logout);
         etIP1 = (EditText) findViewById(R.id.editText_ip_1);
         etIP2 = (EditText) findViewById(R.id.editText_ip_2);
         etIP3 = (EditText) findViewById(R.id.editText_ip_3);
         etIP4 = (EditText) findViewById(R.id.editText_ip_4);
-
-        bt_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AppPreferenceTools appPreferenceTools = new AppPreferenceTools(SettingsActivity.this);
-                appPreferenceTools.removeAllPrefs();
-                startActivity(new Intent(SettingsActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
-        if (status != null && status.equals("fromSplash")) {
-            bt_logout.setVisibility(View.GONE);
-        }
 
         ArrayAdapter<String> adapterVaziatSefaresh =
                 new ArrayAdapter<String>(SettingsActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.vaziat_sefaresh));
@@ -174,12 +170,12 @@ public class SettingsActivity extends MainActivity {
         spVaziatSefaresh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                appPreferenceTools.saveVaziateSefaresh(getResources().getStringArray(R.array.vaziat_sefaresh)[i]);
+                vaziatSefaresh = i;
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                appPreferenceTools.saveVaziateSefaresh("بیرون بر");
+                vaziatSefaresh = 0;
             }
         });
 
@@ -193,6 +189,7 @@ public class SettingsActivity extends MainActivity {
             spVaziatSefaresh.setSelection(0);
         }
 
+
         Call<List<ContactModel>> call = mTService.getListContact();
         call.enqueue(new Callback<List<ContactModel>>() {
             @Override
@@ -201,13 +198,13 @@ public class SettingsActivity extends MainActivity {
                 if (response.isSuccessful()) {
 
                     SQLiteDatabase db = new MyDatabase(SettingsActivity.this).getWritableDatabase();
-                    db.delete(MyDatabase.CONTACTS_INFORMATION,null,null);
+                    db.delete(MyDatabase.CONTACTS_INFORMATION, null, null);
 
                     Gson gson = new Gson();
                     String json = gson.toJson(response.body());
                     ContentValues contentValues = new ContentValues();
-                    contentValues.put(MyDatabase.LIST_CONTACT_JSON,json);
-                    db.insert(MyDatabase.CONTACTS_INFORMATION,null,contentValues);
+                    contentValues.put(MyDatabase.LIST_CONTACT_JSON, json);
+                    db.insert(MyDatabase.CONTACTS_INFORMATION, null, contentValues);
                     db.close();
 
                     final ArrayList<String> costumerNames = new ArrayList<String>();
@@ -223,22 +220,17 @@ public class SettingsActivity extends MainActivity {
                     ArrayAdapter<String> adapter =
                             new ArrayAdapter<String>(SettingsActivity.this, android.R.layout.simple_spinner_item, costumerNames.toArray(new String[costumerNames.size()]));
                     spCostumerCode.setAdapter(adapter);
-                    llLoading.setVisibility(View.GONE);
 
-
-                    tvStatus.setVisibility(View.VISIBLE);
-                    tvStatus.setText("ارتباط برقرار شد.");
-                    tvStatus.setTextColor(getResources().getColor(R.color.green));
 
                     spCostumerCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(i));
+                            costumerCode = costumerCodes.get(i);
                         }
 
                         @Override
                         public void onNothingSelected(AdapterView<?> adapterView) {
-                            appPreferenceTools.saveDefaultCostumerCode(costumerCodes.get(0));
+                            costumerCode = costumerCodes.get(0);
                         }
                     });
 
@@ -256,19 +248,13 @@ public class SettingsActivity extends MainActivity {
                     }
 
                 } else {
-                    llLoading.setVisibility(View.GONE);
-                    tvStatus.setVisibility(View.VISIBLE);
-                    tvStatus.setText("ارتباط برقرار نشد.");
-                    tvStatus.setTextColor(getResources().getColor(R.color.red));
+
                 }
             }
 
             @Override
             public void onFailure(Call<List<ContactModel>> call, Throwable t) {
-                llLoading.setVisibility(View.GONE);
-                tvStatus.setVisibility(View.VISIBLE);
-                tvStatus.setText("ارتباط برقرار نشد.");
-                tvStatus.setTextColor(getResources().getColor(R.color.red));
+
             }
         });
 
@@ -372,10 +358,7 @@ public class SettingsActivity extends MainActivity {
         et_title = (EditText) findViewById(R.id.editText_title);
         et_title.setText(title);
 
-        final int[] u = new int[1];
-
-
-        btSaveIP.setOnClickListener(new View.OnClickListener() {
+        btConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -386,8 +369,7 @@ public class SettingsActivity extends MainActivity {
                         etIP3.getText().toString().trim() + "." +
                         etIP4.getText().toString().trim();
                 cv.put(MyDatabase.IP, ip);
-                cv.put(MyDatabase.TITLE, et_title.getText().toString());
-                u[0] = db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
+                db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
                 db.close();
 
                 startActivity(getIntent());
@@ -395,48 +377,36 @@ public class SettingsActivity extends MainActivity {
             }
         });
 
-
-        fab.setImageResource(R.drawable.save);
-        bt_save.setOnClickListener(new View.OnClickListener() {
-
+        btSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-                isSettingsUpdate = true;
-                updateMenu(SettingsActivity.this, ll_loading);
-
-//                AsyncTask at = new AsyncTask() {
-//                    @Override
-//                    protected void onPreExecute() {
-//                    }
-//
-//                    @Override
-//                    protected Object doInBackground(Object[] objects) {
-//                        isSettingsUpdate = true;
-//                        updateMenu(SettingsActivity.this, ll_loading);
-//                        return null;
-//                    }
-//
-//                    @Override
-//                    protected void onPostExecute(Object o) {
-////                        if (u[0] == 1) {
-////                            Toast.makeText(SettingsActivity.this, "عملیات ذخیره با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
-////                            Intent i = new Intent(SettingsActivity.this, OrdersMenuActivity.class);
-////                            startActivity(i);
-////                        } else if (u[0] == 0) {
-////                            Toast.makeText(SettingsActivity.this, "عملیات ذخیره ناموفق بود.", Toast.LENGTH_SHORT).show();
-////                        } else {
-////                            Toast.makeText(SettingsActivity.this, "خطای نامشخص،با پشتیبانی تماس بگیرید.", Toast.LENGTH_SHORT).show();
-////                        }
-//                    }
-//                }.execute();
-
-
+                SQLiteDatabase db = new MyDatabase(SettingsActivity.this).getWritableDatabase();
+                ContentValues cv = new ContentValues();
+                cv.put(MyDatabase.TITLE, et_title.getText().toString());
+                db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
+                db.close();
             }
         });
 
-        final TableRow trMain = (TableRow) findViewById(R.id.tr_main);
+        btUpdate.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                isSettingsUpdate = true;
+                updateMenu(SettingsActivity.this, ll_loading);
+            }
+        });
+
+        btOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                appPreferenceTools.printAfterConfirm(checkBox.isChecked());
+                appPreferenceTools.saveVaziateSefaresh(getResources().getStringArray(R.array.vaziat_sefaresh)[vaziatSefaresh]);
+                appPreferenceTools.saveDefaultCostumerCode(costumerCode);
+            }
+        });
+
         TextView tvResponces = (TextView) findViewById(R.id.textView_responces);
         tvResponces.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -454,7 +424,7 @@ public class SettingsActivity extends MainActivity {
 
                 if (responces != null) {
                     final RecyclerView rvResponces = (RecyclerView) findViewById(R.id.responces_recyclerView);
-                    trMain.setVisibility(View.GONE);
+
                     ivTitlebar.setVisibility(View.VISIBLE);
                     ivTitlebar.setImageResource(R.drawable.image_delete);
                     ivTitlebar.setOnClickListener(new View.OnClickListener() {
@@ -465,7 +435,7 @@ public class SettingsActivity extends MainActivity {
                             dbbb.close();
                             ivTitlebar.setVisibility(View.GONE);
                             rvResponces.setVisibility(View.GONE);
-                            trMain.setVisibility(View.VISIBLE);
+
                         }
                     });
                     rvResponces.setVisibility(View.VISIBLE);
@@ -491,181 +461,194 @@ public class SettingsActivity extends MainActivity {
         }
         id = -1;
         id2 = -1;
-
-        Call<List<GroupFoodModel>> call = mTService.getGroupFood();
-        call.enqueue(new Callback<List<GroupFoodModel>>() {
+        final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(this);
+        loadingDialogClass.show();
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            public void onResponse(Call<List<GroupFoodModel>> call, Response<List<GroupFoodModel>> response) {
+            public void run() {
+                Call<List<GroupFoodModel>> call = mTService.getGroupFood();
+                call.enqueue(new Callback<List<GroupFoodModel>>() {
+                    @Override
+                    public void onResponse(Call<List<GroupFoodModel>> call, Response<List<GroupFoodModel>> response) {
 
-                if (response.isSuccessful()) {
+                        if (response.isSuccessful()) {
 
-                    SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
-                    db.delete(MyDatabase.FOOD_CATEGORY_TABLE, null, null);
+                            SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
+                            db.delete(MyDatabase.FOOD_CATEGORY_TABLE, null, null);
 
-                    for (GroupFoodModel groupFoodModel :
-                            response.body()) {
-                        ContentValues cv = new ContentValues();
-                        cv.put(MyDatabase.CODE, groupFoodModel.getIDGroup());
-                        cv.put(MyDatabase.NAME, groupFoodModel.getNameGroup());
-                        cv.put(MyDatabase.IMAGE, Base64.decode(groupFoodModel.getImageGroup(), Base64.DEFAULT));
-                        db.insert(MyDatabase.FOOD_CATEGORY_TABLE, null, cv);
-                    }
+                            for (GroupFoodModel groupFoodModel :
+                                    response.body()) {
+                                ContentValues cv = new ContentValues();
+                                cv.put(MyDatabase.CODE, groupFoodModel.getIDGroup());
+                                cv.put(MyDatabase.NAME, groupFoodModel.getNameGroup());
+                                cv.put(MyDatabase.IMAGE, Base64.decode(groupFoodModel.getImageGroup(), Base64.DEFAULT));
+                                db.insert(MyDatabase.FOOD_CATEGORY_TABLE, null, cv);
+                            }
 
-                    Call<List<FoodModel>> call2 = mTService2.getFood();
-                    call2.enqueue(new Callback<List<FoodModel>>() {
-                        @Override
-                        public void onResponse(Call<List<FoodModel>> call2, Response<List<FoodModel>> response2) {
+                            Call<List<FoodModel>> call2 = mTService2.getFood();
+                            call2.enqueue(new Callback<List<FoodModel>>() {
+                                @Override
+                                public void onResponse(Call<List<FoodModel>> call2, Response<List<FoodModel>> response2) {
 
-                            if (response2.isSuccessful()) {
-
-
-                                SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
-                                db.delete(MyDatabase.FOOD_TABLE, null, null);
-
-                                for (FoodModel foodModel :
-                                        response2.body()) {
-
-                                    ContentValues cv = new ContentValues();
-                                    cv.put(MyDatabase.CODE, foodModel.getIDKala());
-                                    cv.put(MyDatabase.NAME, foodModel.getNameKala());
-                                    try {
-                                        cv.put(MyDatabase.IMAGE, Base64.decode(foodModel.getPicture(), Base64.DEFAULT));
-                                    } catch (Exception e) {
-
-                                    }
-                                    cv.put(MyDatabase.CATEGORY_CODE, foodModel.getFkGroupKala());
-                                    cv.put(MyDatabase.PRICE, foodModel.getGheymatForoshAsli());
-                                    id2 = db.insert(MyDatabase.FOOD_TABLE, null, cv);
-                                }
+                                    if (response2.isSuccessful()) {
 
 
-                                db.close();
+                                        SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
+                                        db.delete(MyDatabase.FOOD_TABLE, null, null);
 
-                                Call<List<FavoriteModel>> call = mTService3.getFoodFavorite();
-                                call.enqueue(new Callback<List<FavoriteModel>>() {
+                                        for (FoodModel foodModel :
+                                                response2.body()) {
 
-                                    @Override
-                                    public void onResponse
-                                            (Call<List<FavoriteModel>> call, Response<List<FavoriteModel>> response) {
+                                            ContentValues cv = new ContentValues();
+                                            cv.put(MyDatabase.CODE, foodModel.getIDKala());
+                                            cv.put(MyDatabase.NAME, foodModel.getNameKala());
+                                            try {
+                                                cv.put(MyDatabase.IMAGE, Base64.decode(foodModel.getPicture(), Base64.DEFAULT));
+                                            } catch (Exception e) {
 
-                                        if (response.isSuccessful()) {
+                                            }
+                                            cv.put(MyDatabase.CATEGORY_CODE, foodModel.getFkGroupKala());
+                                            cv.put(MyDatabase.PRICE, foodModel.getGheymatForoshAsli());
+                                            id2 = db.insert(MyDatabase.FOOD_TABLE, null, cv);
+                                        }
 
-                                            SQLiteDatabase dbFavorite = new MyDatabase(SettingsActivity.this).getWritableDatabase();
+
+                                        db.close();
+
+                                        Call<List<FavoriteModel>> call = mTService3.getFoodFavorite();
+                                        call.enqueue(new Callback<List<FavoriteModel>>() {
+
+                                            @Override
+                                            public void onResponse
+                                                    (Call<List<FavoriteModel>> call, Response<List<FavoriteModel>> response) {
+
+                                                if (response.isSuccessful()) {
+
+                                                    SQLiteDatabase dbFavorite = new MyDatabase(SettingsActivity.this).getWritableDatabase();
 
 //                            dbFavorite.execSQL("UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = 0 ;" +
 //                                    " UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = 1 WHERE " + MyDatabase.CODE + " IN (1,2,3,4)");
 
-                                            dbFavorite.execSQL("UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = '0' ;");
+                                                    dbFavorite.execSQL("UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = '0' ;");
 
-                                            for (FavoriteModel favoriteModel :
-                                                    response.body()) {
-                                                dbFavorite.execSQL(" UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = '1' WHERE " + MyDatabase.CODE + " = " + favoriteModel.getIDKala());
-                                            }
-
-
-                                            dbFavorite.close();
-
-                                            NavigationAdapter.refreshFavorites();
-
-                                            Call<List<SettingModel>> call22 = mTService4.getSettingDarsad();
-                                            call22.enqueue(new Callback<List<SettingModel>>() {
-
-                                                @Override
-                                                public void onResponse(Call<List<SettingModel>> call, Response<List<SettingModel>> response) {
-
-                                                    if (response.isSuccessful()) {
-                                                        appPreferenceTools.saveSettings(response.body().get(0).getSettingDardadTakhfif(), response.body().get(0).getSettingMablaghTakhfif()
-                                                                , response.body().get(0).getSettingDarsadService(), response.body().get(0).getSettingMablaghService(), response.body().get(0).getSettingDarsadMaliyat());
-
-                                                        Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
-
-                                                        isUpdated = true;
-
-                                                        SQLiteDatabase db2 = new MyDatabase(SettingsActivity.this).getWritableDatabase();
-                                                        ContentValues cv2 = new ContentValues();
-                                                        cv2.put(MyDatabase.FIRST_RUN, 0);
-                                                        db2.update(MyDatabase.SETTINGS_TABLE, cv2, MyDatabase.ID + " = ?", new String[]{"1"});
-                                                        db2.close();
-
-                                                        if (isSettingsUpdate) {
-                                                            Intent i2 = new Intent(SettingsActivity.this, OrdersMenuActivity.class);
-                                                            startActivity(i2);
-                                                            SettingsActivity.this.finish();
-                                                        }
-
-                                                        if (status != null && status.equals("fromSplash")) {
-
-                                                            Intent ii = new Intent(SettingsActivity.this, LoginActivity.class);
-                                                            startActivity(ii);
-                                                            SettingsActivity.this.finish();
-                                                        }
-                                                    }else{
-
-                                                        if (ll != null) {
-                                                            ll.setVisibility(View.GONE);
-                                                        }
+                                                    for (FavoriteModel favoriteModel :
+                                                            response.body()) {
+                                                        dbFavorite.execSQL(" UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = '1' WHERE " + MyDatabase.CODE + " = " + favoriteModel.getIDKala());
                                                     }
-                                                }
 
-                                                @Override
-                                                public void onFailure(Call<List<SettingModel>> call, Throwable t) {
+
+                                                    dbFavorite.close();
+
+                                                    NavigationAdapter.refreshFavorites();
+
+                                                    Call<List<SettingModel>> call22 = mTService4.getSettingDarsad();
+                                                    call22.enqueue(new Callback<List<SettingModel>>() {
+
+                                                        @Override
+                                                        public void onResponse(Call<List<SettingModel>> call, Response<List<SettingModel>> response) {
+
+                                                            if (response.isSuccessful()) {
+                                                                appPreferenceTools.saveSettings(response.body().get(0).getSettingDardadTakhfif(), response.body().get(0).getSettingMablaghTakhfif()
+                                                                        , response.body().get(0).getSettingDarsadService(), response.body().get(0).getSettingMablaghService(), response.body().get(0).getSettingDarsadMaliyat());
+
+                                                                Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
+
+                                                                isUpdated = true;
+
+                                                                SQLiteDatabase db2 = new MyDatabase(SettingsActivity.this).getWritableDatabase();
+                                                                ContentValues cv2 = new ContentValues();
+                                                                cv2.put(MyDatabase.FIRST_RUN, 0);
+                                                                db2.update(MyDatabase.SETTINGS_TABLE, cv2, MyDatabase.ID + " = ?", new String[]{"1"});
+                                                                db2.close();
+
+
+                                                                loadingDialogClass.dismiss();
+
+                                                                if (isSettingsUpdate) {
+                                                                    Intent i2 = new Intent(SettingsActivity.this, OrdersMenuActivity.class);
+                                                                    startActivity(i2);
+                                                                    SettingsActivity.this.finish();
+                                                                }
+
+                                                                if (status != null && status.equals("fromSplash")) {
+
+                                                                    Intent ii = new Intent(SettingsActivity.this, LoginActivity.class);
+                                                                    startActivity(ii);
+                                                                    SettingsActivity.this.finish();
+                                                                }
+                                                            } else {
+                                                                loadingDialogClass.dismiss();
+                                                                if (ll != null) {
+                                                                    ll.setVisibility(View.GONE);
+                                                                }
+                                                            }
+                                                            loadingDialogClass.dismiss();
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<List<SettingModel>> call, Throwable t) {
+                                                            if (ll != null) {
+                                                                ll.setVisibility(View.GONE);
+                                                                loadingDialogClass.dismiss();
+                                                            }
+                                                        }
+                                                    });
+                                                } else {
+
                                                     if (ll != null) {
                                                         ll.setVisibility(View.GONE);
                                                     }
                                                 }
-                                            });
-                                        }else {
 
-                                            if (ll != null) {
-                                                ll.setVisibility(View.GONE);
                                             }
-                                        }
 
-                                    }
+                                            @Override
+                                            public void onFailure(Call<List<FavoriteModel>> call, Throwable t) {
+                                                if (ll != null) {
+                                                    ll.setVisibility(View.GONE);
+                                                }
+                                            }
+                                        });
 
-                                    @Override
-                                    public void onFailure(Call<List<FavoriteModel>> call, Throwable t) {
+
+                                    } else
+
+                                    {
+                                        Toast.makeText(SettingsActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                                         if (ll != null) {
                                             ll.setVisibility(View.GONE);
                                         }
                                     }
-                                });
-
-
-                            } else
-
-                            {
-                                Toast.makeText(SettingsActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-                                if (ll != null) {
-                                    ll.setVisibility(View.GONE);
                                 }
-                            }
-                        }
 
-                        @Override
-                        public void onFailure(Call<List<FoodModel>> call, Throwable t) {
+                                @Override
+                                public void onFailure(Call<List<FoodModel>> call, Throwable t) {
+                                    if (ll != null) {
+                                        ll.setVisibility(View.GONE);
+                                    }
+                                }
+                            });
+                        } else {
+                            loadingDialogClass.dismiss();
+                            Toast.makeText(SettingsActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                             if (ll != null) {
                                 ll.setVisibility(View.GONE);
                             }
                         }
-                    });
-                } else
-
-                {
-                    Toast.makeText(SettingsActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-                    if (ll != null) {
-                        ll.setVisibility(View.GONE);
                     }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<List<GroupFoodModel>> call, Throwable t) {
-                if (ll != null) {
-                    ll.setVisibility(View.GONE);
-                }
+                    @Override
+                    public void onFailure(Call<List<GroupFoodModel>> call, Throwable t) {
+                        if (ll != null) {
+                            ll.setVisibility(View.GONE);
+                            loadingDialogClass.dismiss();
+                        }
+                    }
+                });
             }
-        });
+        }, 1234);
+
 
     }
 }

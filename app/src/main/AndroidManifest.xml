@@ -45,6 +45,8 @@
             android:screenOrientation="portrait"/>
         <activity android:name="co.sansystem.orderingapp.UI.Activities.LoginActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name="co.sansystem.orderingapp.UI.Activities.HelpActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 

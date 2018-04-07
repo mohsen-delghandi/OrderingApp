@@ -3,6 +3,7 @@ package co.sansystem.orderingapp.Adapters;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import java.util.Locale;
 
 import co.sansystem.orderingapp.Models.FactorModel;
 import co.sansystem.orderingapp.UI.Activities.MainActivity;
+import co.sansystem.orderingapp.UI.Dialogs.LoadingDialogClass;
 import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
 import co.sansystem.orderingapp.Utility.Network.WebService;
@@ -99,46 +101,59 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
             @Override
             public void onClick(View view) {
 
-                Call<Object> call = mTService.saveFactor(currentModel.get(position).getList(), "0", "0");
-                call.enqueue(new Callback<Object>() {
+                final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(context);
+                loadingDialogClass.show();
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
                     @Override
-                    public void onResponse(Call<Object> call, Response<Object> response) {
+                    public void run() {
 
-                        if (response.isSuccessful()) {
-                            SQLiteDatabase database = new MyDatabase(context).getWritableDatabase();
-                            database.delete(MyDatabase.OFFLINE_FACTORS_TABLE,MyDatabase.ID + " = " + fatorIDs.get(position),null);
+                        Call<Object> call = mTService.saveFactor(currentModel.get(position).getList(), "0", "0");
+                        call.enqueue(new Callback<Object>() {
+                            @Override
+                            public void onResponse(Call<Object> call, Response<Object> response) {
 
-                            currentModel.remove(position);
-                            fatorIDs.remove(position);
-                            notifyDataSetChanged();
-                            Toast.makeText(context, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
+                                if (response.isSuccessful()) {
+                                    loadingDialogClass.dismiss();
+                                    SQLiteDatabase database = new MyDatabase(context).getWritableDatabase();
+                                    database.delete(MyDatabase.OFFLINE_FACTORS_TABLE,MyDatabase.ID + " = " + fatorIDs.get(position),null);
+
+                                    currentModel.remove(position);
+                                    fatorIDs.remove(position);
+                                    notifyDataSetChanged();
+                                    Toast.makeText(context, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
 //                            FoodOrdersAdapter.mList.clear();
-                        } else {
+                                } else {
+                                    loadingDialogClass.dismiss();
+                                    SQLiteDatabase db2 = new MyDatabase(context).getWritableDatabase();
+                                    ContentValues cv2 = new ContentValues();
+                                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                                    String myDate = format.format(new Date());
+                                    cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
+                                    db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+                                    db2.close();
+                                    Toast.makeText(context, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
 
-                            SQLiteDatabase db2 = new MyDatabase(context).getWritableDatabase();
-                            ContentValues cv2 = new ContentValues();
-                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                            String myDate = format.format(new Date());
-                            cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
-                            db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
-                            db2.close();
-                            Toast.makeText(context, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
 
-                        }
+                            @Override
+                            public void onFailure(Call<Object> call, Throwable t) {
+                                loadingDialogClass.dismiss();
+                                SQLiteDatabase db2 = new MyDatabase(context).getWritableDatabase();
+                                ContentValues cv2 = new ContentValues();
+                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                                String myDate = format.format(new Date());
+                                cv2.put(MyDatabase.RESPONCE, myDate + " --> " + t.getMessage());
+                                db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+                                db2.close();
+                                Toast.makeText(context, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
+                }, 1234);
 
-                    @Override
-                    public void onFailure(Call<Object> call, Throwable t) {
-                        SQLiteDatabase db2 = new MyDatabase(context).getWritableDatabase();
-                        ContentValues cv2 = new ContentValues();
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-                        String myDate = format.format(new Date());
-                        cv2.put(MyDatabase.RESPONCE, myDate + " --> " + t.getMessage());
-                        db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
-                        db2.close();
-                        Toast.makeText(context, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         });
 

@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/linearLayout_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layoutDirection="rtl"
+    android:background="@color/icons"
     android:orientation="vertical">
 
     <LinearLayout
-        android:background="@drawable/shape_underline_primary_text"
+        android:background="@drawable/shape_line_primary_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -17,6 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
             android:padding="@dimen/padding_small">
 
             <TextView
@@ -36,11 +40,11 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/border_shape_solid_gray"
                 android:gravity="center"
-                android:paddingtop="pad"
                 android:paddingBottom="@dimen/padding_bit"
+                android:paddingTop="@dimen/padding_bit"
                 android:text="9999"
                 android:textColor="@color/primary_text"
-                android:textSize="@dimen/font_medium" />
+                android:textSize="@dimen/font_large" />
 
         </LinearLayout>
 
@@ -56,10 +60,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="مهمان رستوران قصر هدیش"
+                android:paddingTop="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/font_xmedium" />
 
             <LinearLayout
+                android:paddingTop="@dimen/padding_small"
+                android:paddingBottom="@dimen/padding_small"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -75,11 +83,12 @@
                     android:id="@+id/textView_tableNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="14"
+                    android:text=" 14 "
                     android:textColor="@color/primary_text"
                     android:textSize="@dimen/font_xsmall" />
 
                 <TextView
+                    android:layout_marginRight="@dimen/padding_small"
                     android:id="@+id/textView_factorTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -98,11 +107,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/image_edit"
-                android:padding="@dimen/padding_large"
+                android:padding="@dimen/padding_xlarge"
                 android:background="@drawable/border_shape_solid_gray"/>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</FrameLayout>
