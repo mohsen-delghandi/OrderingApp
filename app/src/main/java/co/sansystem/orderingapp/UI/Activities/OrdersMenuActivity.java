@@ -182,6 +182,9 @@ public class OrdersMenuActivity extends MainActivity {
             case R.id.report:
                 startActivity(new Intent(this,ReportActivity.class));
                 break;
+            case R.id.offlineFactors:
+                startActivity(new Intent(this,OfflineFactorsActivity.class));
+                break;
         }
         return true;
     }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/image_background"
+    android:layoutDirection="rtl"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingLeft="@dimen/padding_large"
+        android:paddingRight="@dimen/padding_large"
+        android:layout_marginTop="@dimen/dimen_xlarge">
+
+        <ImageView
+            android:id="@+id/imageView_nav_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/padding_large"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_arrow_forward" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="@dimen/padding_large"
+            android:text="اطلاعات سفارش"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/font_medium" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_large"
+            android:paddingLeft="@dimen/dimen_large"
+            android:paddingRight="@dimen/dimen_large">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:gravity="right"
+                android:text="مشتری پیش فرض : این مشتری به عنوان مشتری پیش فرض انتخاب می گردد و در مواقع ثبت سفارش هنگامیکه مشتری از لیست اشتراک های شما انتخاب نگردد فاکتور ثبت شده با نام این مشتری ثبت می گردد توجه داشته باشید این مشتری را باید در سیستم سرور تعریف نمایید و پس از راه اندازی اولیه اپلیکیشن نیز می توانید این مشتری را تغییر دهید."
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xmedium" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:gravity="right"
+                android:text="وضعیت سفارش پیش فرض
+.این وضعیت به طور مثال وضعیت سفارش بیرون بر به عنوان وضعیت پیش فرض اپلیکیشن شما تعیین می گردد و شما این امکان را دارید که حین ثبت سفارش وضعیت سفارش را نیز به صرف نیاز تغییر دهید
+"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xmedium" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:gravity="right"
+                android:text="چاپ فاکتور پس از تایید صندوق
+بعد از تیک زدن این گزینه فیش های مشتری و آشپزخانه و... به صورت مستقیم چاپ نمی گردد و کاربر صندوق پس از تایید فیش و تسویه حساب اقدام به چاپ فاکتور می نمایید در صورت نیاز به چاپ فیش به صورت مستقیم از زدن این تیک خودداری نمایید.
+"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xmedium" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

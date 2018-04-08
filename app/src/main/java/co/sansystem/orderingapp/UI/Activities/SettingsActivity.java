@@ -20,7 +20,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -394,7 +393,7 @@ public class SettingsActivity extends MainActivity {
             @Override
             public void onClick(View view) {
                 isSettingsUpdate = true;
-                updateMenu(SettingsActivity.this, ll_loading);
+                updateMenu(SettingsActivity.this);
             }
         });
 
@@ -454,11 +453,9 @@ public class SettingsActivity extends MainActivity {
 
     }
 
-    public void updateMenu(final Context context, final LinearLayout ll) {
+    public void updateMenu(final Context context) {
 
-        if (ll != null) {
-            ll.setVisibility(View.VISIBLE);
-        }
+
         id = -1;
         id2 = -1;
         final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(this);
@@ -579,35 +576,23 @@ public class SettingsActivity extends MainActivity {
                                                                 }
                                                             } else {
                                                                 loadingDialogClass.dismiss();
-                                                                if (ll != null) {
-                                                                    ll.setVisibility(View.GONE);
-                                                                }
                                                             }
                                                             loadingDialogClass.dismiss();
                                                         }
 
                                                         @Override
                                                         public void onFailure(Call<List<SettingModel>> call, Throwable t) {
-                                                            if (ll != null) {
-                                                                ll.setVisibility(View.GONE);
+
                                                                 loadingDialogClass.dismiss();
-                                                            }
                                                         }
                                                     });
                                                 } else {
-
-                                                    if (ll != null) {
-                                                        ll.setVisibility(View.GONE);
-                                                    }
                                                 }
 
                                             }
 
                                             @Override
                                             public void onFailure(Call<List<FavoriteModel>> call, Throwable t) {
-                                                if (ll != null) {
-                                                    ll.setVisibility(View.GONE);
-                                                }
                                             }
                                         });
 
@@ -616,34 +601,27 @@ public class SettingsActivity extends MainActivity {
 
                                     {
                                         Toast.makeText(SettingsActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-                                        if (ll != null) {
-                                            ll.setVisibility(View.GONE);
-                                        }
+
                                     }
                                 }
 
                                 @Override
                                 public void onFailure(Call<List<FoodModel>> call, Throwable t) {
-                                    if (ll != null) {
-                                        ll.setVisibility(View.GONE);
-                                    }
+
                                 }
                             });
                         } else {
                             loadingDialogClass.dismiss();
                             Toast.makeText(SettingsActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-                            if (ll != null) {
-                                ll.setVisibility(View.GONE);
-                            }
+
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<GroupFoodModel>> call, Throwable t) {
-                        if (ll != null) {
-                            ll.setVisibility(View.GONE);
+
                             loadingDialogClass.dismiss();
-                        }
+
                     }
                 });
             }

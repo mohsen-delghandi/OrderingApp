@@ -19,6 +19,7 @@
     <string name="darsad_maliyat" translatable="false">darsad_maliyat</string>
     <string name="mablagh_takhfif" translatable="false">mablagh_takhfif</string>
     <string name="mablagh_service" translatable="false">mablagh_service</string>
+    <string name="hel_ip_string">نحوه بدست آوردن آدرس آی پی محلی (خانگی یا LAN) با آدرس آی پی اینترنتی (عمومی یا پابلیک) متفاوت است، توجه کنید که این آموزش برای سیستم عامل ویندوز مایکروسافت است.</string>
 
     <string-array name="vaziat_sefaresh">
         <item>بیرون بر</item>

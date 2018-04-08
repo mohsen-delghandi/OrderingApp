@@ -52,7 +52,9 @@ public class TitleSetActivity extends AppCompatActivity {
         ivHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(TitleSetActivity.this,HelpActivity.class));
+                Intent intent = new Intent(TitleSetActivity.this,HelpActivity.class);
+                intent.putExtra("number","2");
+                startActivity(intent);
             }
         });
 

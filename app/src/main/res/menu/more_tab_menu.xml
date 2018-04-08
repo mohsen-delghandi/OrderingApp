@@ -5,6 +5,9 @@
         android:id="@+id/lastFactors"
         android:title="سفارشات اخیر"/>
     <item
+        android:id="@+id/offlineFactors"
+        android:title="فیش های آفلاین"/>
+    <item
         android:id="@+id/report"
-        android:title="گزارش حساب"/>
+        android:title="گزارش فروش"/>
 </menu>

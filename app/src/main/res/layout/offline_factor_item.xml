@@ -1,123 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/linearLayout_main"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/icons"
     android:layoutDirection="rtl"
-    android:background="@drawable/shape_underline"
-    android:backgroundTint="#000"
-    android:orientation="horizontal">
+    android:orientation="vertical">
+
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight="3"
+        android:id="@+id/view_list_repo_action_container"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/view_list_repo_action_delete"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="لغو فاکتور"
+            android:background="@color/red"
+            android:textColor="@android:color/white"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/view_list_main_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/shape_line_primary_text_solid"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_small">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="نام مشتری : " />
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/padding_xbit"
+                android:background="@drawable/border_shape_solid_gray"
+                android:gravity="center"
+                android:padding="@dimen/padding_xbit"
+                android:text="شماره فیش"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xsmall" />
+
+            <TextView
+                android:id="@+id/textView_fishNumber"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_shape_solid_gray"
+                android:gravity="center"
+                android:paddingBottom="@dimen/padding_bit"
+                android:paddingTop="@dimen/padding_bit"
+                android:text="9999"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_large" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_medium">
 
             <TextView
                 android:id="@+id/textView_customerName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding_small"
+                android:paddingTop="@dimen/padding_small"
+                android:text="مهمان رستوران قصر هدیش"
                 android:textColor="@color/primary_text"
-                />
+                android:textSize="@dimen/font_xmedium" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/padding_small"
+                android:paddingTop="@dimen/padding_small">
+
+                <TextView
+                    android:id="@+id/textView_tableNumber_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="میز "
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_xsmall" />
+
+                <TextView
+                    android:id="@+id/textView_tableNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" 14 "
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_xsmall" />
+
+                <TextView
+                    android:id="@+id/textView_factorTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/padding_small"
+                    android:textColor="@color/primary_text" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/padding_small"
+                android:paddingTop="@dimen/padding_small">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="مبلغ "
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_xsmall" />
+
+                <TextView
+                    android:id="@+id/textView_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" 14 "
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_xsmall" />
+
+                <TextView
+                    android:id="@+id/textView_vaziat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/padding_small"
+                    android:textColor="@color/primary_text" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_marginTop="1px"
+            android:layout_marginBottom="1px"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="وضعیت سفارش : " />
-
-            <TextView
-                android:id="@+id/textView_vaziat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/primary_text" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textView_tableNumber_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="شماره میز : " />
-
-            <TextView
-                android:id="@+id/textView_tableNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/primary_text"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="مبلغ سفارش : " />
-
-            <TextView
-                android:id="@+id/textView_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/primary_text"
-                />
+            <ImageView
+                android:id="@+id/textView_sendFactor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_shape_solid_gray"
+                android:padding="@dimen/padding_xlarge"
+                android:src="@drawable/image_edit" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_weight="1.5"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textView_sendFactor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ارسال فیش"
-            android:gravity="center"
-            android:padding="@dimen/padding_medium"
-            android:background="@drawable/border_shape_accent"
-            android:layout_marginBottom="@dimen/padding_medium"
-            android:textColor="@color/primary_text"/>
-
-        <TextView
-            android:id="@+id/textView_deleteFactor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="حذف فیش"
-            android:gravity="center"
-            android:padding="@dimen/padding_medium"
-            android:background="@drawable/border_shape_red"
-            android:textColor="@color/primary_text"/>
-
-    </LinearLayout>
-
-
-
-</LinearLayout>
+</FrameLayout>

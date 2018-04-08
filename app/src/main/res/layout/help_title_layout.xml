@@ -12,47 +12,52 @@
         android:gravity="center"
         android:paddingLeft="@dimen/padding_large"
         android:paddingRight="@dimen/padding_large"
-        android:paddingTop="@dimen/padding_spinner">
+        android:layout_marginTop="@dimen/dimen_xlarge">
 
         <ImageView
             android:id="@+id/imageView_nav_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/padding_large"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:layout_centerVertical="true"
             android:src="@drawable/image_arrow_forward" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:gravity="center"
             android:padding="@dimen/padding_large"
-            android:text="گزارش حساب"
-            android:layout_centerVertical="true"
+            android:text="عنوان مجموعه"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/font_medium" />
 
     </RelativeLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/dimen_large"
-        android:paddingLeft="@dimen/dimen_large"
-        android:paddingRight="@dimen/dimen_large">
+        android:layout_height="wrap_content">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
-            android:layout_marginTop="@dimen/padding_spinner"
-            android:text="لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد."
-            android:textColor="@color/primary_text"
-            android:textSize="@dimen/font_xmedium" />
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_large"
+            android:paddingLeft="@dimen/dimen_large"
+            android:paddingRight="@dimen/dimen_large">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:gravity="right"
+                android:text="در این بخش نام مجموعه خود را وارد نمایید تا اپلیکیشن با عنوان مجموعه شما بارگزاری شود به طور مثال : رستوران درباغ- فست فود کاکتوس و..."
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xmedium" />
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

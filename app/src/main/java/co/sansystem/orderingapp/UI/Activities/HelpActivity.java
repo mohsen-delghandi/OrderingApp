@@ -1,6 +1,7 @@
 package co.sansystem.orderingapp.UI.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class HelpActivity extends AppCompatActivity {
 
     ImageView ivBack;
+    Intent intent;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -35,7 +37,16 @@ public class HelpActivity extends AppCompatActivity {
             w.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             w.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }
-        setContentView(R.layout.help_layout);
+
+        intent = getIntent();
+        if (intent.getStringExtra("number").equals("1"))
+            setContentView(R.layout.help_ip_layout);
+        if (intent.getStringExtra("number").equals("2"))
+            setContentView(R.layout.help_title_layout);
+        if (intent.getStringExtra("number").equals("3"))
+            setContentView(R.layout.help_info_layout);
+        if (intent.getStringExtra("number").equals("4"))
+            setContentView(R.layout.help_login_layout);
 
         ivBack = (ImageView) findViewById(R.id.imageView_nav_back);
         ivBack.setOnClickListener(new View.OnClickListener() {

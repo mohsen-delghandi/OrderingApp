@@ -9,10 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopeer.itemtouchhelperextension.Extension;
 import com.sansystem.orderingapp.R;
 
 import java.text.SimpleDateFormat;
@@ -25,6 +28,7 @@ import co.sansystem.orderingapp.Models.FactorContentModel;
 import co.sansystem.orderingapp.Models.MiniFactorModel;
 import co.sansystem.orderingapp.Models.OrderedItemModel;
 import co.sansystem.orderingapp.UI.Activities.OrdersMenuActivity;
+import co.sansystem.orderingapp.UI.Dialogs.DeleteFactorDialogClass;
 import co.sansystem.orderingapp.UI.Dialogs.LoadingDialogClass;
 import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
@@ -33,6 +37,7 @@ import co.sansystem.orderingapp.Utility.Utility.AppPreferenceTools;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
 
 /**
  * Created by Mohsen on 2017-07-02.
@@ -110,8 +115,10 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvFishNumber, tvTableNumber, tvCustomerName, tvFactorTime;
+        public TextView tvFishNumber, tvTableNumber, tvCustomerName, tvFactorTime,mActionViewDelete;
         public FrameLayout llMain;
+        View mActionContainer;
+        View mViewContent;
 
         public ViewHolder(View v) {
             super(v);
@@ -119,6 +126,9 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
             tvTableNumber = v.findViewById(R.id.textView_tableNumber);
             tvCustomerName = v.findViewById(R.id.textView_customerName);
             tvFactorTime = v.findViewById(R.id.textView_factorTime);
+            mActionContainer = v.findViewById(R.id.view_list_repo_action_container);
+            mViewContent = v.findViewById(R.id.view_list_main_content);
+            mActionViewDelete = v.findViewById(R.id.view_list_repo_action_delete);
 
             llMain = v.findViewById(R.id.linearLayout_main);
         }
@@ -129,8 +139,7 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
         context = parent.getContext();
         appPreferenceTools = new AppPreferenceTools(context);
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.last_factors_item, parent, false);
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
+        return new ItemSwipeWithActionWidthNoSpringViewHolder(view);
     }
 
 
@@ -144,58 +153,36 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
         holder.tvTableNumber.setText(currentModel.get(position).getTable_Number());
         holder.tvFactorTime.setText(currentModel.get(position).getFactor_Time());
 
-//        holder.tvDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
+        holder.mActionViewDelete.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
+                        final DeleteFactorDialogClass deleteFactorDialogClass = new DeleteFactorDialogClass(context);
+                        deleteFactorDialogClass.show();
+                        Window window = deleteFactorDialogClass.getWindow();
+                        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);holder.tvFishNumber.setText(currentModel.get(position).getFish_Number());
+                        deleteFactorDialogClass.tvFishNumber.setText(currentModel.get(position).getFish_Number());
+                        deleteFactorDialogClass.tvCustomerName.setText(currentModel.get(position).getCustomer_Name());
+                        deleteFactorDialogClass.tvTableNumber.setText(currentModel.get(position).getTable_Number());
+                        deleteFactorDialogClass.tvFactorTime.setText(currentModel.get(position).getFactor_Time());
+                        deleteFactorDialogClass.tvOk.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                deleteAdapterData(position);
+                                deleteFactorDialogClass.dismiss();
+                            }
+                        });
+                        deleteFactorDialogClass.tvNo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                deleteFactorDialogClass.dismiss();
+                            }
+                        });
+                    }
+                }
 
-
-//                cdd2.yes.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Call<Boolean> call = mTService.deleteFactor(currentModel.get(position).getFactor_Number(), currentModel.get(position).getSanad_Number(), appPreferenceTools.getUserID());
-//                        call.enqueue(new Callback<Boolean>() {
-//
-//                            @Override
-//                            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-//
-//                                if (response.isSuccessful()) {
-//                                    if (response.body()) {
-//                                        Toast.makeText(context, "با موفقیت لغو گردید.", Toast.LENGTH_SHORT).show();
-//                                        currentModel.remove(position);
-//                                        notifyDataSetChanged();
-//                                    } else {
-//                                        Toast.makeText(context, "خطا در لغو فاکتور.", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                } else {
-//                                    SQLiteDatabase db2 = new MyDatabase(context).getWritableDatabase();
-//                                    ContentValues cv2 = new ContentValues();
-//                                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-//                                    String myDate = format.format(new Date());
-//                                    cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
-//                                    db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
-//                                    db2.close();
-//                                    Toast.makeText(context, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<Boolean> call, Throwable t) {
-//                                SQLiteDatabase db2 = new MyDatabase(context).getWritableDatabase();
-//                                ContentValues cv2 = new ContentValues();
-//                                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
-//                                String myDate = format.format(new Date());
-//                                cv2.put(MyDatabase.RESPONCE, myDate + " --> " + t.getMessage());
-//                                db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
-//                                db2.close();
-//                                Toast.makeText(context, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                        cdd2.dismiss();
-//                    }
-//                });
-//            }
-//        });
+        );
 
         holder.llMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,6 +261,45 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
             return mData.size();
         } catch (Exception e) {
             return 0;
+        }
+    }
+
+
+    class ItemViewHolderWithRecyclerWidth extends ViewHolder {
+
+        View mActionViewDelete;
+
+        public ItemViewHolderWithRecyclerWidth(View itemView) {
+            super(itemView);
+            mActionViewDelete = itemView.findViewById(R.id.view_list_repo_action_delete);
+        }
+
+    }
+
+    class ItemSwipeWithActionWidthViewHolder extends ViewHolder implements Extension {
+
+        View mActionViewDelete;
+
+        public ItemSwipeWithActionWidthViewHolder(View itemView) {
+            super(itemView);
+            mActionViewDelete = itemView.findViewById(R.id.view_list_repo_action_delete);
+        }
+
+        @Override
+        public float getActionWidth() {
+            return mActionContainer.getWidth();
+        }
+    }
+
+    class ItemSwipeWithActionWidthNoSpringViewHolder extends ItemSwipeWithActionWidthViewHolder implements Extension {
+
+        public ItemSwipeWithActionWidthNoSpringViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public float getActionWidth() {
+            return mActionContainer.getWidth();
         }
     }
 

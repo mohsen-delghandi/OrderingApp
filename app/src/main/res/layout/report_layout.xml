@@ -32,7 +32,7 @@
             android:gravity="center"
             android:padding="@dimen/padding_large"
             android:layout_centerVertical="true"
-            android:text="گزارش حساب"
+            android:text="گزارش فروش"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/font_medium" />
 
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:text="جهت محاسبه گزارش حساب، تاریخ موردنظر را انتخاب کنید."
+            android:text="جهت محاسبه گزارش فروش، تاریخ موردنظر را انتخاب کنید."
             android:textColor="@color/primary_text"
             android:textSize="@dimen/font_small" />
 
@@ -178,7 +178,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/border_shape_solid_gray"
                 android:gravity="center"
-                android:text="فاکتورهای لغوی"
+                android:text="لغو شده"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/font_small"
                 app:fontPath="fonts/IRANSansWeb.ttf"
@@ -210,7 +210,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/border_shape_solid_gray"
                 android:gravity="center"
-                android:text="جمع بیرون بر"
+                android:text="بیرون بر"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/font_small"
                 app:fontPath="fonts/IRANSansWeb.ttf"
@@ -242,7 +242,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/border_shape_solid_gray"
                 android:gravity="center"
-                android:text="جمع پیک"
+                android:text="پیک"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/font_small"
                 app:fontPath="fonts/IRANSansWeb.ttf"
@@ -274,7 +274,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/border_shape_solid_gray"
                 android:gravity="center"
-                android:text="جمع داخل سالن"
+                android:text="داخل سالن"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/font_small"
                 app:fontPath="fonts/IRANSansWeb.ttf"

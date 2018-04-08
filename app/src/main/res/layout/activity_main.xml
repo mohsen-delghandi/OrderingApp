@@ -82,7 +82,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center">
@@ -92,7 +92,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/image_arrow_forward"
+                        android:layout_alignParentRight="true"
                         android:scaleType="centerCrop"
+                        android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/padding_large"
                         android:adjustViewBounds="true"/>
 
@@ -101,11 +103,13 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="@dimen/padding_large"
+                        android:layout_centerVertical="true"
+                        android:layout_centerHorizontal="true"
                         android:text="دسته بندی غذایی"
                         android:textColor="@color/primary_text"
                         android:textSize="@dimen/font_medium" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -126,33 +130,5 @@
 
         </RelativeLayout>
     </android.support.design.widget.NavigationView>
-
-    <LinearLayout
-        android:id="@+id/llLoading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#CCD1C4E9"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <com.wang.avi.AVLoadingIndicatorView
-            style="@style/AVLoadingIndicatorView.Large"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:indicatorColor="@color/primary_dark"
-            app:indicatorName="BallSpinFadeLoaderIndicator" />
-
-        <TextView
-            android:id="@+id/tvLoading_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/pvLoading_view"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="@dimen/padding_large"
-            android:gravity="center"
-            android:text="لطفا شکیبا باشید"
-            android:textColor="@color/primary_text" />
-    </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

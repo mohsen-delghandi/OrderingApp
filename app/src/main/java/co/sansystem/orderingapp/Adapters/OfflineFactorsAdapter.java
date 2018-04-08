@@ -8,10 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.loopeer.itemtouchhelperextension.Extension;
 import com.sansystem.orderingapp.R;
 
 import java.text.SimpleDateFormat;
@@ -21,6 +25,7 @@ import java.util.Locale;
 
 import co.sansystem.orderingapp.Models.FactorModel;
 import co.sansystem.orderingapp.UI.Activities.MainActivity;
+import co.sansystem.orderingapp.UI.Dialogs.DeleteFactorDialogClass;
 import co.sansystem.orderingapp.UI.Dialogs.LoadingDialogClass;
 import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
@@ -47,14 +52,17 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
         mTService = provider.getTService();
     }
 
-    public void updateAdapterData(List<FactorModel> data,List<String> factorIDs) {
+    public void updateAdapterData(List<FactorModel> data, List<String> factorIDs) {
         this.mData = data;
         this.fatorIDs = factorIDs;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvTableNumber, tvCustomerName,tvVaziat,tvPrice,tvTableText, tvDelete,tvSend;
-        public LinearLayout llMain;
+        public TextView tvTableNumber, tvCustomerName, tvVaziat, tvPrice, tvTableText, mActionViewDelete;
+        ImageView tvSend;
+        public FrameLayout llMain;
+        View mActionContainer;
+        View mViewContent;
 
         public ViewHolder(View v) {
             super(v);
@@ -64,7 +72,9 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
             tvVaziat = v.findViewById(R.id.textView_vaziat);
             tvPrice = v.findViewById(R.id.textView_price);
             tvSend = v.findViewById(R.id.textView_sendFactor);
-            tvDelete = v.findViewById(R.id.textView_deleteFactor);
+            mActionContainer = v.findViewById(R.id.view_list_repo_action_container);
+            mViewContent = v.findViewById(R.id.view_list_main_content);
+            mActionViewDelete = v.findViewById(R.id.view_list_repo_action_delete);
 
             llMain = v.findViewById(R.id.linearLayout_main);
         }
@@ -75,8 +85,7 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
         context = parent.getContext();
         appPreferenceTools = new AppPreferenceTools(context);
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.offline_factor_item, parent, false);
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
+        return new ItemSwipeWithActionWidthNoSpringViewHolder(view);
     }
 
 
@@ -86,16 +95,16 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
         holder.setIsRecyclable(false);
 
         holder.tvCustomerName.setText(currentModel.get(position).getList().get(0).getCostumerName());
-        if(currentModel.get(position).getList().get(0).getTableNumber().equals("0")){
+        if (currentModel.get(position).getList().get(0).getTableNumber().equals("0")) {
             holder.tvTableText.setText("آدرس :");
             holder.tvTableNumber.setText(currentModel.get(position).getList().get(0).getAddress());
-        }else{
+        } else {
             holder.tvTableText.setText("شماره میز :");
             holder.tvTableNumber.setText(currentModel.get(position).getList().get(0).getTableNumber());
         }
         holder.tvVaziat.setText(currentModel.get(position).getList().get(0).getVaziatSefaresh());
         holder.tvPrice.setText(MainActivity.priceFormatter(currentModel.get(position).getList().get(0).getJameMablaghKhales()
-                .substring(0,currentModel.get(position).getList().get(0).getJameMablaghKhales().indexOf("."))));
+                .substring(0, currentModel.get(position).getList().get(0).getJameMablaghKhales().indexOf("."))));
 
         holder.tvSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,7 +126,7 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
                                 if (response.isSuccessful()) {
                                     loadingDialogClass.dismiss();
                                     SQLiteDatabase database = new MyDatabase(context).getWritableDatabase();
-                                    database.delete(MyDatabase.OFFLINE_FACTORS_TABLE,MyDatabase.ID + " = " + fatorIDs.get(position),null);
+                                    database.delete(MyDatabase.OFFLINE_FACTORS_TABLE, MyDatabase.ID + " = " + fatorIDs.get(position), null);
 
                                     currentModel.remove(position);
                                     fatorIDs.remove(position);
@@ -156,26 +165,35 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
 
             }
         });
+        holder.mActionViewDelete.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-        holder.tvDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                cdd2.yes.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//
-//                        SQLiteDatabase database = new MyDatabase(context).getWritableDatabase();
-//                        database.delete(MyDatabase.OFFLINE_FACTORS_TABLE,MyDatabase.ID + " = " + fatorIDs.get(position),null);
-//
-//                        Toast.makeText(context, "با موفقیت حذف گردید.", Toast.LENGTH_SHORT).show();
-//                        currentModel.remove(position);
-//                        fatorIDs.remove(position);
-//                        notifyDataSetChanged();
-//                        cdd2.dismiss();
-//                    }
-//                });
-            }
-        });
+                        final DeleteFactorDialogClass deleteFactorDialogClass = new DeleteFactorDialogClass(context);
+                        deleteFactorDialogClass.show();
+                        Window window = deleteFactorDialogClass.getWindow();
+                        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        deleteFactorDialogClass.tvCustomerName.setText(currentModel.get(position).getList().get(0).getCostumerName());
+                        deleteFactorDialogClass.tvTableNumber.setText(currentModel.get(position).getList().get(0).getTableNumber());
+
+                        deleteFactorDialogClass.tvOk.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                deleteAdapterData(position);
+                                deleteFactorDialogClass.dismiss();
+                            }
+                        });
+                        deleteFactorDialogClass.tvNo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                deleteFactorDialogClass.dismiss();
+                            }
+                        });
+                    }
+                }
+
+        );
     }
 
     @Override
@@ -184,6 +202,55 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
             return mData.size();
         } catch (Exception e) {
             return 0;
+        }
+    }
+
+    public void deleteAdapterData(int position) {
+        SQLiteDatabase database = new MyDatabase(context).getWritableDatabase();
+        database.delete(MyDatabase.OFFLINE_FACTORS_TABLE, MyDatabase.ID + " = " + fatorIDs.get(position), null);
+
+        Toast.makeText(context, "با موفقیت حذف گردید.", Toast.LENGTH_SHORT).show();
+        mData.remove(position);
+        fatorIDs.remove(position);
+        notifyDataSetChanged();
+    }
+
+
+    class ItemViewHolderWithRecyclerWidth extends OfflineFactorsAdapter.ViewHolder {
+
+        View mActionViewDelete;
+
+        public ItemViewHolderWithRecyclerWidth(View itemView) {
+            super(itemView);
+            mActionViewDelete = itemView.findViewById(R.id.view_list_repo_action_delete);
+        }
+
+    }
+
+    class ItemSwipeWithActionWidthViewHolder extends OfflineFactorsAdapter.ViewHolder implements Extension {
+
+        View mActionViewDelete;
+
+        public ItemSwipeWithActionWidthViewHolder(View itemView) {
+            super(itemView);
+            mActionViewDelete = itemView.findViewById(R.id.view_list_repo_action_delete);
+        }
+
+        @Override
+        public float getActionWidth() {
+            return mActionContainer.getWidth();
+        }
+    }
+
+    class ItemSwipeWithActionWidthNoSpringViewHolder extends OfflineFactorsAdapter.ItemSwipeWithActionWidthViewHolder implements Extension {
+
+        public ItemSwipeWithActionWidthNoSpringViewHolder(View itemView) {
+            super(itemView);
+        }
+
+        @Override
+        public float getActionWidth() {
+            return mActionContainer.getWidth();
         }
     }
 

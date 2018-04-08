@@ -1,9 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:id="@+id/linearLayout_main"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/image_background"
     android:layoutDirection="rtl"
-    android:padding="@dimen/padding_medium">
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="@dimen/padding_box"
+        android:paddingLeft="@dimen/padding_large"
+        android:paddingRight="@dimen/padding_large"
+        android:paddingTop="@dimen/padding_spinner">
+
+        <ImageView
+            android:id="@+id/imageView_nav_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/padding_large"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_arrow_forward" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="@dimen/padding_large"
+            android:text="فاکتور های آفلاین"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/font_medium" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/primary_text"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/offline_factors_recyclerView"

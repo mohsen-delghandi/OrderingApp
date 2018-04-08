@@ -73,7 +73,9 @@ public class OrderInfoActivity extends AppCompatActivity {
         ivHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(OrderInfoActivity.this,HelpActivity.class));
+                Intent intent = new Intent(OrderInfoActivity.this,HelpActivity.class);
+                intent.putExtra("number","3");
+                startActivity(intent);
             }
         });
 

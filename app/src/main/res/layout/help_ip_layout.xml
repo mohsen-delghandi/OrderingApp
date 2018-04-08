@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/image_background"
+    android:layoutDirection="rtl"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingLeft="@dimen/padding_large"
+        android:paddingRight="@dimen/padding_large"
+        android:layout_marginTop="@dimen/dimen_xlarge">
+
+        <ImageView
+            android:id="@+id/imageView_nav_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/padding_large"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_arrow_forward" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:padding="@dimen/padding_large"
+            android:text="نحوه بدست آوردن آدرس IP"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/font_medium" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dimen_large"
+            android:paddingLeft="@dimen/dimen_large"
+            android:paddingRight="@dimen/dimen_large">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:gravity="right"
+                android:text="@string/hel_ip_string"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xmedium" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:gravity="right"
+                android:text="دیالوگ Run را با کلید های Windows + R باز کرده و دستور cmd.exe را اجرا کنید."
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xmedium" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_large"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_run" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:gravity="right"
+                android:text="در خط فرمان ویندوز CMD دستور زیر را نوشته و با کلید Enter آن را اجرا کنید."
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xmedium" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_large"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_ipconfig" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_spinner"
+                android:gravity="right"
+                android:text="به دنبال بخش مربوط به کارت شبکه خود باشید.
+برای مثال اگر کارت شبکه شما بصورت کابلی است معمولاً اطلاعات آن در بخش Ethernet adapter Local Area Connection قابل دیدن است. برای کارت شبکه وایرلس ممکن است در بخش Wireless LAN adapter Wireless Network Connection یا بخش Wireless LAN adapter Wi-Fi یا بخش Ethernet adapter Wireless Network Connection باشد.
+پس از پیدا کردن بخش مربوط به کارت شبکه خود، به دنبال فیلد IPv4 Address باشید. در مقابل این فیلد آدرس آی پی (نسخه 4) کارت شبکه شما نوشته شده است.
+"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xmedium" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/padding_large"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_ipconfig2" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

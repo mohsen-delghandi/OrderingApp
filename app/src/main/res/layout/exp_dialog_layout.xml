@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="@dimen/padding_small">
 
     <ScrollView
@@ -38,7 +40,7 @@
                 android:layout_weight="5"
                 android:gravity="right"
                 android:layout_margin="@dimen/padding_bit"
-                android:lines="2"
+                android:lines="3"
                 android:background="@drawable/border_shape_round"
                 android:textSize="@dimen/font_xmedium"
                 android:textColor="@color/primary_text"
@@ -46,38 +48,47 @@
 
         </TableRow>
 
-        <TableRow
-            android:layout_height="wrap_content"
+
+
+
+        <RelativeLayout
+            android:layout_marginTop="@dimen/padding_large"
+            android:id="@+id/relativeLayout_main"
             android:layout_width="match_parent"
-            android:gravity="left">
-
-            <TextView
-                android:id="@+id/textView_cancel"
-                android:gravity="center"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="خیر"
-                android:textSize="@dimen/font_xmedium"
-                android:background="@color/accent"
-                android:textColor="@color/icons"
-                android:padding="@dimen/padding_bit"/>
-
-
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
 
             <TextView
                 android:id="@+id/textView_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_large"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/border_shape_primary"
                 android:gravity="center"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="بله"
-                android:textSize="@dimen/font_xmedium"
-                android:background="@color/green"
+                android:paddingLeft="@dimen/dimen_large"
+                android:paddingRight="@dimen/dimen_large"
+                android:text="تایید"
                 android:textColor="@color/icons"
-                android:padding="@dimen/padding_bit"/>
+                android:textSize="@dimen/font_medium"
+                app:fontPath="fonts/IRANSansWeb_Medium.ttf"
+                tools:ignore="MissingPrefix" />
 
-        </TableRow>
+            <TextView
+                android:id="@+id/textView_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_large"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/border_shape_red_solid"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dimen_large"
+                android:paddingRight="@dimen/dimen_large"
+                android:text="انصراف"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_medium"
+                app:fontPath="fonts/IRANSansWeb_Medium.ttf"
+                tools:ignore="MissingPrefix" />
+
+        </RelativeLayout>
 
     </TableLayout>
 

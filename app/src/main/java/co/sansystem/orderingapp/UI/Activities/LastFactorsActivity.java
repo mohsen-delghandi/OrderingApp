@@ -5,17 +5,17 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension;
 import com.sansystem.orderingapp.R;
 
 import java.text.SimpleDateFormat;
@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import co.sansystem.orderingapp.Adapters.LastFactorItemTouchHelperCallback;
 import co.sansystem.orderingapp.Adapters.LastFactorsAdapter;
 import co.sansystem.orderingapp.Models.MiniFactorModel;
 import co.sansystem.orderingapp.UI.Dialogs.LoadingDialogClass;
@@ -44,6 +45,8 @@ public class LastFactorsActivity extends AppCompatActivity {
     LastFactorsAdapter lastFactorsAdapter;
     private WebService mTService;
     ImageView ivBack;
+    public ItemTouchHelperExtension mItemTouchHelper;
+    public ItemTouchHelperExtension.Callback mCallback;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -55,9 +58,6 @@ public class LastFactorsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.last_factors_layout);
 
         ivBack = (ImageView) findViewById(R.id.imageView_nav_back);
@@ -71,42 +71,15 @@ public class LastFactorsActivity extends AppCompatActivity {
         rvLastFactors = (RecyclerView) findViewById(R.id.last_factors_recyclerView);
         rvLastFactors.setHasFixedSize(true);
         rvLastFactors.setNestedScrollingEnabled(false);
+        rvLastFactors.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.HORIZONTAL));
         rvLastFactors.setLayoutManager(new LinearLayoutManager(this));
         lastFactorsAdapter = new LastFactorsAdapter();
         rvLastFactors.setAdapter(lastFactorsAdapter);
 
 
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
-                final int position = viewHolder.getAdapterPosition(); //get position which is swipe
-
-                if (direction == ItemTouchHelper.RIGHT) {    //if swipe left
-
-
-                    Snackbar snackbar = Snackbar.make(findViewById(R.id.linearLayout_main), "آیا اطمینان دارید؟", Snackbar.LENGTH_LONG)
-                            .setAction("بله", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    lastFactorsAdapter.deleteAdapterData(position);
-                                }
-                            })
-                            .setActionTextColor(getResources().getColor(android.R.color.holo_red_light));
-
-                    snackbar.show();
-
-                    lastFactorsAdapter.notifyDataSetChanged();
-                }
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(rvLastFactors);
+        mCallback = new LastFactorItemTouchHelperCallback();
+        mItemTouchHelper = new ItemTouchHelperExtension(mCallback);
+        mItemTouchHelper.attachToRecyclerView(rvLastFactors);
 
         WebProvider provider = new WebProvider();
         mTService = provider.getTService();
@@ -157,4 +130,5 @@ public class LastFactorsActivity extends AppCompatActivity {
             }
         }, 1234);
     }
+
 }

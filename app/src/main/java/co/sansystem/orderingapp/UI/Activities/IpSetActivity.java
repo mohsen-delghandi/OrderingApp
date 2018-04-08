@@ -60,7 +60,9 @@ public class IpSetActivity extends AppCompatActivity {
         ivHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(IpSetActivity.this,HelpActivity.class));
+                Intent intent = new Intent(IpSetActivity.this,HelpActivity.class);
+                intent.putExtra("number","1");
+                startActivity(intent);
             }
         });
 

@@ -18,7 +18,7 @@ public class ExpDialogAdapter extends RecyclerView.Adapter<ExpDialogAdapter.ExpV
 
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    ArrayList<String>  mData;
+    ArrayList<String> mData;
     EditText text;
 
     public ExpDialogAdapter(Context context, EditText text) {
@@ -42,12 +42,19 @@ public class ExpDialogAdapter extends RecyclerView.Adapter<ExpDialogAdapter.ExpV
     @Override
     public void onBindViewHolder(final ExpViewHolder holder, final int position) {
         final ArrayList<String> currentModel = mData;
-        holder.tvExpName.setText(currentModel.get(position));
+        if (currentModel.get(position) != null &&
+                !currentModel.get(position).equals(null) &&
+                !currentModel.get(position).equals("null") &&
+                !currentModel.get(position).equals("")) {
+            holder.tvExpName.setText(currentModel.get(position));
+        }else{
+            holder.tvExpName.setVisibility(View.GONE);
+        }
 
         holder.llMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                text.setText(text.getText().toString()+ " " + currentModel.get(position));
+                text.setText(text.getText().toString() + " " + currentModel.get(position));
             }
         });
     }

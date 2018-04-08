@@ -48,7 +48,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2.5"
-            android:visibility="gone"
             android:background="@color/icons">
 
             <TextView
@@ -61,7 +60,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/padding_large">
+                android:paddingTop="@dimen/padding_large"
+                android:paddingBottom="@dimen/padding_large"
+                >
 
             </LinearLayout>
 

@@ -51,7 +51,6 @@ public class MainActivity extends BaseActivity {
     ImageView ivTitlebar,ivNavBack;
     ActionBarDrawerToggle toggle;
     NavigationView nv;
-    LinearLayout ll_loading;
     long id, id2;
     String title;
     boolean isStarted = false;
@@ -116,7 +115,6 @@ public class MainActivity extends BaseActivity {
         cursor.close();
         db2.close();
 
-        ll_loading = (LinearLayout)findViewById(R.id.llLoading);
         ivNavBack = (ImageView) findViewById(R.id.imageView_nav_back);
 
 

@@ -1,20 +1,26 @@
 package co.sansystem.orderingapp.UI.Activities;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.loopeer.itemtouchhelperextension.ItemTouchHelperExtension;
 import com.sansystem.orderingapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import co.sansystem.orderingapp.Adapters.OfflineFactorItemTouchHelperCallback;
 import co.sansystem.orderingapp.Adapters.OfflineFactorsAdapter;
 import co.sansystem.orderingapp.Models.FactorContentModel;
 import co.sansystem.orderingapp.Models.FactorModel;
@@ -22,20 +28,39 @@ import co.sansystem.orderingapp.UI.Dialogs.LoadingDialogClass;
 import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
 import co.sansystem.orderingapp.Utility.Network.WebService;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by Mohsen on 2018-03-17.
  */
 
-public class OfflineFactorsActivity extends MainActivity {
+public class OfflineFactorsActivity extends AppCompatActivity {
 
     RecyclerView rvOfflineFactors;
     OfflineFactorsAdapter offlineFactorsAdapter;
+    ImageView ivBack;
+    public ItemTouchHelperExtension mItemTouchHelper;
+    public ItemTouchHelperExtension.Callback mCallback;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setInflater(this, R.layout.offline_factors_layout);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.offline_factors_layout);
+
+        ivBack = (ImageView) findViewById(R.id.imageView_nav_back);
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
 
         rvOfflineFactors = (RecyclerView) findViewById(R.id.offline_factors_recyclerView);
         rvOfflineFactors.setHasFixedSize(true);
@@ -44,19 +69,12 @@ public class OfflineFactorsActivity extends MainActivity {
         offlineFactorsAdapter = new OfflineFactorsAdapter();
         rvOfflineFactors.setAdapter(offlineFactorsAdapter);
 
+        mCallback = new OfflineFactorItemTouchHelperCallback();
+        mItemTouchHelper = new ItemTouchHelperExtension(mCallback);
+        mItemTouchHelper.attachToRecyclerView(rvOfflineFactors);
+
         WebProvider provider = new WebProvider();
         WebService mTService = provider.getTService();
-
-//        tvTitlebar.setText(title + " - " + "فیش های آفلاین");
-        toggle.setDrawerIndicatorEnabled(false);
-        toggle.setHomeAsUpIndicator(R.drawable.icon_back);
-        toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(this);
         loadingDialogClass.show();

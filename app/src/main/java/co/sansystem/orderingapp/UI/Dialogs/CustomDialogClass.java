@@ -24,7 +24,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,15 +64,15 @@ public class CustomDialogClass extends Dialog implements
         android.view.View.OnClickListener {
 
     public Activity c;
-    public TextView tvOkk, yes, text, jameKol, tvJameKol, tvNameMoshtari,tvFishNumber, tvMaliatText, tvMaliat, tvTakhfifText, tvTakhfif, tvServiceText, tvService, tvFactorText, tvFactor;
+    public TextView yes,tvOkk, text,tvNameMoshtari,tvFishNumber, jameKol, tvJameKol, tvMaliatText, tvMaliat, tvTakhfifText, tvTakhfif, tvServiceText, tvService, tvFactorText, tvFactor;
     public ImageView no;
     public EditText etTable;
     long mPrice = 0;
     String costumerCode;
-    public LinearLayout llLoadingDialog, llSuccess;
+    public LinearLayout  llSuccess;
     public ScrollView svMain;
     public RelativeLayout rlMain, rlSuccess;
-    public TableLayout tlMain;
+
     AppPreferenceTools appPreferenceTools;
     public Spinner spVaziatSefaresh;
     String vaziatSefaresh;
@@ -125,13 +124,15 @@ public class CustomDialogClass extends Dialog implements
 
         tvNameMoshtari = findViewById(R.id.textView_moshtari_name);
         tvFishNumber = findViewById(R.id.textView_fish_number);
-        tvOkk = findViewById(R.id.textView_okk);
+
+        tvOkk =findViewById(R.id.textView_okk);
         tvOkk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dismiss();
             }
         });
+
 
         View view2 = this.getCurrentFocus();
         if (view2 != null) {
@@ -587,7 +588,8 @@ public class CustomDialogClass extends Dialog implements
                                 public void onResponse(Call<Object> call, Response<Object> response) {
 
                                     if (response.isSuccessful()) {
-loadingDialogClass.dismiss();
+                                        loadingDialogClass.dismiss();
+
                                         svMain.setVisibility(View.GONE);
                                         rlMain.setVisibility(View.GONE);
                                         rlSuccess.setVisibility(View.VISIBLE);
@@ -595,6 +597,10 @@ loadingDialogClass.dismiss();
 
                                         tvFishNumber.setText(response.body().toString());
                                         tvNameMoshtari.setText(textView.getText().toString().trim());
+
+                                        InputMethodManager imm = (InputMethodManager) c.getSystemService(Context.INPUT_METHOD_SERVICE);
+                                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
                                         FoodOrdersAdapter.mList.clear();
 
                                         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
@@ -602,6 +608,7 @@ loadingDialogClass.dismiss();
                                         OrdersMenuActivity.ll.setLayoutParams(params);
                                         OrdersMenuActivity.tvTayid.setAlpha(0f);
                                         OrdersMenuActivity.fabToggle.setAlpha(0f);
+
 
                                         Call<List<FavoriteModel>> call2 = mTService3.getFoodFavorite();
                                         call2.enqueue(new Callback<List<FavoriteModel>>() {
@@ -635,7 +642,7 @@ loadingDialogClass.dismiss();
                                             }
                                         });
                                     } else {
-loadingDialogClass.dismiss();
+                                        loadingDialogClass.dismiss();
                                         SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
                                         ContentValues cv2 = new ContentValues();
                                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
@@ -650,8 +657,6 @@ loadingDialogClass.dismiss();
                                         db2.insert(MyDatabase.OFFLINE_FACTORS_TABLE, null, contentValues);
 
                                         db2.close();
-                                        llLoadingDialog.setVisibility(View.GONE);
-                                        tlMain.setAlpha(1f);
                                         Toast.makeText(c, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
 
                                     }
@@ -674,8 +679,6 @@ loadingDialogClass.dismiss();
                                     db2.insert(MyDatabase.OFFLINE_FACTORS_TABLE, null, contentValues);
 
                                     db2.close();
-                                    llLoadingDialog.setVisibility(View.GONE);
-                                    tlMain.setAlpha(1f);
                                     Toast.makeText(c, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                                 }
                             });
