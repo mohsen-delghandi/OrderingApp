@@ -1,6 +1,5 @@
 package co.sansystem.orderingapp.Adapters;
 
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.FragmentManager;
 import android.content.ContentValues;
@@ -37,13 +36,13 @@ import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHolder> {
 
     Context mContext;
-    OrderedItemModel data ;
+    OrderedItemModel data;
     public static ArrayList<byte[]> mFoodsImages;
     ArrayList<String> mFoodsNames;
     View v;
     ViewHolder mHolder;
     FragmentManager mFragmentManager;
-    int mNumber,mHeight;
+    int mNumber, mHeight;
     public static ArrayList<String> mFoodsCodes;
     public static ArrayList<String> mFoodsPrices;
 
@@ -61,6 +60,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
         public TextView tv;
         public ImageView iv;
         LinearLayout ll;
+
         public ViewHolder(View v) {
             super(v);
             tv = v.findViewById(R.id.food_item_textView);
@@ -84,11 +84,11 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
 //        holder.ll.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,holder.tvJameKol.getLayoutParams().width));
         holder.tv.setText(mFoodsNames.get(position));
         SQLiteDatabase dbf2 = new MyDatabase(mContext).getReadableDatabase();
-        Cursor cf = dbf2.query(MyDatabase.FOOD_TABLE,new String[]{MyDatabase.FAVORITE},MyDatabase.CODE + " = ?",new String[]{mFoodsCodes.get(position)},null,null,null);
-        if (cf.moveToFirst()){
-            if(cf.getInt(0)==1){
+        Cursor cf = dbf2.query(MyDatabase.FOOD_TABLE, new String[]{MyDatabase.FAVORITE}, MyDatabase.CODE + " = ?", new String[]{mFoodsCodes.get(position)}, null, null, null);
+        if (cf.moveToFirst()) {
+            if (cf.getInt(0) == 1) {
                 v.setOnLongClickListener(olclRemoveFavorite);
-            }else{
+            } else {
                 v.setOnLongClickListener(olclAddFavorite);
             }
         }
@@ -101,7 +101,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
         try {
             Bitmap decodedByte = BitmapFactory.decodeByteArray(mFoodsImages.get(position), 0, mFoodsImages.get(position).length);
             holder.iv.setImageBitmap(decodedByte);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
 
@@ -130,45 +130,36 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
             @Override
             public void onClick(View view) {
 
-                OrdersMenuActivity.fabToggle.setImageResource(R.drawable.icon_up);
-                OrdersMenuActivity.fabToggle.setVisibility(View.VISIBLE);
+//                OrdersMenuActivity.fabToggle.setImageResource(R.drawable.icon_up);
+//                OrdersMenuActivity.fabToggle.setVisibility(View.VISIBLE);
 
                 OrdersMenuActivity.tvTayid.setVisibility(View.VISIBLE);
 
-                if(FoodOrdersAdapter.mList.size() == 0) {
-                    ObjectAnimator obj = ObjectAnimator.ofFloat(OrdersMenuActivity.fabToggle, "alpha", 0f, 1f);
-                    obj.setDuration(300);
-                    obj.start();
+                if (FoodOrdersAdapter.mList.size() == 0) {
 
-                    ObjectAnimator obj2 = ObjectAnimator.ofFloat(OrdersMenuActivity.tvTayid, "alpha", 0f, 1f);
-                    obj2.setDuration(300);
-                    obj2.start();
+//                    OrdersMenuActivity.fabToggle.setAlpha(1f);
+                    OrdersMenuActivity.tvTayid.setAlpha(1f);
                 }
 
+                OrdersMenuActivity.ll.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-                    FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
-                    params.height = mHeight / 3;
-                    OrdersMenuActivity.ll.setLayoutParams(params);
-
-                OrdersMenuActivity.fabToggle.setOnClickListener(OrdersMenuActivity.ocl);
-
-                if(FoodOrdersAdapter.mList.size() == 0){
-                    data = new OrderedItemModel(mFoodsNames.get(position),1,mFoodsCodes.get(position),mFoodsPrices.get(position),"");
+                if (FoodOrdersAdapter.mList.size() == 0) {
+                    data = new OrderedItemModel(mFoodsNames.get(position), 1, mFoodsCodes.get(position), mFoodsPrices.get(position), "");
                 }
 
-                for(int i = 0 ; i < FoodOrdersAdapter.mList.size() ; i++){
-                    if(FoodOrdersAdapter.mList.get(i).getCode().equals(mFoodsCodes.get(position))){
-                        data = new OrderedItemModel(mFoodsNames.get(position),FoodOrdersAdapter.mList.get(i).getmNumber()+1,mFoodsCodes.get(position),mFoodsPrices.get(position),"");
+                for (int i = 0; i < FoodOrdersAdapter.mList.size(); i++) {
+                    if (FoodOrdersAdapter.mList.get(i).getCode().equals(mFoodsCodes.get(position))) {
+                        data = new OrderedItemModel(mFoodsNames.get(position), FoodOrdersAdapter.mList.get(i).getmNumber() + 1, mFoodsCodes.get(position), mFoodsPrices.get(position), "");
                         FoodOrdersAdapter.mList.remove(i);
                         i = FoodOrdersAdapter.mList.size();
-                    }else{
-                        data = new OrderedItemModel(mFoodsNames.get(position),1,mFoodsCodes.get(position),mFoodsPrices.get(position),"");
+                    } else {
+                        data = new OrderedItemModel(mFoodsNames.get(position), 1, mFoodsCodes.get(position), mFoodsPrices.get(position), "");
                     }
                 }
 
                 OrdersMenuActivity.frOrders.setVisibility(View.VISIBLE);
                 FoodOrdersAdapter.mList.add(data);
-                FoodOrdersFragment.insert(data,mNumber);
+                FoodOrdersFragment.insert(data, mNumber);
             }
         });
     }
@@ -178,8 +169,8 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
         public boolean onLongClick(View view) {
             SQLiteDatabase dbf = new MyDatabase(mContext).getWritableDatabase();
             ContentValues cvf = new ContentValues();
-            cvf.put(MyDatabase.FAVORITE,1);
-            dbf.update(MyDatabase.FOOD_TABLE,cvf,MyDatabase.CODE + " = ?",new String[]{mFoodsCodes.get(view.getId())});
+            cvf.put(MyDatabase.FAVORITE, 1);
+            dbf.update(MyDatabase.FOOD_TABLE, cvf, MyDatabase.CODE + " = ?", new String[]{mFoodsCodes.get(view.getId())});
             dbf.close();
             Toast.makeText(mContext, "به خواستنی ها افزوده شد.", Toast.LENGTH_SHORT).show();
             view.setOnLongClickListener(olclRemoveFavorite);
@@ -190,7 +181,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
     View.OnLongClickListener olclRemoveFavorite = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View view) {
-            if(NavigationAdapter.isFavorite){
+            if (NavigationAdapter.isFavorite) {
 //                notifyItemRemoved(view.getId());
 //                notifyItemRangeChanged(view.getId(),mFoodsCodes.size());
 //                view.setVisibility(View.GONE);
@@ -199,8 +190,8 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
             }
             SQLiteDatabase dbf = new MyDatabase(mContext).getWritableDatabase();
             ContentValues cvf = new ContentValues();
-            cvf.put(MyDatabase.FAVORITE,0);
-            dbf.update(MyDatabase.FOOD_TABLE,cvf,MyDatabase.CODE + " = ?",new String[]{mFoodsCodes.get(view.getId())});
+            cvf.put(MyDatabase.FAVORITE, 0);
+            dbf.update(MyDatabase.FOOD_TABLE, cvf, MyDatabase.CODE + " = ?", new String[]{mFoodsCodes.get(view.getId())});
             dbf.close();
             Toast.makeText(mContext, "از خواستنی ها حذف شد.", Toast.LENGTH_SHORT).show();
             view.setOnLongClickListener(olclAddFavorite);

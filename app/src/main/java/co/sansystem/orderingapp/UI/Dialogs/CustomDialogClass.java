@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ import co.sansystem.orderingapp.Models.FavoriteModel;
 import co.sansystem.orderingapp.Models.TellModel;
 import co.sansystem.orderingapp.UI.Activities.MainActivity;
 import co.sansystem.orderingapp.UI.Activities.OrdersMenuActivity;
+import co.sansystem.orderingapp.UI.Activities.SuccessActivity;
 import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
 import co.sansystem.orderingapp.Utility.Network.WebService;
@@ -64,7 +66,7 @@ public class CustomDialogClass extends Dialog implements
         android.view.View.OnClickListener {
 
     public Activity c;
-    public TextView yes,tvOkk, text,tvNameMoshtari,tvFishNumber, jameKol, tvJameKol, tvMaliatText, tvMaliat, tvTakhfifText, tvTakhfif, tvServiceText, tvService, tvFactorText, tvFactor;
+    public TextView yes, text, jameKol, tvJameKol, tvMaliatText, tvMaliat, tvTakhfifText, tvTakhfif, tvServiceText, tvService, tvFactorText, tvFactor;
     public ImageView no;
     public EditText etTable;
     long mPrice = 0;
@@ -121,17 +123,6 @@ public class CustomDialogClass extends Dialog implements
         rlSuccess = findViewById(R.id.relativeLayout_success);
         svMain = findViewById(R.id.scrollView);
         llSuccess = findViewById(R.id.linearLayout_success);
-
-        tvNameMoshtari = findViewById(R.id.textView_moshtari_name);
-        tvFishNumber = findViewById(R.id.textView_fish_number);
-
-        tvOkk =findViewById(R.id.textView_okk);
-        tvOkk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
 
 
         View view2 = this.getCurrentFocus();
@@ -589,17 +580,8 @@ public class CustomDialogClass extends Dialog implements
 
                                     if (response.isSuccessful()) {
                                         loadingDialogClass.dismiss();
+                                        dismiss();
 
-                                        svMain.setVisibility(View.GONE);
-                                        rlMain.setVisibility(View.GONE);
-                                        rlSuccess.setVisibility(View.VISIBLE);
-                                        llSuccess.setVisibility(View.VISIBLE);
-
-                                        tvFishNumber.setText(response.body().toString());
-                                        tvNameMoshtari.setText(textView.getText().toString().trim());
-
-                                        InputMethodManager imm = (InputMethodManager) c.getSystemService(Context.INPUT_METHOD_SERVICE);
-                                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
 
                                         FoodOrdersAdapter.mList.clear();
 
@@ -607,8 +589,12 @@ public class CustomDialogClass extends Dialog implements
                                         params.height = 0;
                                         OrdersMenuActivity.ll.setLayoutParams(params);
                                         OrdersMenuActivity.tvTayid.setAlpha(0f);
-                                        OrdersMenuActivity.fabToggle.setAlpha(0f);
 
+                                        Intent intent = new Intent(c, SuccessActivity.class);
+                                        intent.putExtra("fish_number",response.body().toString());
+                                        intent.putExtra("name_moshtari",textView.getText().toString().trim());
+                                        c.startActivity(intent);
+                                        ((Activity)c).finish();
 
                                         Call<List<FavoriteModel>> call2 = mTService3.getFoodFavorite();
                                         call2.enqueue(new Callback<List<FavoriteModel>>() {

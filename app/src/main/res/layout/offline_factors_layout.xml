@@ -18,8 +18,9 @@
 
         <ImageView
             android:id="@+id/imageView_nav_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_large"
+            android:layout_height="@dimen/dimen_large"
+            android:padding="@dimen/padding_medium"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/padding_large"
             android:adjustViewBounds="true"

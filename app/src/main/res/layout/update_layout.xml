@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="rtl"
+    android:background="@drawable/image_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3.5"
+            android:gravity="bottom|center"
+            android:weightSum="3.5">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_order_info_page" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".85"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="همگام سازی"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_large"
+                app:fontPath="fonts/IRANSansWeb_Light.ttf"
+                tools:ignore="MissingPrefix" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingLeft="@dimen/dimen_large"
+            android:paddingRight="@dimen/dimen_large"
+            android:layout_weight="1.25"
+            android:orientation="vertical"
+            android:gravity="top">
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/textView_update_ok"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="با موفقیت انجام شد."
+                android:layout_marginBottom="@dimen/padding_small"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_large"
+                app:fontPath="fonts/IRANSansWeb_Light.ttf"
+                tools:ignore="MissingPrefix" />
+
+            <TextView
+                android:id="@+id/textView_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="نرم افزار در حال همگام سازی لیست ها با سرور می باشد..."
+                android:layout_marginBottom="@dimen/padding_small"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_small"
+                app:fontPath="fonts/IRANSansWeb_Light.ttf"
+                tools:ignore="MissingPrefix" />
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/padding_large"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:background="@drawable/shape_border_secondary_text">
+
+                <ProgressBar
+                    android:layoutDirection="ltr"
+                    android:id="@+id/progressBar"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleY="999"
+                    android:theme="@style/LinearProgress" />
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingLeft="@dimen/dimen_large"
+            android:paddingRight="@dimen/dimen_large">
+
+            <TextView
+                android:id="@+id/textView_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_large"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/border_shape_primary"
+                android:gravity="center"
+                android:paddingLeft="@dimen/dimen_large"
+                android:paddingRight="@dimen/dimen_large"
+                android:text="تایید"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xmedium"
+                app:fontPath="fonts/IRANSansWeb_Medium.ttf"
+                tools:ignore="MissingPrefix" />
+
+            <ImageView
+                android:id="@+id/imageView_help"
+                android:layout_marginLeft="@dimen/padding_large"
+                android:layout_toRightOf="@id/imageView_back"
+                android:layout_width="@dimen/dimen_large"
+                android:layout_height="@dimen/dimen_large"
+                android:background="@drawable/border_shape_primary"
+                android:paddingLeft="@dimen/padding_large"
+                android:paddingRight="@dimen/padding_large"
+                android:src="@drawable/image_question" />
+
+            <ImageView
+                android:id="@+id/imageView_back"
+                android:layout_width="@dimen/dimen_large"
+                android:layout_alignParentLeft="true"
+                android:layout_height="@dimen/dimen_large"
+                android:background="@drawable/border_shape_primary"
+                android:paddingLeft="@dimen/padding_large"
+                android:paddingRight="@dimen/padding_large"
+                android:src="@drawable/image_arrow_back" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

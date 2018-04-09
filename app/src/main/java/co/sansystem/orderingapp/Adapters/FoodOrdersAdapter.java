@@ -1,6 +1,8 @@
 package co.sansystem.orderingapp.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -75,7 +76,7 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
     public void onBindViewHolder(final FoodOrdersAdapter.ViewHolder holder, final int position) {
         mHolder = holder;
         mPosition = position;
-        if(exps.size() <= position){
+        if (exps.size() <= position) {
             exps.add("");
         }
 
@@ -93,7 +94,7 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
                     @Override
                     public void onClick(View view) {
                         holder.tv.setText(holder.tv.getText().toString() + " " + cdd2.text.getText().toString());
-                        exps.set(position,cdd2.text.getText().toString() + " " + exps.get(position));
+                        exps.set(position, cdd2.text.getText().toString() + " " + exps.get(position));
                         mList.get(position).mExp = cdd2.text.getText().toString();
                         cdd2.dismiss();
                     }
@@ -116,53 +117,6 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
 
                 removeItem(position);
             }
-
-//                long duration = setAnimation(holder.cv,android.R.anim.slide_out_right);
-
-//                SystemClock.sleep(duration);
-
-
-//                notifyItemRangeChanged(position, mList.size());
-
-//                final Handler handler = new Handler();
-//                handler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                        notifyItemRemoved(position);
-//                        notifyItemRangeChanged(position, mList.size());
-//                    }
-//                }, duration);
-
-
-//                animate = false;
-
-
-//                    ObjectAnimator obj2 = ObjectAnimator.ofFloat(OrdersMenuActivity.tvTayid,"alpha",1f,0f);
-//                    obj2.setDuration(300);
-//                    obj2.start();
-
-
-//                    final Handler handler3 = new Handler();
-//                    handler3.postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            OrdersMenuActivity.tvTayid.setVisibility(View.GONE);
-//                        }
-//                    }, 300);
-
-
-//                    ObjectAnimator obj = ObjectAnimator.ofFloat(OrdersMenuActivity.fabToggle,"alpha",1f,0f);
-//                    obj.setDuration(300);
-//                    obj.start();
-//
-//                    final Handler handler2 = new Handler();
-//                    handler2.postDelayed(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            OrdersMenuActivity.fabToggle.setVisibility(View.GONE);
-//                        }
-//                    }, 300);
         });
 
         holder.ivPlus.setOnClickListener(new View.OnClickListener() {
@@ -180,6 +134,10 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
                 mList.get(position).mNumber -= 1;
                 if (mList.get(position).mNumber == 0) {
                     removeItem(position);
+                }try {
+                    Thread.sleep(650);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
                 notifyDataSetChanged();
             }
@@ -206,7 +164,7 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
             mList.remove(position);
             exps.remove(position);
             try {
-                Thread.sleep(250);
+                Thread.sleep(650);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -216,12 +174,8 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
 
         if (mList.size() == 0) {
 
-
-            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
-                params.height = 0;
-                OrdersMenuActivity.ll.setLayoutParams(params);
-                OrdersMenuActivity.fabToggle.setAlpha(0f);
-                OrdersMenuActivity.tvTayid.setAlpha(0f);
+            mContext.startActivity(new Intent(mContext, OrdersMenuActivity.class));
+            ((Activity)mContext).finish();
         }
     }
 }

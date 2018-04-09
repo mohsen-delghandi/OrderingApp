@@ -59,7 +59,7 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
         this.mData = data;
     }
 
-    public void deleteAdapterData(final int position){
+    public void deleteAdapterData(final int position) {
 
         final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(context);
         loadingDialogClass.show();
@@ -115,7 +115,7 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvFishNumber, tvTableNumber, tvCustomerName, tvFactorTime,mActionViewDelete;
+        public TextView tvFishNumber, tvTableNumber, tvCustomerName, tvFactorTime, mActionViewDelete;
         public FrameLayout llMain;
         View mActionContainer;
         View mViewContent;
@@ -151,7 +151,12 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
         holder.tvFishNumber.setText(currentModel.get(position).getFish_Number());
         holder.tvCustomerName.setText(currentModel.get(position).getCustomer_Name());
         holder.tvTableNumber.setText(currentModel.get(position).getTable_Number());
-        holder.tvFactorTime.setText(currentModel.get(position).getFactor_Time());
+        if (currentModel.get(position).getFactor_Time().contains("AM"))
+            holder.tvFactorTime.setText(currentModel.get(position).getFactor_Time().replace("AM", "ق.ظ"));
+        else if (currentModel.get(position).getFactor_Time().contains("PM"))
+            holder.tvFactorTime.setText(currentModel.get(position).getFactor_Time().replace("PM", "ب.ظ"));
+        else
+            holder.tvFactorTime.setText(currentModel.get(position).getFactor_Time());
 
         holder.mActionViewDelete.setOnClickListener(
                 new View.OnClickListener() {
@@ -161,11 +166,17 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
                         final DeleteFactorDialogClass deleteFactorDialogClass = new DeleteFactorDialogClass(context);
                         deleteFactorDialogClass.show();
                         Window window = deleteFactorDialogClass.getWindow();
-                        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);holder.tvFishNumber.setText(currentModel.get(position).getFish_Number());
+                        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        holder.tvFishNumber.setText(currentModel.get(position).getFish_Number());
                         deleteFactorDialogClass.tvFishNumber.setText(currentModel.get(position).getFish_Number());
                         deleteFactorDialogClass.tvCustomerName.setText(currentModel.get(position).getCustomer_Name());
                         deleteFactorDialogClass.tvTableNumber.setText(currentModel.get(position).getTable_Number());
-                        deleteFactorDialogClass.tvFactorTime.setText(currentModel.get(position).getFactor_Time());
+                        if (currentModel.get(position).getFactor_Time().contains("AM"))
+                            deleteFactorDialogClass.tvFactorTime.setText(currentModel.get(position).getFactor_Time().replace("AM", "ق.ظ"));
+                        else if (currentModel.get(position).getFactor_Time().contains("PM"))
+                            deleteFactorDialogClass.tvFactorTime.setText(currentModel.get(position).getFactor_Time().replace("PM", "ب.ظ"));
+                        else
+                            deleteFactorDialogClass.tvFactorTime.setText(currentModel.get(position).getFactor_Time());
                         deleteFactorDialogClass.tvOk.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

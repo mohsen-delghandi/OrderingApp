@@ -15,6 +15,18 @@ public class UserModel {
     @Expose
     private String loginName;
 
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    @SerializedName("CurrencySymbol")
+    @Expose
+    private String currency;
+
     public String getLoginID() {
         return loginID;
     }

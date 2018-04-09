@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -96,12 +97,18 @@ public class OfflineFactorsActivity extends AppCompatActivity {
 
                 offlineFactorsIDs.add(cursor.getString(1));
             }while (cursor.moveToNext());
+
+            offlineFactorsAdapter.updateAdapterData(offlineFactors,offlineFactorsIDs);
+            offlineFactorsAdapter.notifyDataSetChanged();
+            loadingDialogClass.dismiss();
+
+        }else{
+            Toast.makeText(this, "فیش آفلاین موجود نیست.", Toast.LENGTH_SHORT).show();
+            finish();
         }
 
 
 
-        offlineFactorsAdapter.updateAdapterData(offlineFactors,offlineFactorsIDs);
-        offlineFactorsAdapter.notifyDataSetChanged();
-        loadingDialogClass.dismiss();
+
     }
 }

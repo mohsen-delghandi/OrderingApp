@@ -1,14 +1,11 @@
 package co.sansystem.orderingapp.UI.Activities;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Base64;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -21,14 +18,8 @@ import com.sansystem.orderingapp.R;
 
 import java.util.List;
 
-import co.sansystem.orderingapp.Adapters.NavigationAdapter;
-import co.sansystem.orderingapp.Models.FavoriteModel;
-import co.sansystem.orderingapp.Models.FoodModel;
-import co.sansystem.orderingapp.Models.GroupFoodModel;
-import co.sansystem.orderingapp.Models.SettingModel;
 import co.sansystem.orderingapp.Models.UserModel;
 import co.sansystem.orderingapp.UI.Dialogs.LoadingDialogClass;
-import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
 import co.sansystem.orderingapp.Utility.Network.WebService;
 import co.sansystem.orderingapp.Utility.Utility.AppPreferenceTools;
@@ -56,167 +47,6 @@ public class LoginActivity extends AppCompatActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-    public void updateMenu(final Context context) {
-
-//        final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(this);
-//        loadingDialogClass.show();
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Call<List<GroupFoodModel>> call = mTService5.getGroupFood();
-                call.enqueue(new Callback<List<GroupFoodModel>>() {
-                    @Override
-                    public void onResponse(Call<List<GroupFoodModel>> call, Response<List<GroupFoodModel>> response) {
-
-                        if (response.isSuccessful()) {
-
-                            SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
-                            db.delete(MyDatabase.FOOD_CATEGORY_TABLE, null, null);
-
-                            for (GroupFoodModel groupFoodModel :
-                                    response.body()) {
-                                ContentValues cv = new ContentValues();
-                                cv.put(MyDatabase.CODE, groupFoodModel.getIDGroup());
-                                cv.put(MyDatabase.NAME, groupFoodModel.getNameGroup());
-                                cv.put(MyDatabase.IMAGE, Base64.decode(groupFoodModel.getImageGroup(), Base64.DEFAULT));
-                                db.insert(MyDatabase.FOOD_CATEGORY_TABLE, null, cv);
-                            }
-
-                            Call<List<FoodModel>> call2 = mTService2.getFood();
-                            call2.enqueue(new Callback<List<FoodModel>>() {
-                                @Override
-                                public void onResponse(Call<List<FoodModel>> call2, Response<List<FoodModel>> response2) {
-
-                                    if (response2.isSuccessful()) {
-
-
-                                        SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
-                                        db.delete(MyDatabase.FOOD_TABLE, null, null);
-
-                                        for (FoodModel foodModel :
-                                                response2.body()) {
-
-                                            ContentValues cv = new ContentValues();
-                                            cv.put(MyDatabase.CODE, foodModel.getIDKala());
-                                            cv.put(MyDatabase.NAME, foodModel.getNameKala());
-                                            try {
-                                                cv.put(MyDatabase.IMAGE, Base64.decode(foodModel.getPicture(), Base64.DEFAULT));
-                                            } catch (Exception e) {
-
-                                            }
-                                            cv.put(MyDatabase.CATEGORY_CODE, foodModel.getFkGroupKala());
-                                            cv.put(MyDatabase.PRICE, foodModel.getGheymatForoshAsli());
-                                            db.insert(MyDatabase.FOOD_TABLE, null, cv);
-                                        }
-
-
-                                        db.close();
-
-                                        Call<List<FavoriteModel>> call = mTService3.getFoodFavorite();
-                                        call.enqueue(new Callback<List<FavoriteModel>>() {
-
-                                            @Override
-                                            public void onResponse
-                                                    (Call<List<FavoriteModel>> call, Response<List<FavoriteModel>> response) {
-
-                                                if (response.isSuccessful()) {
-
-                                                    SQLiteDatabase dbFavorite = new MyDatabase(LoginActivity.this).getWritableDatabase();
-
-//                            dbFavorite.execSQL("UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = 0 ;" +
-//                                    " UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = 1 WHERE " + MyDatabase.CODE + " IN (1,2,3,4)");
-
-                                                    dbFavorite.execSQL("UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = '0' ;");
-
-                                                    for (FavoriteModel favoriteModel :
-                                                            response.body()) {
-                                                        dbFavorite.execSQL(" UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = '1' WHERE " + MyDatabase.CODE + " = " + favoriteModel.getIDKala());
-                                                    }
-
-
-                                                    dbFavorite.close();
-
-                                                    NavigationAdapter.refreshFavorites();
-
-                                                    Call<List<SettingModel>> call22 = mTService4.getSettingDarsad();
-                                                    call22.enqueue(new Callback<List<SettingModel>>() {
-
-                                                        @Override
-                                                        public void onResponse(Call<List<SettingModel>> call, Response<List<SettingModel>> response) {
-
-                                                            if (response.isSuccessful()) {
-                                                                appPreferenceTools.saveSettings(response.body().get(0).getSettingDardadTakhfif(), response.body().get(0).getSettingMablaghTakhfif()
-                                                                        , response.body().get(0).getSettingDarsadService(), response.body().get(0).getSettingMablaghService(), response.body().get(0).getSettingDarsadMaliyat());
-
-                                                                Toast.makeText(context, "به روزرسانی با موفقیت انجام شد.", Toast.LENGTH_SHORT).show();
-
-
-                                                                SQLiteDatabase db2 = new MyDatabase(LoginActivity.this).getWritableDatabase();
-                                                                ContentValues cv2 = new ContentValues();
-                                                                cv2.put(MyDatabase.FIRST_RUN, 0);
-                                                                db2.update(MyDatabase.SETTINGS_TABLE, cv2, MyDatabase.ID + " = ?", new String[]{"1"});
-                                                                db2.close();
-
-
-//                                                                loadingDialogClass.dismiss();
-
-                                                            } else {
-//                                                                loadingDialogClass.dismiss();
-                                                            }
-//                                                            loadingDialogClass.dismiss();
-                                                        }
-
-                                                        @Override
-                                                        public void onFailure(Call<List<SettingModel>> call, Throwable t) {
-
-//                                                            loadingDialogClass.dismiss();
-                                                        }
-                                                    });
-                                                } else {
-                                                }
-
-                                            }
-
-                                            @Override
-                                            public void onFailure(Call<List<FavoriteModel>> call, Throwable t) {
-                                            }
-                                        });
-
-
-                                    } else
-
-                                    {
-                                        Toast.makeText(LoginActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<List<FoodModel>> call, Throwable t) {
-
-                                }
-                            });
-                        } else {
-//                            loadingDialogClass.dismiss();
-                            Toast.makeText(LoginActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<GroupFoodModel>> call, Throwable t) {
-
-//                        loadingDialogClass.dismiss();
-
-                    }
-                });
-            }
-        }, 1234);
-
-
-    }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -224,7 +54,6 @@ public class LoginActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.sign_in_layout);
-
 
 
         WebProvider provider5 = new WebProvider();
@@ -251,8 +80,8 @@ public class LoginActivity extends AppCompatActivity {
         ivHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this,HelpActivity.class);
-                intent.putExtra("number","4");
+                Intent intent = new Intent(LoginActivity.this, HelpActivity.class);
+                intent.putExtra("number", "4");
                 startActivity(intent);
             }
         });
@@ -290,10 +119,10 @@ public class LoginActivity extends AppCompatActivity {
 
                                     if (!response.body().get(0).getLoginID().equals("0")) {
                                         appPreferenceTools.loginOK();
+                                        appPreferenceTools.saveCurrency(response.body().get(0).getCurrency());
                                         appPreferenceTools.saveUserAuthenticationInfo(response.body().get(0).getLoginName(), password, response.body().get(0).getLoginID());
-                                        updateMenu(LoginActivity.this);
                                         loadingDialogClass.dismiss();
-                                        startActivity(new Intent(LoginActivity.this, OrdersMenuActivity.class));
+                                        startActivity(new Intent(LoginActivity.this, UpdateActivity.class));
                                         finish();
                                     } else {
                                         loadingDialogClass.dismiss();

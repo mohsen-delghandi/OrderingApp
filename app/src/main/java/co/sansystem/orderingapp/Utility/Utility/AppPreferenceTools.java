@@ -35,6 +35,12 @@ public class AppPreferenceTools {
                 .apply();
     }
 
+    public void saveCurrency(String currency) {
+        mPreference.edit()
+                .putString(this.mContext.getString(R.string.currency), currency)
+                .apply();
+    }
+
     public void saveDomainName(String domainName) {
         mPreference.edit()
                 .putString(this.mContext.getString(R.string.domain_name), domainName)
@@ -79,6 +85,10 @@ public class AppPreferenceTools {
 
     public String getUserName() {
         return mPreference.getString(this.mContext.getString(R.string.user_name), "");
+    }
+
+    public String getCurrency() {
+        return mPreference.getString(this.mContext.getString(R.string.currency), "");
     }
 
     public String getDarsadTakhfif() {

@@ -27,7 +27,9 @@
                 <TextView
                     android:layout_width="@dimen/width_nav"
                     android:layout_height="@dimen/width_nav"
-                    android:background="@drawable/icon_happy" />
+                    android:textSize="@dimen/font_large"
+                    android:textColor="@color/primary"
+                    android:text="ابتدا از طریق منوی تنظیمات عملیات به روز رسانی را انجام دهید."/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -60,13 +62,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:paddingTop="@dimen/padding_large"
-                android:paddingBottom="@dimen/padding_large"
                 >
 
             </LinearLayout>
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/fab_toggle"
                 android:layout_width="@dimen/dimen_large"
                 android:layout_height="@dimen/dimen_xmedium"

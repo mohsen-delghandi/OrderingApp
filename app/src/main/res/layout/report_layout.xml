@@ -18,8 +18,9 @@
 
         <ImageView
             android:id="@+id/imageView_nav_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_large"
+            android:layout_height="@dimen/dimen_large"
+            android:padding="@dimen/padding_medium"
             android:layout_marginRight="@dimen/padding_large"
             android:adjustViewBounds="true"
             android:layout_centerVertical="true"
@@ -151,6 +152,7 @@
                 tools:ignore="MissingPrefix" />
 
             <TextView
+                android:id="@+id/textView_currency"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/padding_xbit"

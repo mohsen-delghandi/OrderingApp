@@ -23,6 +23,7 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String CONTACTS_INFORMATION = "Contacts_Information_TBL";
     public static final String CONTACTS_ADDRESSES = "Contacts_Addresses_TBL";
     public static final String CONTACTS_TELLS = "Contacts_Tells_TBL";
+    public static final String OFFLINE_EXP = "Offline_Exps_TBL";
 
     public static final String ID = "Id";
     public static final String CODE = "Code";
@@ -42,6 +43,7 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String LIST_CONTACT_JSON = "ListContactJson";
     public static final String LIST_ADDRESS_JSON = "ListAddressJson";
     public static final String LIST_TELL_JSON = "ListTellJson";
+    public static final String EXP = "Exp";
 
     public MyDatabase(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -49,6 +51,12 @@ public class MyDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS " + OFFLINE_EXP + " (" +
+                        ID + " INTEGER PRIMARY KEY," +
+                        EXP + " TEXT);"
+        );
 
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS " + OFFLINE_FACTORS_TABLE + " (" +

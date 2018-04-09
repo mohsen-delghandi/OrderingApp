@@ -28,6 +28,7 @@ import co.sansystem.orderingapp.Models.ReportModel;
 import co.sansystem.orderingapp.UI.Dialogs.LoadingDialogClass;
 import co.sansystem.orderingapp.Utility.Network.WebProvider;
 import co.sansystem.orderingapp.Utility.Network.WebService;
+import co.sansystem.orderingapp.Utility.Utility.AppPreferenceTools;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -66,6 +67,9 @@ public class ReportActivity extends AppCompatActivity {
     String azTarikh, taTarikh;
     String dayy, monthh, yearr;
     ImageView ivBack;
+    TextView tvCurrency;
+    AppPreferenceTools appPreferenceTools;
+
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -80,6 +84,7 @@ public class ReportActivity extends AppCompatActivity {
         setContentView(R.layout.report_layout);
         ButterKnife.bind(this);
 
+        appPreferenceTools = new AppPreferenceTools(this);
         ivBack = (ImageView) findViewById(R.id.imageView_nav_back);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +92,10 @@ public class ReportActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        tvCurrency = (TextView) findViewById(R.id.textView_currency);
+
+        tvCurrency.setText("بر حسب " + appPreferenceTools.getCurrency());
 
         WebProvider provider = new WebProvider();
         mTService = provider.getTService();

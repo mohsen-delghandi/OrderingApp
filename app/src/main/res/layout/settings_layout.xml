@@ -17,8 +17,9 @@
 
         <ImageView
             android:id="@+id/imageView_nav_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dimen_large"
+            android:layout_height="@dimen/dimen_large"
+            android:padding="@dimen/padding_medium"
             android:layout_marginRight="@dimen/padding_large"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
@@ -38,6 +39,7 @@
     </RelativeLayout>
 
     <ScrollView
+        android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -162,8 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_large"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/border_shape_solid_gray2_radius"
-                android:backgroundTint="@color/secondary_text"
+                android:background="@drawable/border_shape_solid_gray3_radius"
                 android:gravity="center"
                 android:layout_gravity="left"
                 android:paddingLeft="@dimen/padding_spinner"
@@ -204,8 +205,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_large"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/border_shape_solid_gray2_radius"
-                android:backgroundTint="@color/secondary_text"
+                android:background="@drawable/border_shape_solid_gray3_radius"
                 android:gravity="center"
                 android:layout_gravity="left"
                 android:paddingLeft="@dimen/padding_spinner"
@@ -260,8 +260,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_large"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/border_shape_solid_gray2_radius"
-                android:backgroundTint="@color/secondary_text"
+                android:background="@drawable/border_shape_solid_gray3_radius"
                 android:gravity="center"
                 android:layout_gravity="left"
                 android:paddingLeft="@dimen/padding_spinner"
@@ -369,8 +368,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_large"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/border_shape_solid_gray2_radius"
-                android:backgroundTint="@color/secondary_text"
+                android:background="@drawable/border_shape_solid_gray3_radius"
                 android:gravity="center"
                 android:layout_gravity="left"
                 android:paddingLeft="@dimen/padding_spinner"
