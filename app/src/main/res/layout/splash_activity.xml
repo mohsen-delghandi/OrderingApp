@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:focusable="true"
@@ -9,8 +10,91 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/image_splash"
         android:scaleType="centerCrop"
-        />
+        android:src="@drawable/image_splash"
+        android:visibility="visible" />
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/dimen_large"
+        android:background="#eeffffff"
+        android:gravity="center"
+        android:id="@+id/linearLayout_main"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView_update"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_large"
+            android:layout_gravity="bottom|center_horizontal"
+            android:adjustViewBounds="true"
+            android:src="@drawable/imge_update"
+            android:tint="@color/primary_text"
+            android:visibility="visible"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/textView_update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout_logo"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="@dimen/padding_large"
+            android:paddingLeft="@dimen/padding_large"
+            android:paddingRight="@dimen/padding_large"
+            android:paddingTop="@dimen/padding_large"
+            android:text="کاربر گرامی، جهت استفاده از اپلیکیشن به روز رسانی کنید!"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/font_medium"
+            android:visibility="visible" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView_bt_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/border_shape_primary"
+                android:gravity="center"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/padding_medium"
+                android:text="به روز رسانی"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_medium"
+                android:visibility="visible"
+                app:fontPath="fonts/IRANSansWeb_Light.ttf"
+                tools:ignore="MissingPrefix" />
+
+            <TextView
+                android:layout_alignParentLeft="true"
+                android:id="@+id/textView_bt_no_update"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_bt_update"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/padding_xlarge"
+                android:background="@drawable/border_shape_primary_light"
+                android:gravity="center"
+                android:padding="@dimen/padding_medium"
+                android:text="ورود به برنامه"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_medium"
+                android:visibility="visible"
+                app:fontPath="fonts/IRANSansWeb_Light.ttf"
+                tools:ignore="MissingPrefix" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

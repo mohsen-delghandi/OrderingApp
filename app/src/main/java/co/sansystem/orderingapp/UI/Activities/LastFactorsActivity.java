@@ -111,6 +111,8 @@ public class LastFactorsActivity extends AppCompatActivity {
                             db2.close();
                             Toast.makeText(LastFactorsActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                             loadingDialogClass.dismiss();
+
+                            onBackPressed();
                         }
                     }
 
@@ -125,6 +127,8 @@ public class LastFactorsActivity extends AppCompatActivity {
                         db2.close();
                         Toast.makeText(LastFactorsActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                         loadingDialogClass.dismiss();
+
+                        onBackPressed();
                     }
                 });
             }

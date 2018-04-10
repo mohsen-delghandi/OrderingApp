@@ -15,6 +15,7 @@ import co.sansystem.orderingapp.Models.ReportModel;
 import co.sansystem.orderingapp.Models.SettingModel;
 import co.sansystem.orderingapp.Models.TellModel;
 import co.sansystem.orderingapp.Models.UserModel;
+import co.sansystem.orderingapp.Models.VersionModel;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -64,4 +65,7 @@ public interface WebService {
 
     @GET("GetSettingDarsad")
     Call<List<SettingModel>> getSettingDarsad();
+
+    @GET("version/{versionCode}")
+    Call<VersionModel> checkVersion(@Path("versionCode") String versionCode);
 }

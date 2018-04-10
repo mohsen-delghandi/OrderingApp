@@ -38,11 +38,10 @@ public class OrdersMenuActivity extends MainActivity {
     RecyclerView.LayoutManager mRecyclerManager;
     RecyclerView.Adapter mRecyclerAdapter;
     public static LinearLayout ll;
-    //    public static ImageView fabToggle;
     public static FrameLayout frOrders;
     public static TextView tvTayid;
     public static LinearLayout linearLayout;
-    CustomDialogClass cdd, cdd2;
+    CustomDialogClass cdd;
     AppPreferenceTools appPreferenceTools;
     String costumerCode;
 
@@ -55,10 +54,6 @@ public class OrdersMenuActivity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setInflater(this, R.layout.orders_menu_layout);
-
-//        fabToggle = (ImageView) findViewById(R.id.fab_toggle);
-//        fabToggle.setVisibility(View.GONE);
-
         frOrders = (FrameLayout) findViewById(R.id.frameLayout_order);
         frOrders.setVisibility(View.GONE);
 
@@ -84,14 +79,11 @@ public class OrdersMenuActivity extends MainActivity {
                     cdd = new CustomDialogClass(OrdersMenuActivity.this, costumerCode);
                 }
                 cdd.show();
-//                cdd.setCancelable(false);
                 Window window = cdd.getWindow();
                 window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             }
         });
-
-//        fabToggle.setOnClickListener(ocl);
 
         ivTitlebar.setVisibility(View.VISIBLE);
 
@@ -145,8 +137,6 @@ public class OrdersMenuActivity extends MainActivity {
         fragmentTransaction.add(R.id.food_orders_fragment, foodOrdersFragment);
         fragmentTransaction.commit();
 
-        //Navigation recycler
-
         mNavigationRecycler = (RecyclerView) findViewById(R.id.nav_recyclerView);
         mNavigationRecycler.setHasFixedSize(true);
         mNavigationRecycler.setNestedScrollingEnabled(false);
@@ -161,6 +151,13 @@ public class OrdersMenuActivity extends MainActivity {
 
 
         NavigationAdapter.refreshFavorites();
+
+//        new ShowcaseView.Builder(this)
+//                .setTarget(new ActionViewTarget(this, ActionViewTarget.Type.HOME))
+//                .setContentTitle("ShowcaseView")
+//                .setContentText("This is highlighting the Home button")
+//                .hideOnTouchOutside()
+//                .build();
     }
 
     @Override
@@ -169,7 +166,6 @@ public class OrdersMenuActivity extends MainActivity {
         inflater.inflate(R.menu.more_tab_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
-
     }
 
     @Override
@@ -188,42 +184,11 @@ public class OrdersMenuActivity extends MainActivity {
         return true;
     }
 
-
     @Override
     public void startVideo(VideoView videoView, List<String> videoAddressList, int i) {
         if (cdd != null && cdd.isShowing()) cdd.dismiss();
         super.startVideo(videoView, videoAddressList, i);
     }
 
-    public static View.OnClickListener ocl2 = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-
-//            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
-//            params.height = height / 5;
-//            OrdersMenuActivity.ll.setLayoutParams(params);
-//
-//
-//            fabToggle.setImageResource(R.drawable.icon_up);
-//            fabToggle.setOnClickListener(ocl);
-        }
-    };
-
-
-    public static View.OnClickListener ocl = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-
-
-//            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
-//            params.height = height * 2 / 3;
-//            OrdersMenuActivity.ll.setLayoutParams(params);
-//
-//
-//            fabToggle.setImageResource(R.drawable.icon_down);
-//            fabToggle.setOnClickListener(ocl2);
-        }
-    };
 
 }

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -41,8 +42,9 @@ public class UpdateActivity extends AppCompatActivity {
     WebService mTService3;
     WebService mTService4;
     AppPreferenceTools appPreferenceTools;
-    ProgressBar progressBar;
-    TextView tvUpdate,tvOk;
+    public ProgressBar progressBar;
+    ProgressBar progressBar2;
+    TextView tvUpdate, tvOk;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -58,6 +60,7 @@ public class UpdateActivity extends AppCompatActivity {
         setContentView(R.layout.update_layout);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
         tvUpdate = (TextView) findViewById(R.id.textView_update);
         tvOk = (TextView) findViewById(R.id.textView_update_ok);
 
@@ -77,11 +80,16 @@ public class UpdateActivity extends AppCompatActivity {
 
         blink();
 
-        progressBar.setProgress(20,true);
+        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            // Do something for lollipop and above versions
+            progressBar.setProgress(20, true);
+        }
+
+
         updateMenu(this);
     }
 
-    public void blink(){
+    public void blink() {
         tvUpdate.animate().alpha(0).setDuration(1000).start();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -94,9 +102,9 @@ public class UpdateActivity extends AppCompatActivity {
                     public void run() {
                         blink();
                     }
-                },1000);
+                }, 1000);
             }
-        },1000);
+        }, 1000);
     }
 
     public void updateMenu(final Context context) {
@@ -115,9 +123,12 @@ public class UpdateActivity extends AppCompatActivity {
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    progressBar.setProgress(40,true);
+                                    if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+                                        // Do something for lollipop and above versions
+                                        progressBar.setProgress(40, true);
+                                    }
                                 }
-                            },500);
+                            }, 500);
 
                             SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
                             db.delete(MyDatabase.FOOD_CATEGORY_TABLE, null, null);
@@ -141,9 +152,12 @@ public class UpdateActivity extends AppCompatActivity {
                                         handler.postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                progressBar.setProgress(60,true);
+                                                if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+                                                    // Do something for lollipop and above versions
+                                                    progressBar.setProgress(60, true);
+                                                }
                                             }
-                                        },500);
+                                        }, 500);
 
                                         SQLiteDatabase db = new MyDatabase(context).getWritableDatabase();
                                         db.delete(MyDatabase.FOOD_TABLE, null, null);
@@ -179,9 +193,12 @@ public class UpdateActivity extends AppCompatActivity {
                                                     handler.postDelayed(new Runnable() {
                                                         @Override
                                                         public void run() {
-                                                            progressBar.setProgress(80,true);
+                                                            if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+                                                                // Do something for lollipop and above versions
+                                                                progressBar.setProgress(80, true);
+                                                            }
                                                         }
-                                                    },500);
+                                                    }, 500);
                                                     SQLiteDatabase dbFavorite = new MyDatabase(UpdateActivity.this).getWritableDatabase();
 
 //                            dbFavorite.execSQL("UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = 0 ;" +
@@ -210,19 +227,24 @@ public class UpdateActivity extends AppCompatActivity {
                                                                 handler.postDelayed(new Runnable() {
                                                                     @Override
                                                                     public void run() {
-                                                                        progressBar.setProgress(100,true);
+                                                                        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+                                                                            // Do something for lollipop and above versions
+                                                                            progressBar.setProgress(100, true);
+                                                                        }
+                                                                        progressBar.setVisibility(View.GONE);
+                                                                        progressBar2.setVisibility(View.VISIBLE);
                                                                         tvOk.setVisibility(View.VISIBLE);
                                                                         tvUpdate.setVisibility(View.GONE);
                                                                         Handler handler = new Handler();
                                                                         handler.postDelayed(new Runnable() {
                                                                             @Override
                                                                             public void run() {
-                                                                                startActivity(new Intent(UpdateActivity.this,OrdersMenuActivity.class));
+                                                                                startActivity(new Intent(UpdateActivity.this, OrdersMenuActivity.class));
                                                                                 finish();
                                                                             }
-                                                                        },1500);
+                                                                        }, 1500);
                                                                     }
-                                                                },500);
+                                                                }, 500);
                                                                 appPreferenceTools.saveSettings(response.body().get(0).getSettingDardadTakhfif(), response.body().get(0).getSettingMablaghTakhfif()
                                                                         , response.body().get(0).getSettingDarsadService(), response.body().get(0).getSettingMablaghService(), response.body().get(0).getSettingDarsadMaliyat());
 
@@ -231,7 +253,6 @@ public class UpdateActivity extends AppCompatActivity {
                                                                 cv2.put(MyDatabase.FIRST_RUN, 0);
                                                                 db2.update(MyDatabase.SETTINGS_TABLE, cv2, MyDatabase.ID + " = ?", new String[]{"1"});
                                                                 db2.close();
-
 
 
 //                                                                loadingDialogClass.dismiss();
