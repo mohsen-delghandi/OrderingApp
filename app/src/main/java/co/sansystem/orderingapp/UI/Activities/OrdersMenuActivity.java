@@ -1,11 +1,15 @@
 package co.sansystem.orderingapp.UI.Activities;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -14,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -21,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
 import com.sansystem.orderingapp.R;
 
 import java.util.List;
@@ -44,6 +51,7 @@ public class OrdersMenuActivity extends MainActivity {
     CustomDialogClass cdd;
     AppPreferenceTools appPreferenceTools;
     String costumerCode;
+    int h;
 
     @Override
     public void onBackPressed() {
@@ -152,12 +160,62 @@ public class OrdersMenuActivity extends MainActivity {
 
         NavigationAdapter.refreshFavorites();
 
-//        new ShowcaseView.Builder(this)
-//                .setTarget(new ActionViewTarget(this, ActionViewTarget.Type.HOME))
-//                .setContentTitle("ShowcaseView")
-//                .setContentText("This is highlighting the Home button")
-//                .hideOnTouchOutside()
-//                .build();
+        toolbar.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @SuppressLint("NewApi")
+            @Override
+            public void onGlobalLayout() {
+                 h = toolbar.getMeasuredHeight();
+
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) textView.getLayoutParams();
+                params.topMargin = getStatusBarHeight() + h / 2;
+                params.rightMargin = h / 2;
+
+                textView.setLayoutParams(params);
+
+
+                TapTargetView.showFor(OrdersMenuActivity.this,                 // `this` is an Activity
+                        TapTarget.forView(findViewById(R.id.textView), "لیست های غذایی", "با لمس اینجا می توانید لیست های مختلف غذایی را مشاهده کنید.")
+                                .textTypeface(Typeface.createFromAsset(
+                                        getAssets(),
+                                        "fonts/IRANSansWeb.ttf"))
+                                // All options below are optional
+                                .outerCircleColor(R.color.primary)      // Specify a color for the outer circle
+                                .outerCircleAlpha(0.8f)// Specify the alpha amount for the outer circle
+                                .titleTextSize(25)                  // Specify the size (in sp) of the title text
+                                .descriptionTextSize(15)            // Specify the size (in sp) of the description text
+                                .textColor(R.color.accent)            // Specify a color for both the title and description text
+                                .dimColor(R.color.primary_text)            // If set, will dim behind the view with 30% opacity of the given color
+                                .drawShadow(true)                   // Whether to draw a drop shadow or not
+                                .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+                                .tintTarget(false)                   // Whether to tint the target view's color
+                                .transparentTarget(true)           // Specify whether the target is transparent (displays the content underneath)
+                                .targetRadius(25),                  // Specify the target radius (in dp)
+                        new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
+                            @Override
+                            public void onTargetClick(TapTargetView view) {
+                                super.onTargetClick(view);      // This call is optional
+                                drawer.openDrawer(Gravity.START);
+                            }
+                        });
+
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                    toolbar.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                } else {
+                    toolbar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        });
+
+
+    }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     @Override

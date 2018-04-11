@@ -47,7 +47,7 @@ public class MainActivity extends BaseActivity {
     DrawerLayout drawer;
     static int height;
     int width,stopPosition,currentVideo = 0;
-    TextView tvTitlebar;
+    TextView tvTitlebar,textView;
     ImageView ivTitlebar,ivNavBack;
     ActionBarDrawerToggle toggle;
     NavigationView nv;
@@ -118,6 +118,7 @@ public class MainActivity extends BaseActivity {
         ivNavBack = (ImageView) findViewById(R.id.imageView_nav_back);
 
 
+        textView = (TextView)findViewById(R.id.textView);
         tvTitlebar = (TextView)findViewById(R.id.titleBar_title);
         tvTitlebar.setText(title);
 

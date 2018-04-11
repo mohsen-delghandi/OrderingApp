@@ -7,6 +7,7 @@
     android:layout_gravity="center"
     android:background="@drawable/border_shape_accent_solid"
     android:gravity="center"
+    android:id="@+id/linearLayout_main"
     android:orientation="vertical"
     android:layout_margin="@dimen/padding_large"
     android:paddingTop="@dimen/padding_bit"

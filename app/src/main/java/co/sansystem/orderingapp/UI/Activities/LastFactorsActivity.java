@@ -71,7 +71,7 @@ public class LastFactorsActivity extends AppCompatActivity {
         rvLastFactors = (RecyclerView) findViewById(R.id.last_factors_recyclerView);
         rvLastFactors.setHasFixedSize(true);
         rvLastFactors.setNestedScrollingEnabled(false);
-        rvLastFactors.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.HORIZONTAL));
+        rvLastFactors.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
         rvLastFactors.setLayoutManager(new LinearLayoutManager(this));
         lastFactorsAdapter = new LastFactorsAdapter();
         rvLastFactors.setAdapter(lastFactorsAdapter);
@@ -98,9 +98,13 @@ public class LastFactorsActivity extends AppCompatActivity {
                     public void onResponse(Call<List<MiniFactorModel>> call, Response<List<MiniFactorModel>> response) {
 
                         if (response.isSuccessful()) {
-                            lastFactorsAdapter.updateAdapterData(response.body());
-                            lastFactorsAdapter.notifyDataSetChanged();
-                            loadingDialogClass.dismiss();
+                            if (response.body().size() == 0) {
+                                onBackPressed();
+                            } else {
+                                lastFactorsAdapter.updateAdapterData(response.body());
+                                lastFactorsAdapter.notifyDataSetChanged();
+                                loadingDialogClass.dismiss();
+                            }
                         } else {
                             SQLiteDatabase db2 = new MyDatabase(LastFactorsActivity.this).getWritableDatabase();
                             ContentValues cv2 = new ContentValues();

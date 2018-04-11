@@ -1,11 +1,13 @@
 package co.sansystem.orderingapp.Adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
@@ -18,8 +20,11 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
 import com.sansystem.orderingapp.R;
 
 import java.io.ByteArrayOutputStream;
@@ -64,11 +69,13 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tv;
         public ImageView iv;
+        LinearLayout llMain;
 
         public ViewHolder(View v) {
             super(v);
             tv = v.findViewById(R.id.nav_textView);
             iv = v.findViewById(R.id.nav_imageView);
+            llMain = v.findViewById(R.id.linearLayout_main);
         }
     }
 
@@ -84,8 +91,31 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
         if (position == 0) {
             holder.tv.setText("محبوب ترین ها");
             holder.setIsRecyclable(false);
-//            holder.iv.getLayoutParams().width = mWidth / 5;
-//            holder.iv.getLayoutParams().height = mWidth / 5;
+
+            TapTargetView.showFor((Activity)mContext,                 // `this` is an Activity
+                    TapTarget.forView(holder.llMain, "لیست های غذایی", "با لمس اینجا می توانید لیست های مختلف غذایی را مشاهده کنید.")
+                            .textTypeface(Typeface.createFromAsset(
+                                    mContext.getAssets(),
+                                    "fonts/IRANSansWeb.ttf"))
+                            // All options below are optional
+                            .outerCircleColor(R.color.primary)      // Specify a color for the outer circle
+                            .outerCircleAlpha(0.8f)// Specify the alpha amount for the outer circle
+                            .titleTextSize(25)                  // Specify the size (in sp) of the title text
+                            .descriptionTextSize(15)            // Specify the size (in sp) of the description text
+                            .textColor(R.color.accent)            // Specify a color for both the title and description text
+                            .dimColor(R.color.primary_text)            // If set, will dim behind the view with 30% opacity of the given color
+                            .drawShadow(true)                   // Whether to draw a drop shadow or not
+                            .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+                            .tintTarget(false)                   // Whether to tint the target view's color
+                            .transparentTarget(true)           // Specify whether the target is transparent (displays the content underneath)
+                            .targetRadius(25),                  // Specify the target radius (in dp)
+                    new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
+                        @Override
+                        public void onTargetClick(TapTargetView view) {
+                            super.onTargetClick(view);      // This call is optional
+
+                        }
+                    });
 
             holder.iv.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @SuppressLint("NewApi")

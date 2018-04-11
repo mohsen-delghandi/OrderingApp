@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:gravity="center"
-    android:backgroundTint="#aa000000"
     android:layoutDirection="rtl"
     android:orientation="vertical"
     android:padding="@dimen/dimen_medium">

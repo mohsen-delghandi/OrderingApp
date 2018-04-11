@@ -6,8 +6,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -178,14 +176,16 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
 
                         final DeleteFactorDialogClass deleteFactorDialogClass = new DeleteFactorDialogClass(context);
 
-                        Bitmap map=takeScreenShot((Activity)context);
-                        Bitmap fast=fastblur(map, 10);
-                        final Drawable draw=new BitmapDrawable(context.getResources(),fast);
-//                        deleteFactorDialogClass.getWindow().setBackgroundDrawable(draw);
+//                        Bitmap map=takeScreenShot((Activity)context);
+//                        Bitmap fast=fastblur(map, 10);
+//                        final Drawable draw=new BitmapDrawable(context.getResources(),fast);
+//                        draw.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
+//                        draw.setAlpha(10);
                         deleteFactorDialogClass.show();
                         Window window = deleteFactorDialogClass.getWindow();
                         window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                        window.setBackgroundDrawable(draw);
+//                        window.setBackgroundDrawable(draw);
+
                         deleteFactorDialogClass.tvCustomerName.setText(currentModel.get(position).getList().get(0).getCostumerName());
                         deleteFactorDialogClass.tvTableNumber.setText(currentModel.get(position).getList().get(0).getTableNumber());
 

@@ -48,5 +48,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'com.alirezaafkar:sundatepicker:2.0.8'
     compile 'com.loopeer.library:itemtouchhelperextension:1.0.6'
-    compile 'com.github.amlcurran.showcaseview:library:5.4.3'
+    implementation project(':taptargetview')
 }
