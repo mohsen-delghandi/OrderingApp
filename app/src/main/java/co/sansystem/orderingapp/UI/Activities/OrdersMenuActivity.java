@@ -104,7 +104,6 @@ public class OrdersMenuActivity extends MainActivity {
                     startActivity(i);
                     finish();
                 } else {
-
                     Toast.makeText(OrdersMenuActivity.this, "با ورود به منوی تنظیمات، سبد خرید خالی می شود.", Toast.LENGTH_LONG).show();
                     ivTitlebar.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -160,52 +159,54 @@ public class OrdersMenuActivity extends MainActivity {
 
         NavigationAdapter.refreshFavorites();
 
-        toolbar.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @SuppressLint("NewApi")
-            @Override
-            public void onGlobalLayout() {
-                 h = toolbar.getMeasuredHeight();
+        if(SplashActivity.tourNumber == 1) {
+            SplashActivity.tourNumber++;
+            toolbar.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @SuppressLint("NewApi")
+                @Override
+                public void onGlobalLayout() {
+                    h = toolbar.getMeasuredHeight();
 
-                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) textView.getLayoutParams();
-                params.topMargin = getStatusBarHeight() + h / 2;
-                params.rightMargin = h / 2;
+                    CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) textView.getLayoutParams();
+                    params.topMargin = getStatusBarHeight() + h / 2;
+                    params.rightMargin = h / 2;
 
-                textView.setLayoutParams(params);
+                    textView.setLayoutParams(params);
 
 
-                TapTargetView.showFor(OrdersMenuActivity.this,                 // `this` is an Activity
-                        TapTarget.forView(findViewById(R.id.textView), "لیست های غذایی", "با لمس اینجا می توانید لیست های مختلف غذایی را مشاهده کنید.")
-                                .textTypeface(Typeface.createFromAsset(
-                                        getAssets(),
-                                        "fonts/IRANSansWeb.ttf"))
-                                // All options below are optional
-                                .outerCircleColor(R.color.primary)      // Specify a color for the outer circle
-                                .outerCircleAlpha(0.8f)// Specify the alpha amount for the outer circle
-                                .titleTextSize(25)                  // Specify the size (in sp) of the title text
-                                .descriptionTextSize(15)            // Specify the size (in sp) of the description text
-                                .textColor(R.color.accent)            // Specify a color for both the title and description text
-                                .dimColor(R.color.primary_text)            // If set, will dim behind the view with 30% opacity of the given color
-                                .drawShadow(true)                   // Whether to draw a drop shadow or not
-                                .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
-                                .tintTarget(false)                   // Whether to tint the target view's color
-                                .transparentTarget(true)           // Specify whether the target is transparent (displays the content underneath)
-                                .targetRadius(25),                  // Specify the target radius (in dp)
-                        new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
-                            @Override
-                            public void onTargetClick(TapTargetView view) {
-                                super.onTargetClick(view);      // This call is optional
-                                drawer.openDrawer(Gravity.START);
-                            }
-                        });
+                    TapTargetView.showFor(OrdersMenuActivity.this,                 // `this` is an Activity
+                            TapTarget.forView(findViewById(R.id.textView), "لیست های غذایی", "با لمس اینجا می توانید لیست های مختلف غذایی را مشاهده کنید.")
+                                    .textTypeface(Typeface.createFromAsset(
+                                            getAssets(),
+                                            "fonts/IRANSansWeb_Bold.ttf"))
+                                    // All options below are optional
+                                    .outerCircleColor(R.color.primary)      // Specify a color for the outer circle
+                                    .outerCircleAlpha(0.8f)// Specify the alpha amount for the outer circle
+                                    .titleTextSize(25)                  // Specify the size (in sp) of the title text
+                                    .descriptionTextSize(15)            // Specify the size (in sp) of the description text
+                                    .textColor(R.color.accent)            // Specify a color for both the title and description text
+                                    .dimColor(R.color.primary_text)            // If set, will dim behind the view with 30% opacity of the given color
+                                    .drawShadow(true)                   // Whether to draw a drop shadow or not
+                                    .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+                                    .tintTarget(false)                   // Whether to tint the target view's color
+                                    .transparentTarget(true)           // Specify whether the target is transparent (displays the content underneath)
+                                    .targetRadius(25),                  // Specify the target radius (in dp)
+                            new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
+                                @Override
+                                public void onTargetClick(TapTargetView view) {
+                                    super.onTargetClick(view);      // This call is optional
+                                    drawer.openDrawer(Gravity.START);
+                                }
+                            });
 
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                    toolbar.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                } else {
-                    toolbar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+                        toolbar.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                    } else {
+                        toolbar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    }
                 }
-            }
-        });
-
+            });
+        }
 
     }
 

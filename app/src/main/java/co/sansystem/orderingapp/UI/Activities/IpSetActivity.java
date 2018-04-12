@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -40,6 +42,7 @@ public class IpSetActivity extends AppCompatActivity {
     TextView btConnect;
     String ip;
     private WebService mTService;
+    private WebService mTService2;
     AppPreferenceTools appPreferenceTools;
     ImageView ivHelp;
 
@@ -191,43 +194,70 @@ public class IpSetActivity extends AppCompatActivity {
 
                 WebProvider provider = new WebProvider();
                 mTService = provider.getTService();
+                WebProvider provider2 = new WebProvider();
+                mTService2 = provider2.getTService();
 
 
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
+                Call<Boolean> call2 = mTService2.deviceRegister(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID), Build.MANUFACTURER + "-" + Build.MODEL);
+                call2.enqueue(new Callback<Boolean>() {
+
                     @Override
-                    public void run() {
+                    public void onResponse(Call<Boolean> call, Response<Boolean> response) {
 
-                        Call<List<ContactModel>> call = mTService.getListContact();
-                        call.enqueue(new Callback<List<ContactModel>>() {
-                            @Override
-                            public void onResponse(Call<List<ContactModel>> call, Response<List<ContactModel>> response) {
+                        if (response.isSuccessful()) {
+                            if (response.body()) {
 
-                                if (response.isSuccessful()) {
+                                final Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
 
-                                    SQLiteDatabase db = new MyDatabase(IpSetActivity.this).getWritableDatabase();
-                                    ContentValues cv = new ContentValues();
-                                    cv.put(MyDatabase.IP, ip);
-                                    db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
-                                    db.close();
-                                    loadingDialogClass.dismiss();
-                                    startActivity(new Intent(IpSetActivity.this,TitleSetActivity.class));
-                                }else{
-                                    loadingDialogClass.dismiss();
-                                    Toast.makeText(IpSetActivity.this, "ارتباط با سرور برقرار نشد، دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-                                }
-                            }
+                                        Call<List<ContactModel>> call = mTService.getListContact();
+                                        call.enqueue(new Callback<List<ContactModel>>() {
+                                            @Override
+                                            public void onResponse(Call<List<ContactModel>> call, Response<List<ContactModel>> response) {
 
-                            @Override
-                            public void onFailure(Call<List<ContactModel>> call, Throwable t) {
+                                                if (response.isSuccessful()) {
+
+                                                    SQLiteDatabase db = new MyDatabase(IpSetActivity.this).getWritableDatabase();
+                                                    ContentValues cv = new ContentValues();
+                                                    cv.put(MyDatabase.IP, ip);
+                                                    db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
+                                                    db.close();
+                                                    loadingDialogClass.dismiss();
+                                                    startActivity(new Intent(IpSetActivity.this,TitleSetActivity.class));
+                                                }else{
+                                                    loadingDialogClass.dismiss();
+                                                    Toast.makeText(IpSetActivity.this, "ارتباط با سرور برقرار نشد، دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<List<ContactModel>> call, Throwable t) {
+                                                loadingDialogClass.dismiss();
+                                                setProgressBarIndeterminateVisibility(false);
+                                                Toast.makeText(IpSetActivity.this, "ارتباط با سرور برقرار نشد، دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                }, 1234);
+
+                            } else {
                                 loadingDialogClass.dismiss();
-                                setProgressBarIndeterminateVisibility(false);
-                                Toast.makeText(IpSetActivity.this, "ارتباط با سرور برقرار نشد، دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(IpSetActivity.this, "شما اجازه ی دسترسی به سرور را ندارید.", Toast.LENGTH_SHORT).show();
                             }
-                        });
+                        } else {
+                            loadingDialogClass.dismiss();
+                            Toast.makeText(IpSetActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }, 1234);
 
+                    @Override
+                    public void onFailure(Call<Boolean> call, Throwable t) {
+                        loadingDialogClass.dismiss();
+                        Toast.makeText(IpSetActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 

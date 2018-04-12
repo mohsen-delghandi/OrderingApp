@@ -579,54 +579,60 @@ public class CustomDialogClass extends Dialog implements
                                 public void onResponse(Call<Object> call, Response<Object> response) {
 
                                     if (response.isSuccessful()) {
-                                        loadingDialogClass.dismiss();
-                                        dismiss();
+                                        if(response.body().toString().equals("NotActive")){
+                                            Toast.makeText(c, "خطا در قفل سخت افزاری شبکه", Toast.LENGTH_SHORT).show();
+                                            loadingDialogClass.dismiss();
+
+                                        }else {
+                                            loadingDialogClass.dismiss();
+                                            dismiss();
 
 
-                                        FoodOrdersAdapter.mList.clear();
+                                            FoodOrdersAdapter.mList.clear();
 
-                                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
-                                        params.height = 0;
-                                        OrdersMenuActivity.ll.setLayoutParams(params);
-                                        OrdersMenuActivity.tvTayid.setAlpha(0f);
+                                            FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) OrdersMenuActivity.ll.getLayoutParams();
+                                            params.height = 0;
+                                            OrdersMenuActivity.ll.setLayoutParams(params);
+                                            OrdersMenuActivity.tvTayid.setAlpha(0f);
 
-                                        Intent intent = new Intent(c, SuccessActivity.class);
-                                        intent.putExtra("fish_number",response.body().toString());
-                                        intent.putExtra("name_moshtari",textView.getText().toString().trim());
-                                        c.startActivity(intent);
-                                        ((Activity)c).finish();
+                                            Intent intent = new Intent(c, SuccessActivity.class);
+                                            intent.putExtra("fish_number", response.body().toString());
+                                            intent.putExtra("name_moshtari", textView.getText().toString().trim());
+                                            c.startActivity(intent);
+                                            ((Activity) c).finish();
 
-                                        Call<List<FavoriteModel>> call2 = mTService3.getFoodFavorite();
-                                        call2.enqueue(new Callback<List<FavoriteModel>>() {
+                                            Call<List<FavoriteModel>> call2 = mTService3.getFoodFavorite();
+                                            call2.enqueue(new Callback<List<FavoriteModel>>() {
 
-                                            @Override
-                                            public void onResponse
-                                                    (Call<List<FavoriteModel>> call, Response<List<FavoriteModel>> response) {
+                                                @Override
+                                                public void onResponse
+                                                        (Call<List<FavoriteModel>> call, Response<List<FavoriteModel>> response) {
 
-                                                if (response.isSuccessful()) {
+                                                    if (response.isSuccessful()) {
 
 
-                                                    SQLiteDatabase dbFavorite = new MyDatabase(c).getWritableDatabase();
+                                                        SQLiteDatabase dbFavorite = new MyDatabase(c).getWritableDatabase();
 
-                                                    dbFavorite.execSQL("UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = '0' ;");
+                                                        dbFavorite.execSQL("UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = '0' ;");
 
-                                                    for (FavoriteModel favoriteModel :
-                                                            response.body()) {
-                                                        dbFavorite.execSQL(" UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = '1' WHERE " + MyDatabase.CODE + " = " + favoriteModel.getIDKala());
+                                                        for (FavoriteModel favoriteModel :
+                                                                response.body()) {
+                                                            dbFavorite.execSQL(" UPDATE " + MyDatabase.FOOD_TABLE + " SET " + MyDatabase.FAVORITE + " = '1' WHERE " + MyDatabase.CODE + " = " + favoriteModel.getIDKala());
+                                                        }
+
+
+                                                        dbFavorite.close();
+
+                                                        NavigationAdapter.refreshFavorites();
                                                     }
 
-
-                                                    dbFavorite.close();
-
-                                                    NavigationAdapter.refreshFavorites();
                                                 }
 
-                                            }
-
-                                            @Override
-                                            public void onFailure(Call<List<FavoriteModel>> call, Throwable t) {
-                                            }
-                                        });
+                                                @Override
+                                                public void onFailure(Call<List<FavoriteModel>> call, Throwable t) {
+                                                }
+                                            });
+                                        }
                                     } else {
                                         loadingDialogClass.dismiss();
                                         SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();

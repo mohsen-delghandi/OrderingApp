@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -59,7 +58,7 @@ public class UpdateActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.update_layout);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar_update);
         progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
         tvUpdate = (TextView) findViewById(R.id.textView_update);
         tvOk = (TextView) findViewById(R.id.textView_update_ok);
@@ -80,9 +79,11 @@ public class UpdateActivity extends AppCompatActivity {
 
         blink();
 
-        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            // Do something for lollipop and above versions
+
+        try {
             progressBar.setProgress(20, true);
+        } catch (Error e) {
+
         }
 
 
@@ -123,9 +124,13 @@ public class UpdateActivity extends AppCompatActivity {
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
-                                        // Do something for lollipop and above versions
+
+                                    // Do something for lollipop and above versions
+                                    try {
                                         progressBar.setProgress(40, true);
+                                    } catch (Error e) {
+
+
                                     }
                                 }
                             }, 500);
@@ -152,10 +157,14 @@ public class UpdateActivity extends AppCompatActivity {
                                         handler.postDelayed(new Runnable() {
                                             @Override
                                             public void run() {
-                                                if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
-                                                    // Do something for lollipop and above versions
+
+                                                // Do something for lollipop and above versions
+                                                try {
                                                     progressBar.setProgress(60, true);
+                                                } catch (Error e) {
+
                                                 }
+
                                             }
                                         }, 500);
 
@@ -193,10 +202,14 @@ public class UpdateActivity extends AppCompatActivity {
                                                     handler.postDelayed(new Runnable() {
                                                         @Override
                                                         public void run() {
-                                                            if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
-                                                                // Do something for lollipop and above versions
+
+                                                            // Do something for lollipop and above versions
+                                                            try {
                                                                 progressBar.setProgress(80, true);
+                                                            } catch (Error e) {
+
                                                             }
+
                                                         }
                                                     }, 500);
                                                     SQLiteDatabase dbFavorite = new MyDatabase(UpdateActivity.this).getWritableDatabase();
@@ -227,10 +240,13 @@ public class UpdateActivity extends AppCompatActivity {
                                                                 handler.postDelayed(new Runnable() {
                                                                     @Override
                                                                     public void run() {
-                                                                        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
-                                                                            // Do something for lollipop and above versions
+                                                                        // Do something for lollipop and above versions
+                                                                        try {
                                                                             progressBar.setProgress(100, true);
+                                                                        } catch (Error e) {
+
                                                                         }
+
                                                                         progressBar.setVisibility(View.GONE);
                                                                         progressBar2.setVisibility(View.VISIBLE);
                                                                         tvOk.setVisibility(View.VISIBLE);

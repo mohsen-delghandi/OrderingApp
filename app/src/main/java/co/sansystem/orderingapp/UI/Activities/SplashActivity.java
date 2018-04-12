@@ -6,8 +6,10 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings.Secure;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,12 +17,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sansystem.orderingapp.R;
 
 import co.sansystem.orderingapp.Adapters.FoodOrdersAdapter;
 import co.sansystem.orderingapp.Models.VersionModel;
 import co.sansystem.orderingapp.Utility.Database.MyDatabase;
+import co.sansystem.orderingapp.Utility.Network.WebProvider;
 import co.sansystem.orderingapp.Utility.Network.WebProviderOnline;
 import co.sansystem.orderingapp.Utility.Network.WebService;
 import co.sansystem.orderingapp.Utility.Utility.AppPreferenceTools;
@@ -37,9 +41,12 @@ public class SplashActivity extends AppCompatActivity {
 
     int firstRun;
     WebService mTService;
+    WebService mTService2;
     private TextView tvUpdate,tvNoUpdate;
     String versionCode;
     LinearLayout llMain;
+    public static int tourNumber;
+    TextView tvPermission;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -54,6 +61,10 @@ public class SplashActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splash_activity);
 
+        tvPermission = (TextView) findViewById(R.id.textView_permission);
+
+        tourNumber = 1;
+
         llMain = (LinearLayout) findViewById(R.id.linearLayout_main);
 
         tvUpdate = (TextView) findViewById(R.id.textView_bt_update);
@@ -61,6 +72,9 @@ public class SplashActivity extends AppCompatActivity {
 
         WebProviderOnline webProviderOnline = new WebProviderOnline();
         mTService = webProviderOnline.getTService();
+
+        WebProvider webProvider = new WebProvider();
+        mTService2 = webProvider.getTService();
 
         SQLiteDatabase db = new MyDatabase(this).getWritableDatabase();
         db.delete(MyDatabase.ORDERS_TABLE, null, null);
@@ -75,14 +89,6 @@ public class SplashActivity extends AppCompatActivity {
         }
 
 //        checkVersion(versionCode);
-
-
-
-
-
-
-
-
 
         SQLiteDatabase dbb = new MyDatabase(SplashActivity.this).getReadableDatabase();
         Cursor cursor = dbb.query(MyDatabase.SETTINGS_TABLE, new String[]{MyDatabase.FIRST_RUN}, null, null, null, null, null, null);
@@ -102,28 +108,55 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }, 2000);
         } else {
-            AppPreferenceTools appPreferenceTools = new AppPreferenceTools(SplashActivity.this);
-            if (appPreferenceTools.isAuthorized()) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent i = new Intent(SplashActivity.this, OrdersMenuActivity.class);
-                        startActivity(i);
-                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
+            Call<Boolean> call2 = mTService2.deviceRegister(Secure.getString(getContentResolver(), Secure.ANDROID_ID), Build.MANUFACTURER + "-" + Build.MODEL);
+            call2.enqueue(new Callback<Boolean>() {
+
+                @Override
+                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+
+                    if (response.isSuccessful()) {
+                        if (response.body()) {
+
+                            AppPreferenceTools appPreferenceTools = new AppPreferenceTools(SplashActivity.this);
+                            if (appPreferenceTools.isAuthorized()) {
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent i = new Intent(SplashActivity.this, OrdersMenuActivity.class);
+                                        startActivity(i);
+                                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                        finish();
+                                    }
+                                }, 2000);
+                            } else {
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                                        startActivity(i);
+                                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                                        finish();
+                                    }
+                                }, 2000);
+                            }
+
+                        } else {
+                            tvPermission.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        Toast.makeText(SplashActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                         finish();
                     }
-                }, 2000);
-            } else {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent i = new Intent(SplashActivity.this, LoginActivity.class);
-                        startActivity(i);
-                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                        finish();
-                    }
-                }, 2000);
-            }
+                }
+
+                @Override
+                public void onFailure(Call<Boolean> call, Throwable t) {
+                    Toast.makeText(SplashActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            });
+
         }
     }
 

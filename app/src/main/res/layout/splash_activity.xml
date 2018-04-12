@@ -97,4 +97,18 @@
 
     </LinearLayout>
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/textView_permission"
+        android:padding="@dimen/padding_large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="شما از طریق این دستگاه، اجازه دسترسی به سرور ندارید."
+        android:gravity="center"
+        android:textSize="@dimen/font_xmedium"
+        android:textColor="@color/icons"
+        app:fontPath="fonts/IRANSansWeb.ttf"
+        android:layout_alignParentBottom="true"
+        tools:ignore="MissingPrefix" />
+
 </RelativeLayout>

@@ -1,9 +1,11 @@
 package co.sansystem.orderingapp.UI.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -16,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +29,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
 import com.sansystem.orderingapp.R;
 
 import java.util.List;
@@ -128,8 +133,96 @@ public class MainActivity extends BaseActivity {
         ns = (LinearLayout) findViewById(R.id.nestedscrollview);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(final View drawerView) {
+                super.onDrawerOpened(drawerView);
+
+                if(SplashActivity.tourNumber == 2) {
+                    SplashActivity.tourNumber++;
+                    TapTargetView.showFor(MainActivity.this,                 // `this` is an Activity
+                            TapTarget.forView(drawerView.findViewWithTag("myIdea"), "محبوب ترین ها", "با لمس اینجا می توانید غذاهای محبوب مشتریان این مجموعه را مشاهده کنید.")
+                                    .textTypeface(Typeface.createFromAsset(
+                                            getAssets(),
+                                            "fonts/IRANSansWeb_Bold.ttf"))
+                                    // All options below are optional
+                                    .outerCircleColor(R.color.primary)      // Specify a color for the outer circle
+                                    .outerCircleAlpha(0.8f)// Specify the alpha amount for the outer circle
+                                    .titleTextSize(25)                  // Specify the size (in sp) of the title text
+                                    .descriptionTextSize(15)            // Specify the size (in sp) of the description text
+                                    .textColor(R.color.accent)            // Specify a color for both the title and description text
+                                    .dimColor(R.color.primary_text)            // If set, will dim behind the view with 30% opacity of the given color
+                                    .drawShadow(true)                   // Whether to draw a drop shadow or not
+                                    .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+                                    .tintTarget(false)                   // Whether to tint the target view's color
+                                    .transparentTarget(true)           // Specify whether the target is transparent (displays the content underneath)
+                                    .targetRadius(70),                  // Specify the target radius (in dp)
+                            new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
+                                @Override
+                                public void onTargetClick(TapTargetView view) {
+                                    super.onTargetClick(view);
+                                    if(SplashActivity.tourNumber == 3) {
+                                        SplashActivity.tourNumber++;
+                                        TapTargetView.showFor(MainActivity.this,                 // `this` is an Activity
+                                                TapTarget.forView(drawerView.findViewWithTag("myIdea2"), "گروه های غذایی", "و در ادامه دیگر گروه های غذایی مجموعه را مشاهده می کنید.")
+                                                        .textTypeface(Typeface.createFromAsset(
+                                                                getAssets(),
+                                                                "fonts/IRANSansWeb_Bold.ttf"))
+                                                        // All options below are optional
+                                                        .outerCircleColor(R.color.primary)      // Specify a color for the outer circle
+                                                        .outerCircleAlpha(0.8f)// Specify the alpha amount for the outer circle
+                                                        .titleTextSize(25)                  // Specify the size (in sp) of the title text
+                                                        .descriptionTextSize(15)            // Specify the size (in sp) of the description text
+                                                        .textColor(R.color.accent)            // Specify a color for both the title and description text
+                                                        .dimColor(R.color.primary_text)            // If set, will dim behind the view with 30% opacity of the given color
+                                                        .drawShadow(true)                   // Whether to draw a drop shadow or not
+                                                        .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+                                                        .tintTarget(false)                   // Whether to tint the target view's color
+                                                        .transparentTarget(true)           // Specify whether the target is transparent (displays the content underneath)
+                                                        .targetRadius(70),                  // Specify the target radius (in dp)
+                                                new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
+                                                    @Override
+                                                    public void onTargetClick(TapTargetView view) {
+                                                        super.onTargetClick(view);      // This call is optional
+                                                        drawer.closeDrawer(Gravity.START);
+                                                        if(SplashActivity.tourNumber == 4) {
+                                                            SplashActivity.tourNumber++;
+                                                            TapTargetView.showFor(MainActivity.this,                 // `this` is an Activity
+                                                                    TapTarget.forView(ivTitlebar, "تنظیمات برنامه", "با لمس اینجا وارد بخش تنظیمات برنامه می شوید.")
+                                                                            .textTypeface(Typeface.createFromAsset(
+                                                                                    getAssets(),
+                                                                                    "fonts/IRANSansWeb_Bold.ttf"))
+                                                                            // All options below are optional
+                                                                            .outerCircleColor(R.color.primary)      // Specify a color for the outer circle
+                                                                            .outerCircleAlpha(0.8f)// Specify the alpha amount for the outer circle
+                                                                            .titleTextSize(25)                  // Specify the size (in sp) of the title text
+                                                                            .descriptionTextSize(15)            // Specify the size (in sp) of the description text
+                                                                            .textColor(R.color.accent)            // Specify a color for both the title and description text
+                                                                            .dimColor(R.color.primary_text)            // If set, will dim behind the view with 30% opacity of the given color
+                                                                            .drawShadow(true)                   // Whether to draw a drop shadow or not
+                                                                            .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+                                                                            .tintTarget(false)                   // Whether to tint the target view's color
+                                                                            .transparentTarget(true)           // Specify whether the target is transparent (displays the content underneath)
+                                                                            .targetRadius(20),                  // Specify the target radius (in dp)
+                                                                    new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
+                                                                        @Override
+                                                                        public void onTargetClick(TapTargetView view) {
+                                                                            super.onTargetClick(view);      // This call is optional
+                                                                            Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+                                                                            startActivity(i);
+                                                                        }
+                                                                    });
+                                                        }
+                                                    }
+                                                });// This call is optional
+                                    }
+                                }
+                            });
+                    // Do whatever you want here
+                }
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 

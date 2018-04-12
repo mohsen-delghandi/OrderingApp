@@ -63,6 +63,9 @@ public interface WebService {
     @GET("ReportForush/{azTarikh}/{taTarikh}")
     Call<List<ReportModel>> reportForush(@Path("azTarikh") String azTarikh, @Path("taTarikh") String taTarikh);
 
+    @GET("DeviceRegister/{deviceID}/{deviceName}")
+    Call<Boolean> deviceRegister(@Path("deviceID") String deviceID, @Path("deviceName") String deviceName);
+
     @GET("GetSettingDarsad")
     Call<List<SettingModel>> getSettingDarsad();
 
