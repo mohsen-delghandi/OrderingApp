@@ -51,6 +51,7 @@ public class SplashActivity extends AppCompatActivity {
     LinearLayout llMain,llIp;
     public static int tourNumber;
     TextView tvPermission,btConnect;
+    AppPreferenceTools appPreferenceTools;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -65,6 +66,7 @@ public class SplashActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splash_activity);
 
+        appPreferenceTools = new AppPreferenceTools(this);
         tvPermission = (TextView) findViewById(R.id.textView_permission);
 
         etIP1 = (EditText) findViewById(R.id.editText_ip_1);
@@ -174,6 +176,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                appPreferenceTools.saveDomainName(ip);
                 SQLiteDatabase db = new MyDatabase(SplashActivity.this).getWritableDatabase();
                 ContentValues cv = new ContentValues();
                 String ip = etIP1.getText().toString().trim() + "." +
