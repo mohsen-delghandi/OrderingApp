@@ -625,7 +625,6 @@ public class CustomDialogClass extends Dialog implements
 
                                                         NavigationAdapter.refreshFavorites();
                                                     }
-
                                                 }
 
                                                 @Override
@@ -650,7 +649,6 @@ public class CustomDialogClass extends Dialog implements
 
                                         db2.close();
                                         Toast.makeText(c, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-
                                     }
                                 }
 
@@ -676,7 +674,6 @@ public class CustomDialogClass extends Dialog implements
                             });
                         }
                     }, 1234);
-
                 }
 
                 break;

@@ -14,19 +14,18 @@
         android:src="@drawable/image_splash"
         android:visibility="visible" />
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/linearLayout_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:padding="@dimen/dimen_large"
         android:background="#eeffffff"
         android:gravity="center"
-        android:id="@+id/linearLayout_main"
-        android:visibility="gone"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="@dimen/dimen_large"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/imageView_update"
@@ -45,28 +44,31 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/linearLayout_logo"
             android:layout_centerHorizontal="true"
+            android:gravity="center"
             android:paddingBottom="@dimen/padding_large"
             android:paddingLeft="@dimen/padding_large"
             android:paddingRight="@dimen/padding_large"
             android:paddingTop="@dimen/padding_large"
-            android:text="کاربر گرامی، جهت استفاده از اپلیکیشن به روز رسانی کنید!"
+            android:text="کاربر گرامی جهت استفاده از اپلیکیشن، به روز رسانی کنید!"
             android:textColor="@color/primary_text"
             android:textSize="@dimen/font_medium"
             android:visibility="visible" />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_marginTop="@dimen/dimen_large"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView_bt_update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerInParent="true"
                 android:background="@drawable/border_shape_primary"
                 android:gravity="center"
-                android:layout_alignParentRight="true"
                 android:padding="@dimen/padding_medium"
                 android:text="به روز رسانی"
                 android:textColor="@color/icons"
@@ -76,10 +78,10 @@
                 tools:ignore="MissingPrefix" />
 
             <TextView
-                android:layout_alignParentLeft="true"
                 android:id="@+id/textView_bt_no_update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:layout_below="@+id/textView_bt_update"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/padding_xlarge"
@@ -93,22 +95,161 @@
                 app:fontPath="fonts/IRANSansWeb_Light.ttf"
                 tools:ignore="MissingPrefix" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </LinearLayout>
 
+
+
     <TextView
-        android:visibility="gone"
         android:id="@+id/textView_permission"
-        android:padding="@dimen/padding_large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="شما از طریق این دستگاه، اجازه دسترسی به سرور ندارید."
         android:gravity="center"
-        android:textSize="@dimen/font_xmedium"
+        android:padding="@dimen/padding_large"
+        android:text="شما از طریق این دستگاه، اجازه دسترسی به سرور ندارید."
         android:textColor="@color/icons"
-        app:fontPath="fonts/IRANSansWeb.ttf"
+        android:textSize="@dimen/font_xmedium"
+        android:visibility="gone"
         android:layout_alignParentBottom="true"
+        app:fontPath="fonts/IRANSansWeb.ttf"
         tools:ignore="MissingPrefix" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout_ip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:background="@color/icons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_large">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="در صورت نیاز به تغییر آی پی، از این قسمت استفاده کنید."
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/font_xsmall" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="ltr"
+                android:orientation="horizontal"
+                android:padding="@dimen/padding_large">
+
+                <EditText
+                    android:id="@+id/editText_ip_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline_secondary_text"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_ip_2"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_small" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="@dimen/padding_bit"
+                    android:layout_marginRight="@dimen/padding_bit"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/shape_dot" />
+
+                <EditText
+                    android:id="@+id/editText_ip_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline_secondary_text"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_ip_3"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_small" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="@dimen/padding_bit"
+                    android:layout_marginRight="@dimen/padding_bit"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/shape_dot" />
+
+                <EditText
+                    android:id="@+id/editText_ip_3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline_secondary_text"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_ip_4"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_small" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="@dimen/padding_bit"
+                    android:layout_marginRight="@dimen/padding_bit"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/shape_dot" />
+
+                <EditText
+                    android:id="@+id/editText_ip_4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_underline_secondary_text"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:nextFocusDown="@+id/editText_title"
+                    android:paddingBottom="@dimen/padding_bit"
+                    android:textColor="@color/primary_text"
+                    android:textSize="@dimen/font_small" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView_connect"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dimen_large"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="left"
+                android:layout_marginLeft="@dimen/padding_spinner"
+                android:background="@drawable/border_shape_solid_gray3_radius"
+                android:gravity="center"
+                android:paddingLeft="@dimen/padding_spinner"
+                android:paddingRight="@dimen/padding_spinner"
+                android:text="اتصال"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/font_xmedium"
+                app:fontPath="fonts/IRANSansWeb_Medium.ttf"
+                tools:ignore="MissingPrefix" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

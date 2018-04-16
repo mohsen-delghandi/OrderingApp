@@ -18,7 +18,7 @@ public class WebProviderOnline {
         AppPreferenceTools appPreferenceTools = new AppPreferenceTools(Font.context);
 
         mRetrofitClient = new Retrofit.Builder()
-                .baseUrl("http://sansystem.co/ver.php/")
+                .baseUrl("http://sansystem.co/api/api/")
                 .client(httpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
