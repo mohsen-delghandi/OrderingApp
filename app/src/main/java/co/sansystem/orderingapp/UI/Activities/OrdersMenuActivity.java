@@ -46,7 +46,7 @@ public class OrdersMenuActivity extends MainActivity {
     RecyclerView.Adapter mRecyclerAdapter;
     public static LinearLayout ll;
     public static FrameLayout frOrders;
-    public static TextView tvTayid;
+    public static TextView tvTayid,tvTour;
     public static LinearLayout linearLayout;
     CustomDialogClass cdd;
     AppPreferenceTools appPreferenceTools;
@@ -65,6 +65,7 @@ public class OrdersMenuActivity extends MainActivity {
         frOrders = (FrameLayout) findViewById(R.id.frameLayout_order);
         frOrders.setVisibility(View.GONE);
 
+        tvTour = findViewById(R.id.textView_tour);
         drawer.openDrawer(Gravity.START);
         appPreferenceTools = new AppPreferenceTools(this);
         costumerCode = appPreferenceTools.getDefaultCostumerCode();
@@ -159,6 +160,34 @@ public class OrdersMenuActivity extends MainActivity {
 
         NavigationAdapter.refreshFavorites();
 
+        if(SplashActivity.tourNumber == 6) {
+            SplashActivity.tourNumber++;
+            TapTargetView.showFor(OrdersMenuActivity.this,                 // `this` is an Activity
+                    TapTarget.forView(tvTour, "انتخاب غذا", "")
+                            .textTypeface(Typeface.createFromAsset(
+                                    getAssets(),
+                                    "fonts/IRANSansWeb_Bold.ttf"))
+                            // All options below are optional
+                            .outerCircleColor(R.color.primary)      // Specify a color for the outer circle
+                            .outerCircleAlpha(0.8f)// Specify the alpha amount for the outer circle
+                            .titleTextSize(25)                  // Specify the size (in sp) of the title text
+                            .descriptionTextSize(15)            // Specify the size (in sp) of the description text
+                            .textColor(R.color.accent)            // Specify a color for both the title and description text
+                            .dimColor(R.color.primary_text)            // If set, will dim behind the view with 30% opacity of the given color
+                            .drawShadow(true)                   // Whether to draw a drop shadow or not
+                            .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+                            .tintTarget(false)                   // Whether to tint the target view's color
+                            .transparentTarget(true)           // Specify whether the target is transparent (displays the content underneath)
+                            .targetRadius(100),                  // Specify the target radius (in dp)
+                    new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
+                        @Override
+                        public void onTargetClick(TapTargetView view) {
+                            super.onTargetClick(view);
+
+                        }
+                    });
+        }
+
         if(SplashActivity.tourNumber == 1) {
             SplashActivity.tourNumber++;
             toolbar.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -207,7 +236,6 @@ public class OrdersMenuActivity extends MainActivity {
                 }
             });
         }
-
     }
 
     public int getStatusBarHeight() {

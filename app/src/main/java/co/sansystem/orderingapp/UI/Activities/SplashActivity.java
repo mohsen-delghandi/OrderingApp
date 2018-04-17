@@ -356,7 +356,7 @@ public class SplashActivity extends AppCompatActivity {
                                             }
                                         } else {
                                             tvPermission.setVisibility(View.VISIBLE);
-                                            tvPermission.setText("عدم ارتباط با سرور.");
+                                            tvPermission.setText("عدم ارتباط با سرور");
                                             llIp.setVisibility(View.VISIBLE);
                                         }
                                     }
@@ -364,7 +364,7 @@ public class SplashActivity extends AppCompatActivity {
                                     @Override
                                     public void onFailure(Call<Boolean> call, Throwable t) {
                                         tvPermission.setVisibility(View.VISIBLE);
-                                        tvPermission.setText("عدم ارتباط با سرور.");
+                                        tvPermission.setText("عدم ارتباط با سرور");
                                         llIp.setVisibility(View.VISIBLE);
                                     }
                                 });
@@ -433,7 +433,7 @@ public class SplashActivity extends AppCompatActivity {
                                                     }
                                                 } else {
                                                     tvPermission.setVisibility(View.VISIBLE);
-                                                    tvPermission.setText("عدم ارتباط با سرور.");
+                                                    tvPermission.setText("عدم ارتباط با سرور");
                                                     llIp.setVisibility(View.VISIBLE);
                                                 }
                                             }
@@ -441,7 +441,7 @@ public class SplashActivity extends AppCompatActivity {
                                             @Override
                                             public void onFailure(Call<Boolean> call, Throwable t) {
                                                 tvPermission.setVisibility(View.VISIBLE);
-                                                tvPermission.setText("عدم ارتباط با سرور.");
+                                                tvPermission.setText("عدم ارتباط با سرور");
                                                 llIp.setVisibility(View.VISIBLE);
                                             }
                                         });
@@ -513,7 +513,7 @@ public class SplashActivity extends AppCompatActivity {
                                     }
                                 } else {
                                     tvPermission.setVisibility(View.VISIBLE);
-                                    tvPermission.setText("عدم ارتباط با سرور.");
+                                    tvPermission.setText("عدم ارتباط با سرور");
                                     llIp.setVisibility(View.VISIBLE);
                                 }
                             }
@@ -521,7 +521,7 @@ public class SplashActivity extends AppCompatActivity {
                             @Override
                             public void onFailure(Call<Boolean> call, Throwable t) {
                                 tvPermission.setVisibility(View.VISIBLE);
-                                tvPermission.setText("عدم ارتباط با سرور.");
+                                tvPermission.setText("عدم ارتباط با سرور");
                                 llIp.setVisibility(View.VISIBLE);
                             }
                         });
@@ -580,7 +580,7 @@ public class SplashActivity extends AppCompatActivity {
                                 }
                             } else {
                                 tvPermission.setVisibility(View.VISIBLE);
-                                tvPermission.setText("عدم ارتباط با سرور.");
+                                tvPermission.setText("عدم ارتباط با سرور");
                                 llIp.setVisibility(View.VISIBLE);
                             }
                         }
@@ -588,7 +588,7 @@ public class SplashActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call<Boolean> call, Throwable t) {
                             tvPermission.setVisibility(View.VISIBLE);
-                            tvPermission.setText("عدم ارتباط با سرور.");
+                            tvPermission.setText("عدم ارتباط با سرور");
                             llIp.setVisibility(View.VISIBLE);
                         }
                     });
