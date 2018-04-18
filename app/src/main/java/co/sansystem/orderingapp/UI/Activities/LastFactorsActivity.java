@@ -99,6 +99,7 @@ public class LastFactorsActivity extends AppCompatActivity {
 
                         if (response.isSuccessful()) {
                             if (response.body().size() == 0) {
+                                Toast.makeText(LastFactorsActivity.this, "تاریخچه ای موجود نیست.", Toast.LENGTH_SHORT).show();
                                 onBackPressed();
                             } else {
                                 lastFactorsAdapter.updateAdapterData(response.body());

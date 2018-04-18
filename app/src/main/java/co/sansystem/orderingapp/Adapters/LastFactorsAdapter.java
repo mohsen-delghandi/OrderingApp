@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -170,11 +168,11 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
                     public void onClick(View view) {
 
                         final DeleteFactorDialogClass deleteFactorDialogClass = new DeleteFactorDialogClass(context);
-
-                        Bitmap map=takeScreenShot((Activity)context);
-                        Bitmap fast=fastblur(map, 10);
-                        final Drawable draw=new BitmapDrawable(context.getResources(),fast);
-                        deleteFactorDialogClass.getWindow().setBackgroundDrawable(draw);
+//
+//                        Bitmap map=takeScreenShot((Activity)context);
+//                        Bitmap fast=fastblur(map, 10);
+//                        final Drawable draw=new BitmapDrawable(context.getResources(),fast);
+//                        deleteFactorDialogClass.getWindow().setBackgroundDrawable(draw);
                         deleteFactorDialogClass.show();
                         Window window = deleteFactorDialogClass.getWindow();
                         window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

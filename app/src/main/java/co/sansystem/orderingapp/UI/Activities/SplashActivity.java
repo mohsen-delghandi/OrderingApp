@@ -192,7 +192,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
-        tourNumber = 1;
+//        tourNumber = 1;
 
         llMain = (LinearLayout) findViewById(R.id.linearLayout_main);
         llIp = (LinearLayout) findViewById(R.id.linearLayout_ip);

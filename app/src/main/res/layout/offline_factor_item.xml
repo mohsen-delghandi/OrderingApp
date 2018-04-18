@@ -63,7 +63,7 @@
                 android:gravity="center"
                 android:paddingBottom="@dimen/padding_bit"
                 android:paddingTop="@dimen/padding_bit"
-                android:text="9999"
+                android:text="----"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/font_large" />
 
@@ -164,7 +164,7 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/border_shape_solid_gray"
                 android:padding="@dimen/padding_xlarge"
-                android:src="@drawable/image_edit" />
+                android:src="@drawable/image_upload" />
 
         </LinearLayout>
 

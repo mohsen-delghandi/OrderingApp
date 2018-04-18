@@ -37,6 +37,18 @@
             android:textColor="@color/primary_text"
             android:textSize="@dimen/font_medium" />
 
+        <ImageView
+            android:id="@+id/imageView_update_all"
+            android:layout_width="@dimen/dimen_large"
+            android:layout_height="@dimen/dimen_large"
+            android:padding="@dimen/padding_medium"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="@dimen/padding_large"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/image_upload" />
+
     </RelativeLayout>
 
     <TextView

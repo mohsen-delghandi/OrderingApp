@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.loopeer.itemtouchhelperextension.Extension;
 import com.sansystem.orderingapp.R;
 
@@ -123,20 +124,35 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
                     public void run() {
 
                         Call<Object> call = mTService.saveFactor(currentModel.get(position).getList(), "0", "0");
+                        Gson gson = new Gson();
+                        String json = gson.toJson(currentModel.get(position).getList());
                         call.enqueue(new Callback<Object>() {
                             @Override
                             public void onResponse(Call<Object> call, Response<Object> response) {
 
                                 if (response.isSuccessful()) {
-                                    loadingDialogClass.dismiss();
-                                    SQLiteDatabase database = new MyDatabase(context).getWritableDatabase();
-                                    database.delete(MyDatabase.OFFLINE_FACTORS_TABLE, MyDatabase.ID + " = " + fatorIDs.get(position), null);
+                                    if (!response.body().equals("NotActive")) {
+                                        loadingDialogClass.dismiss();
+                                        SQLiteDatabase database = new MyDatabase(context).getWritableDatabase();
+                                        database.delete(MyDatabase.OFFLINE_FACTORS_TABLE, MyDatabase.ID + " = " + fatorIDs.get(position), null);
+                                        database.close();
 
-                                    currentModel.remove(position);
-                                    fatorIDs.remove(position);
-                                    notifyDataSetChanged();
-                                    Toast.makeText(context, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
-//                            FoodOrdersAdapter.mList.clear();
+                                        currentModel.remove(position);
+                                        fatorIDs.remove(position);
+                                        notifyDataSetChanged();
+                                        Toast.makeText(context, "سفارش به صندوق ارسال شد.", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        loadingDialogClass.dismiss();
+                                        SQLiteDatabase db2 = new MyDatabase(context).getWritableDatabase();
+                                        ContentValues cv2 = new ContentValues();
+                                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+                                        String myDate = format.format(new Date());
+                                        cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
+                                        db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
+                                        db2.close();
+                                        Toast.makeText(context, "خطا در قفل سخت افزاری", Toast.LENGTH_SHORT).show();
+                                    }
+
                                 } else {
                                     loadingDialogClass.dismiss();
                                     SQLiteDatabase db2 = new MyDatabase(context).getWritableDatabase();
@@ -169,6 +185,7 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
 
             }
         });
+
         holder.mActionViewDelete.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -217,9 +234,7 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
     }
 
 
-
-    private static Bitmap takeScreenShot(Activity activity)
-    {
+    private static Bitmap takeScreenShot(Activity activity) {
         View view = activity.getWindow().getDecorView();
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
@@ -230,7 +245,7 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
         int width = activity.getWindowManager().getDefaultDisplay().getWidth();
         int height = activity.getWindowManager().getDefaultDisplay().getHeight();
 
-        Bitmap b = Bitmap.createBitmap(b1, 0, statusBarHeight, width, height  - statusBarHeight);
+        Bitmap b = Bitmap.createBitmap(b1, 0, statusBarHeight, width, height - statusBarHeight);
         view.destroyDrawingCache();
         return b;
     }
@@ -387,7 +402,7 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
             stackpointer = radius;
             for (y = 0; y < h; y++) {
                 // Preserve alpha channel: ( 0xff000000 & pix[yi] )
-                pix[yi] = ( 0xff000000 & pix[yi] ) | ( dv[rsum] << 16 ) | ( dv[gsum] << 8 ) | dv[bsum];
+                pix[yi] = (0xff000000 & pix[yi]) | (dv[rsum] << 16) | (dv[gsum] << 8) | dv[bsum];
 
                 rsum -= routsum;
                 gsum -= goutsum;
