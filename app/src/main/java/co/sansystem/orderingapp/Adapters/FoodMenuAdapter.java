@@ -35,16 +35,17 @@ import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 
 public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHolder> {
 
-    Context mContext;
-    OrderedItemModel data;
-    public static ArrayList<byte[]> mFoodsImages;
-    ArrayList<String> mFoodsNames;
-    View v;
-    ViewHolder mHolder;
-    FragmentManager mFragmentManager;
-    int mNumber, mHeight;
-    public static ArrayList<String> mFoodsCodes;
-    public static ArrayList<String> mFoodsPrices;
+    private final Context mContext;
+    private OrderedItemModel data;
+    private static ArrayList<byte[]> mFoodsImages;
+    private final ArrayList<String> mFoodsNames;
+    private View v;
+    private ViewHolder mHolder;
+    private final FragmentManager mFragmentManager;
+    private int mNumber;
+    private final int mHeight;
+    private static ArrayList<String> mFoodsCodes;
+    private static ArrayList<String> mFoodsPrices;
 
     public FoodMenuAdapter(Context context, ArrayList<byte[]> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, ArrayList<String> foodsCodes, ArrayList<String> foodsPrices, int height) {
         mContext = context;
@@ -57,11 +58,11 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tv;
-        public ImageView iv;
-        LinearLayout ll;
+        final TextView tv;
+        final ImageView iv;
+        final LinearLayout ll;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             tv = v.findViewById(R.id.food_item_textView);
             iv = v.findViewById(R.id.food_item_imageView);
@@ -164,7 +165,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
         });
     }
 
-    View.OnLongClickListener olclAddFavorite = new View.OnLongClickListener() {
+    private final View.OnLongClickListener olclAddFavorite = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View view) {
             SQLiteDatabase dbf = new MyDatabase(mContext).getWritableDatabase();
@@ -178,7 +179,7 @@ public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.ViewHo
         }
     };
 
-    View.OnLongClickListener olclRemoveFavorite = new View.OnLongClickListener() {
+    private final View.OnLongClickListener olclRemoveFavorite = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View view) {
             if (NavigationAdapter.isFavorite) {

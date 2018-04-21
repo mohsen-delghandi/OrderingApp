@@ -20,14 +20,14 @@ import java.util.Set;
 public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
 
     private Attributes.Mode mode = Attributes.Mode.Single;
-    public final int INVALID_POSITION = -1;
+    private final int INVALID_POSITION = -1;
 
-    protected int mOpenPosition = INVALID_POSITION;
+    private int mOpenPosition = INVALID_POSITION;
 
-    protected Set<Integer> mOpenPositions = new HashSet<Integer>();
-    protected Set<SwipeLayout> mShownLayouts = new HashSet<SwipeLayout>();
+    private final Set<Integer> mOpenPositions = new HashSet<>();
+    private final Set<SwipeLayout> mShownLayouts = new HashSet<>();
 
-    protected SwipeAdapterInterface swipeAdapterInterface;
+    private SwipeAdapterInterface swipeAdapterInterface;
 
     public SwipeItemMangerImpl(SwipeAdapterInterface swipeAdapterInterface) {
         if (swipeAdapterInterface == null)
@@ -118,7 +118,7 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
     @Override
     public List<Integer> getOpenItems() {
         if (mode == Attributes.Mode.Multiple) {
-            return new ArrayList<Integer>(mOpenPositions);
+            return new ArrayList<>(mOpenPositions);
         } else {
             return Collections.singletonList(mOpenPosition);
         }
@@ -126,7 +126,7 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
 
     @Override
     public List<SwipeLayout> getOpenLayouts() {
-        return new ArrayList<SwipeLayout>(mShownLayouts);
+        return new ArrayList<>(mShownLayouts);
     }
 
     @Override
@@ -139,8 +139,8 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
     }
 
     class ValueBox {
-        OnLayoutListener onLayoutListener;
-        SwipeMemory swipeMemory;
+        final OnLayoutListener onLayoutListener;
+        final SwipeMemory swipeMemory;
         int position;
 
         ValueBox(int position, SwipeMemory swipeMemory, OnLayoutListener onLayoutListener) {
@@ -158,7 +158,7 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
             this.position = position;
         }
 
-        public void setPosition(int position) {
+        void setPosition(int position) {
             this.position = position;
         }
 
@@ -207,7 +207,7 @@ public class SwipeItemMangerImpl implements SwipeItemMangerInterface {
             }
         }
 
-        public void setPosition(int position) {
+        void setPosition(int position) {
             this.position = position;
         }
     }

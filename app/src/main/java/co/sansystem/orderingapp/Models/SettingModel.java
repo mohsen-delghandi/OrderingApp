@@ -1,8 +1,5 @@
 package co.sansystem.orderingapp.Models;
 
-/**
- * Created by Mohsen on 2018-03-25.
- */
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

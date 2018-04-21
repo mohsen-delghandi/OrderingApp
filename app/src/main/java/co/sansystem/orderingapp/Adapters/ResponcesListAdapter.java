@@ -19,9 +19,9 @@ import java.util.ArrayList;
 
 public class ResponcesListAdapter extends RecyclerView.Adapter<ResponcesListAdapter.ViewHolder> {
 
-    Context mContext;
-    View v;
-    ArrayList<String> mResponces;
+    private final Context mContext;
+    private View v;
+    private final ArrayList<String> mResponces;
 
     public ResponcesListAdapter(Context context, ArrayList<String> responces) {
         mContext = context;
@@ -29,9 +29,9 @@ public class ResponcesListAdapter extends RecyclerView.Adapter<ResponcesListAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tv;
-        LinearLayout ll;
-        public ViewHolder(View v) {
+        final TextView tv;
+        final LinearLayout ll;
+        ViewHolder(View v) {
             super(v);
             tv = v.findViewById(R.id.responce_item_textView);
             ll = v.findViewById(R.id.linearLayout_responce_cardView);

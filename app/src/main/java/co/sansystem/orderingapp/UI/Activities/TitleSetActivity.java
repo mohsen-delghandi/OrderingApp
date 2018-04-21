@@ -22,10 +22,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class TitleSetActivity extends AppCompatActivity {
 
-    EditText et_title;
-    TextView btSave;
-    private ImageView ivHelp;
-    private ImageView ivBack;
+    private EditText et_title;
+    private TextView btSave;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -40,7 +38,7 @@ public class TitleSetActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.title_set_layout);
 
-        ivBack = (ImageView) findViewById(R.id.imageView_back);
+        ImageView ivBack = findViewById(R.id.imageView_back);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,7 +46,7 @@ public class TitleSetActivity extends AppCompatActivity {
             }
         });
 
-        ivHelp = (ImageView) findViewById(R.id.imageView_help);
+        ImageView ivHelp = findViewById(R.id.imageView_help);
         ivHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,9 +63,9 @@ public class TitleSetActivity extends AppCompatActivity {
         cursor.close();
         db.close();
 
-        btSave = (TextView) findViewById(R.id.textView_save);
+        btSave = findViewById(R.id.textView_save);
 
-        et_title = (EditText) findViewById(R.id.editText_title);
+        et_title = findViewById(R.id.editText_title);
         et_title.setText(title);
 
         btSave.setOnClickListener(new View.OnClickListener() {

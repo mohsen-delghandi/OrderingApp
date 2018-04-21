@@ -1,9 +1,6 @@
 package co.sansystem.orderingapp.Models;
 
-/**
- * Created by Mohsen on 2018-03-18.
- */
-        import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.Expose;
         import com.google.gson.annotations.SerializedName;
 
 public class UserModel {

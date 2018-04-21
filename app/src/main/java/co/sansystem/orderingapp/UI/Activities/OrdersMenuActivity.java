@@ -24,13 +24,10 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetView;
 import com.sansystem.orderingapp.R;
-
-import java.util.List;
 
 import co.sansystem.orderingapp.Adapters.FoodOrdersAdapter;
 import co.sansystem.orderingapp.Adapters.NavigationAdapter;
@@ -41,28 +38,24 @@ import co.sansystem.orderingapp.Utility.Utility.AppPreferenceTools;
 
 public class OrdersMenuActivity extends MainActivity {
 
-    RecyclerView mNavigationRecycler;
-    RecyclerView.LayoutManager mRecyclerManager;
-    RecyclerView.Adapter mRecyclerAdapter;
+    private RecyclerView mNavigationRecycler;
+    private RecyclerView.LayoutManager mRecyclerManager;
+    private RecyclerView.Adapter mRecyclerAdapter;
     public static LinearLayout ll;
     public static FrameLayout frOrders;
-    public static TextView tvTayid,tvTour;
+    public static TextView tvTayid;
+    private static TextView tvTour;
     public static LinearLayout linearLayout;
-    CustomDialogClass cdd;
-    AppPreferenceTools appPreferenceTools;
-    String costumerCode;
-    int h;
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+    private CustomDialogClass cdd;
+    private AppPreferenceTools appPreferenceTools;
+    private String costumerCode;
+    private int h;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setInflater(this, R.layout.orders_menu_layout);
-        frOrders = (FrameLayout) findViewById(R.id.frameLayout_order);
+        frOrders = findViewById(R.id.frameLayout_order);
         frOrders.setVisibility(View.GONE);
 
         tvTour = findViewById(R.id.textView_tour);
@@ -70,11 +63,11 @@ public class OrdersMenuActivity extends MainActivity {
         appPreferenceTools = new AppPreferenceTools(this);
         costumerCode = appPreferenceTools.getDefaultCostumerCode();
 
-        linearLayout = (LinearLayout) findViewById(R.id.linearLayout_happy);
+        linearLayout = findViewById(R.id.linearLayout_happy);
 
-        ll = (LinearLayout) findViewById(R.id.food_orders_fragment);
+        ll = findViewById(R.id.food_orders_fragment);
         ll.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 0));
-        tvTayid = (TextView) findViewById(R.id.textView_tayid);
+        tvTayid = findViewById(R.id.textView_tayid);
         tvTayid.setVisibility(View.GONE);
         tvTayid.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,7 +138,7 @@ public class OrdersMenuActivity extends MainActivity {
         fragmentTransaction.add(R.id.food_orders_fragment, foodOrdersFragment);
         fragmentTransaction.commit();
 
-        mNavigationRecycler = (RecyclerView) findViewById(R.id.nav_recyclerView);
+        mNavigationRecycler = findViewById(R.id.nav_recyclerView);
         mNavigationRecycler.setHasFixedSize(true);
         mNavigationRecycler.setNestedScrollingEnabled(false);
 
@@ -270,12 +263,4 @@ public class OrdersMenuActivity extends MainActivity {
         }
         return true;
     }
-
-    @Override
-    public void startVideo(VideoView videoView, List<String> videoAddressList, int i) {
-        if (cdd != null && cdd.isShowing()) cdd.dismiss();
-        super.startVideo(videoView, videoAddressList, i);
-    }
-
-
 }

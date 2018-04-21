@@ -48,10 +48,10 @@ import retrofit2.Response;
  */
 
 public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.ViewHolder> {
-    List<MiniFactorModel> mData;
-    private WebService mTService;
-    Context context;
-    AppPreferenceTools appPreferenceTools;
+    private List<MiniFactorModel> mData;
+    private final WebService mTService;
+    private Context context;
+    private AppPreferenceTools appPreferenceTools;
 
     public LastFactorsAdapter() {
 
@@ -63,7 +63,7 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
         this.mData = data;
     }
 
-    public void deleteAdapterData(final int position) {
+    private void deleteAdapterData(final int position) {
 
         final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(context);
         loadingDialogClass.show();
@@ -119,12 +119,16 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvFishNumber, tvTableNumber, tvCustomerName, tvFactorTime, mActionViewDelete;
-        public FrameLayout llMain;
-        View mActionContainer;
-        View mViewContent;
+        final TextView tvFishNumber;
+        final TextView tvTableNumber;
+        final TextView tvCustomerName;
+        final TextView tvFactorTime;
+        final TextView mActionViewDelete;
+        final FrameLayout llMain;
+        final View mActionContainer;
+        final View mViewContent;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             tvFishNumber = v.findViewById(R.id.textView_fishNumber);
             tvTableNumber = v.findViewById(R.id.textView_tableNumber);
@@ -175,7 +179,7 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
 //                        deleteFactorDialogClass.getWindow().setBackgroundDrawable(draw);
                         deleteFactorDialogClass.show();
                         Window window = deleteFactorDialogClass.getWindow();
-                        window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        window.setLayout(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         holder.tvFishNumber.setText(currentModel.get(position).getFish_Number());
                         deleteFactorDialogClass.tvFishNumber.setText(currentModel.get(position).getFish_Number());
                         deleteFactorDialogClass.tvCustomerName.setText(currentModel.get(position).getCustomer_Name());
@@ -507,7 +511,7 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
 
     class ItemViewHolderWithRecyclerWidth extends ViewHolder {
 
-        View mActionViewDelete;
+        final View mActionViewDelete;
 
         public ItemViewHolderWithRecyclerWidth(View itemView) {
             super(itemView);
@@ -518,9 +522,9 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
 
     class ItemSwipeWithActionWidthViewHolder extends ViewHolder implements Extension {
 
-        View mActionViewDelete;
+        final View mActionViewDelete;
 
-        public ItemSwipeWithActionWidthViewHolder(View itemView) {
+        ItemSwipeWithActionWidthViewHolder(View itemView) {
             super(itemView);
             mActionViewDelete = itemView.findViewById(R.id.view_list_repo_action_delete);
         }
@@ -533,7 +537,7 @@ public class LastFactorsAdapter extends RecyclerView.Adapter<LastFactorsAdapter.
 
     class ItemSwipeWithActionWidthNoSpringViewHolder extends ItemSwipeWithActionWidthViewHolder implements Extension {
 
-        public ItemSwipeWithActionWidthNoSpringViewHolder(View itemView) {
+        ItemSwipeWithActionWidthNoSpringViewHolder(View itemView) {
             super(itemView);
         }
 

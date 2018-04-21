@@ -41,12 +41,12 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LastFactorsActivity extends AppCompatActivity {
 
-    RecyclerView rvLastFactors;
-    LastFactorsAdapter lastFactorsAdapter;
-    private WebService mTService;
-    ImageView ivBack;
-    public ItemTouchHelperExtension mItemTouchHelper;
-    public ItemTouchHelperExtension.Callback mCallback;
+    private RecyclerView rvLastFactors;
+    private LastFactorsAdapter lastFactorsAdapter;
+    private WebService mTServiceFactor;
+    private ImageView ivBack;
+    private ItemTouchHelperExtension mItemTouchHelper;
+    private ItemTouchHelperExtension.Callback mCallback;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -60,7 +60,7 @@ public class LastFactorsActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.last_factors_layout);
 
-        ivBack = (ImageView) findViewById(R.id.imageView_nav_back);
+        ivBack = findViewById(R.id.imageView_nav_back);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,7 +68,7 @@ public class LastFactorsActivity extends AppCompatActivity {
             }
         });
 
-        rvLastFactors = (RecyclerView) findViewById(R.id.last_factors_recyclerView);
+        rvLastFactors = findViewById(R.id.last_factors_recyclerView);
         rvLastFactors.setHasFixedSize(true);
         rvLastFactors.setNestedScrollingEnabled(false);
         rvLastFactors.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL));
@@ -82,7 +82,7 @@ public class LastFactorsActivity extends AppCompatActivity {
         mItemTouchHelper.attachToRecyclerView(rvLastFactors);
 
         WebProvider provider = new WebProvider();
-        mTService = provider.getTService();
+        mTServiceFactor = provider.getTService();
 
         final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(this);
         loadingDialogClass.show();
@@ -90,13 +90,10 @@ public class LastFactorsActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-
-                Call<List<MiniFactorModel>> call = mTService.getLastFactors();
-                call.enqueue(new Callback<List<MiniFactorModel>>() {
-
+                Call<List<MiniFactorModel>> callFactor = mTServiceFactor.getLastFactors();
+                callFactor.enqueue(new Callback<List<MiniFactorModel>>() {
                     @Override
                     public void onResponse(Call<List<MiniFactorModel>> call, Response<List<MiniFactorModel>> response) {
-
                         if (response.isSuccessful()) {
                             if (response.body().size() == 0) {
                                 Toast.makeText(LastFactorsActivity.this, "تاریخچه ای موجود نیست.", Toast.LENGTH_SHORT).show();
@@ -107,29 +104,28 @@ public class LastFactorsActivity extends AppCompatActivity {
                                 loadingDialogClass.dismiss();
                             }
                         } else {
-                            SQLiteDatabase db2 = new MyDatabase(LastFactorsActivity.this).getWritableDatabase();
-                            ContentValues cv2 = new ContentValues();
+                            SQLiteDatabase dbError = new MyDatabase(LastFactorsActivity.this).getWritableDatabase();
+                            ContentValues cvError = new ContentValues();
                             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                             String myDate = format.format(new Date());
-                            cv2.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
-                            db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
-                            db2.close();
+                            cvError.put(MyDatabase.RESPONCE, myDate + " --> " + response.message());
+                            dbError.insert(MyDatabase.RESPONCES_TABLE, null, cvError);
+                            dbError.close();
                             Toast.makeText(LastFactorsActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                             loadingDialogClass.dismiss();
-
                             onBackPressed();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<MiniFactorModel>> call, Throwable t) {
-                        SQLiteDatabase db2 = new MyDatabase(LastFactorsActivity.this).getWritableDatabase();
-                        ContentValues cv2 = new ContentValues();
+                        SQLiteDatabase dbError = new MyDatabase(LastFactorsActivity.this).getWritableDatabase();
+                        ContentValues cvError = new ContentValues();
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
                         String myDate = format.format(new Date());
-                        cv2.put(MyDatabase.RESPONCE, myDate + " --> " + t.getMessage());
-                        db2.insert(MyDatabase.RESPONCES_TABLE, null, cv2);
-                        db2.close();
+                        cvError.put(MyDatabase.RESPONCE, myDate + " --> " + t.getMessage());
+                        dbError.insert(MyDatabase.RESPONCES_TABLE, null, cvError);
+                        dbError.close();
                         Toast.makeText(LastFactorsActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                         loadingDialogClass.dismiss();
 

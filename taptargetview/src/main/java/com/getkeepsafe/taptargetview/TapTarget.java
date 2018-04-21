@@ -1,18 +1,3 @@
-/**
- * Copyright 2016 Keepsafe Software, Inc.
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.getkeepsafe.taptargetview;
 
 import android.content.Context;
@@ -76,7 +61,7 @@ public class TapTarget {
 
   private int titleTextSize = 20;
   private int descriptionTextSize = 18;
-  int id = -1;
+  private int id = -1;
 
   boolean drawShadow = false;
   boolean cancelable = true;
@@ -97,8 +82,8 @@ public class TapTarget {
    * <p>
    * <b>Note:</b> This is currently experimental, use at your own risk
    */
-  public static TapTarget forToolbarOverflow(Toolbar toolbar, CharSequence title,
-                                                    @Nullable CharSequence description) {
+  private static TapTarget forToolbarOverflow(Toolbar toolbar, CharSequence title,
+                                              @Nullable CharSequence description) {
     return new ToolbarTapTarget(toolbar, false, title, description);
   }
 
@@ -114,8 +99,8 @@ public class TapTarget {
    * <p>
    * <b>Note:</b> This is currently experimental, use at your own risk
    */
-  public static TapTarget forToolbarOverflow(android.widget.Toolbar toolbar, CharSequence title,
-                                                    @Nullable CharSequence description) {
+  private static TapTarget forToolbarOverflow(android.widget.Toolbar toolbar, CharSequence title,
+                                              @Nullable CharSequence description) {
     return new ToolbarTapTarget(toolbar, false, title, description);
   }
 
@@ -125,8 +110,8 @@ public class TapTarget {
   }
 
   /** Return a tap target for the navigation button (back, up, etc) from the given toolbar **/
-  public static TapTarget forToolbarNavigationIcon(Toolbar toolbar, CharSequence title,
-                                                          @Nullable CharSequence description) {
+  private static TapTarget forToolbarNavigationIcon(Toolbar toolbar, CharSequence title,
+                                                    @Nullable CharSequence description) {
     return new ToolbarTapTarget(toolbar, true, title, description);
   }
 
@@ -136,8 +121,8 @@ public class TapTarget {
   }
 
   /** Return a tap target for the navigation button (back, up, etc) from the given toolbar **/
-  public static TapTarget forToolbarNavigationIcon(android.widget.Toolbar toolbar, CharSequence title,
-                                                   @Nullable CharSequence description) {
+  private static TapTarget forToolbarNavigationIcon(android.widget.Toolbar toolbar, CharSequence title,
+                                                    @Nullable CharSequence description) {
     return new ToolbarTapTarget(toolbar, true, title, description);
   }
 
@@ -148,8 +133,8 @@ public class TapTarget {
   }
 
   /** Return a tap target for the menu item from the given toolbar **/
-  public static TapTarget forToolbarMenuItem(Toolbar toolbar, @IdRes int menuItemId,
-                                             CharSequence title, @Nullable CharSequence description) {
+  private static TapTarget forToolbarMenuItem(Toolbar toolbar, @IdRes int menuItemId,
+                                              CharSequence title, @Nullable CharSequence description) {
     return new ToolbarTapTarget(toolbar, menuItemId, title, description);
   }
 
@@ -160,8 +145,8 @@ public class TapTarget {
   }
 
   /** Return a tap target for the menu item from the given toolbar **/
-  public static TapTarget forToolbarMenuItem(android.widget.Toolbar toolbar, @IdRes int menuItemId,
-                                                    CharSequence title, @Nullable CharSequence description) {
+  private static TapTarget forToolbarMenuItem(android.widget.Toolbar toolbar, @IdRes int menuItemId,
+                                              CharSequence title, @Nullable CharSequence description) {
     return new ToolbarTapTarget(toolbar, menuItemId, title, description);
   }
 
@@ -181,11 +166,11 @@ public class TapTarget {
   }
 
   /** Return a tap target for the specified bounds **/
-  public static TapTarget forBounds(Rect bounds, CharSequence title, @Nullable CharSequence description) {
+  private static TapTarget forBounds(Rect bounds, CharSequence title, @Nullable CharSequence description) {
     return new TapTarget(bounds, title, description);
   }
 
-  protected TapTarget(Rect bounds, CharSequence title, @Nullable CharSequence description) {
+  private TapTarget(Rect bounds, CharSequence title, @Nullable CharSequence description) {
     this(title, description);
     if (bounds == null) {
       throw new IllegalArgumentException("Cannot pass null bounds or title");
@@ -194,7 +179,7 @@ public class TapTarget {
     this.bounds = bounds;
   }
 
-  protected TapTarget(CharSequence title, @Nullable CharSequence description) {
+  TapTarget(CharSequence title, @Nullable CharSequence description) {
     if (title == null) {
       throw new IllegalArgumentException("Cannot pass null title");
     }
@@ -401,7 +386,7 @@ public class TapTarget {
    *                     be applied: <br/>
    *                      <code>(0, 0, intrinsic-width, intrinsic-height)</code>
    */
-  public TapTarget icon(Drawable icon, boolean hasSetBounds) {
+  private TapTarget icon(Drawable icon, boolean hasSetBounds) {
     if (icon == null) throw new IllegalArgumentException("Cannot use null drawable");
     this.icon = icon;
 

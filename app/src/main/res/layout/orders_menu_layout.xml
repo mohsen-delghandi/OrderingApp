@@ -76,7 +76,6 @@
 
             <ImageView
                 android:visibility="gone"
-                android:id="@+id/fab_toggle"
                 android:layout_width="@dimen/dimen_large"
                 android:layout_height="@dimen/dimen_xmedium"
                 android:layout_gravity="right"
@@ -91,7 +90,6 @@
             android:id="@+id/textView_tayid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:background="@color/primary"
             android:gravity="center"
             android:padding="@dimen/padding_large"

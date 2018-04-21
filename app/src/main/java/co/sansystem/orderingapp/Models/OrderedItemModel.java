@@ -5,10 +5,10 @@ package co.sansystem.orderingapp.Models;
  */
 
 public class OrderedItemModel {
-    public String mName;
+    public final String mName;
     public int mNumber;
-    public String  mPrice;
-    public String mCode;
+    private final String  mPrice;
+    private final String mCode;
     public String mExp;
 
     public OrderedItemModel(String name, int number, String code, String price, String exp) {

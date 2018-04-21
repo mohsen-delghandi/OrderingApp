@@ -163,7 +163,6 @@
                 android:id="@+id/textView_connect"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_large"
-                android:layout_alignParentRight="true"
                 android:background="@drawable/border_shape_solid_gray3_radius"
                 android:gravity="center"
                 android:layout_gravity="left"
@@ -204,7 +203,6 @@
                 android:id="@+id/textView_update"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_large"
-                android:layout_alignParentRight="true"
                 android:background="@drawable/border_shape_solid_gray3_radius"
                 android:gravity="center"
                 android:layout_gravity="left"
@@ -259,7 +257,6 @@
                 android:id="@+id/textView_save"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_large"
-                android:layout_alignParentRight="true"
                 android:background="@drawable/border_shape_solid_gray3_radius"
                 android:gravity="center"
                 android:layout_gravity="left"
@@ -279,7 +276,6 @@
                 android:layout_marginTop="@dimen/padding_large"/>
 
             <TextView
-                android:id="@+id/textView_costumer_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/padding_spinner"
@@ -367,7 +363,6 @@
                 android:id="@+id/textView_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_large"
-                android:layout_alignParentRight="true"
                 android:background="@drawable/border_shape_solid_gray3_radius"
                 android:gravity="center"
                 android:layout_gravity="left"

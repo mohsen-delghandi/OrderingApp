@@ -6,9 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
-import android.provider.MediaStore;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -23,13 +21,7 @@ import android.widget.TextView;
 
 import com.sansystem.orderingapp.R;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 import co.sansystem.orderingapp.UI.Activities.OrdersMenuActivity;
 import co.sansystem.orderingapp.UI.Fragments.FoodMenuFragment;
@@ -40,15 +32,15 @@ import co.sansystem.orderingapp.UI.Fragments.FoodMenuFragment;
 
 public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.ViewHolder> {
 
-    static Context mContext;
-    int mWidth;
-    static int mHeight;
-    ArrayList<byte[]> mFoodsCategoryImages;
-    ArrayList<String> mFoodsCategoryNames;
-    ArrayList<String> mFoodsCategoryCodes;
-    View v;
-    static FragmentManager mFragmentManager;
-    static DrawerLayout mDrawer;
+    private static Context mContext;
+    private final int mWidth;
+    private static int mHeight;
+    private final ArrayList<byte[]> mFoodsCategoryImages;
+    private final ArrayList<String> mFoodsCategoryNames;
+    private final ArrayList<String> mFoodsCategoryCodes;
+    private View v;
+    private static FragmentManager mFragmentManager;
+    private static DrawerLayout mDrawer;
     public static boolean isFavorite;
 
     public NavigationAdapter(Context context, int width, ArrayList<byte[]> foodsImages, ArrayList<String> foodsNames, FragmentManager fragmentManager, DrawerLayout drawer, ArrayList<String> foodCategoryCodes, int height) {
@@ -63,11 +55,11 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tv;
-        public ImageView iv;
-        LinearLayout llMain;
+        final TextView tv;
+        final ImageView iv;
+        final LinearLayout llMain;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             tv = v.findViewById(R.id.nav_textView);
             iv = v.findViewById(R.id.nav_imageView);
@@ -191,29 +183,5 @@ public class NavigationAdapter extends RecyclerView.Adapter<NavigationAdapter.Vi
     @Override
     public int getItemCount() {
         return mFoodsCategoryImages.size() + 1;
-    }
-
-    public File createImageFile() {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File mFileTemp = null;
-        String root = mContext.getDir("my_sub_dir", Context.MODE_PRIVATE).getAbsolutePath();
-        File myDir = new File(root + "/Img");
-        if (!myDir.exists()) {
-            myDir.mkdirs();
-        }
-        try {
-            mFileTemp = File.createTempFile(imageFileName, ".jpg", myDir.getAbsoluteFile());
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return mFileTemp;
-    }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
     }
 }

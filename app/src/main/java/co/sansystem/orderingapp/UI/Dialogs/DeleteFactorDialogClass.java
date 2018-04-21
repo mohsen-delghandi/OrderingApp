@@ -20,9 +20,9 @@ import com.sansystem.orderingapp.R;
 public class DeleteFactorDialogClass extends Dialog  {
 
     public TextView tvFishNumber, tvTableNumber, tvCustomerName, tvFactorTime, tvOk;
-    public FrameLayout llMain;
+    private FrameLayout llMain;
     public ImageView tvNo;
-    Context context;
+    private final Context context;
 
     public DeleteFactorDialogClass(Context context) {
         super(context);
@@ -52,10 +52,5 @@ public class DeleteFactorDialogClass extends Dialog  {
             InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view2.getWindowToken(), 0);
         }
-    }
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
     }
 }

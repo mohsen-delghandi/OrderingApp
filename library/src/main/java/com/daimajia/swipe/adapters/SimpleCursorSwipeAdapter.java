@@ -16,7 +16,7 @@ import java.util.List;
 
 public abstract class SimpleCursorSwipeAdapter extends SimpleCursorAdapter implements SwipeItemMangerInterface, SwipeAdapterInterface {
 
-    private SwipeItemMangerImpl mItemManger = new SwipeItemMangerImpl(this);
+    private final SwipeItemMangerImpl mItemManger = new SwipeItemMangerImpl(this);
 
     protected SimpleCursorSwipeAdapter(Context context, int layout, Cursor c, String[] from, int[] to, int flags) {
         super(context, layout, c, from, to, flags);

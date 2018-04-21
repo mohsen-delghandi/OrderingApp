@@ -12,9 +12,9 @@ import com.sansystem.orderingapp.R;
  */
 public class AppPreferenceTools {
 
-    private SharedPreferences mPreference;
-    private Context mContext;
-    public static final String STRING_PREF_UNAVAILABLE = "string preference unavailable";
+    private final SharedPreferences mPreference;
+    private final Context mContext;
+    private static final String STRING_PREF_UNAVAILABLE = "string preference unavailable";
 
     public AppPreferenceTools(Context context) {
         this.mContext = context;

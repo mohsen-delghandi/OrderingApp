@@ -16,7 +16,7 @@ import android.util.Log;
  * Created by Mohsen on 2017-10-05.
  */
 
-public class PermissionHandler {
+class PermissionHandler {
 
 
     private BroadcastReceiver permissionReceiver;
@@ -66,7 +66,7 @@ public class PermissionHandler {
         }
     }
 
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    private void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
             listener.onPermissionGranted();
         }else {
@@ -74,7 +74,7 @@ public class PermissionHandler {
         }
     }
 
-    public interface OnPermissionResponse{
+    interface OnPermissionResponse{
         void onPermissionGranted();
         void onPermissionDenied();
     }

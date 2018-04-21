@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -19,10 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.getkeepsafe.taptargetview.TapTarget;
-import com.getkeepsafe.taptargetview.TapTargetView;
 import com.google.gson.Gson;
 import com.sansystem.orderingapp.R;
 
@@ -42,14 +38,12 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class OrderInfoActivity extends AppCompatActivity {
 
-    Spinner spCostumerCode;
-    Spinner spVaziatSefaresh;
-    TextView btOK;
-    WebService mTService;
-    CheckBox checkBox;
-    AppPreferenceTools appPreferenceTools;
-    private ImageView ivHelp;
-    private ImageView ivBack;
+    private Spinner spCostumerCode;
+    private Spinner spVaziatSefaresh;
+    private TextView btOK;
+    private WebService mTService;
+    private CheckBox checkBox;
+    private AppPreferenceTools appPreferenceTools;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -64,7 +58,7 @@ public class OrderInfoActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.order_info_layout);
 
-        ivBack = (ImageView) findViewById(R.id.imageView_back);
+        ImageView ivBack = findViewById(R.id.imageView_back);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,7 +67,7 @@ public class OrderInfoActivity extends AppCompatActivity {
         });
 
 
-        ivHelp = (ImageView) findViewById(R.id.imageView_help);
+        ImageView ivHelp = findViewById(R.id.imageView_help);
         ivHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,10 +79,10 @@ public class OrderInfoActivity extends AppCompatActivity {
 
         appPreferenceTools = new AppPreferenceTools(this);
 
-        spCostumerCode = (Spinner) findViewById(R.id.spinner_default_costumer);
-        spVaziatSefaresh = (Spinner) findViewById(R.id.spinner_vaziat_sefaresh);
-        checkBox = (CheckBox) findViewById(R.id.checkbox_print);
-        btOK = (TextView) findViewById(R.id.textView_ok);
+        spCostumerCode = findViewById(R.id.spinner_default_costumer);
+        spVaziatSefaresh = findViewById(R.id.spinner_vaziat_sefaresh);
+        checkBox = findViewById(R.id.checkbox_print);
+        btOK = findViewById(R.id.textView_ok);
 
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -123,8 +117,8 @@ public class OrderInfoActivity extends AppCompatActivity {
                             db.insert(MyDatabase.CONTACTS_INFORMATION,null,contentValues);
                             db.close();
 
-                            final ArrayList<String> costumerNames = new ArrayList<String>();
-                            final ArrayList<String> costumerCodes = new ArrayList<String>();
+                            final ArrayList<String> costumerNames = new ArrayList<>();
+                            final ArrayList<String> costumerCodes = new ArrayList<>();
 
                             for (ContactModel contactModel :
                                     response.body()) {
@@ -133,7 +127,7 @@ public class OrderInfoActivity extends AppCompatActivity {
                             }
 
                             ArrayAdapter<String> adapter =
-                                    new ArrayAdapter<String>(OrderInfoActivity.this, android.R.layout.simple_spinner_item, costumerNames.toArray(new String[costumerNames.size()]));
+                                    new ArrayAdapter<>(OrderInfoActivity.this, android.R.layout.simple_spinner_item, costumerNames.toArray(new String[costumerNames.size()]));
                             spCostumerCode.setAdapter(adapter);
                             loadingDialogClass.dismiss();
 
@@ -178,7 +172,7 @@ public class OrderInfoActivity extends AppCompatActivity {
 
 
         ArrayAdapter<String> adapterVaziatSefaresh =
-                new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.vaziat_sefaresh));
+                new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.vaziat_sefaresh));
         spVaziatSefaresh.setAdapter(adapterVaziatSefaresh);
 
         spVaziatSefaresh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

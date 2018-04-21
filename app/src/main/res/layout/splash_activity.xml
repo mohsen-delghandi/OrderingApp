@@ -28,7 +28,6 @@
         android:visibility="gone">
 
         <ImageView
-            android:id="@+id/imageView_update"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dimen_large"
             android:layout_gravity="bottom|center_horizontal"
@@ -42,8 +41,6 @@
             android:id="@+id/textView_update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/linearLayout_logo"
-            android:layout_centerHorizontal="true"
             android:gravity="center"
             android:paddingBottom="@dimen/padding_large"
             android:paddingLeft="@dimen/padding_large"
@@ -65,8 +62,6 @@
                 android:id="@+id/textView_bt_update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerInParent="true"
                 android:background="@drawable/border_shape_primary"
                 android:gravity="center"
                 android:padding="@dimen/padding_medium"
@@ -81,9 +76,6 @@
                 android:id="@+id/textView_bt_no_update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/textView_bt_update"
-                android:layout_centerInParent="true"
                 android:layout_marginTop="@dimen/padding_xlarge"
                 android:background="@drawable/border_shape_primary_light"
                 android:gravity="center"
@@ -235,7 +227,6 @@
                 android:id="@+id/textView_connect"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dimen_large"
-                android:layout_alignParentRight="true"
                 android:layout_gravity="left"
                 android:layout_marginLeft="@dimen/padding_spinner"
                 android:background="@drawable/border_shape_solid_gray3_radius"

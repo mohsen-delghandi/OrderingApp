@@ -14,7 +14,7 @@ import java.util.List;
 
 public abstract class BaseSwipeAdapter extends BaseAdapter implements SwipeItemMangerInterface, SwipeAdapterInterface {
 
-    protected SwipeItemMangerImpl mItemManger = new SwipeItemMangerImpl(this);
+    private final SwipeItemMangerImpl mItemManger = new SwipeItemMangerImpl(this);
 
     /**
      * return the {@link com.daimajia.swipe.SwipeLayout} resource id, int the view item.

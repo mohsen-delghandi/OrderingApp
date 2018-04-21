@@ -29,13 +29,14 @@ import co.sansystem.orderingapp.UI.Dialogs.ExpDialogClass;
 
 public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.ViewHolder> {
 
-    Context mContext;
+    private final Context mContext;
     public static List<OrderedItemModel> mList = new ArrayList<>();
-    RecyclerView mRvv;
-    LinearLayoutManager mRvlm;
-    ViewHolder mHolder;
-    int mPosition, mHeight;
-    List<String> exps;
+    private final RecyclerView mRvv;
+    private final LinearLayoutManager mRvlm;
+    private ViewHolder mHolder;
+    private int mPosition;
+    private final int mHeight;
+    private final List<String> exps;
 
 
     public FoodOrdersAdapter(Context context, List<OrderedItemModel> list, RecyclerView rvv, LinearLayoutManager rvlm, int height) {
@@ -49,11 +50,14 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tv, tv2;
-        public CardView cv;
-        public ImageView ivRemove, ivPlus, ivMinus;
+        final TextView tv;
+        final TextView tv2;
+        final CardView cv;
+        final ImageView ivRemove;
+        final ImageView ivPlus;
+        final ImageView ivMinus;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             tv = v.findViewById(R.id.food_order_item_name);
             tv2 = v.findViewById(R.id.food_order_item_tedad);
@@ -134,7 +138,8 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
                 mList.get(position).mNumber -= 1;
                 if (mList.get(position).mNumber == 0) {
                     removeItem(position);
-                }try {
+                }
+                try {
                     Thread.sleep(650);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -159,15 +164,15 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
     }
 
 
-    public void removeItem(int position) {
+    private void removeItem(int position) {
         if (mList.size() > 0) {
-            mList.remove(position);
-            exps.remove(position);
             try {
-                Thread.sleep(650);
-            } catch (InterruptedException e) {
+                mList.remove(position);
+                exps.remove(position);
+            } catch (IndexOutOfBoundsException e) {
                 e.printStackTrace();
             }
+
         }
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, mList.size());
@@ -175,7 +180,7 @@ public class FoodOrdersAdapter extends RecyclerView.Adapter<FoodOrdersAdapter.Vi
         if (mList.size() == 0) {
 
             mContext.startActivity(new Intent(mContext, OrdersMenuActivity.class));
-            ((Activity)mContext).finish();
+            ((Activity) mContext).finish();
         }
     }
 }

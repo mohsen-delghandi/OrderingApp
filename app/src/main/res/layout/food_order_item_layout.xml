@@ -19,7 +19,7 @@
             android:layout_width="@dimen/dimen_large"
             android:layout_height="@dimen/dimen_large"
             android:background="@drawable/shape_border_red_solid"
-            android:padding="@dimen/padding_large"
+            android:padding="@dimen/padding_small"
             android:src="@drawable/icon_remove" />
 
         <TextView
@@ -42,7 +42,7 @@
             android:id="@+id/food_order_item_plus"
             android:layout_width="@dimen/dimen_large"
             android:layout_height="@dimen/dimen_large"
-            android:padding="@dimen/padding_large"
+            android:padding="@dimen/padding_small"
             android:src="@drawable/icon_plus" />
 
         <TextView
@@ -71,7 +71,7 @@
             android:id="@+id/food_order_item_minus"
             android:layout_width="@dimen/dimen_large"
             android:layout_height="@dimen/dimen_large"
-            android:padding="@dimen/padding_large"
+            android:padding="@dimen/padding_small"
             android:src="@drawable/icon_minus" />
 
     </LinearLayout>

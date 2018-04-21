@@ -16,7 +16,6 @@
             android:id="@+id/responce_item_textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/food_item_imageView"
             android:paddingBottom="@dimen/padding_bit"
             android:paddingTop="@dimen/padding_bit"
             android:gravity="center"

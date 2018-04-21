@@ -36,14 +36,15 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class UpdateActivity extends AppCompatActivity {
 
-    WebService mTService5;
-    WebService mTService2;
-    WebService mTService3;
-    WebService mTService4;
-    AppPreferenceTools appPreferenceTools;
-    public ProgressBar progressBar;
-    ProgressBar progressBar2;
-    TextView tvUpdate, tvOk;
+    private WebService mTService5;
+    private WebService mTService2;
+    private WebService mTService3;
+    private WebService mTService4;
+    private AppPreferenceTools appPreferenceTools;
+    private ProgressBar progressBar;
+    private ProgressBar progressBar2;
+    private TextView tvUpdate;
+    private TextView tvOk;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -58,10 +59,10 @@ public class UpdateActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.update_layout);
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar_update);
-        progressBar2 = (ProgressBar) findViewById(R.id.progressBar2);
-        tvUpdate = (TextView) findViewById(R.id.textView_update);
-        tvOk = (TextView) findViewById(R.id.textView_update_ok);
+        progressBar = findViewById(R.id.progressBar_update);
+        progressBar2 = findViewById(R.id.progressBar2);
+        tvUpdate = findViewById(R.id.textView_update);
+        tvOk = findViewById(R.id.textView_update_ok);
 
         WebProvider provider = new WebProvider();
         mTService5 = provider.getTService();
@@ -90,7 +91,7 @@ public class UpdateActivity extends AppCompatActivity {
         updateMenu(this);
     }
 
-    public void blink() {
+    private void blink() {
         tvUpdate.animate().alpha(0).setDuration(1000).start();
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -108,7 +109,7 @@ public class UpdateActivity extends AppCompatActivity {
         }, 1000);
     }
 
-    public void updateMenu(final Context context) {
+    private void updateMenu(final Context context) {
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -273,10 +274,7 @@ public class UpdateActivity extends AppCompatActivity {
 
 //                                                                loadingDialogClass.dismiss();
 
-                                                            } else {
-//                                                                loadingDialogClass.dismiss();
                                                             }
-//                                                            loadingDialogClass.dismiss();
                                                         }
 
                                                         @Override
@@ -285,9 +283,7 @@ public class UpdateActivity extends AppCompatActivity {
 //                                                            loadingDialogClass.dismiss();
                                                         }
                                                     });
-                                                } else {
                                                 }
-
                                             }
 
                                             @Override

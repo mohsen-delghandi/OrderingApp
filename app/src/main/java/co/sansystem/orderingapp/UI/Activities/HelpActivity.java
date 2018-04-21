@@ -20,14 +20,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class HelpActivity extends AppCompatActivity {
 
-    ImageView ivBack;
-    Intent intent;
+    private ImageView ivBack;
+    private Intent intent;
 
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +47,7 @@ public class HelpActivity extends AppCompatActivity {
         if (intent.getStringExtra("number").equals("4"))
             setContentView(R.layout.help_login_layout);
 
-        ivBack = (ImageView) findViewById(R.id.imageView_nav_back);
+        ivBack = findViewById(R.id.imageView_nav_back);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

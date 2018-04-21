@@ -40,10 +40,4 @@ public class LoadingDialogClass extends Dialog {
         lp.y = 0;
         window.setAttributes(lp);
     }
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
-    }
-
 }

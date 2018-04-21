@@ -45,14 +45,16 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class OfflineFactorsActivity extends AppCompatActivity {
 
-    RecyclerView rvOfflineFactors;
-    OfflineFactorsAdapter offlineFactorsAdapter;
-    ImageView ivBack, ivAll;
-    public ItemTouchHelperExtension mItemTouchHelper;
-    public ItemTouchHelperExtension.Callback mCallback;
-    WebService mTService, mTService2;
-    List<FactorModel> offlineFactors = null;
-    List<String> offlineFactorsIDs = null;
+    private RecyclerView rvOfflineFactors;
+    private OfflineFactorsAdapter offlineFactorsAdapter;
+    private ImageView ivBack;
+    private ImageView ivAll;
+    private ItemTouchHelperExtension mItemTouchHelper;
+    private ItemTouchHelperExtension.Callback mCallback;
+    private WebService mTService;
+    private WebService mTService2;
+    private List<FactorModel> offlineFactors = null;
+    private List<String> offlineFactorsIDs = null;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -66,8 +68,8 @@ public class OfflineFactorsActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.offline_factors_layout);
 
-        ivAll = (ImageView) findViewById(R.id.imageView_update_all);
-        ivBack = (ImageView) findViewById(R.id.imageView_nav_back);
+        ivAll = findViewById(R.id.imageView_update_all);
+        ivBack = findViewById(R.id.imageView_nav_back);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +77,7 @@ public class OfflineFactorsActivity extends AppCompatActivity {
             }
         });
 
-        rvOfflineFactors = (RecyclerView) findViewById(R.id.offline_factors_recyclerView);
+        rvOfflineFactors = findViewById(R.id.offline_factors_recyclerView);
         rvOfflineFactors.setHasFixedSize(true);
         rvOfflineFactors.setNestedScrollingEnabled(false);
         rvOfflineFactors.setLayoutManager(new LinearLayoutManager(this));
@@ -95,8 +97,8 @@ public class OfflineFactorsActivity extends AppCompatActivity {
         final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(this);
         loadingDialogClass.show();
 
-        SQLiteDatabase db = new MyDatabase(this).getReadableDatabase();
-        Cursor cursor = db.query(MyDatabase.OFFLINE_FACTORS_TABLE, new String[]{MyDatabase.FACTOR_JSON, MyDatabase.ID}, null, null, null, null, null, null);
+        SQLiteDatabase dbFactor = new MyDatabase(this).getReadableDatabase();
+        Cursor cursor = dbFactor.query(MyDatabase.OFFLINE_FACTORS_TABLE, new String[]{MyDatabase.FACTOR_JSON, MyDatabase.ID}, null, null, null, null, null, null);
 
         if (cursor.moveToFirst()) {
             offlineFactors = new ArrayList<>();
@@ -120,7 +122,8 @@ public class OfflineFactorsActivity extends AppCompatActivity {
             Toast.makeText(this, "فیش آفلاین موجود نیست.", Toast.LENGTH_SHORT).show();
             finish();
         }
-
+        cursor.close();
+        dbFactor.close();
 
 
         ivAll.setOnClickListener(new View.OnClickListener() {
@@ -130,8 +133,8 @@ public class OfflineFactorsActivity extends AppCompatActivity {
                 final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(OfflineFactorsActivity.this);
                 loadingDialogClass.show();
 
-                SQLiteDatabase db = new MyDatabase(OfflineFactorsActivity.this).getReadableDatabase();
-                Cursor cursor = db.query(MyDatabase.OFFLINE_FACTORS_TABLE, new String[]{MyDatabase.FACTOR_JSON, MyDatabase.ID}, null, null, null, null, null, null);
+                SQLiteDatabase dbFactor = new MyDatabase(OfflineFactorsActivity.this).getReadableDatabase();
+                Cursor cursor = dbFactor.query(MyDatabase.OFFLINE_FACTORS_TABLE, new String[]{MyDatabase.FACTOR_JSON, MyDatabase.ID}, null, null, null, null, null, null);
 
                 if (cursor.moveToFirst()) {
                     offlineFactors = new ArrayList<>();
@@ -205,6 +208,9 @@ public class OfflineFactorsActivity extends AppCompatActivity {
                     }, 1234);
                     i++;
                 }
+                cursor.close();
+                dbFactor.close();
+
                 loadingDialogClass.dismiss();
                 startActivity(getIntent());
                 finish();

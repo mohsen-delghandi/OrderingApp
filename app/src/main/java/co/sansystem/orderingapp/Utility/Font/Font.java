@@ -25,7 +25,6 @@ public class Font extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/IRANSansWeb_Light.ttf")
                 .setFontAttrId(R.attr.fontPath)

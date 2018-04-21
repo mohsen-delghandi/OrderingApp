@@ -26,19 +26,20 @@ import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 
 public class FoodMenuFragment extends Fragment {
 
-    RecyclerView rvv;
-    RecyclerView.LayoutManager rvlm;
-    RecyclerView.Adapter rva;
-    Context mContext;
-    FragmentManager mFragmentManager;
-    int mFoodsCategoryCode,mHeight;
-    public static boolean isFavoriteEmpty = true;
+    private RecyclerView rvv;
+    private RecyclerView.LayoutManager rvlm;
+    private RecyclerView.Adapter rva;
+    private Context mContext;
+    private FragmentManager mFragmentManager;
+    private int mFoodsCategoryCode;
+    private int mHeight;
+    private static boolean isFavoriteEmpty = true;
 
     public FoodMenuFragment(Context context, FragmentManager fragmentManager, String foodsCategoryCode,int height) {
         mContext = context;
         mFragmentManager = fragmentManager;
         mHeight = height;
-        if(foodsCategoryCode.toString().trim().equals("favorites")){
+        if(foodsCategoryCode.trim().equals("favorites")){
             mFoodsCategoryCode = -1;
         }else{
             mFoodsCategoryCode = Integer.parseInt(foodsCategoryCode);

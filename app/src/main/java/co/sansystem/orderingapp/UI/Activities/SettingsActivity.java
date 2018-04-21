@@ -58,29 +58,36 @@ import retrofit2.Response;
 public class SettingsActivity extends MainActivity {
 
 
-    TextView btSave, btConnect, btOk, btUpdate;
-    EditText et_title;
-    EditText etIP1, etIP2, etIP3, etIP4;
-    String ip, status = null;
-    CheckBox checkBox;
-    int vaziatSefaresh;
+    private TextView btSave;
+    private TextView btConnect;
+    private TextView btOk;
+    private TextView btUpdate;
+    private EditText et_title;
+    private EditText etIP1;
+    private EditText etIP2;
+    private EditText etIP3;
+    private EditText etIP4;
+    private String ip;
+    private String status = null;
+    private CheckBox checkBox;
+    private int vaziatSefaresh;
 
     public static String json = null, json2 = null;
     public static JSONArray jsonArray, jsonArray2;
     //    public static long id, id2;
-    public static boolean isUpdated;
-    public boolean isSettingsUpdate = false;
-    Spinner spCostumerCode;
-    Spinner spVaziatSefaresh;
-    Intent intent;
+    private static boolean isUpdated;
+    private boolean isSettingsUpdate = false;
+    private Spinner spCostumerCode;
+    private Spinner spVaziatSefaresh;
+    private Intent intent;
     private WebService mTService;
     private WebService mTService2;
     private WebService mTService3;
     private WebService mTService4;
-    AppPreferenceTools appPreferenceTools;
+    private AppPreferenceTools appPreferenceTools;
     private String costumerCode;
 
-    ImageView ivBack;
+    private ImageView ivBack;
 
     public SettingsActivity() {
     }
@@ -98,7 +105,7 @@ public class SettingsActivity extends MainActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.settings_layout);
 
-        ivBack = (ImageView) findViewById(R.id.imageView_nav_back);
+        ivBack = findViewById(R.id.imageView_nav_back);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,10 +113,10 @@ public class SettingsActivity extends MainActivity {
             }
         });
 
-        btSave = (TextView) findViewById(R.id.textView_save);
-        btConnect = (TextView) findViewById(R.id.textView_connect);
-        btOk = (TextView) findViewById(R.id.textView_ok);
-        btUpdate = (TextView) findViewById(R.id.textView_update);
+        btSave = findViewById(R.id.textView_save);
+        btConnect = findViewById(R.id.textView_connect);
+        btOk = findViewById(R.id.textView_ok);
+        btUpdate = findViewById(R.id.textView_update);
 
         appPreferenceTools = new AppPreferenceTools(this);
 
@@ -139,16 +146,14 @@ public class SettingsActivity extends MainActivity {
         }
 
         if (status != null && status.equals("fromSplash")) {
-//            tvTitlebar.setText("تنظیمات اولین ورود به برنامه");
         } else {
-//            tvTitlebar.setText(title + " - " + "تنظیمات");
             toggle.setDrawerIndicatorEnabled(false);
             toggle.setHomeAsUpIndicator(R.drawable.icon_back);
         }
-        spCostumerCode = (Spinner) findViewById(R.id.spinner_default_costumer);
-        spVaziatSefaresh = (Spinner) findViewById(R.id.spinner_vaziat_sefaresh);
+        spCostumerCode = findViewById(R.id.spinner_default_costumer);
+        spVaziatSefaresh = findViewById(R.id.spinner_vaziat_sefaresh);
 
-        checkBox = (CheckBox) findViewById(R.id.checkbox_print);
+        checkBox = findViewById(R.id.checkbox_print);
         final AppPreferenceTools appPreferenceTools = new AppPreferenceTools(this);
         checkBox.setChecked(appPreferenceTools.getprintAfterConfirm());
 
@@ -160,13 +165,13 @@ public class SettingsActivity extends MainActivity {
         });
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        etIP1 = (EditText) findViewById(R.id.editText_ip_1);
-        etIP2 = (EditText) findViewById(R.id.editText_ip_2);
-        etIP3 = (EditText) findViewById(R.id.editText_ip_3);
-        etIP4 = (EditText) findViewById(R.id.editText_ip_4);
+        etIP1 = findViewById(R.id.editText_ip_1);
+        etIP2 = findViewById(R.id.editText_ip_2);
+        etIP3 = findViewById(R.id.editText_ip_3);
+        etIP4 = findViewById(R.id.editText_ip_4);
 
         ArrayAdapter<String> adapterVaziatSefaresh =
-                new ArrayAdapter<String>(SettingsActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.vaziat_sefaresh));
+                new ArrayAdapter<>(SettingsActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.vaziat_sefaresh));
         spVaziatSefaresh.setAdapter(adapterVaziatSefaresh);
 
         spVaziatSefaresh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -191,7 +196,7 @@ public class SettingsActivity extends MainActivity {
             spVaziatSefaresh.setSelection(0);
         }
 
-        if(SplashActivity.tourNumber == 5) {
+        if (SplashActivity.tourNumber == 5) {
             SplashActivity.tourNumber++;
             TapTargetView.showFor(SettingsActivity.this,                 // `this` is an Activity
                     TapTarget.forView(btUpdate, "به روز رسانی لیست غذایی", "با لمس اینجا لیست غذایی با سرور همگام می شود.")
@@ -237,8 +242,8 @@ public class SettingsActivity extends MainActivity {
                     db.insert(MyDatabase.CONTACTS_INFORMATION, null, contentValues);
                     db.close();
 
-                    final ArrayList<String> costumerNames = new ArrayList<String>();
-                    final ArrayList<String> costumerCodes = new ArrayList<String>();
+                    final ArrayList<String> costumerNames = new ArrayList<>();
+                    final ArrayList<String> costumerCodes = new ArrayList<>();
 
                     for (ContactModel contactModel :
                             response.body()) {
@@ -248,7 +253,7 @@ public class SettingsActivity extends MainActivity {
 
 
                     ArrayAdapter<String> adapter =
-                            new ArrayAdapter<String>(SettingsActivity.this, android.R.layout.simple_spinner_item, costumerNames.toArray(new String[costumerNames.size()]));
+                            new ArrayAdapter<>(SettingsActivity.this, android.R.layout.simple_spinner_item, costumerNames.toArray(new String[costumerNames.size()]));
                     spCostumerCode.setAdapter(adapter);
 
 
@@ -276,8 +281,6 @@ public class SettingsActivity extends MainActivity {
                             });
                         }
                     }
-
-                } else {
 
                 }
             }
@@ -385,7 +388,7 @@ public class SettingsActivity extends MainActivity {
 
         }
 
-        et_title = (EditText) findViewById(R.id.editText_title);
+        et_title = findViewById(R.id.editText_title);
         et_title.setText(title);
 
         btConnect.setOnClickListener(new View.OnClickListener() {
@@ -437,23 +440,23 @@ public class SettingsActivity extends MainActivity {
             }
         });
 
-        TextView tvResponces = (TextView) findViewById(R.id.textView_responces);
+        TextView tvResponces = findViewById(R.id.textView_responces);
         tvResponces.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SQLiteDatabase db3 = new MyDatabase(SettingsActivity.this).getReadableDatabase();
-                Cursor ccc = db3.query(MyDatabase.RESPONCES_TABLE, new String[]{MyDatabase.ID, MyDatabase.RESPONCE}, null, null, null, null, null, null);
+                SQLiteDatabase dbResponce = new MyDatabase(SettingsActivity.this).getReadableDatabase();
+                Cursor cursorResponce = dbResponce.query(MyDatabase.RESPONCES_TABLE, new String[]{MyDatabase.ID, MyDatabase.RESPONCE}, null, null, null, null, null, null);
                 ArrayList<String> responces = new ArrayList<>();
-                if (ccc.moveToFirst()) {
+                if (cursorResponce.moveToFirst()) {
                     do {
-                        responces.add(ccc.getInt(0) + " --- " + ccc.getString(1));
-                    } while (ccc.moveToNext());
+                        responces.add(cursorResponce.getInt(0) + " --- " + cursorResponce.getString(1));
+                    } while (cursorResponce.moveToNext());
                 } else {
                     responces = null;
                 }
 
                 if (responces != null) {
-                    final RecyclerView rvResponces = (RecyclerView) findViewById(R.id.responces_recyclerView);
+                    final RecyclerView rvResponces = findViewById(R.id.responces_recyclerView);
 
                     ivTitlebar.setVisibility(View.VISIBLE);
                     ivTitlebar.setImageResource(R.drawable.image_delete);
@@ -478,13 +481,15 @@ public class SettingsActivity extends MainActivity {
                 } else {
                     Toast.makeText(SettingsActivity.this, "تاریخچه ای موجود نیست.", Toast.LENGTH_SHORT).show();
                 }
+                cursorResponce.close();
+                dbResponce.close();
             }
         });
 
 
     }
 
-    public void updateMenu(final Context context) {
+    private void updateMenu(final Context context) {
 
 
         id = -1;
@@ -614,12 +619,10 @@ public class SettingsActivity extends MainActivity {
                                                         @Override
                                                         public void onFailure(Call<List<SettingModel>> call, Throwable t) {
 
-                                                                loadingDialogClass.dismiss();
+                                                            loadingDialogClass.dismiss();
                                                         }
                                                     });
-                                                } else {
                                                 }
-
                                             }
 
                                             @Override
@@ -651,7 +654,7 @@ public class SettingsActivity extends MainActivity {
                     @Override
                     public void onFailure(Call<List<GroupFoodModel>> call, Throwable t) {
 
-                            loadingDialogClass.dismiss();
+                        loadingDialogClass.dismiss();
 
                     }
                 });

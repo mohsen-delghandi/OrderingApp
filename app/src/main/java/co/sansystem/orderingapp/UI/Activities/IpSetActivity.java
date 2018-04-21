@@ -38,13 +38,17 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class IpSetActivity extends AppCompatActivity {
 
-    EditText etIPFirstRun1, etIPFirstRun2, etIPFirstRun3, etIPFirstRun4, etTitleFirstRun;
-    TextView btConnect;
-    String ip;
-    private WebService mTService;
-    private WebService mTService2;
-    AppPreferenceTools appPreferenceTools;
-    ImageView ivHelp;
+    private EditText etIPFirstRun1;
+    private EditText etIPFirstRun2;
+    private EditText etIPFirstRun3;
+    private EditText etIPFirstRun4;
+    private EditText etTitleFirstRun;
+    private TextView btConnect;
+    private String ip;
+    private WebService mTServiceContact;
+    private WebService mTServiceRegister;
+    private AppPreferenceTools appPreferenceTools;
+    private ImageView ivHelp;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -59,31 +63,30 @@ public class IpSetActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.ip_set_layout);
 
-        ivHelp = (ImageView) findViewById(R.id.imageView_help);
+        ivHelp = findViewById(R.id.imageView_help);
         ivHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(IpSetActivity.this,HelpActivity.class);
-                intent.putExtra("number","1");
+                Intent intent = new Intent(IpSetActivity.this, HelpActivity.class);
+                intent.putExtra("number", "1");
                 startActivity(intent);
             }
         });
 
         appPreferenceTools = new AppPreferenceTools(this);
 
-        etIPFirstRun1 = (EditText) findViewById(R.id.editText_ip_firstrun1);
-        etIPFirstRun2 = (EditText) findViewById(R.id.editText_ip_firstrun2);
-        etIPFirstRun3 = (EditText) findViewById(R.id.editText_ip_firstrun3);
-        etIPFirstRun4 = (EditText) findViewById(R.id.editText_ip_firstrun4);
+        etIPFirstRun1 = findViewById(R.id.editText_ip_firstrun1);
+        etIPFirstRun2 = findViewById(R.id.editText_ip_firstrun2);
+        etIPFirstRun3 = findViewById(R.id.editText_ip_firstrun3);
+        etIPFirstRun4 = findViewById(R.id.editText_ip_firstrun4);
 
-        btConnect = (TextView) findViewById(R.id.textView_connect);
+        btConnect = findViewById(R.id.textView_connect);
 
-        etTitleFirstRun = (EditText) findViewById(R.id.editText_title_firstrun);
+        etTitleFirstRun = findViewById(R.id.editText_title_firstrun);
 
         etIPFirstRun1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -96,14 +99,12 @@ public class IpSetActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
         etIPFirstRun2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -116,14 +117,12 @@ public class IpSetActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
         etIPFirstRun3.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -136,14 +135,12 @@ public class IpSetActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
         etIPFirstRun4.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -156,7 +153,6 @@ public class IpSetActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
@@ -193,40 +189,35 @@ public class IpSetActivity extends AppCompatActivity {
                 appPreferenceTools.saveDomainName(ip);
 
                 WebProvider provider = new WebProvider();
-                mTService = provider.getTService();
+                mTServiceContact = provider.getTService();
                 WebProvider provider2 = new WebProvider();
-                mTService2 = provider2.getTService();
+                mTServiceRegister = provider2.getTService();
 
 
-                Call<Boolean> call2 = mTService2.deviceRegister(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID), Build.MANUFACTURER + "-" + Build.MODEL);
-                call2.enqueue(new Callback<Boolean>() {
+                Call<Boolean> callRegister = mTServiceRegister.deviceRegister(Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID), Build.MANUFACTURER);
+                callRegister.enqueue(new Callback<Boolean>() {
 
                     @Override
                     public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-
                         if (response.isSuccessful()) {
                             if (response.body()) {
-
                                 final Handler handler = new Handler();
                                 handler.postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-
-                                        Call<List<ContactModel>> call = mTService.getListContact();
-                                        call.enqueue(new Callback<List<ContactModel>>() {
+                                        Call<List<ContactModel>> callContact = mTServiceContact.getListContact();
+                                        callContact.enqueue(new Callback<List<ContactModel>>() {
                                             @Override
                                             public void onResponse(Call<List<ContactModel>> call, Response<List<ContactModel>> response) {
-
                                                 if (response.isSuccessful()) {
-
-                                                    SQLiteDatabase db = new MyDatabase(IpSetActivity.this).getWritableDatabase();
-                                                    ContentValues cv = new ContentValues();
-                                                    cv.put(MyDatabase.IP, ip);
-                                                    db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
-                                                    db.close();
+                                                    SQLiteDatabase dbContact = new MyDatabase(IpSetActivity.this).getWritableDatabase();
+                                                    ContentValues cvContact = new ContentValues();
+                                                    cvContact.put(MyDatabase.IP, ip);
+                                                    dbContact.update(MyDatabase.SETTINGS_TABLE, cvContact, MyDatabase.ID + " = ?", new String[]{" 1 "});
+                                                    dbContact.close();
                                                     loadingDialogClass.dismiss();
-                                                    startActivity(new Intent(IpSetActivity.this,TitleSetActivity.class));
-                                                }else{
+                                                    startActivity(new Intent(IpSetActivity.this, TitleSetActivity.class));
+                                                } else {
                                                     loadingDialogClass.dismiss();
                                                     Toast.makeText(IpSetActivity.this, "ارتباط با سرور برقرار نشد، دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                                                 }

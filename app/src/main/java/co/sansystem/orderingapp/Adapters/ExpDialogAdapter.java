@@ -16,13 +16,12 @@ import java.util.ArrayList;
 
 public class ExpDialogAdapter extends RecyclerView.Adapter<ExpDialogAdapter.ExpViewHolder> {
 
-    private Context mContext;
-    private LayoutInflater mLayoutInflater;
-    ArrayList<String> mData;
-    EditText text;
+    private final LayoutInflater mLayoutInflater;
+    private ArrayList<String> mData;
+    private final EditText text;
 
     public ExpDialogAdapter(Context context, EditText text) {
-        this.mContext = context;
+        Context mContext = context;
         this.mLayoutInflater = LayoutInflater.from(context);
         this.text = text;
     }
@@ -71,10 +70,10 @@ public class ExpDialogAdapter extends RecyclerView.Adapter<ExpDialogAdapter.ExpV
 
     public class ExpViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView tvExpName;
-        private LinearLayout llMain;
+        private final TextView tvExpName;
+        private final LinearLayout llMain;
 
-        public ExpViewHolder(View itemView) {
+        ExpViewHolder(View itemView) {
             super(itemView);
             tvExpName = itemView.findViewById(R.id.textView_exp);
             llMain = itemView.findViewById(R.id.linearLayout_main);

@@ -37,10 +37,9 @@ public class ExpDialogClass extends Dialog {
 
     public TextView yes, no;
     public EditText text;
-    RecyclerView rvExp;
-    ExpDialogAdapter mRecyclerAdapter;
-    Context context;
-    private WebService mTService;
+    private RecyclerView rvExp;
+    private ExpDialogAdapter mRecyclerAdapter;
+    private final Context context;
 
     public ExpDialogClass(Context context) {
         super(context);
@@ -55,7 +54,7 @@ public class ExpDialogClass extends Dialog {
         setContentView(R.layout.exp_dialog_layout);
 
         WebProvider provider = new WebProvider();
-        mTService = provider.getTService();
+        WebService mTService = provider.getTService();
 
         yes = findViewById(R.id.textView_ok);
         no = findViewById(R.id.textView_cancel);
@@ -71,7 +70,7 @@ public class ExpDialogClass extends Dialog {
         rvExp.setAdapter(mRecyclerAdapter);
 
 
-        final ArrayList<String> exps = new ArrayList<String>();
+        final ArrayList<String> exps = new ArrayList<>();
 
 
         Call<List<ExpModel>> call = mTService.getExpAshpazkhane();
@@ -124,6 +123,7 @@ public class ExpDialogClass extends Dialog {
                         Toast.makeText(context, "ارتباط برقرار نیست.", Toast.LENGTH_SHORT).show();
                         dismiss();
                     }
+                    cursor.close();
                     database.close();
 
                 }
@@ -148,44 +148,9 @@ public class ExpDialogClass extends Dialog {
                     Toast.makeText(context, "ارتباط برقرار نیست.", Toast.LENGTH_SHORT).show();
                     dismiss();
                 }
+                cursor.close();
                 database.close();
             }
         });
-
-
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                CallWebService cws2 = new CallWebService(context, "GetExpAshpazkhane");
-//                String responce2 = cws2.Call();
-//                JSONArray jsonArray = null;
-//                try {
-//                    jsonArray = new JSONArray(responce2);
-//                    for (int i = 0; i < jsonArray.length() - 1; i++) {
-//                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                        exps.add(jsonObject.get("Mavad1").toString());
-//                        exps.add(jsonObject.get("Mavad2").toString());
-//                        exps.add(jsonObject.get("Mavad3").toString());
-//                        exps.add(jsonObject.get("Mavad4").toString());
-//                        exps.add(jsonObject.get("Mavad5").toString());
-//                    }
-//                    mRecyclerAdapter.updateAdapterData(exps);
-//                    ((Activity) context).runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            mRecyclerAdapter.notifyDataSetChanged();
-//                        }
-//                    });
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
     }
-
-    @Override
-    public void dismiss() {
-        super.dismiss();
-    }
-
 }

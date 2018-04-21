@@ -2,22 +2,16 @@
 
 
     <!-- Font Size -->
-    <dimen name="font_xxsmall">13sp</dimen>
-    <dimen name="font_dialog">20sp</dimen>
-    <dimen name="font_xxlarge">45sp</dimen>
 
     <dimen name="font_xsmall">10sp</dimen>
     <dimen name="font_small">13sp</dimen>
     <dimen name="font_xmedium">15sp</dimen>
-    <dimen name="font_xxmedium">14sp</dimen>
     <dimen name="font_medium">18sp</dimen>
     <dimen name="font_large">22sp</dimen>
-    <dimen name="font_xlarge">26sp</dimen>
 
     <!-- Padding Size -->
     <dimen name="padding_xbit">2dp</dimen>
     <dimen name="padding_bit">4dp</dimen>
-    <dimen name="padding_inner">12dp</dimen>
 
     <dimen name="padding_small">5dp</dimen>
     <dimen name="padding_medium">8dp</dimen>
@@ -28,36 +22,16 @@
     <dimen name="padding_box">40dp</dimen>
 
     <!-- Space Size -->
-    <dimen name="dimen_icon">48dp</dimen>
-    <dimen name="dimen_icon_box">60dp</dimen>
     <dimen name="dimen_item_height">120dp</dimen>
     <dimen name="dimen_item_height2">125dp</dimen>
 
-    <dimen name="dimen_xsmall">5dp</dimen>
-    <dimen name="dimen_small">10dp</dimen>
     <dimen name="dimen_medium">20dp</dimen>
     <dimen name="dimen_xmedium">30dp</dimen>
     <dimen name="dimen_large">40dp</dimen>
     <dimen name="dimen_xlarge">45dp</dimen>
-    <dimen name="dimen_xlarge_half_minus">-23dp</dimen>
-    <dimen name="dimen_large_half">20dp</dimen>
-    <dimen name="dimen_xxlarge">50dp</dimen>
     <dimen name="dimen_xxxxlarge">60dp</dimen>
-    <dimen name="dimen_xxxlarge">75dp</dimen>
-    <dimen name="dimen_toolbar">64dp</dimen>
     <dimen name="dimen_item_height3">131dp</dimen>
 
-    <dimen name="height_slider_main">170dp</dimen>
-    <dimen name="height_item_product">200dp</dimen>
-    <dimen name="width_item_product">85dp</dimen>
-    <dimen name="height_item_category">90dp</dimen>
-    <dimen name="rate_product">22px</dimen>
-    <dimen name="rate_productLarge">60px</dimen>
     <dimen name="width_nav">180dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="nav_header_height">250dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
 </resources>

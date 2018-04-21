@@ -18,21 +18,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_item_height"
                 android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:layout_alignParentTop="true" />
+                android:adjustViewBounds="true" />
 
             <TextView
                 android:id="@+id/food_item_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/food_item_imageView"
                 android:maxLines="1"
                 android:padding="@dimen/padding_bit"
                 android:gravity="center"
                 app:fontPath="fonts/IRANSansWeb_Light.ttf"
                 android:textColor="@color/primary_text"
                 android:textSize="@dimen/font_xsmall"
-                tools:ignore="MissingPrefix" />]
+                tools:ignore="MissingPrefix" />
 
         </LinearLayout>
 

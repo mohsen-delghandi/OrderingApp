@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class MyDatabase extends SQLiteOpenHelper {
 
-    public static final String DB_NAME = "database";
+    private static final String DB_NAME = "database";
     private static final int DB_VERSION = 1;
 
     public static final String FOOD_TABLE = "Food_TBL";
@@ -18,7 +18,7 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String ORDERS_TABLE = "Orders_TBL";
     public static final String SETTINGS_TABLE = "Settings_TBL";
     public static final String RESPONCES_TABLE = "Responces_TBL";
-    public static final String VIDEOS_TABLE = "Videos_TBL";
+    private static final String VIDEOS_TABLE = "Videos_TBL";
     public static final String OFFLINE_FACTORS_TABLE = "Offline_Factors_TBL";
     public static final String CONTACTS_INFORMATION = "Contacts_Information_TBL";
     public static final String CONTACTS_ADDRESSES = "Contacts_Addresses_TBL";
@@ -31,14 +31,14 @@ public class MyDatabase extends SQLiteOpenHelper {
     public static final String NAME = "Name";
     public static final String IMAGE = "Image";
     public static final String PRICE = "Price";
-    public static final String NUMBER = "Number";
+    private static final String NUMBER = "Number";
     public static final String IP = "Ip";
     public static final String FIRST_RUN = "FirstRun";
-    public static final String SYNCED = "Synced";
+    private static final String SYNCED = "Synced";
     public static final String TITLE = "Title";
     public static final String RESPONCE = "Responce";
     public static final String FAVORITE = "Favorite";
-    public static final String SENT_TO_SERVER = "SentToServer";
+    private static final String SENT_TO_SERVER = "SentToServer";
     public static final String FACTOR_JSON = "FactorJson";
     public static final String LIST_CONTACT_JSON = "ListContactJson";
     public static final String LIST_ADDRESS_JSON = "ListAddressJson";

@@ -14,9 +14,9 @@ import co.sansystem.orderingapp.Utility.Database.MyDatabase;
 
 public class Food {
 
-    public ArrayList<String> foodCategoryNames = new ArrayList<String>();
-    public ArrayList<byte[]> foodCategoryImages = new ArrayList<>();
-    public ArrayList<String> foodCategoryCodes = new ArrayList<String>();
+    private final ArrayList<String> foodCategoryNames = new ArrayList<>();
+    private final ArrayList<byte[]> foodCategoryImages = new ArrayList<>();
+    private final ArrayList<String> foodCategoryCodes = new ArrayList<>();
 
     public Food(Context context) {
         SQLiteDatabase db = new MyDatabase(context).getReadableDatabase();

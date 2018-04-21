@@ -9,8 +9,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WebProviderOnline {
 
-    private WebService mTService;
-    private Retrofit mRetrofitClient;
+    private final WebService mTService;
+    private final Retrofit mRetrofitClient;
 
     public WebProviderOnline() {
         OkHttpClient httpClient = new OkHttpClient();

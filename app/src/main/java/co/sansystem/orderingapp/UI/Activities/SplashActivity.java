@@ -42,41 +42,45 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SplashActivity extends AppCompatActivity {
 
-    int firstRun;
-    WebService mTService;
-    WebService mTService2;
-    EditText etIP1, etIP2, etIP3, etIP4;
-    private TextView tvUpdate,tvNoUpdate;
-    String versionCode,ip;
-    LinearLayout llMain,llIp;
+    private int firstRun;
+    private WebService mTService;
+    private WebService mTServiceRegister;
+    private EditText etIP1;
+    private EditText etIP2;
+    private EditText etIP3;
+    private EditText etIP4;
+    private TextView tvUpdate, tvNoUpdate;
+    private String versionCode;
+    private String ip;
+    private LinearLayout llMain;
+    private LinearLayout llIp;
     public static int tourNumber;
-    TextView tvPermission,btConnect;
-    AppPreferenceTools appPreferenceTools;
+    private TextView tvPermission;
+    private TextView btConnect;
+    private AppPreferenceTools appPreferenceTools;
 
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splash_activity);
 
         appPreferenceTools = new AppPreferenceTools(this);
-        tvPermission = (TextView) findViewById(R.id.textView_permission);
+        tvPermission = findViewById(R.id.textView_permission);
 
-        etIP1 = (EditText) findViewById(R.id.editText_ip_1);
-        etIP2 = (EditText) findViewById(R.id.editText_ip_2);
-        etIP3 = (EditText) findViewById(R.id.editText_ip_3);
-        etIP4 = (EditText) findViewById(R.id.editText_ip_4);
+        etIP1 = findViewById(R.id.editText_ip_1);
+        etIP2 = findViewById(R.id.editText_ip_2);
+        etIP3 = findViewById(R.id.editText_ip_3);
+        etIP4 = findViewById(R.id.editText_ip_4);
         etIP1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -89,14 +93,12 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
         etIP2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -109,14 +111,12 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
         etIP3.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -129,14 +129,12 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
         etIP4.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -149,7 +147,6 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-
             }
         });
 
@@ -167,15 +164,12 @@ public class SplashActivity extends AppCompatActivity {
             etIP3.setText(ipArray[2]);
             etIP4.setText(ipArray[3]);
         } catch (Exception e) {
-
         }
 
-
-        btConnect = (TextView) findViewById(R.id.textView_connect);
+        btConnect = findViewById(R.id.textView_connect);
         btConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 appPreferenceTools.saveDomainName(ip);
                 SQLiteDatabase db = new MyDatabase(SplashActivity.this).getWritableDatabase();
                 ContentValues cv = new ContentValues();
@@ -187,24 +181,24 @@ public class SplashActivity extends AppCompatActivity {
                 db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
                 db.close();
 
-                startActivity(new Intent(SplashActivity.this,SplashActivity.class));
+                startActivity(new Intent(SplashActivity.this, SplashActivity.class));
                 finish();
             }
         });
 
 //        tourNumber = 1;
 
-        llMain = (LinearLayout) findViewById(R.id.linearLayout_main);
-        llIp = (LinearLayout) findViewById(R.id.linearLayout_ip);
+        llMain = findViewById(R.id.linearLayout_main);
+        llIp = findViewById(R.id.linearLayout_ip);
 
-        tvUpdate = (TextView) findViewById(R.id.textView_bt_update);
-        tvNoUpdate = (TextView) findViewById(R.id.textView_bt_no_update);
+        tvUpdate = findViewById(R.id.textView_bt_update);
+        tvNoUpdate = findViewById(R.id.textView_bt_no_update);
 
         WebProviderOnline webProviderOnline = new WebProviderOnline();
         mTService = webProviderOnline.getTService();
 
         WebProvider webProvider = new WebProvider();
-        mTService2 = webProvider.getTService();
+        mTServiceRegister = webProvider.getTService();
 
         SQLiteDatabase db2 = new MyDatabase(this).getWritableDatabase();
         db2.delete(MyDatabase.ORDERS_TABLE, null, null);
@@ -219,75 +213,6 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         checkVersion(versionCode);
-
-//        SQLiteDatabase dbb = new MyDatabase(SplashActivity.this).getReadableDatabase();
-//        Cursor cursor = dbb.query(MyDatabase.SETTINGS_TABLE, new String[]{MyDatabase.FIRST_RUN}, null, null, null, null, null, null);
-//        cursor.moveToFirst();
-//        firstRun = cursor.getInt(0);
-//        cursor.close();
-//        dbb.close();
-//
-//        if (firstRun == 1) {
-//            new Handler().postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Intent i = new Intent(SplashActivity.this, IpSetActivity.class);
-//                    startActivity(i);
-//                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//                    finish();
-//                }
-//            }, 2000);
-//        } else {
-//
-//            Call<Boolean> call2 = mTService2.deviceRegister(Secure.getString(getContentResolver(), Secure.ANDROID_ID), Build.MANUFACTURER + "-" + Build.MODEL);
-//            call2.enqueue(new Callback<Boolean>() {
-//
-//                @Override
-//                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-//
-//                    if (response.isSuccessful()) {
-//                        if (response.body()) {
-//
-//                            AppPreferenceTools appPreferenceTools = new AppPreferenceTools(SplashActivity.this);
-//                            if (appPreferenceTools.isAuthorized()) {
-//                                new Handler().postDelayed(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        Intent i = new Intent(SplashActivity.this, OrdersMenuActivity.class);
-//                                        startActivity(i);
-//                                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//                                        finish();
-//                                    }
-//                                }, 2000);
-//                            } else {
-//                                new Handler().postDelayed(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        Intent i = new Intent(SplashActivity.this, LoginActivity.class);
-//                                        startActivity(i);
-//                                        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//                                        finish();
-//                                    }
-//                                }, 2000);
-//                            }
-//
-//                        } else {
-//                            tvPermission.setVisibility(View.VISIBLE);
-//                        }
-//                    } else {
-//                        Toast.makeText(SplashActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-//                        finish();
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<Boolean> call, Throwable t) {
-//                    Toast.makeText(SplashActivity.this, "عدم ارتباط با سرور،لطفا دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
-//                    finish();
-//                }
-//            });
-
-//        }
     }
 
     private void checkVersion(final String versionCode) {
@@ -295,17 +220,15 @@ public class SplashActivity extends AppCompatActivity {
         call.enqueue(new Callback<VersionModel>() {
             @Override
             public void onResponse(Call<VersionModel> call, final Response<VersionModel> response) {
-
-                if(response.isSuccessful()) {
-
+                if (response.isSuccessful()) {
                     if (!response.body().force_dl) {
                         if (!response.body().new_version) {
-                            SQLiteDatabase dbb = new MyDatabase(SplashActivity.this).getReadableDatabase();
-                            Cursor cursor = dbb.query(MyDatabase.SETTINGS_TABLE, new String[]{MyDatabase.FIRST_RUN}, null, null, null, null, null, null);
+                            SQLiteDatabase dbNewVersion = new MyDatabase(SplashActivity.this).getReadableDatabase();
+                            Cursor cursor = dbNewVersion.query(MyDatabase.SETTINGS_TABLE, new String[]{MyDatabase.FIRST_RUN}, null, null, null, null, null, null);
                             cursor.moveToFirst();
                             firstRun = cursor.getInt(0);
                             cursor.close();
-                            dbb.close();
+                            dbNewVersion.close();
 
                             if (firstRun == 1) {
                                 new Handler().postDelayed(new Runnable() {
@@ -318,15 +241,12 @@ public class SplashActivity extends AppCompatActivity {
                                     }
                                 }, 2000);
                             } else {
-                                Call<Boolean> call2 = mTService2.deviceRegister(Secure.getString(getContentResolver(), Secure.ANDROID_ID), Build.MANUFACTURER + "-" + Build.MODEL);
-                                call2.enqueue(new Callback<Boolean>() {
-
+                                Call<Boolean> callRegister = mTServiceRegister.deviceRegister(Secure.getString(getContentResolver(), Secure.ANDROID_ID), Build.MANUFACTURER);
+                                callRegister.enqueue(new Callback<Boolean>() {
                                     @Override
                                     public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-
                                         if (response.isSuccessful()) {
                                             if (response.body()) {
-
                                                 AppPreferenceTools appPreferenceTools = new AppPreferenceTools(SplashActivity.this);
                                                 if (appPreferenceTools.isAuthorized()) {
                                                     new Handler().postDelayed(new Runnable() {
@@ -349,7 +269,6 @@ public class SplashActivity extends AppCompatActivity {
                                                         }
                                                     }, 2000);
                                                 }
-
                                             } else {
                                                 tvPermission.setVisibility(View.VISIBLE);
                                                 llIp.setVisibility(View.VISIBLE);
@@ -395,15 +314,13 @@ public class SplashActivity extends AppCompatActivity {
                                             }
                                         }, 2000);
                                     } else {
-                                        Call<Boolean> call2 = mTService2.deviceRegister(Secure.getString(getContentResolver(), Secure.ANDROID_ID), Build.MANUFACTURER + "-" + Build.MODEL);
-                                        call2.enqueue(new Callback<Boolean>() {
+                                        Call<Boolean> callRegister = mTServiceRegister.deviceRegister(Secure.getString(getContentResolver(), Secure.ANDROID_ID), Build.MANUFACTURER);
+                                        callRegister.enqueue(new Callback<Boolean>() {
 
                                             @Override
                                             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-
                                                 if (response.isSuccessful()) {
                                                     if (response.body()) {
-
                                                         AppPreferenceTools appPreferenceTools = new AppPreferenceTools(SplashActivity.this);
                                                         if (appPreferenceTools.isAuthorized()) {
                                                             new Handler().postDelayed(new Runnable() {
@@ -426,7 +343,6 @@ public class SplashActivity extends AppCompatActivity {
                                                                 }
                                                             }, 2000);
                                                         }
-
                                                     } else {
                                                         tvPermission.setVisibility(View.VISIBLE);
                                                         llIp.setVisibility(View.VISIBLE);
@@ -463,7 +379,7 @@ public class SplashActivity extends AppCompatActivity {
                             }
                         });
                     }
-                }else{
+                } else {
                     if (firstRun == 1) {
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -475,15 +391,12 @@ public class SplashActivity extends AppCompatActivity {
                             }
                         }, 2000);
                     } else {
-                        Call<Boolean> call2 = mTService2.deviceRegister(Secure.getString(getContentResolver(), Secure.ANDROID_ID), Build.MANUFACTURER + "-" + Build.MODEL);
-                        call2.enqueue(new Callback<Boolean>() {
-
+                        Call<Boolean> callRegister = mTServiceRegister.deviceRegister(Secure.getString(getContentResolver(), Secure.ANDROID_ID), Build.MANUFACTURER);
+                        callRegister.enqueue(new Callback<Boolean>() {
                             @Override
                             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-
                                 if (response.isSuccessful()) {
                                     if (response.body()) {
-
                                         AppPreferenceTools appPreferenceTools = new AppPreferenceTools(SplashActivity.this);
                                         if (appPreferenceTools.isAuthorized()) {
                                             new Handler().postDelayed(new Runnable() {
@@ -506,7 +419,6 @@ public class SplashActivity extends AppCompatActivity {
                                                 }
                                             }, 2000);
                                         }
-
                                     } else {
                                         tvPermission.setVisibility(View.VISIBLE);
                                         llIp.setVisibility(View.VISIBLE);
@@ -542,15 +454,12 @@ public class SplashActivity extends AppCompatActivity {
                         }
                     }, 2000);
                 } else {
-                    Call<Boolean> call2 = mTService2.deviceRegister(Secure.getString(getContentResolver(), Secure.ANDROID_ID), Build.MANUFACTURER + "-" + Build.MODEL);
-                    call2.enqueue(new Callback<Boolean>() {
-
+                    Call<Boolean> callRegister = mTServiceRegister.deviceRegister(Secure.getString(getContentResolver(), Secure.ANDROID_ID), Build.MANUFACTURER);
+                    callRegister.enqueue(new Callback<Boolean>() {
                         @Override
                         public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-
                             if (response.isSuccessful()) {
                                 if (response.body()) {
-
                                     AppPreferenceTools appPreferenceTools = new AppPreferenceTools(SplashActivity.this);
                                     if (appPreferenceTools.isAuthorized()) {
                                         new Handler().postDelayed(new Runnable() {
@@ -573,7 +482,6 @@ public class SplashActivity extends AppCompatActivity {
                                             }
                                         }, 2000);
                                     }
-
                                 } else {
                                     tvPermission.setVisibility(View.VISIBLE);
                                     llIp.setVisibility(View.VISIBLE);

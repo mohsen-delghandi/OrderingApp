@@ -61,7 +61,7 @@
             android:orientation="horizontal"
             android:paddingTop="@dimen/padding_xlarge"
             android:paddingBottom="@dimen/padding_xlarge"
-            >
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:id="@+id/linearLayout_az_tarikh"
@@ -330,13 +330,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/tableRow_jameKol"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/textView_jameKol"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/padding_xbit"
                 android:layout_weight="1"

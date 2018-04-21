@@ -185,8 +185,8 @@
                 android:layout_width="@dimen/dimen_large"
                 android:layout_height="@dimen/dimen_large"
                 android:background="@drawable/border_shape_primary"
-                android:paddingLeft="@dimen/padding_large"
-                android:paddingRight="@dimen/padding_large"
+                android:paddingLeft="@dimen/padding_bit"
+                android:paddingRight="@dimen/padding_bit"
                 android:src="@drawable/image_question" />
 
             <ImageView
@@ -195,8 +195,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_height="@dimen/dimen_large"
                 android:background="@drawable/border_shape_primary"
-                android:paddingLeft="@dimen/padding_large"
-                android:paddingRight="@dimen/padding_large"
+                android:paddingLeft="@dimen/padding_bit"
+                android:paddingRight="@dimen/padding_bit"
                 android:src="@drawable/image_arrow_back" />
 
         </RelativeLayout>

@@ -4,7 +4,7 @@ import java.util.List;
 
 public class FactorModel {
 
-    List<FactorContentModel> list;
+    private List<FactorContentModel> list;
 
     public List<FactorContentModel> getList() {
         return list;

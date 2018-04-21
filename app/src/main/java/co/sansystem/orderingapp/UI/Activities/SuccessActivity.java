@@ -14,7 +14,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class SuccessActivity extends AppCompatActivity {
 
-    TextView tvNameMoshtari,tvFishNumber,tvOkk;
+    private TextView tvNameMoshtari;
+    private TextView tvFishNumber;
+    private TextView tvOkk;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -26,13 +28,13 @@ public class SuccessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.success_layout);
 
-        tvNameMoshtari = (TextView) findViewById(R.id.textView_moshtari_name);
-        tvFishNumber = (TextView) findViewById(R.id.textView_fish_number);
+        tvNameMoshtari = findViewById(R.id.textView_moshtari_name);
+        tvFishNumber = findViewById(R.id.textView_fish_number);
 
         tvNameMoshtari.setText(getIntent().getStringExtra("name_moshtari"));
         tvFishNumber.setText(getIntent().getStringExtra("fish_number"));
 
-        tvOkk = (TextView) findViewById(R.id.textView_okk);
+        tvOkk = findViewById(R.id.textView_okk);
         tvOkk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

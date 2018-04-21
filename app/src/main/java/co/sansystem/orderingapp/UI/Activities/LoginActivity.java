@@ -30,17 +30,14 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText etUserName, etPassword;
-    TextView btSignIn;
-    String name, id, password;
-    WebService mTService;
-    AppPreferenceTools appPreferenceTools;
-    private ImageView ivHelp;
-    private ImageView ivBack;
-    private WebService mTService5;
-    private WebService mTService2;
-    private WebService mTService3;
-    private WebService mTService4;
+    private EditText etUserName;
+    private EditText etPassword;
+    private TextView btSignIn;
+    private String name;
+    String id;
+    private String password;
+    private WebService mTService;
+    private AppPreferenceTools appPreferenceTools;
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -55,20 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.sign_in_layout);
 
-
-        WebProvider provider5 = new WebProvider();
-        mTService5 = provider5.getTService();
-
-        WebProvider provider2 = new WebProvider();
-        mTService2 = provider2.getTService();
-
-        WebProvider provider3 = new WebProvider();
-        mTService3 = provider3.getTService();
-
-        WebProvider provider4 = new WebProvider();
-        mTService4 = provider4.getTService();
-
-        ivBack = (ImageView) findViewById(R.id.imageView_back);
+        ImageView ivBack = findViewById(R.id.imageView_back);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        ivHelp = (ImageView) findViewById(R.id.imageView_help);
+        ImageView ivHelp = findViewById(R.id.imageView_help);
         ivHelp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,15 +75,14 @@ public class LoginActivity extends AppCompatActivity {
 
         appPreferenceTools = new AppPreferenceTools(this);
 
-        etUserName = (EditText) findViewById(R.id.editText_userName);
-        etPassword = (EditText) findViewById(R.id.editText_passWord);
+        etUserName = findViewById(R.id.editText_userName);
+        etPassword = findViewById(R.id.editText_passWord);
 
-        btSignIn = (TextView) findViewById(R.id.textView_signIn);
+        btSignIn = findViewById(R.id.textView_signIn);
 
         btSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 final LoadingDialogClass loadingDialogClass = new LoadingDialogClass(LoginActivity.this);
                 loadingDialogClass.show();
                 name = etUserName.getText().toString().trim();
@@ -108,15 +91,11 @@ public class LoginActivity extends AppCompatActivity {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
                         Call<List<UserModel>> call = mTService.loginGarson(name, password);
                         call.enqueue(new Callback<List<UserModel>>() {
                             @Override
                             public void onResponse(Call<List<UserModel>> call, Response<List<UserModel>> response) {
-
-
                                 if (response.isSuccessful()) {
-
                                     if (!response.body().get(0).getLoginID().equals("0")) {
                                         appPreferenceTools.loginOK();
                                         appPreferenceTools.saveCurrency(response.body().get(0).getCurrency());
@@ -136,7 +115,6 @@ public class LoginActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(Call<List<UserModel>> call, Throwable t) {
-
                                 loadingDialogClass.dismiss();
                                 Toast.makeText(LoginActivity.this, "خطا در برقراری ارتباط با سرور،دوباره تلاش کنید.", Toast.LENGTH_SHORT).show();
                             }

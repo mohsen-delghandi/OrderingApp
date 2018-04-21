@@ -1,18 +1,3 @@
-/**
- * Copyright 2016 Keepsafe Software, Inc.
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.getkeepsafe.taptargetview;
 
 import android.app.Activity;
@@ -40,11 +25,11 @@ public class TapTargetSequence {
   @Nullable
   private TapTargetView currentView;
 
-  Listener listener;
-  boolean considerOuterCircleCanceled;
-  boolean continueOnCancel;
+  private Listener listener;
+  private boolean considerOuterCircleCanceled;
+  private boolean continueOnCancel;
 
-  public interface Listener {
+  interface Listener {
     /** Called when there are no more tap targets to display */
     void onSequenceFinish();
 
@@ -117,7 +102,7 @@ public class TapTargetSequence {
 
   /** Immediately starts the sequence and displays the first target from the queue **/
   @UiThread
-  public void start() {
+  private void start() {
     if (targets.isEmpty() || active) {
       return;
     }
@@ -189,7 +174,7 @@ public class TapTargetSequence {
     return true;
   }
 
-  void showNext() {
+  private void showNext() {
     try {
       TapTarget tapTarget = targets.remove();
       if (activity != null) {

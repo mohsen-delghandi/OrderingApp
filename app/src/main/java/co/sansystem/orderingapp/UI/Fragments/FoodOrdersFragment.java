@@ -23,12 +23,12 @@ import co.sansystem.orderingapp.Models.OrderedItemModel;
 
 public class FoodOrdersFragment extends Fragment{
 
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayoutManager;
-    Context mContext;
-    static FoodOrdersAdapter foodOrdersAdapter;
-    int mHeight;
-    List<OrderedItemModel> mList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private Context mContext;
+    private static FoodOrdersAdapter foodOrdersAdapter;
+    private int mHeight;
+    private List<OrderedItemModel> mList = new ArrayList<>();
 
     public FoodOrdersFragment(Context context,int height,List<OrderedItemModel> mList) {
         mContext = context;

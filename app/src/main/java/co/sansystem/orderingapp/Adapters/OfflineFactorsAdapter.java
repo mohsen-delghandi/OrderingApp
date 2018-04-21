@@ -45,11 +45,11 @@ import retrofit2.Response;
  */
 
 public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAdapter.ViewHolder> {
-    List<FactorModel> mData;
-    List<String> fatorIDs;
-    private WebService mTService;
-    Context context;
-    AppPreferenceTools appPreferenceTools;
+    private List<FactorModel> mData;
+    private List<String> fatorIDs;
+    private final WebService mTService;
+    private Context context;
+    private AppPreferenceTools appPreferenceTools;
 
     public OfflineFactorsAdapter() {
 
@@ -63,13 +63,18 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView tvTableNumber, tvCustomerName, tvVaziat, tvPrice, tvTableText, mActionViewDelete;
-        ImageView tvSend;
-        public FrameLayout llMain;
-        View mActionContainer;
-        View mViewContent;
+        final TextView tvTableNumber;
+        final TextView tvCustomerName;
+        final TextView tvVaziat;
+        final TextView tvPrice;
+        final TextView tvTableText;
+        final TextView mActionViewDelete;
+        final ImageView tvSend;
+        final FrameLayout llMain;
+        final View mActionContainer;
+        final View mViewContent;
 
-        public ViewHolder(View v) {
+        ViewHolder(View v) {
             super(v);
             tvTableNumber = v.findViewById(R.id.textView_tableNumber);
             tvTableText = v.findViewById(R.id.textView_tableNumber_text);
@@ -453,7 +458,7 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
         return (bitmap);
     }
 
-    public void deleteAdapterData(int position) {
+    private void deleteAdapterData(int position) {
         SQLiteDatabase database = new MyDatabase(context).getWritableDatabase();
         database.delete(MyDatabase.OFFLINE_FACTORS_TABLE, MyDatabase.ID + " = " + fatorIDs.get(position), null);
 
@@ -466,7 +471,7 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
 
     class ItemViewHolderWithRecyclerWidth extends OfflineFactorsAdapter.ViewHolder {
 
-        View mActionViewDelete;
+        final View mActionViewDelete;
 
         public ItemViewHolderWithRecyclerWidth(View itemView) {
             super(itemView);
@@ -477,9 +482,9 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
 
     class ItemSwipeWithActionWidthViewHolder extends OfflineFactorsAdapter.ViewHolder implements Extension {
 
-        View mActionViewDelete;
+        final View mActionViewDelete;
 
-        public ItemSwipeWithActionWidthViewHolder(View itemView) {
+        ItemSwipeWithActionWidthViewHolder(View itemView) {
             super(itemView);
             mActionViewDelete = itemView.findViewById(R.id.view_list_repo_action_delete);
         }
@@ -492,7 +497,7 @@ public class OfflineFactorsAdapter extends RecyclerView.Adapter<OfflineFactorsAd
 
     class ItemSwipeWithActionWidthNoSpringViewHolder extends OfflineFactorsAdapter.ItemSwipeWithActionWidthViewHolder implements Extension {
 
-        public ItemSwipeWithActionWidthNoSpringViewHolder(View itemView) {
+        ItemSwipeWithActionWidthNoSpringViewHolder(View itemView) {
             super(itemView);
         }
 

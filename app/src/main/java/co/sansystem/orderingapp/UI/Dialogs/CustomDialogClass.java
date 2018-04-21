@@ -65,33 +65,48 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 public class CustomDialogClass extends Dialog implements
         android.view.View.OnClickListener {
 
-    public Activity c;
-    public TextView yes, text, jameKol, tvJameKol, tvMaliatText, tvMaliat, tvTakhfifText, tvTakhfif, tvServiceText, tvService, tvFactorText, tvFactor;
-    public ImageView no;
-    public EditText etTable;
-    long mPrice = 0;
-    String costumerCode;
-    public LinearLayout  llSuccess;
-    public ScrollView svMain;
-    public RelativeLayout rlMain, rlSuccess;
+    private final Activity c;
+    private TextView yes;
+    private TextView text;
+    private TextView jameKol;
+    private TextView tvJameKol;
+    private TextView tvMaliatText;
+    private TextView tvMaliat;
+    private TextView tvTakhfifText;
+    private TextView tvTakhfif;
+    private TextView tvServiceText;
+    private TextView tvService;
+    private TextView tvFactorText;
+    private TextView tvFactor;
+    private ImageView no;
+    private EditText etTable;
+    private long mPrice = 0;
+    private final String costumerCode;
+    private LinearLayout  llSuccess;
+    private ScrollView svMain;
+    private RelativeLayout rlMain;
+    private RelativeLayout rlSuccess;
 
-    AppPreferenceTools appPreferenceTools;
-    public Spinner spVaziatSefaresh;
-    String vaziatSefaresh;
-    String tableNumber = null, costumerName = null, vaziat_sefaresh = null, factorNumber = "0", Fish_Number = "0";
+    private AppPreferenceTools appPreferenceTools;
+    private Spinner spVaziatSefaresh;
+    private String vaziatSefaresh;
+    private String tableNumber = null;
+    private String costumerName = null;
+    private String vaziat_sefaresh = null;
+    private String factorNumber = "0";
+    private String Fish_Number = "0";
     private WebService mTService;
-    private WebService mTService2;
     private WebService mTService3;
     private WebService mTService4;
     private WebService mTService5;
-    public AutoCompleteTextView textView;
-    public AutoCompleteTextView textViewAddress;
-    public AutoCompleteTextView textViewTell;
-    ArrayList<String> costumerNamess;
-    ArrayList<String> costumerCodess;
-    ArrayList<String> costumerTafzilis;
-    ArrayList<String> costumerAddresses;
-    ArrayList<String> costumerTells;
+    private AutoCompleteTextView textView;
+    private AutoCompleteTextView textViewAddress;
+    private AutoCompleteTextView textViewTell;
+    private ArrayList<String> costumerNamess;
+    private ArrayList<String> costumerCodess;
+    private ArrayList<String> costumerTafzilis;
+    private ArrayList<String> costumerAddresses;
+    private ArrayList<String> costumerTells;
 
     public CustomDialogClass(Activity a, String defaultCostumerCode) {
         super(a);
@@ -135,7 +150,7 @@ public class CustomDialogClass extends Dialog implements
         mTService = provider.getTService();
 
         WebProvider provider2 = new WebProvider();
-        mTService2 = provider2.getTService();
+        WebService mTService2 = provider2.getTService();
 
         WebProvider provider3 = new WebProvider();
         mTService3 = provider3.getTService();
@@ -147,11 +162,11 @@ public class CustomDialogClass extends Dialog implements
         mTService5 = provider5.getTService();
 
 
-        costumerNamess = new ArrayList<String>();
-        costumerCodess = new ArrayList<String>();
-        costumerTafzilis = new ArrayList<String>();
-        costumerAddresses = new ArrayList<String>();
-        costumerTells = new ArrayList<String>();
+        costumerNamess = new ArrayList<>();
+        costumerCodess = new ArrayList<>();
+        costumerTafzilis = new ArrayList<>();
+        costumerAddresses = new ArrayList<>();
+        costumerTells = new ArrayList<>();
 
 
         SQLiteDatabase db = new MyDatabase(c).getWritableDatabase();
@@ -168,6 +183,7 @@ public class CustomDialogClass extends Dialog implements
                 costumerTafzilis.add(contactModel.getTafziliID());
             }
         }
+        cursor.close();
         db.close();
 
         Call<List<ContactModel>> call = mTService2.getListContact();
@@ -206,7 +222,7 @@ public class CustomDialogClass extends Dialog implements
         textView = findViewById(R.id.editText_name);
         textViewAddress = findViewById(R.id.editText_adress);
         textViewTell = findViewById(R.id.editText_tell);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(c, android.R.layout.simple_dropdown_item_1line, costumerNamess);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(c, android.R.layout.simple_dropdown_item_1line, costumerNamess);
         textView.setAdapter(adapter);
 
         textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -235,7 +251,7 @@ public class CustomDialogClass extends Dialog implements
                         costumerAddresses.add(addressModel.getAdress());
                     }
 
-                    ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(c, android.R.layout.simple_dropdown_item_1line, costumerAddresses);
+                    ArrayAdapter<String> adapter2 = new ArrayAdapter<>(c, android.R.layout.simple_dropdown_item_1line, costumerAddresses);
                     textViewAddress.setAdapter(adapter2);
                     if (costumerAddresses.size() == 0) {
                         textViewAddress.setText("0");
@@ -243,6 +259,7 @@ public class CustomDialogClass extends Dialog implements
                         textViewAddress.setText(costumerAddresses.get(0));
                     }
                 }
+                cursor.close();
                 db.close();
 
                 Call<List<AddressModel>> call2 = mTService4.getAddressContact(costumerCodess.get(pos));
@@ -268,7 +285,7 @@ public class CustomDialogClass extends Dialog implements
                                 costumerAddresses.add(addressModel.getAdress());
                             }
 
-                            ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(c, android.R.layout.simple_dropdown_item_1line, costumerAddresses);
+                            ArrayAdapter<String> adapter2 = new ArrayAdapter<>(c, android.R.layout.simple_dropdown_item_1line, costumerAddresses);
                             textViewAddress.setAdapter(adapter2);
                             if (costumerAddresses.size() == 0) {
                                 textViewAddress.setText("0");
@@ -285,11 +302,11 @@ public class CustomDialogClass extends Dialog implements
                 });
 
 
-                SQLiteDatabase db2 = new MyDatabase(c).getWritableDatabase();
-                Cursor cursor2 = db2.query(MyDatabase.CONTACTS_TELLS, new String[]{MyDatabase.LIST_TELL_JSON}, null, null, null, null, null);
-                if (cursor2.moveToFirst()) {
+                SQLiteDatabase dbTell = new MyDatabase(c).getWritableDatabase();
+                Cursor cursorTell = dbTell.query(MyDatabase.CONTACTS_TELLS, new String[]{MyDatabase.LIST_TELL_JSON}, null, null, null, null, null);
+                if (cursorTell.moveToFirst()) {
                     Gson gson = new Gson();
-                    String json = cursor2.getString(0);
+                    String json = cursorTell.getString(0);
                     List<TellModel> contactModelList = gson.fromJson(json, new TypeToken<ArrayList<TellModel>>() {
                     }.getType());
                     for (TellModel tellModel :
@@ -297,7 +314,7 @@ public class CustomDialogClass extends Dialog implements
                         costumerTells.add(tellModel.getTellContact());
                     }
 
-                    ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(c, android.R.layout.simple_dropdown_item_1line, costumerTells);
+                    ArrayAdapter<String> adapter3 = new ArrayAdapter<>(c, android.R.layout.simple_dropdown_item_1line, costumerTells);
                     textViewTell.setAdapter(adapter3);
                     if (costumerTells.size() == 0) {
                         textViewTell.setText("0");
@@ -305,7 +322,8 @@ public class CustomDialogClass extends Dialog implements
                         textViewTell.setText(costumerTells.get(0));
                     }
                 }
-                db2.close();
+                cursorTell.close();
+                dbTell.close();
 
                 Call<List<TellModel>> calll = mTService5.getTellContact(costumerCodess.get(pos));
                 calll.enqueue(new Callback<List<TellModel>>() {
@@ -331,7 +349,7 @@ public class CustomDialogClass extends Dialog implements
                                 costumerTells.add(tellModel.getTellContact());
                             }
 
-                            ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(c, android.R.layout.simple_dropdown_item_1line, costumerTells);
+                            ArrayAdapter<String> adapter3 = new ArrayAdapter<>(c, android.R.layout.simple_dropdown_item_1line, costumerTells);
                             textViewTell.setAdapter(adapter3);
                             if (costumerTells.size() == 0) {
                                 textViewTell.setText("0");
@@ -372,7 +390,7 @@ public class CustomDialogClass extends Dialog implements
         vaziatSefaresh = appPreferenceTools.getVaziatSefaresh();
 
         ArrayAdapter<String> adapterVaziatSefaresh =
-                new ArrayAdapter<String>(c, android.R.layout.simple_spinner_item, c.getResources().getStringArray(R.array.vaziat_sefaresh));
+                new ArrayAdapter<>(c, android.R.layout.simple_spinner_item, c.getResources().getStringArray(R.array.vaziat_sefaresh));
         spVaziatSefaresh.setAdapter(adapterVaziatSefaresh);
 
         spVaziatSefaresh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -599,7 +617,7 @@ public class CustomDialogClass extends Dialog implements
                                             intent.putExtra("fish_number", response.body().toString());
                                             intent.putExtra("name_moshtari", textView.getText().toString().trim());
                                             c.startActivity(intent);
-                                            ((Activity) c).finish();
+                                            c.finish();
 
                                             Call<List<FavoriteModel>> call2 = mTService3.getFoodFavorite();
                                             call2.enqueue(new Callback<List<FavoriteModel>>() {

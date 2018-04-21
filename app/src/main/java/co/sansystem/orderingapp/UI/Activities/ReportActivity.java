@@ -64,11 +64,14 @@ public class ReportActivity extends AppCompatActivity {
     @BindView(R.id.textView_mohasebe)
     TextView tvMohasebe;
 
-    String azTarikh, taTarikh;
-    String dayy, monthh, yearr;
-    ImageView ivBack;
-    TextView tvCurrency;
-    AppPreferenceTools appPreferenceTools;
+    private String azTarikh;
+    private String taTarikh;
+    private String dayy;
+    private String monthh;
+    private String yearr;
+    private ImageView ivBack;
+    private TextView tvCurrency;
+    private AppPreferenceTools appPreferenceTools;
 
 
     @Override
@@ -80,12 +83,13 @@ public class ReportActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.report_layout);
         ButterKnife.bind(this);
 
         appPreferenceTools = new AppPreferenceTools(this);
-        ivBack = (ImageView) findViewById(R.id.imageView_nav_back);
+        ivBack = findViewById(R.id.imageView_nav_back);
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,7 +97,7 @@ public class ReportActivity extends AppCompatActivity {
             }
         });
 
-        tvCurrency = (TextView) findViewById(R.id.textView_currency);
+        tvCurrency = findViewById(R.id.textView_currency);
 
         tvCurrency.setText("بر حسب " + appPreferenceTools.getCurrency());
 
