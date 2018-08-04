@@ -113,6 +113,8 @@ public class ReportActivity extends AppCompatActivity {
         builder.date(mDate.getDay(), mDate.getMonth(), mDate.getYear());
 
 
+
+
         tvAZTarikh.setText(mDate.getDate());
         llAzTarikh.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,8 +139,6 @@ public class ReportActivity extends AppCompatActivity {
                         }
 
                         yearr = calendar.get(Calendar.YEAR) + "";
-
-
 
                         azTarikh = dayy + "-" + monthh + "-" + yearr;
                         tvAZTarikh.setText(mDate.getDate());

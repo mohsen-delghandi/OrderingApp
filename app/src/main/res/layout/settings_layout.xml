@@ -368,6 +368,7 @@
                 android:layout_gravity="left"
                 android:paddingLeft="@dimen/padding_spinner"
                 android:paddingRight="@dimen/padding_spinner"
+                android:layout_marginBottom="@dimen/padding_spinner"
                 android:text="تایید"
                 android:layout_marginLeft="@dimen/padding_spinner"
                 app:fontPath="fonts/IRANSansWeb_Medium.ttf"

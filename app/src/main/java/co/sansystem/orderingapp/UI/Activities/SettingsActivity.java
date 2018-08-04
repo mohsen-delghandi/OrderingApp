@@ -419,6 +419,8 @@ public class SettingsActivity extends MainActivity {
                 cv.put(MyDatabase.TITLE, et_title.getText().toString());
                 db.update(MyDatabase.SETTINGS_TABLE, cv, MyDatabase.ID + " = ?", new String[]{" 1 "});
                 db.close();
+
+                Toast.makeText(SettingsActivity.this, "انجام شد.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -437,6 +439,7 @@ public class SettingsActivity extends MainActivity {
                 appPreferenceTools.printAfterConfirm(checkBox.isChecked());
                 appPreferenceTools.saveVaziateSefaresh(getResources().getStringArray(R.array.vaziat_sefaresh)[vaziatSefaresh]);
                 appPreferenceTools.saveDefaultCostumerCode(costumerCode);
+                Toast.makeText(SettingsActivity.this, "انجام شد.", Toast.LENGTH_SHORT).show();
             }
         });
 

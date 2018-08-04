@@ -161,7 +161,6 @@ public class CustomDialogClass extends Dialog implements
         WebProvider provider5 = new WebProvider();
         mTService5 = provider5.getTService();
 
-
         costumerNamess = new ArrayList<>();
         costumerCodess = new ArrayList<>();
         costumerTafzilis = new ArrayList<>();
